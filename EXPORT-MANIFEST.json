@@ -457,8 +457,8 @@
     },
     {
       "path": "corporate-site/dist/index.html",
-      "bytes": 7004,
-      "sha256": "5e3505527a2d62de6157cb543ecd559ea6796bbe5454c025542c418e4abaa581"
+      "bytes": 7536,
+      "sha256": "380938bc5908376cbb433664f94c79335e1efd6f5796d4f4311e50a6579c00bc"
     },
     {
       "path": "corporate-site/dist/regfire-atmosphere-animated-poster.jpg",
@@ -617,8 +617,8 @@
     },
     {
       "path": "corporate-site/dist/script.js",
-      "bytes": 951,
-      "sha256": "74f27185692daeb2467a0ffd683ddf4def1fe2e0b9daea6e1d0a75c9f47afefd"
+      "bytes": 2161,
+      "sha256": "9183cbe4807fabb8c39b1121e68c0e1ae998e85de4ca73163623579381be7671"
     },
     {
       "path": "corporate-site/dist/spark.png",
@@ -627,8 +627,8 @@
     },
     {
       "path": "corporate-site/dist/style.css",
-      "bytes": 13273,
-      "sha256": "827fdfd342282d7f4c855190bacd6828e5fc5f06578d674332655f910741a4e4"
+      "bytes": 14693,
+      "sha256": "dd95050dfe5e3d44b04593b56a37c93858aff81df02d985d9417a9f4cf677312"
     },
     {
       "path": "corporate-site/scripts/add-flame-finish.py",
@@ -649,6 +649,16 @@
       "path": "corporate-site/scripts/render-atmosphere.py",
       "bytes": 4771,
       "sha256": "60195083550f8005b1c1ea89e774b6cc1dbd921c830e2edbba26518ae409a681"
+    },
+    {
+      "path": "corporate-site/dist/regfire-product-demo-30s.mp4",
+      "bytes": 4131475,
+      "sha256": "ef847b253b30da656d0deff3f7b6204ebee53c64f2ad4734dbc5ffb112b40f77"
+    },
+    {
+      "path": "corporate-site/dist/regfire-demo-poster.jpg",
+      "bytes": 108185,
+      "sha256": "458f79f3263e08813a8112b0bac8fb46128f91e24afb28acac96c5ec80ca6fc5"
     }
   ],
   "excluded": [
