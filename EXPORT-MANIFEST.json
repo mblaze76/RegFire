@@ -202,8 +202,8 @@
     },
     {
       "path": "app/static/style.css",
-      "bytes": 38656,
-      "sha256": "8495c56236508950435f1e90f27f623dfa5d4dcd266bfb51079f1d927e4b42c9"
+      "bytes": 38670,
+      "sha256": "a730713abde845bccacefea9be546b175cc6e49d8ff87bc2d575ec6a1a679b02"
     },
     {
       "path": "app/static/welcome.html",

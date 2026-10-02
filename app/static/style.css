@@ -133,4 +133,4 @@ body.welcome-site.welcome-has-artwork>.live-card{background:#ffffff40;backdrop-f
 
 /* Transparent application branding and welcome preview controls. */
 header .brand{background:transparent}
-#welcome-open-site{display:block;margin:8px 0 16px;overflow-wrap:anywhere}
+#welcome-open-site{color:#ffd16a;display:block;margin:8px 0 16px;overflow-wrap:anywhere}
