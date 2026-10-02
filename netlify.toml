@@ -1,0 +1,2 @@
+[build]
+  publish = "corporate-site/dist"

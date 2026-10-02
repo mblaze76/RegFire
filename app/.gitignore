@@ -1,0 +1,8 @@
+.venv/
+.local/
+data/
+backups/
+__pycache__/
+*.pyc
+
+uploads/

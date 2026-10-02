@@ -1,0 +1,8 @@
+Promo code setup requirements
+
+Add an organizer Promo codes setup section with CSV import, manual code creation, and editable per-code rules.
+Support free registration, percentage-off, and fixed-dollar-amount registration discounts.
+Define eligible registration types and explicitly define whether each discount applies to registration only or also to paid sessions; do not silently discount sessions.
+Validate codes before applying them. Show the applied discount and final total at the later pricing/review step, after session selections. Do not display a preliminary registration price on the details page.
+Import should preview invalid rows and duplicate codes before saving. Codes need an enabled state; expiration and usage limits should be configurable.
+Current implementation: manual codes and CSV import support free, percent and fixed discounts, enabled status, and per-code allotment. Allotment is a maximum total use count: blank/null is unlimited, zero allows no uses, and positive whole numbers cap uses. Existing codes without an allotment remain unlimited. Redemption and discount calculation are not connected yet; the future checkout must enforce the allotment atomically against successful redemptions. Restart the local server after this update so server validation preserves allotments.

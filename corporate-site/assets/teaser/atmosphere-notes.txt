@@ -1,0 +1,10 @@
+Background generated with the built-in image-generation tool.
+Direction: photographic low-key charcoal smoke, faint copper ember glow at the edge, soft cool light, empty dark center. No visible flames, text, logo, geometric gates, or bright central light.
+Final film preserves the established title copy and RegFire artwork. Gentle camera drift and controlled title dissolves. 1920x1080, 24 fps, exactly 720 frames, no audio input or track.
+Rebuild: set FFMPEG to an ffmpeg executable and run scripts/render-atmosphere.py using Python with Pillow installed.
+
+Animation revision: continuous mesh movement of photographic edge smoke, slow lighting variation, text rise/settle with blur-to-sharp entrances and dissolves, and a restrained logo scale reveal. All movement is baked into the exported MP4.
+
+Coverage refinement: photographic smoke and warm glow extend 240 pixels farther inward from each edge, with softened secondary haze at 68% strength. The clear title area and approved motion remain.
+
+Final flame-only finish: a newly generated photographic flame element is composited over the exact approved smoke video. Added flame is confined to the lower edges, gently animated and flickering. No smoke is added or altered. Flame prompt: photoreal practical orange-amber flame tongues along the extreme bottom and right edge on pure black, no smoke/fog/embers/text/objects; high-end cinematic VFX element. Built-in image generation.

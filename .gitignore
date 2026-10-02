@@ -1,0 +1,14 @@
+**/.venv/
+**/.local/
+**/data/
+**/backups/
+**/uploads/
+**/work/
+**/__pycache__/
+*.pyc
+.DS_Store
+.env
+.env.*
+!.env.example
+**/node_modules/
+**/.openai/

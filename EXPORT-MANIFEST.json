@@ -1,0 +1,660 @@
+{
+  "files": [
+    {
+      "path": "app/registration.py",
+      "bytes": 14773,
+      "sha256": "ccdffe7991fd7e9734c1ec0806c5a6a7c4beb28924567e21904354f1887b348e"
+    },
+    {
+      "path": "app/address_lookup.py",
+      "bytes": 4728,
+      "sha256": "2f8b43c59d663cdbbdf3aac81a035f08696068c54a80317256d2ee02f84c000c"
+    },
+    {
+      "path": "app/server.py",
+      "bytes": 24158,
+      "sha256": "9e6b4af42268f150bec70278f7fb7d6be7c4bda8c37928bcb73d0c77aea5a4ec"
+    },
+    {
+      "path": "app/requirements.txt",
+      "bytes": 58,
+      "sha256": "8d5b56d6fa3831a4332ab7e50afb5ffbaba5a562d16e30838e6a26afcfeedddf"
+    },
+    {
+      "path": "app/owner_setup.py",
+      "bytes": 1821,
+      "sha256": "1c3e8864029baa73f4753bc3ce2504ec25e947edee5a14971f6e116b1a96e3a2"
+    },
+    {
+      "path": "app/demographics.py",
+      "bytes": 8396,
+      "sha256": "05d42358abb0599c9821d63c3bd4616d761e12d41440bd6088c7a410e17e0328"
+    },
+    {
+      "path": "app/database.py",
+      "bytes": 22455,
+      "sha256": "4b3644a652de5ce59fac133b95f0f2258e3a895c36d46aa632f5257d430bee2a"
+    },
+    {
+      "path": "app/access.py",
+      "bytes": 10130,
+      "sha256": "53585acd413370cfe37f97e228b6f46c3ad0e96f4c4ebb1c882070bcd323dc4a"
+    },
+    {
+      "path": "app/bootstrap_owner.py",
+      "bytes": 919,
+      "sha256": "afd27cfe98b91b9d61bf3bbe5c1f197b92514d4785001f01de4f6a4f2c65e384"
+    },
+    {
+      "path": "app/promo-code-setup-notes.txt",
+      "bytes": 1308,
+      "sha256": "40ed1b4dbb67ec8321f77efedf18648b9b828d9cfacec47fa528dd7fbf30f411"
+    },
+    {
+      "path": "app/README.md",
+      "bytes": 6202,
+      "sha256": "851f8089c7f83c0c0eadee72435d7e3e66e6ea422956dd3be5560e05b65238bf"
+    },
+    {
+      "path": "app/.gitignore",
+      "bytes": 59,
+      "sha256": "480b6882057a204f3019939028291c709c312a533b801608242973cc5f3d7d41"
+    },
+    {
+      "path": "app/assets.py",
+      "bytes": 1807,
+      "sha256": "a86fce035f98c0c233c85ea803ade1e4556c0b047d304621308f2e721f636551"
+    },
+    {
+      "path": "app/welcome.py",
+      "bytes": 3635,
+      "sha256": "d98819f2b48e749b52f554c3ff531b754009b1871dac263a78d9db433d6e0c25"
+    },
+    {
+      "path": "app/membership.py",
+      "bytes": 12569,
+      "sha256": "a010d95284d5f55b7b4c7255e7b470f6a937cdfb2e1f7dff5373a15d71f06a10"
+    },
+    {
+      "path": "app/migrate_sqlite.py",
+      "bytes": 2465,
+      "sha256": "46236fea45e12250b7b386a190fd85c5af84da74d2a1008ef38e8c970fe40b40"
+    },
+    {
+      "path": "app/setup_postgres.py",
+      "bytes": 3152,
+      "sha256": "712e289c4603db8202e86399fd99be8f8bd2153c6899a9091b4a43eb603e2c0a"
+    },
+    {
+      "path": "app/google_addresses.py",
+      "bytes": 3522,
+      "sha256": "f5001a012e3bc251a9e0164c2318cc3d007036b1919d193163907d824a4990c6"
+    },
+    {
+      "path": "app/access_http.py",
+      "bytes": 4914,
+      "sha256": "e05601a84c28a67a04e7d74828cd9b4325eb8c5a3a5b3ab6cecc94e63a0c8886"
+    },
+    {
+      "path": "app/static/welcome-heading.js",
+      "bytes": 666,
+      "sha256": "d73954b561a76ac32fa63d712c41c6e606c3fdff8976bac6d7d3ca7643802b78"
+    },
+    {
+      "path": "app/static/regfire-logo-3d-transparent.png",
+      "bytes": 1151048,
+      "sha256": "c1a4ddb991c5727278d4cdf2080dc85df3d0221826b0a3be3fc3a9e408fa5b3f"
+    },
+    {
+      "path": "app/static/welcome-fonts.json",
+      "bytes": 7858,
+      "sha256": "8c6df632c403c98e9975e50a3ed957f89f9f6ce6e9f61af9421b057943a20ac4"
+    },
+    {
+      "path": "app/static/demographics.js",
+      "bytes": 19399,
+      "sha256": "3dad7f45d5a561b1e4820203876fc996d70ef2f1cb1034b012063a2c772922d5"
+    },
+    {
+      "path": "app/static/preview.html",
+      "bytes": 3980,
+      "sha256": "314cbd71d6afb406898dfcbb2c59c3ad916a8e220cff081231b1615706aa2f52"
+    },
+    {
+      "path": "app/static/live-preview.js",
+      "bytes": 16139,
+      "sha256": "84be6364319576ba6af0c93a03a78714943d9f1770f178c0708ef56f5c22b6b1"
+    },
+    {
+      "path": "app/static/autosave.js",
+      "bytes": 1072,
+      "sha256": "21c07ad30bbe4c973f784ce03667608d49368b2de98d6b28f3db6b58cf173c42"
+    },
+    {
+      "path": "app/static/regfire-logo.png",
+      "bytes": 1151048,
+      "sha256": "c1a4ddb991c5727278d4cdf2080dc85df3d0221826b0a3be3fc3a9e408fa5b3f"
+    },
+    {
+      "path": "app/static/index.html",
+      "bytes": 27677,
+      "sha256": "59790360f8d2930aa47e03a599865847cd9384ec1d629c8c23a1f03b27d9d5d0"
+    },
+    {
+      "path": "app/static/admin.html",
+      "bytes": 3083,
+      "sha256": "dbbac6a8cbd103653afe9c459967042295aa60946040b0a070102fbedc230b77"
+    },
+    {
+      "path": "app/static/welcome-site.js",
+      "bytes": 2218,
+      "sha256": "133c99b4783379b09e039cd79694ddd0abe572dfdc463e284378045371896438"
+    },
+    {
+      "path": "app/static/products.html",
+      "bytes": 787,
+      "sha256": "1aa0a3ea9d2f80c6e3acde33eab6bcf2ae70c5157a886fe63494f9a82ad90b33"
+    },
+    {
+      "path": "app/static/access.css",
+      "bytes": 2865,
+      "sha256": "2e56fb435cb4139e7c065d2d59351efafe33e651df61e91821bc6c8d5b9c32fb"
+    },
+    {
+      "path": "app/static/address.js",
+      "bytes": 4207,
+      "sha256": "7a65fc1fae875f533143ba914295bda06df9a022c5b9902afb326581f2704ec0"
+    },
+    {
+      "path": "app/static/auth-client.js",
+      "bytes": 1407,
+      "sha256": "72950e61dae95bcb3e3a51704f56feaf3c8eea93d9ccd6ee5bbfe1211385c0d3"
+    },
+    {
+      "path": "app/static/login.html",
+      "bytes": 2253,
+      "sha256": "3412e7a53a0fbd3ae3262325a7df11eb85f76bada8fa0f7cde56d47a77f36f82"
+    },
+    {
+      "path": "app/static/welcome.js",
+      "bytes": 10905,
+      "sha256": "446e0243217e18e0d308bd0308f8ba013ad742f9a47410174f5305f721b8e151"
+    },
+    {
+      "path": "app/static/welcome-fonts.js",
+      "bytes": 6572,
+      "sha256": "ef20161c349449e2b9d2310a8ba1f8e7a6e8b9a910cc40f6cc730dccea5b8116"
+    },
+    {
+      "path": "app/static/live-editor.js",
+      "bytes": 4607,
+      "sha256": "6bf8641c419496c8a022cc4bd236b54ffc5f8d4d694ddef80e50afb5ce8e2be8"
+    },
+    {
+      "path": "app/static/access-ui.js",
+      "bytes": 6653,
+      "sha256": "d0799773bd117053e4d75072a21e1a41a23ea5192ca84656ba20d8525baab3de"
+    },
+    {
+      "path": "app/static/welcome-common.js",
+      "bytes": 2021,
+      "sha256": "dc4896bebb43248c178bbd85bea0b8176ae113f2d6bf0bdd5442ebd451f62ba6"
+    },
+    {
+      "path": "app/static/style.css",
+      "bytes": 38656,
+      "sha256": "8495c56236508950435f1e90f27f623dfa5d4dcd266bfb51079f1d927e4b42c9"
+    },
+    {
+      "path": "app/static/welcome.html",
+      "bytes": 1252,
+      "sha256": "518bea1be65c1751d5d6103cc817bd06cf02108811ccc84ce5edbf350f651d78"
+    },
+    {
+      "path": "app/static/membership.js",
+      "bytes": 9085,
+      "sha256": "23e4222a87111de93905500ae35d57ea5a32304cd8f9e91fd94e43c5dc902ae0"
+    },
+    {
+      "path": "app/static/registrant-login.html",
+      "bytes": 725,
+      "sha256": "3de90857ebff4cef7a1cb89948c79f998d69cada0ad1f6e874fed483f0b6e214"
+    },
+    {
+      "path": "app/static/builder.js",
+      "bytes": 32627,
+      "sha256": "e0dc341f9ad844fb829ab8bdfe10379aea13c8bd3a3576ec61cf54b77b8da43f"
+    },
+    {
+      "path": "app/static/flows.js",
+      "bytes": 5326,
+      "sha256": "4a1f741547c7ed06d1bd5f7e548599c899f51eabcadb62b0038976468cdbc345"
+    },
+    {
+      "path": "app/static/app.js",
+      "bytes": 19277,
+      "sha256": "d20887b52d91250c4a56ebd442bab79dd9a7f23858b610767fca8922022a5d52"
+    },
+    {
+      "path": "app/static/registrant-login.js",
+      "bytes": 758,
+      "sha256": "db0db3717664ad806399b8548d4a1f40bcf528724fb5e7f95c8dfa0ee4be4ec8"
+    },
+    {
+      "path": "app/static/footer.js",
+      "bytes": 5552,
+      "sha256": "5820f0428b1c4541a3606d4be1ff57001332f446f67ae431a4727865fa3d1882"
+    },
+    {
+      "path": "app/static/email.js",
+      "bytes": 3550,
+      "sha256": "2df3dbc883a407739f034b7a6f9ea6578d4943007a36851607456b96e2fa6f7b"
+    },
+    {
+      "path": "app/assets/regfire-dark-background.png",
+      "bytes": 1494500,
+      "sha256": "5865e860bd39d8730bb039636b1bcf217af0fc25e2068e9fe4d3e64076f4918a"
+    },
+    {
+      "path": "app/assets/regfire-ember-background.png",
+      "bytes": 1740360,
+      "sha256": "648a1b9ff7555c126b3ced5936dade56c41a1a5781be9393f4210b5509a2d0aa"
+    },
+    {
+      "path": "app/docs/ACCESS_ADMIN.md",
+      "bytes": 5887,
+      "sha256": "ac1c022004c3f1e24d7c55a1e558cf5573574c5d951f34aab51c9df67a0c98b7"
+    },
+    {
+      "path": "app/docs/REGISTRATION_BUILDER.md",
+      "bytes": 9809,
+      "sha256": "e529b1be8c31f202f8fb1ef3df90b29ea5059544870fb69b9b5a298ac1809001"
+    },
+    {
+      "path": "app/docs/ARCHITECTURE.md",
+      "bytes": 10439,
+      "sha256": "149454c18e406cf836fe8f9465c855936157f23068049a54f7fb5d57a8e56add"
+    },
+    {
+      "path": "app/docs/OPERATIONS.md",
+      "bytes": 11920,
+      "sha256": "e466acbb7daf6422f55ac122ed02e49133394f0a8ff392e7115d6f2bd940923a"
+    },
+    {
+      "path": "app/docs/API.md",
+      "bytes": 12569,
+      "sha256": "d037b749ca76c1e835ddc1ae026662110a6462a144eb3ed9e6da4ef8d8433a56"
+    },
+    {
+      "path": "app/docs/MEMBERSHIP.md",
+      "bytes": 4455,
+      "sha256": "0a15cafa2ac0b184b5c69665d933be596f078217bd77898f731c41d8a3fc24b5"
+    },
+    {
+      "path": "app/docs/TESTING.md",
+      "bytes": 12599,
+      "sha256": "09e4a71f7858318a08e5f72196b4caaf291ab75e293effa3838028f226517f62"
+    },
+    {
+      "path": "app/docs/ADDRESS_LOOKUP.md",
+      "bytes": 5101,
+      "sha256": "f0a1567ea05bafaa37028ee50a48bd677e1478e34f0e47e1a638cd8f880f5008"
+    },
+    {
+      "path": "app/docs/DEMOGRAPHICS.md",
+      "bytes": 2362,
+      "sha256": "374ed99ee3eec8e2368ed378a672857e2a3ce2808c8c66dc3c090d09b63fb1f1"
+    },
+    {
+      "path": "app/docs/LIVE_PREVIEW.md",
+      "bytes": 4021,
+      "sha256": "12974a86c383694471e375d60257b6468742adde3227abe4e30ba50eb753d686"
+    },
+    {
+      "path": "app/docs/DATABASE.md",
+      "bytes": 12176,
+      "sha256": "54306305c073e58ac0f87ade879f4fadb52c069b08852b937d590e3a3a34ac10"
+    },
+    {
+      "path": "app/migrations/008_welcome.sql",
+      "bytes": 193,
+      "sha256": "b155f1e1472c1a1e5a1f272f0eb6cde1c2868a35ba56ebe57f1236873af06919"
+    },
+    {
+      "path": "app/migrations/001_registration_pages.sql",
+      "bytes": 332,
+      "sha256": "0a93370c708e356184061aa28ad1eda2ec68bdc8876ab3138b1ef48d7379f631"
+    },
+    {
+      "path": "app/migrations/005_access.sql",
+      "bytes": 1705,
+      "sha256": "1344f64930c5517b063e3c41bb7f1aa107b9701e403e4ca452e8a85fd5eca2db"
+    },
+    {
+      "path": "app/migrations/004_membership.sql",
+      "bytes": 402,
+      "sha256": "2b2a450737ae91992462d08cc066feff7f6ea3f2bc3a0ac6e5fa1a379993c87b"
+    },
+    {
+      "path": "app/migrations/011_nexus_name.sql",
+      "bytes": 117,
+      "sha256": "c2bf2acc92053ac341a591679b5f83617a51e2a05fa1821a761049ab20c9546e"
+    },
+    {
+      "path": "app/migrations/010_welcome_buttons.sql",
+      "bytes": 759,
+      "sha256": "f8446fe81e2f2998aad5e5346c205a1f3a681e1670e4ca0561af3b69e41477fa"
+    },
+    {
+      "path": "app/migrations/009_flows.sql",
+      "bytes": 590,
+      "sha256": "24c92e7cc8273fb0836ff36f8086d779656ab5229e9c89549a59cf3d64a53cd1"
+    },
+    {
+      "path": "app/migrations/002_registration_assets.sql",
+      "bytes": 499,
+      "sha256": "bee6623b55d6dc2ac9d835a27f4adf23b138ade24397861e9b817398cf9d22da"
+    },
+    {
+      "path": "app/migrations/003_demographics.sql",
+      "bytes": 198,
+      "sha256": "e78877651724a0c9cba78457cb95641acb45737caa3d6ff5cc6b5dbaf7738272"
+    },
+    {
+      "path": "app/tests/test_assets.py",
+      "bytes": 1268,
+      "sha256": "c15370c7f151c7dd18adcef935aaa7709a7a820a658aeada69b90819699ba7e1"
+    },
+    {
+      "path": "app/tests/test_google_addresses.py",
+      "bytes": 1563,
+      "sha256": "e47257f68938c27b1472e1a4ad2d731b348311f7534cb2857dc5ad8a6c446f6d"
+    },
+    {
+      "path": "app/tests/test_flows.py",
+      "bytes": 3963,
+      "sha256": "1e1cc720139e618ebb02a007945bb2705b782b688f857f2dd342cae443a65569"
+    },
+    {
+      "path": "app/tests/test_membership.py",
+      "bytes": 6167,
+      "sha256": "7a4c0c79d91aa93d4623a8b62d6eb2c0766bb29b23fa08d715e0d1dc3a7622c8"
+    },
+    {
+      "path": "app/tests/test_promo_allotment.py",
+      "bytes": 760,
+      "sha256": "5433c35b21f5e0096a49dc11c50d24547297c8ca0bd771380306ea431acc2733"
+    },
+    {
+      "path": "app/tests/test_rates.py",
+      "bytes": 4342,
+      "sha256": "211c3b2ee70f2de2cfb8ec45aea05ff6ad12668de1904874760d4c5c8370b6ab"
+    },
+    {
+      "path": "app/tests/test_demographics.py",
+      "bytes": 4264,
+      "sha256": "448bd3aaadd7f3f111ca55d42848128c4223236dc9527fde7450b961e2d0ca53"
+    },
+    {
+      "path": "app/tests/test_address_lookup.py",
+      "bytes": 2499,
+      "sha256": "0218862e6de174ba0c07852fee6154adf59dda29ddfd8fa802d906f292e66d24"
+    },
+    {
+      "path": "app/tests/test_events.py",
+      "bytes": 24889,
+      "sha256": "535b8cea74518adf4417b7ce8ed4c678bdd91daaa5ab185ae1affc4066295a22"
+    },
+    {
+      "path": "app/tests/test_access.py",
+      "bytes": 7553,
+      "sha256": "5cc26dace53acccc1a6ef60b517bf7054ae2fcd35084111f56b1e0bd4a33474c"
+    },
+    {
+      "path": "app/tests/test_welcome.py",
+      "bytes": 8598,
+      "sha256": "2a4c2d4a8d56e199f58ab4b574a147391481e0a38ff94bdb3ce274266ba53243"
+    },
+    {
+      "path": "app/examples/members-synthetic.csv",
+      "bytes": 172,
+      "sha256": "60b2e4bad0ed4b14179bd4bfb60f336d35a4ac0048fb61944637747091db9473"
+    },
+    {
+      "path": "corporate-site/.gitignore",
+      "bytes": 16,
+      "sha256": "8edff2f93c9fde1649d20483cb6f86e7a8a355c330f0140ea92d5e1e8f01dec0"
+    },
+    {
+      "path": "corporate-site/assets/teaser/atmosphere-notes.txt",
+      "bytes": 1435,
+      "sha256": "017465bf88b3010543a9c6ec14a954ad5d0fadc3654923d317e428914d0d6dd4"
+    },
+    {
+      "path": "corporate-site/assets/teaser/atmosphere.png",
+      "bytes": 1236091,
+      "sha256": "a9c0167b89ee2b57e99deef2d86291ae2a99c5c075d5bd0706a0054bb97dae0b"
+    },
+    {
+      "path": "corporate-site/assets/teaser/flame-overlay.png",
+      "bytes": 677240,
+      "sha256": "599794adbce228a66ebb053feffd5b28b79ca28aec2a19b26e0842443854d10f"
+    },
+    {
+      "path": "corporate-site/assets/teaser/regfire-3d-clean.png",
+      "bytes": 1051548,
+      "sha256": "7db26a8cf248ca37e81d43069409c280ede02bc96424526697b007803c8592a0"
+    },
+    {
+      "path": "corporate-site/assets/teaser/user-music.wav",
+      "bytes": 816418,
+      "sha256": "0bd88bd1afafe195f94f36eb41444db64bf63e161f1b0d0ded6a143c64488b0c"
+    },
+    {
+      "path": "corporate-site/assets/teaser/user-voiceover.mp3",
+      "bytes": 324381,
+      "sha256": "529609d4dc99571efdfc7fa6c858234dfbde82f12305707ae77e00be69da9138"
+    },
+    {
+      "path": "corporate-site/dist/index.html",
+      "bytes": 7004,
+      "sha256": "5e3505527a2d62de6157cb543ecd559ea6796bbe5454c025542c418e4abaa581"
+    },
+    {
+      "path": "corporate-site/dist/regfire-atmosphere-animated-poster.jpg",
+      "bytes": 233557,
+      "sha256": "4c38ba27bb2735974fe7bcde622b79eeb37382eb2ce331b8ab1d392939d3e7ad"
+    },
+    {
+      "path": "corporate-site/dist/regfire-atmosphere-animated.mp4",
+      "bytes": 5756229,
+      "sha256": "94c3e07a0e73ddca4a2f2affbcdd818f9a8ec20e47673ae619564be0c7574541"
+    },
+    {
+      "path": "corporate-site/dist/regfire-atmosphere-final.mp4",
+      "bytes": 9388037,
+      "sha256": "dfa6eef25dd263dec6fc95028f25dad7111ce30d3b416bd816d2a4705161a8b2"
+    },
+    {
+      "path": "corporate-site/dist/regfire-atmosphere-poster.jpg",
+      "bytes": 215072,
+      "sha256": "2cd2dac7e445c6c06f59726a2b15b1fee9bff94776fb2c8244950d1503b78c52"
+    },
+    {
+      "path": "corporate-site/dist/regfire-atmosphere-silent.mp4",
+      "bytes": 2895231,
+      "sha256": "4e7befeb31ac4e1d6605e51875b5541ce8b366c5c3bd0e68c666e82f60c13faf"
+    },
+    {
+      "path": "corporate-site/dist/regfire-atmosphere-wide-poster.jpg",
+      "bytes": 52385,
+      "sha256": "eef9e359307544765f3d8782f85a40c096d5c3dd86db09e0d57ee09b5237a311"
+    },
+    {
+      "path": "corporate-site/dist/regfire-atmosphere-wide.mp4",
+      "bytes": 7080080,
+      "sha256": "ebe1a0ce35a812c17d239cf66038fab0f9f503d29b7eea846f794126bdce2a79"
+    },
+    {
+      "path": "corporate-site/dist/regfire-cinematic-flame-final.mp4",
+      "bytes": 12146562,
+      "sha256": "9316c715d3d5e5c85bb17498d0fe1d40933274e8e2a8056f3ec2fb196d7ce6d1"
+    },
+    {
+      "path": "corporate-site/dist/regfire-cinematic-flame-poster.jpg",
+      "bytes": 260838,
+      "sha256": "18a5e31fcdf80a30c2edc88fb735221b1af47e3915b7bcd02a9fc158c08a898c"
+    },
+    {
+      "path": "corporate-site/dist/regfire-cinematic-poster.jpg",
+      "bytes": 115931,
+      "sha256": "6dd119f53ad00ac8a56a2cb71a0ea5160c4075ffd52794f0e36cd6c8fb37c7df"
+    },
+    {
+      "path": "corporate-site/dist/regfire-cinematic-v2-poster.jpg",
+      "bytes": 114235,
+      "sha256": "682d350993c13d67d7d5b7ebd1b5b372d5e2b9ff9be89999fcdf972971a34b0f"
+    },
+    {
+      "path": "corporate-site/dist/regfire-cinematic-v2.mp4",
+      "bytes": 3922068,
+      "sha256": "057d22bd18ada39c9c500d040e268bc20c4ff27a3ba2aa3a2fecc44abc7d3701"
+    },
+    {
+      "path": "corporate-site/dist/regfire-cinematic-v3-poster.jpg",
+      "bytes": 110579,
+      "sha256": "009cb019054249b1cdf66f3ff1a8924e63d5f5ba21c5cd8e36c8cc861d784275"
+    },
+    {
+      "path": "corporate-site/dist/regfire-cinematic-v3.mp4",
+      "bytes": 3929834,
+      "sha256": "46aceac5933887d33f1346549539a25823f51e4195603cc0fbf903c23582b34a"
+    },
+    {
+      "path": "corporate-site/dist/regfire-cinematic.mp4",
+      "bytes": 3312768,
+      "sha256": "228c803c83fb791b2337adf057fb31ac0128953986497ac77c9597e769196913"
+    },
+    {
+      "path": "corporate-site/dist/regfire-coming-soon.mp4",
+      "bytes": 814226,
+      "sha256": "f5b6d5112c6c50d0bc5501f87720d1b00e4c2d513d55d7a94005024b8cc05210"
+    },
+    {
+      "path": "corporate-site/dist/regfire-fire-poster.jpg",
+      "bytes": 113063,
+      "sha256": "47fa894cc693a7c35d2f41d9851f3c8d2ca2c0912b4bf3bb74a7c22d89140507"
+    },
+    {
+      "path": "corporate-site/dist/regfire-fire-silent.mp4",
+      "bytes": 10138878,
+      "sha256": "aa4daa9e4f4dcdfca7eef6f31bffbebd43417d70dfddcd90f336b598957a108c"
+    },
+    {
+      "path": "corporate-site/dist/regfire-fire-teaser.mp4",
+      "bytes": 7037338,
+      "sha256": "4a6f74fff2ca75881c64b08469fd6b49a5b64eb6d34fe2cfa589d53335246517"
+    },
+    {
+      "path": "corporate-site/dist/regfire-heat-v2-poster.jpg",
+      "bytes": 116205,
+      "sha256": "1dbd41e57ec60527dedf5383de61f710525220fa3f5b704544eb6842b1599462"
+    },
+    {
+      "path": "corporate-site/dist/regfire-launch-poster.jpg",
+      "bytes": 111596,
+      "sha256": "d012d20096022a33dec366d10f7eb4cdcca4b797e8abb19bc694e89c0255d330"
+    },
+    {
+      "path": "corporate-site/dist/regfire-launch.mp4",
+      "bytes": 6237362,
+      "sha256": "f38532e43c5910a502994c5828d15ecbc4fb9b072d9bd29123414ca394d04ef1"
+    },
+    {
+      "path": "corporate-site/dist/regfire-logo-3d-transparent.png",
+      "bytes": 1151048,
+      "sha256": "c1a4ddb991c5727278d4cdf2080dc85df3d0221826b0a3be3fc3a9e408fa5b3f"
+    },
+    {
+      "path": "corporate-site/dist/regfire-logo-dark.png",
+      "bytes": 681551,
+      "sha256": "24b6e3d5189d4d8c12d3cb2c56b57351a72b69b622bd34a0a0625c4d86be035d"
+    },
+    {
+      "path": "corporate-site/dist/regfire-logo.png",
+      "bytes": 829724,
+      "sha256": "6836649b3ef926a94a3eb366e2cabc33bb0a83e09f7e0a90086a1cda097adda4"
+    },
+    {
+      "path": "corporate-site/dist/regfire-suspense-poster.jpg",
+      "bytes": 106709,
+      "sha256": "2b389e75a7e8dfac75d9ce7f9bc77ce09b10845145efd02259d01b8f3afba6ae"
+    },
+    {
+      "path": "corporate-site/dist/regfire-suspense.mp4",
+      "bytes": 5924679,
+      "sha256": "44f2a3119e3729c761de59d727726924bcbc88b9fff61b384bb9d04c6a512e67"
+    },
+    {
+      "path": "corporate-site/dist/regfire-teaser-music-louder.mp4",
+      "bytes": 13110413,
+      "sha256": "d3f25d0ecec45d68fd71873bed54c75a3a562c9b9562008df2ef2a0b186e8cf6"
+    },
+    {
+      "path": "corporate-site/dist/regfire-teaser-poster.jpg",
+      "bytes": 84162,
+      "sha256": "38d41b5864bfddff9ef2a19bdd0cd0787821a1fdcb93fd57411125e699cf1008"
+    },
+    {
+      "path": "corporate-site/dist/regfire-teaser-user-voiceover.mp4",
+      "bytes": 12663874,
+      "sha256": "79626bbe5bb20cf4c5b44ab943f87a18c4f519a99794e89c83a7810cf69f969f"
+    },
+    {
+      "path": "corporate-site/dist/regfire-teaser-voice-and-music.mp4",
+      "bytes": 13113394,
+      "sha256": "8fe319a6b853090f86615522923d845fbebe876f443594cf3446ea3d39871a69"
+    },
+    {
+      "path": "corporate-site/dist/script.js",
+      "bytes": 951,
+      "sha256": "74f27185692daeb2467a0ffd683ddf4def1fe2e0b9daea6e1d0a75c9f47afefd"
+    },
+    {
+      "path": "corporate-site/dist/spark.png",
+      "bytes": 1783766,
+      "sha256": "0b3005fc8458375f4fee8cfaee6084a125c57b4430bcd2956d67a86aee0e17fd"
+    },
+    {
+      "path": "corporate-site/dist/style.css",
+      "bytes": 13273,
+      "sha256": "827fdfd342282d7f4c855190bacd6828e5fc5f06578d674332655f910741a4e4"
+    },
+    {
+      "path": "corporate-site/scripts/add-flame-finish.py",
+      "bytes": 2353,
+      "sha256": "ade723861cb6be88056ec33924e5b3bcfcf8a2916e1f6377b296722a6edb7d85"
+    },
+    {
+      "path": "corporate-site/scripts/add-user-voiceover.py",
+      "bytes": 1665,
+      "sha256": "acea4ad2ff346f4e46c653441d54b186abfa88dd03de787c245e209a08a9497d"
+    },
+    {
+      "path": "corporate-site/scripts/mix-user-music.py",
+      "bytes": 2228,
+      "sha256": "2fb5bc1c97f641b5b7951356ea04d2395049b724346b26029f900b5e60557ab9"
+    },
+    {
+      "path": "corporate-site/scripts/render-atmosphere.py",
+      "bytes": 4771,
+      "sha256": "60195083550f8005b1c1ea89e774b6cc1dbd921c830e2edbba26518ae409a681"
+    }
+  ],
+  "excluded": [
+    "Private .local configuration and credentials",
+    "Runtime data, uploads and database backups",
+    "Virtual environments, caches and temporary work",
+    "Corporate .openai hosting binding and local Git history"
+  ]
+}

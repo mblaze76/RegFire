@@ -1,0 +1,10 @@
+(()=>{
+const fonts={default:['App default','Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif'],arial:['Arial','Arial,Helvetica,sans-serif'],georgia:['Georgia','Georgia,serif'],trebuchet:['Trebuchet MS','"Trebuchet MS",sans-serif'],verdana:['Verdana','Verdana,sans-serif']};
+Object.assign(fonts,window.WelcomeGoogleFonts||{});
+const loadedFonts=new Set();
+function loadFont(id){if(!id?.startsWith("google-")||!fonts[id]||loadedFonts.has(id))return;const link=document.createElement("link");link.rel="stylesheet";link.href="https://fonts.googleapis.com/css2?family="+encodeURIComponent(fonts[id][0])+"&display=swap";document.head.append(link);loadedFonts.add(id);}
+function body(node,page){loadFont(page.about_font);node.textContent=page.about;node.style.color=/^#[0-9a-f]{6}$/i.test(page.about_color||'')?page.about_color:'#24242a';node.style.fontFamily=(fonts[page.about_font]||fonts.default)[1];}
+function buttons(node,page,flows,newTab=false){node.replaceChildren();for(const button of page.buttons||[]){const flow=flows.find(f=>f.id===button.flow_id);if(!flow)continue;const link=document.createElement('a');link.className='primary';link.textContent=button.label;link.href='/preview#event='+encodeURIComponent(flow.id)+'&view=welcome';if(newTab){link.target='_blank';link.rel='noopener';}node.append(link);}}
+function background(node,page,eventID){const id=page.background_asset_id,valid=/^[a-f0-9-]{36}$/.test(id||'');node.classList.toggle('welcome-has-artwork',valid);node.style.setProperty('--welcome-background',valid?'url("/api/events/'+eventID+'/assets/'+id+'")':'none');node.style.setProperty('--welcome-opacity',String(1-Math.max(0,Math.min(100,Number(page.background_fade??80)))/100));const hex=/^#[0-9a-f]{6}$/i.test(page.about_color||'')?page.about_color:'#24242a';const rgb=[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16));node.style.setProperty('--welcome-text-scrim',rgb[0]*.299+rgb[1]*.587+rgb[2]*.114>150?'#171719c9':'#ffffffc9');}
+window.WelcomeDisplay={fonts,body,buttons,background};
+})();

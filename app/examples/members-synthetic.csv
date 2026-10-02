@@ -1,0 +1,4 @@
+member_id,email,active,expires
+DEMO-ACTIVE,active@example.test,true,2099-12-31
+DEMO-INACTIVE,inactive@example.test,false,
+DEMO-EXPIRED,expired@example.test,true,2000-01-01
