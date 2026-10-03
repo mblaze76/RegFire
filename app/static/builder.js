@@ -227,6 +227,7 @@
     select.value=current;$('page-intro-font-count').textContent=query?count+' matching fonts. Current selection is retained.':'100 popular Google Fonts plus 5 original choices.';
   }
   $('page-intro-font-search').oninput=introFonts;
+  window.WelcomeDisplay.searchResults($('page-intro-font-search'),$('page-intro-font'));
   $('page-intro-font').onchange=()=>{if(!page)return;page.appearance.intro_font=$('page-intro-font').value;dirty();updateAppearance();};
   function updateAppearance(){
     if(page){introFonts();const font=page.appearance.intro_font||'default';window.WelcomeDisplay.loadFont(font);$('preview-intro').style.fontFamily=(window.WelcomeDisplay.fonts[font]||window.WelcomeDisplay.fonts.default)[1];}

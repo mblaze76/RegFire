@@ -153,3 +153,5 @@ body.welcome-site.welcome-vivid-artwork #welcome-error{color:#fff}
 #welcome-preview.welcome-has-artwork [data-welcome-heading],#welcome-preview.welcome-has-artwork #welcome-preview-event-name,#welcome-preview.welcome-has-artwork .welcome-return a{text-shadow:none}
 #welcome-preview.welcome-vivid-artwork [data-welcome-heading],#welcome-preview.welcome-vivid-artwork #welcome-preview-event-name,#welcome-preview.welcome-vivid-artwork .welcome-return a{color:#fff}
 #welcome-preview.welcome-has-artwork #welcome-preview-about{background:transparent;padding:0;border-radius:0;text-shadow:none}
+
+.font-search-results{display:flex;flex-wrap:wrap;gap:8px;max-height:220px;overflow:auto;padding:12px;margin:-10px 0 18px;border:1px solid #c8cbd0;border-radius:8px;background:#fff}.font-search-results[hidden]{display:none}.font-search-results button{background:#f5f1e9;color:#24242a;padding:9px 12px;border:1px solid #b8bbc1}.font-search-results button[aria-pressed="true"]{background:#8f341d;color:white}.font-search-results button:focus-visible{outline:3px solid #eb7828;outline-offset:2px}.font-search-results p{color:#555;margin:0}
