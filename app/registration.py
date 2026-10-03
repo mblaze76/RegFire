@@ -129,6 +129,11 @@ def validate_page(data, zone_name='UTC'):
         if not isinstance(value,str) or not re.fullmatch(r'#[0-9a-fA-F]{6}',value): raise ValueError('Choose a valid title or introduction color.')
         normalized[key]=value
 
+    from welcome import FONT_IDS
+    font=appearance.get('intro_font','default')
+    if not isinstance(font,str) or font not in FONT_IDS: raise ValueError('Choose a supported introduction font.')
+    normalized['intro_font']=font
+
     footer=appearance.get('footer',{})
     if not isinstance(footer,dict): raise ValueError('Footer must be an object.')
     enabled=footer.get('enabled',False)

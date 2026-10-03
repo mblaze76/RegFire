@@ -220,7 +220,17 @@
     });
   }
   function assetURL(id){return '/api/events/'+event.id+'/assets/'+id;}
+  function introFonts(){
+    const select=$('page-intro-font'),current=page?.appearance?.intro_font||'default',query=$('page-intro-font-search').value.trim().toLowerCase();
+    select.replaceChildren();let count=0;
+    for(const [id,[label]] of Object.entries(window.WelcomeDisplay.fonts)){const match=label.toLowerCase().includes(query);if(match||id===current){select.add(new Option(label,id));if(match)count++;}}
+    select.value=current;$('page-intro-font-count').textContent=query?count+' matching fonts. Current selection is retained.':'100 popular Google Fonts plus 5 original choices.';
+  }
+  $('page-intro-font-search').oninput=introFonts;
+  $('page-intro-font').onchange=()=>{if(!page)return;page.appearance.intro_font=$('page-intro-font').value;dirty();updateAppearance();};
   function updateAppearance(){
+    if(page){introFonts();const font=page.appearance.intro_font||'default';window.WelcomeDisplay.loadFont(font);$('preview-intro').style.fontFamily=(window.WelcomeDisplay.fonts[font]||window.WelcomeDisplay.fonts.default)[1];}
+
     if(!page)return;for(const [key,id,target,fallback] of [["title_color","page-title-color","preview-title","#24242a"],["intro_color","page-intro-color","preview-intro","#555c68"]]){const color=page.appearance[key]||fallback;$(id).value=color;$(target).style.color=color;}
     const footer=page.appearance.footer||{};$("footer-enabled").checked=!!footer.enabled;for(const key of ['heading', 'message', 'email', 'phone', 'links', 'facebook','instagram','linkedin','youtube','x'])$("footer-"+key).value=footer[key]||"";window.RegistrationFooter.render($("preview-footer"),footer);
     if(!page)return;

@@ -299,8 +299,19 @@ def main():
     parser = argparse.ArgumentParser(); parser.add_argument('--port', type=int, default=8765); args = parser.parse_args()
     try:
         store = Store(); store.initialize()
-    except (RuntimeError, psycopg.Error):
-        raise SystemExit('PostgreSQL is not configured or unavailable. Run .venv/bin/python setup_postgres.py in Terminal, then retry. Existing data is unchanged.')
+    except RuntimeError as exc:
+        raise SystemExit('RegFire configuration: '+str(exc)+' Existing data is unchanged.')
+    except psycopg.Error as exc:
+        detail=str(exc).lower()
+        if 'operation not permitted' in detail or 'permission denied' in detail:
+            reason='The launch environment blocked database access. Allow local network access for this session, or launch with start-regfire.command in Terminal.'
+        elif 'connection refused' in detail:
+            reason='PostgreSQL is not accepting connections at the configured address. Check the existing PostgreSQL service, then retry.'
+        elif 'password authentication failed' in detail:
+            reason='PostgreSQL rejected the configured credentials. Check the private local connection settings.'
+        else:
+            reason='The configured PostgreSQL connection failed. Check service availability and private local connection settings.'
+        raise SystemExit(reason+' No database setup or data reset was performed.')
     server = ThreadingHTTPServer(('127.0.0.1', args.port), Handler); server.store = store
     from access import Access
     import owner_setup

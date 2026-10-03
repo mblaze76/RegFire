@@ -134,3 +134,11 @@ body.welcome-site.welcome-has-artwork>.live-card{background:#ffffff40;backdrop-f
 /* Transparent application branding and welcome preview controls. */
 header .brand{background:transparent}
 #welcome-open-site{color:#ffd16a;display:block;margin:8px 0 16px;overflow-wrap:anywhere}
+
+/* Match the standalone attendee surface without a boxed welcome panel. */
+body.welcome-site>.live-card{width:calc(100% - 48px);max-width:1050px!important;margin:24px auto!important;padding:40px 32px;background:transparent;border:0;box-shadow:none;border-radius:0}
+body.welcome-site.welcome-has-artwork>.live-card{background:transparent;backdrop-filter:none}
+body.welcome-site.welcome-has-artwork [data-welcome-heading],body.welcome-site.welcome-has-artwork #event-name,body.welcome-site.welcome-has-artwork .welcome-return a{text-shadow:none}
+@media(max-width:650px){body.welcome-site>.live-card{width:100%;padding:24px 18px;margin:0 auto!important}}
+
+body.welcome-site.welcome-vivid-artwork [data-welcome-heading],body.welcome-site.welcome-vivid-artwork #event-name,body.welcome-site.welcome-vivid-artwork .welcome-return a{color:#fff}
