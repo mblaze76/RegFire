@@ -1,0 +1,11 @@
+(()=>{
+ const route=new URLSearchParams(location.hash.slice(1)),event=route.get('event'),editor=route.get('editor'),valid=x=>/^[a-f0-9-]{36}$/.test(x||''),status=document.getElementById('sessions-connection'),error=document.getElementById('sessions-site-error'),retry=document.getElementById('sessions-retry');
+ if(!valid(event)||editor&&!valid(editor)){error.textContent='Open Sessions from an existing RegFire event.';return;}
+ window.RegistrationFooter.connect(document.getElementById('sessions-shared-footer'),event);
+ document.getElementById('sessions-back').href='/preview#event='+event+'&view=registration';
+ const view=window.SessionBrowser.mount(document.getElementById('sessions-attendee'),{persistent:!editor});
+ async function load(){retry.hidden=true;try{const response=await fetch('/api/events/'+event+'/sessions'),page=await response.json();if(!response.ok)throw Error(page.error||'Could not load agenda.');view.update(page);status.textContent=page.event_name+' · Saved agenda';error.textContent='';}catch(e){error.textContent=e.message;retry.hidden=false;}}
+ retry.onclick=load;
+ if(editor){const channel=new BroadcastChannel('regfire-sessions:'+editor+':'+event);let seen=0,sequence=-1;channel.onmessage=e=>{const m=e.data;if(m?.kind!=='sessions'||m.editor!==editor||!Number.isSafeInteger(m.seq)||m.seq<=sequence||!Array.isArray(m.page?.sessions))return;sequence=m.seq;seen=Date.now();view.update(m.page);status.textContent='Live preview · unsaved organizer edits included';};const request=()=>{channel.postMessage({kind:'request'});if(Date.now()-seen>7000)status.textContent='Waiting for the organizer. Keep the Sessions setup page open.';};request();setInterval(request,2000);}else{load();document.addEventListener('visibilitychange',()=>{if(!document.hidden)load();});}
+ const fullscreen=document.getElementById('sessions-fullscreen');fullscreen.onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen();}catch{error.textContent='Full screen is unavailable. Maximize this browser window instead.';}};document.addEventListener('fullscreenchange',()=>fullscreen.textContent=document.fullscreenElement?'Exit full screen':'Full screen');
+})();

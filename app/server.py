@@ -66,6 +66,8 @@ class Handler(BaseHTTPRequestHandler):
         from access_http import handle
         if handle(self):return
         path = urlsplit(self.path).path
+        if path.endswith('/event-footer'): return self.footer_request(False)
+        if re.fullmatch(r'/api/events/[a-f0-9-]{36}/sessions',path): return self.sessions_request('get')
         if path=='/api/registrant-event':
             try:
                 event_id=str(uuid.UUID(parse_qs(urlsplit(self.path).query).get('event',[''])[0]))
@@ -119,11 +121,12 @@ class Handler(BaseHTTPRequestHandler):
             except ValueError:return self.respond(400,{'error':'Invalid event ID.'})
             except psycopg.Error:return self.respond(503,{'error':'Could not load demographics.'})
         if path == '/api/timezones': return self.respond(200, sorted(available_timezones()))
-        files = {'/welcome-fonts.js': ('welcome-fonts.js','text/javascript'), '/regfire-logo-3d-transparent.png': ('regfire-logo-3d-transparent.png','image/png'), '/login': ('login.html','text/html'), '/admin': ('admin.html','text/html'), '/products': ('products.html','text/html'), '/access.css': ('access.css','text/css'), '/access-ui.js': ('access-ui.js','text/javascript'), '/auth-client.js': ('auth-client.js','text/javascript'), '/': ('index.html', 'text/html'), '/autosave.js': ('autosave.js', 'text/javascript'), '/app.js': ('app.js', 'text/javascript'), '/welcome.js': ('welcome.js', 'text/javascript'), '/welcome-common.js': ('welcome-common.js','text/javascript'), '/welcome-heading.js': ('welcome-heading.js','text/javascript'), '/flows.js': ('flows.js','text/javascript'), '/welcome-site.js': ('welcome-site.js','text/javascript'), '/registrant-login': ('registrant-login.html','text/html'), '/registrant-login.js': ('registrant-login.js','text/javascript'), '/welcome': ('welcome.html','text/html'), '/builder.js': ('builder.js', 'text/javascript'), '/demographics.js': ('demographics.js', 'text/javascript'), '/membership.js': ('membership.js', 'text/javascript'), '/address.js': ('address.js', 'text/javascript'), '/footer.js': ('footer.js', 'text/javascript'), '/email.js': ('email.js', 'text/javascript'), '/live-editor.js': ('live-editor.js', 'text/javascript'), '/live-preview.js': ('live-preview.js', 'text/javascript'), '/preview': ('preview.html', 'text/html'), '/style.css': ('style.css', 'text/css'), '/regfire-logo.png': ('regfire-logo.png', 'image/png')}
+        files = {'/color-control.js': ('color-control.js','text/javascript'), '/event-footer.js': ('event-footer.js','text/javascript'), '/spark.svg': ('spark.svg','image/svg+xml'), '/spark.css': ('spark.css','text/css'), '/spark.js': ('spark.js','text/javascript'), '/sessions': ('sessions.html','text/html'), '/sessions.css': ('sessions.css','text/css'), '/sessions-common.js': ('sessions-common.js','text/javascript'), '/sessions-builder.js': ('sessions-builder.js','text/javascript'), '/sessions-site.js': ('sessions-site.js','text/javascript'), '/welcome-fonts.js': ('welcome-fonts.js','text/javascript'), '/regfire-logo-3d-transparent.png': ('regfire-logo-3d-transparent.png','image/png'), '/login': ('login.html','text/html'), '/admin': ('admin.html','text/html'), '/products': ('products.html','text/html'), '/access.css': ('access.css','text/css'), '/access-ui.js': ('access-ui.js','text/javascript'), '/auth-client.js': ('auth-client.js','text/javascript'), '/': ('index.html', 'text/html'), '/autosave.js': ('autosave.js', 'text/javascript'), '/app.js': ('app.js', 'text/javascript'), '/welcome.js': ('welcome.js', 'text/javascript'), '/welcome-common.js': ('welcome-common.js','text/javascript'), '/welcome-heading.js': ('welcome-heading.js','text/javascript'), '/flows.js': ('flows.js','text/javascript'), '/welcome-site.js': ('welcome-site.js','text/javascript'), '/registrant-login': ('registrant-login.html','text/html'), '/registrant-login.js': ('registrant-login.js','text/javascript'), '/welcome': ('welcome.html','text/html'), '/builder.js': ('builder.js', 'text/javascript'), '/demographics.js': ('demographics.js', 'text/javascript'), '/membership.js': ('membership.js', 'text/javascript'), '/address.js': ('address.js', 'text/javascript'), '/footer.js': ('footer.js', 'text/javascript'), '/email.js': ('email.js', 'text/javascript'), '/live-editor.js': ('live-editor.js', 'text/javascript'), '/live-preview.js': ('live-preview.js', 'text/javascript'), '/preview': ('preview.html', 'text/html'), '/style.css': ('style.css', 'text/css'), '/regfire-logo.png': ('regfire-logo.png', 'image/png')}
         if path not in files: return self.respond(404, {'error': 'Not found'})
         filename, content_type = files[path]; content = (ROOT / 'static' / filename).read_bytes()
         self.send_response(200); self.send_header('Content-Type', content_type + '; charset=utf-8'); self.send_header('Content-Length', str(len(content))); self.send_header('X-Content-Type-Options', 'nosniff'); self.send_header('Cache-Control','no-store'); self.send_header('Referrer-Policy','same-origin'); self.send_header('X-Frame-Options','SAMEORIGIN'); self.end_headers(); self.wfile.write(content)
     def do_POST(self):
+        if "/sessions/" in urlsplit(self.path).path: return self.sessions_request(urlsplit(self.path).path.rsplit("/",1)[-1])
         if urlsplit(self.path).path.endswith('/flows'):return self.flows_request(True)
         from access_http import handle
         if handle(self):return
@@ -161,6 +164,8 @@ class Handler(BaseHTTPRequestHandler):
         except (ValueError, UnicodeDecodeError) as exc: return self.respond(400,{'error':str(exc)})
         except psycopg.Error: return self.respond(503,{'error':'Could not evaluate pricing. Please retry.'})
     def do_PUT(self):
+        if urlsplit(self.path).path.endswith("/event-footer"): return self.footer_request(True)
+        if urlsplit(self.path).path.endswith("/sessions"): return self.sessions_request("save")
         if urlsplit(self.path).path.endswith('/welcome-page'):return self.welcome_request(True)
         if urlsplit(self.path).path.endswith('/membership'):return self.membership_request('save')
         if urlsplit(self.path).path.endswith('/demographics'):return self.demographics_request(False)
@@ -178,6 +183,38 @@ class Handler(BaseHTTPRequestHandler):
             return self.respond(200, saved) if saved else self.respond(404, {'error': 'Event not found.'})
         except (ValueError, UnicodeDecodeError) as exc: return self.respond(400, {'error': str(exc)})
         except psycopg.Error: return self.respond(503, {'error': 'Could not save the registration page. Your changes are still here; please retry.'})
+    def footer_request(self, save):
+        match=re.fullmatch(r'/api/events/([a-f0-9-]{36})/event-footer',urlsplit(self.path).path)
+        if not match:return self.respond(404,{'error':'Not found.'})
+        try:
+            data=None
+            if save:
+                length=int(self.headers.get('Content-Length',0))
+                if not 0<length<=20000:raise ValueError('Footer is missing or too large.')
+                data=json.loads(self.rfile.read(length))
+                if not isinstance(data,dict):raise ValueError('Send a footer object.')
+            from event_footer import operation
+            result=operation(self.server.store,str(uuid.UUID(match[1])),data)
+            return self.respond(200,result) if result is not None else self.respond(404,{'error':'Event not found.'})
+        except (ValueError,UnicodeDecodeError) as exc:return self.respond(400,{'error':str(exc)})
+        except psycopg.Error:return self.respond(503,{'error':'Could not access the shared footer. Keep your edits and retry.'})
+
+    def sessions_request(self, action):
+        suffix = '/'+action if action in ('import-preview','import') else ''
+        match = re.fullmatch(r'/api/events/([a-f0-9-]{36})/sessions'+suffix, urlsplit(self.path).path)
+        if not match or action not in ('get','save','import-preview','import'): return self.respond(404,{'error':'Not found.'})
+        try:
+            data=None
+            if action!='get':
+                length=int(self.headers.get('Content-Length',0))
+                if not 0<length<=3_000_000: raise ValueError('Sessions data is missing or too large.')
+                data=json.loads(self.rfile.read(length))
+            from sessions import operation
+            result=operation(self.server.store,str(uuid.UUID(match[1])),action,data)
+            return self.respond(200,result) if result is not None else self.respond(404,{'error':'Event not found.'})
+        except (ValueError,UnicodeDecodeError) as exc: return self.respond(400,{'error':str(exc)})
+        except psycopg.Error: return self.respond(503,{'error':'Sessions could not be loaded or saved. Keep your edits and retry.'})
+
     def flows_request(self, save):
         match=re.fullmatch(r'/api/events/([a-f0-9-]{36})/flows',urlsplit(self.path).path)
         if not match:return self.respond(404,{'error':'Not found.'})

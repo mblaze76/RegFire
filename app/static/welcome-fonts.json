@@ -1,402 +1,7802 @@
 {
-  "google-roboto": [
-    "Roboto",
-    "\"Roboto\",sans-serif"
-  ],
-  "google-open-sans": [
-    "Open Sans",
-    "\"Open Sans\",sans-serif"
-  ],
-  "google-google-sans": [
-    "Google Sans",
-    "\"Google Sans\",sans-serif"
-  ],
-  "google-inter": [
-    "Inter",
-    "\"Inter\",sans-serif"
-  ],
-  "google-montserrat": [
-    "Montserrat",
-    "\"Montserrat\",sans-serif"
-  ],
-  "google-poppins": [
-    "Poppins",
-    "\"Poppins\",sans-serif"
-  ],
-  "google-lato": [
-    "Lato",
-    "\"Lato\",sans-serif"
-  ],
-  "google-noto-sans-jp": [
-    "Noto Sans JP",
-    "\"Noto Sans JP\",sans-serif"
-  ],
-  "google-roboto-condensed": [
-    "Roboto Condensed",
-    "\"Roboto Condensed\",sans-serif"
-  ],
-  "google-roboto-mono": [
-    "Roboto Mono",
-    "\"Roboto Mono\",sans-serif"
-  ],
-  "google-arimo": [
-    "Arimo",
-    "\"Arimo\",sans-serif"
-  ],
-  "google-oswald": [
-    "Oswald",
-    "\"Oswald\",sans-serif"
-  ],
-  "google-noto-sans": [
-    "Noto Sans",
-    "\"Noto Sans\",sans-serif"
-  ],
-  "google-dm-sans": [
-    "DM Sans",
-    "\"DM Sans\",sans-serif"
-  ],
-  "google-raleway": [
-    "Raleway",
-    "\"Raleway\",sans-serif"
-  ],
-  "google-nunito": [
-    "Nunito",
-    "\"Nunito\",sans-serif"
-  ],
-  "google-playfair-display": [
-    "Playfair Display",
-    "\"Playfair Display\",serif"
-  ],
-  "google-nunito-sans": [
-    "Nunito Sans",
-    "\"Nunito Sans\",sans-serif"
-  ],
-  "google-roboto-slab": [
-    "Roboto Slab",
-    "\"Roboto Slab\",serif"
-  ],
-  "google-rubik": [
-    "Rubik",
-    "\"Rubik\",sans-serif"
-  ],
-  "google-manrope": [
-    "Manrope",
-    "\"Manrope\",sans-serif"
-  ],
-  "google-ubuntu": [
-    "Ubuntu",
-    "\"Ubuntu\",sans-serif"
-  ],
-  "google-kanit": [
-    "Kanit",
-    "\"Kanit\",sans-serif"
-  ],
-  "google-outfit": [
-    "Outfit",
-    "\"Outfit\",sans-serif"
-  ],
-  "google-merriweather": [
-    "Merriweather",
-    "\"Merriweather\",serif"
-  ],
-  "google-archivo-black": [
-    "Archivo Black",
-    "\"Archivo Black\",sans-serif"
-  ],
-  "google-noto-sans-kr": [
-    "Noto Sans KR",
-    "\"Noto Sans KR\",sans-serif"
-  ],
-  "google-work-sans": [
-    "Work Sans",
-    "\"Work Sans\",sans-serif"
-  ],
-  "google-lora": [
-    "Lora",
-    "\"Lora\",serif"
-  ],
-  "google-plus-jakarta-sans": [
-    "Plus Jakarta Sans",
-    "\"Plus Jakarta Sans\",sans-serif"
-  ],
-  "google-quicksand": [
-    "Quicksand",
-    "\"Quicksand\",sans-serif"
-  ],
-  "google-figtree": [
-    "Figtree",
-    "\"Figtree\",sans-serif"
-  ],
-  "google-pt-sans": [
-    "PT Sans",
-    "\"PT Sans\",sans-serif"
-  ],
-  "google-bebas-neue": [
-    "Bebas Neue",
-    "\"Bebas Neue\",sans-serif"
-  ],
-  "google-jetbrains-mono": [
-    "JetBrains Mono",
-    "\"JetBrains Mono\",sans-serif"
-  ],
-  "google-noto-sans-tc": [
-    "Noto Sans TC",
-    "\"Noto Sans TC\",sans-serif"
-  ],
-  "google-archivo": [
-    "Archivo",
-    "\"Archivo\",sans-serif"
-  ],
-  "google-mulish": [
-    "Mulish",
-    "\"Mulish\",sans-serif"
-  ],
-  "google-source-sans-3": [
-    "Source Sans 3",
-    "\"Source Sans 3\",sans-serif"
-  ],
-  "google-barlow": [
-    "Barlow",
-    "\"Barlow\",sans-serif"
-  ],
-  "google-bricolage-grotesque": [
-    "Bricolage Grotesque",
-    "\"Bricolage Grotesque\",sans-serif"
-  ],
-  "google-ibm-plex-sans": [
-    "IBM Plex Sans",
-    "\"IBM Plex Sans\",sans-serif"
-  ],
-  "google-prompt": [
-    "Prompt",
-    "\"Prompt\",sans-serif"
-  ],
-  "google-inconsolata": [
-    "Inconsolata",
-    "\"Inconsolata\",sans-serif"
-  ],
-  "google-jost": [
-    "Jost",
-    "\"Jost\",sans-serif"
-  ],
-  "google-karla": [
-    "Karla",
-    "\"Karla\",sans-serif"
-  ],
-  "google-saira": [
-    "Saira",
-    "\"Saira\",sans-serif"
-  ],
-  "google-space-grotesk": [
-    "Space Grotesk",
-    "\"Space Grotesk\",sans-serif"
-  ],
-  "google-black-ops-one": [
-    "Black Ops One",
-    "\"Black Ops One\",sans-serif"
-  ],
-  "google-fira-sans": [
-    "Fira Sans",
-    "\"Fira Sans\",sans-serif"
-  ],
-  "google-noto-serif": [
-    "Noto Serif",
-    "\"Noto Serif\",serif"
-  ],
-  "google-titillium-web": [
-    "Titillium Web",
-    "\"Titillium Web\",sans-serif"
-  ],
-  "google-heebo": [
-    "Heebo",
-    "\"Heebo\",sans-serif"
-  ],
-  "google-share-tech": [
-    "Share Tech",
-    "\"Share Tech\",sans-serif"
-  ],
-  "google-smooch-sans": [
-    "Smooch Sans",
-    "\"Smooch Sans\",sans-serif"
-  ],
-  "google-cormorant-garamond": [
-    "Cormorant Garamond",
-    "\"Cormorant Garamond\",serif"
-  ],
-  "google-libre-baskerville": [
-    "Libre Baskerville",
-    "\"Libre Baskerville\",serif"
-  ],
-  "google-pt-serif": [
-    "PT Serif",
-    "\"PT Serif\",serif"
-  ],
-  "google-inter-tight": [
-    "Inter Tight",
-    "\"Inter Tight\",sans-serif"
-  ],
-  "google-noto-color-emoji": [
-    "Noto Color Emoji",
-    "\"Noto Color Emoji\",sans-serif"
-  ],
-  "google-source-code-pro": [
-    "Source Code Pro",
-    "\"Source Code Pro\",sans-serif"
-  ],
-  "google-fjalla-one": [
-    "Fjalla One",
-    "\"Fjalla One\",sans-serif"
-  ],
-  "google-noto-sans-sc": [
-    "Noto Sans SC",
-    "\"Noto Sans SC\",sans-serif"
-  ],
-  "google-ibm-plex-mono": [
-    "IBM Plex Mono",
-    "\"IBM Plex Mono\",sans-serif"
-  ],
-  "google-instrument-serif": [
-    "Instrument Serif",
-    "\"Instrument Serif\",serif"
-  ],
-  "google-dancing-script": [
-    "Dancing Script",
-    "\"Dancing Script\",sans-serif"
-  ],
-  "google-barlow-condensed": [
-    "Barlow Condensed",
-    "\"Barlow Condensed\",sans-serif"
-  ],
-  "google-libre-franklin": [
-    "Libre Franklin",
-    "\"Libre Franklin\",sans-serif"
-  ],
-  "google-public-sans": [
-    "Public Sans",
-    "\"Public Sans\",sans-serif"
-  ],
-  "google-anton": [
-    "Anton",
-    "\"Anton\",sans-serif"
-  ],
-  "google-eb-garamond": [
-    "EB Garamond",
-    "\"EB Garamond\",serif"
-  ],
-  "google-google-sans-flex": [
-    "Google Sans Flex",
-    "\"Google Sans Flex\",sans-serif"
-  ],
-  "google-lobster-two": [
-    "Lobster Two",
-    "\"Lobster Two\",sans-serif"
-  ],
-  "google-sora": [
-    "Sora",
-    "\"Sora\",sans-serif"
-  ],
-  "google-josefin-sans": [
-    "Josefin Sans",
-    "\"Josefin Sans\",sans-serif"
-  ],
-  "google-noto-serif-jp": [
-    "Noto Serif JP",
-    "\"Noto Serif JP\",serif"
-  ],
-  "google-cairo": [
-    "Cairo",
-    "\"Cairo\",sans-serif"
-  ],
-  "google-fraunces": [
-    "Fraunces",
-    "\"Fraunces\",serif"
-  ],
-  "google-lexend": [
-    "Lexend",
-    "\"Lexend\",sans-serif"
-  ],
-  "google-bitter": [
-    "Bitter",
-    "\"Bitter\",serif"
-  ],
-  "google-mukta": [
-    "Mukta",
-    "\"Mukta\",sans-serif"
-  ],
-  "google-assistant": [
-    "Assistant",
-    "\"Assistant\",sans-serif"
-  ],
-  "google-schibsted-grotesk": [
-    "Schibsted Grotesk",
-    "\"Schibsted Grotesk\",sans-serif"
-  ],
-  "google-hind-siliguri": [
-    "Hind Siliguri",
-    "\"Hind Siliguri\",sans-serif"
-  ],
-  "google-cabin": [
-    "Cabin",
-    "\"Cabin\",sans-serif"
-  ],
-  "google-urbanist": [
-    "Urbanist",
-    "\"Urbanist\",sans-serif"
-  ],
-  "google-dm-serif-display": [
-    "DM Serif Display",
-    "\"DM Serif Display\",serif"
-  ],
-  "google-caveat": [
-    "Caveat",
-    "\"Caveat\",sans-serif"
-  ],
-  "google-geist": [
-    "Geist",
-    "\"Geist\",sans-serif"
+  "google-abeezee": [
+    "ABeeZee",
+    "\"ABeeZee\",sans-serif"
+  ],
+  "google-adlam-display": [
+    "ADLaM Display",
+    "\"ADLaM Display\",sans-serif"
+  ],
+  "google-ar-one-sans": [
+    "AR One Sans",
+    "\"AR One Sans\",sans-serif"
+  ],
+  "google-abel": [
+    "Abel",
+    "\"Abel\",sans-serif"
+  ],
+  "google-abhaya-libre": [
+    "Abhaya Libre",
+    "\"Abhaya Libre\",serif"
+  ],
+  "google-aboreto": [
+    "Aboreto",
+    "\"Aboreto\",sans-serif"
+  ],
+  "google-abril-fatface": [
+    "Abril Fatface",
+    "\"Abril Fatface\",sans-serif"
+  ],
+  "google-abyssinica-sil": [
+    "Abyssinica SIL",
+    "\"Abyssinica SIL\",serif"
+  ],
+  "google-aclonica": [
+    "Aclonica",
+    "\"Aclonica\",sans-serif"
+  ],
+  "google-acme": [
+    "Acme",
+    "\"Acme\",sans-serif"
+  ],
+  "google-actor": [
+    "Actor",
+    "\"Actor\",sans-serif"
+  ],
+  "google-adamina": [
+    "Adamina",
+    "\"Adamina\",serif"
+  ],
+  "google-advent-pro": [
+    "Advent Pro",
+    "\"Advent Pro\",sans-serif"
+  ],
+  "google-afacad": [
+    "Afacad",
+    "\"Afacad\",sans-serif"
+  ],
+  "google-afacad-flux": [
+    "Afacad Flux",
+    "\"Afacad Flux\",sans-serif"
+  ],
+  "google-agbalumo": [
+    "Agbalumo",
+    "\"Agbalumo\",sans-serif"
+  ],
+  "google-agdasima": [
+    "Agdasima",
+    "\"Agdasima\",sans-serif"
+  ],
+  "google-agu-display": [
+    "Agu Display",
+    "\"Agu Display\",sans-serif"
+  ],
+  "google-aguafina-script": [
+    "Aguafina Script",
+    "\"Aguafina Script\",cursive"
+  ],
+  "google-akatab": [
+    "Akatab",
+    "\"Akatab\",sans-serif"
+  ],
+  "google-akaya-kanadaka": [
+    "Akaya Kanadaka",
+    "\"Akaya Kanadaka\",sans-serif"
+  ],
+  "google-akaya-telivigala": [
+    "Akaya Telivigala",
+    "\"Akaya Telivigala\",sans-serif"
+  ],
+  "google-akronim": [
+    "Akronim",
+    "\"Akronim\",sans-serif"
+  ],
+  "google-akshar": [
+    "Akshar",
+    "\"Akshar\",sans-serif"
+  ],
+  "google-akt": [
+    "Akt",
+    "\"Akt\",sans-serif"
+  ],
+  "google-aladin": [
+    "Aladin",
+    "\"Aladin\",sans-serif"
+  ],
+  "google-alan-sans": [
+    "Alan Sans",
+    "\"Alan Sans\",sans-serif"
+  ],
+  "google-alata": [
+    "Alata",
+    "\"Alata\",sans-serif"
+  ],
+  "google-alatsi": [
+    "Alatsi",
+    "\"Alatsi\",sans-serif"
+  ],
+  "google-albert-sans": [
+    "Albert Sans",
+    "\"Albert Sans\",sans-serif"
+  ],
+  "google-aldrich": [
+    "Aldrich",
+    "\"Aldrich\",sans-serif"
+  ],
+  "google-alef": [
+    "Alef",
+    "\"Alef\",sans-serif"
+  ],
+  "google-alegreya": [
+    "Alegreya",
+    "\"Alegreya\",serif"
+  ],
+  "google-alegreya-sc": [
+    "Alegreya SC",
+    "\"Alegreya SC\",serif"
+  ],
+  "google-alegreya-sans": [
+    "Alegreya Sans",
+    "\"Alegreya Sans\",sans-serif"
+  ],
+  "google-alegreya-sans-sc": [
+    "Alegreya Sans SC",
+    "\"Alegreya Sans SC\",sans-serif"
+  ],
+  "google-aleo": [
+    "Aleo",
+    "\"Aleo\",serif"
+  ],
+  "google-alex-brush": [
+    "Alex Brush",
+    "\"Alex Brush\",cursive"
+  ],
+  "google-alexandria": [
+    "Alexandria",
+    "\"Alexandria\",sans-serif"
   ],
   "google-alfa-slab-one": [
     "Alfa Slab One",
     "\"Alfa Slab One\",sans-serif"
   ],
-  "google-nanum-gothic": [
-    "Nanum Gothic",
-    "\"Nanum Gothic\",sans-serif"
+  "google-alice": [
+    "Alice",
+    "\"Alice\",serif"
   ],
-  "google-roboto-flex": [
-    "Roboto Flex",
-    "\"Roboto Flex\",sans-serif"
+  "google-alien-block": [
+    "Alien Block",
+    "\"Alien Block\",sans-serif"
+  ],
+  "google-alike": [
+    "Alike",
+    "\"Alike\",serif"
+  ],
+  "google-alike-angular": [
+    "Alike Angular",
+    "\"Alike Angular\",serif"
+  ],
+  "google-alkalami": [
+    "Alkalami",
+    "\"Alkalami\",serif"
+  ],
+  "google-alkatra": [
+    "Alkatra",
+    "\"Alkatra\",sans-serif"
+  ],
+  "google-allan": [
+    "Allan",
+    "\"Allan\",sans-serif"
+  ],
+  "google-allerta": [
+    "Allerta",
+    "\"Allerta\",sans-serif"
+  ],
+  "google-allerta-stencil": [
+    "Allerta Stencil",
+    "\"Allerta Stencil\",sans-serif"
+  ],
+  "google-allison": [
+    "Allison",
+    "\"Allison\",cursive"
+  ],
+  "google-allkin": [
+    "Allkin",
+    "\"Allkin\",sans-serif"
+  ],
+  "google-allura": [
+    "Allura",
+    "\"Allura\",cursive"
+  ],
+  "google-almarai": [
+    "Almarai",
+    "\"Almarai\",sans-serif"
+  ],
+  "google-almendra": [
+    "Almendra",
+    "\"Almendra\",serif"
+  ],
+  "google-almendra-display": [
+    "Almendra Display",
+    "\"Almendra Display\",sans-serif"
+  ],
+  "google-almendra-sc": [
+    "Almendra SC",
+    "\"Almendra SC\",serif"
+  ],
+  "google-alumni-sans": [
+    "Alumni Sans",
+    "\"Alumni Sans\",sans-serif"
+  ],
+  "google-alumni-sans-collegiate-one": [
+    "Alumni Sans Collegiate One",
+    "\"Alumni Sans Collegiate One\",sans-serif"
+  ],
+  "google-alumni-sans-inline-one": [
+    "Alumni Sans Inline One",
+    "\"Alumni Sans Inline One\",sans-serif"
+  ],
+  "google-alumni-sans-pinstripe": [
+    "Alumni Sans Pinstripe",
+    "\"Alumni Sans Pinstripe\",sans-serif"
+  ],
+  "google-alumni-sans-sc": [
+    "Alumni Sans SC",
+    "\"Alumni Sans SC\",sans-serif"
+  ],
+  "google-alyamama": [
+    "Alyamama",
+    "\"Alyamama\",serif"
+  ],
+  "google-amarante": [
+    "Amarante",
+    "\"Amarante\",sans-serif"
+  ],
+  "google-amaranth": [
+    "Amaranth",
+    "\"Amaranth\",sans-serif"
+  ],
+  "google-amarna": [
+    "Amarna",
+    "\"Amarna\",sans-serif"
+  ],
+  "google-amatic-sc": [
+    "Amatic SC",
+    "\"Amatic SC\",cursive"
+  ],
+  "google-amethysta": [
+    "Amethysta",
+    "\"Amethysta\",serif"
+  ],
+  "google-amiko": [
+    "Amiko",
+    "\"Amiko\",sans-serif"
+  ],
+  "google-amiri": [
+    "Amiri",
+    "\"Amiri\",serif"
+  ],
+  "google-amiri-quran": [
+    "Amiri Quran",
+    "\"Amiri Quran\",serif"
+  ],
+  "google-amita": [
+    "Amita",
+    "\"Amita\",cursive"
+  ],
+  "google-anaheim": [
+    "Anaheim",
+    "\"Anaheim\",sans-serif"
+  ],
+  "google-ancizar-sans": [
+    "Ancizar Sans",
+    "\"Ancizar Sans\",sans-serif"
+  ],
+  "google-ancizar-serif": [
+    "Ancizar Serif",
+    "\"Ancizar Serif\",serif"
+  ],
+  "google-andada-pro": [
+    "Andada Pro",
+    "\"Andada Pro\",serif"
+  ],
+  "google-andika": [
+    "Andika",
+    "\"Andika\",sans-serif"
+  ],
+  "google-anek-bangla": [
+    "Anek Bangla",
+    "\"Anek Bangla\",sans-serif"
+  ],
+  "google-anek-devanagari": [
+    "Anek Devanagari",
+    "\"Anek Devanagari\",sans-serif"
+  ],
+  "google-anek-gujarati": [
+    "Anek Gujarati",
+    "\"Anek Gujarati\",sans-serif"
+  ],
+  "google-anek-gurmukhi": [
+    "Anek Gurmukhi",
+    "\"Anek Gurmukhi\",sans-serif"
+  ],
+  "google-anek-kannada": [
+    "Anek Kannada",
+    "\"Anek Kannada\",sans-serif"
+  ],
+  "google-anek-latin": [
+    "Anek Latin",
+    "\"Anek Latin\",sans-serif"
+  ],
+  "google-anek-malayalam": [
+    "Anek Malayalam",
+    "\"Anek Malayalam\",sans-serif"
+  ],
+  "google-anek-odia": [
+    "Anek Odia",
+    "\"Anek Odia\",sans-serif"
+  ],
+  "google-anek-tamil": [
+    "Anek Tamil",
+    "\"Anek Tamil\",sans-serif"
+  ],
+  "google-anek-telugu": [
+    "Anek Telugu",
+    "\"Anek Telugu\",sans-serif"
+  ],
+  "google-angkor": [
+    "Angkor",
+    "\"Angkor\",sans-serif"
+  ],
+  "google-annapurna-sil": [
+    "Annapurna SIL",
+    "\"Annapurna SIL\",serif"
+  ],
+  "google-annie-use-your-telescope": [
+    "Annie Use Your Telescope",
+    "\"Annie Use Your Telescope\",cursive"
+  ],
+  "google-anonymous-pro": [
+    "Anonymous Pro",
+    "\"Anonymous Pro\",monospace"
+  ],
+  "google-anta": [
+    "Anta",
+    "\"Anta\",sans-serif"
+  ],
+  "google-antic": [
+    "Antic",
+    "\"Antic\",sans-serif"
+  ],
+  "google-antic-didone": [
+    "Antic Didone",
+    "\"Antic Didone\",serif"
+  ],
+  "google-antic-slab": [
+    "Antic Slab",
+    "\"Antic Slab\",serif"
+  ],
+  "google-anton": [
+    "Anton",
+    "\"Anton\",sans-serif"
+  ],
+  "google-anton-sc": [
+    "Anton SC",
+    "\"Anton SC\",sans-serif"
+  ],
+  "google-antonio": [
+    "Antonio",
+    "\"Antonio\",sans-serif"
+  ],
+  "google-anuphan": [
+    "Anuphan",
+    "\"Anuphan\",sans-serif"
+  ],
+  "google-anybody": [
+    "Anybody",
+    "\"Anybody\",sans-serif"
+  ],
+  "google-aoboshi-one": [
+    "Aoboshi One",
+    "\"Aoboshi One\",serif"
+  ],
+  "google-arapey": [
+    "Arapey",
+    "\"Arapey\",serif"
+  ],
+  "google-arbutus": [
+    "Arbutus",
+    "\"Arbutus\",serif"
+  ],
+  "google-arbutus-slab": [
+    "Arbutus Slab",
+    "\"Arbutus Slab\",serif"
+  ],
+  "google-architects-daughter": [
+    "Architects Daughter",
+    "\"Architects Daughter\",cursive"
+  ],
+  "google-archivo": [
+    "Archivo",
+    "\"Archivo\",sans-serif"
+  ],
+  "google-archivo-black": [
+    "Archivo Black",
+    "\"Archivo Black\",sans-serif"
+  ],
+  "google-archivo-narrow": [
+    "Archivo Narrow",
+    "\"Archivo Narrow\",sans-serif"
+  ],
+  "google-are-you-serious": [
+    "Are You Serious",
+    "\"Are You Serious\",cursive"
+  ],
+  "google-aref-ruqaa": [
+    "Aref Ruqaa",
+    "\"Aref Ruqaa\",serif"
+  ],
+  "google-aref-ruqaa-ink": [
+    "Aref Ruqaa Ink",
+    "\"Aref Ruqaa Ink\",serif"
+  ],
+  "google-arima": [
+    "Arima",
+    "\"Arima\",sans-serif"
+  ],
+  "google-arimo": [
+    "Arimo",
+    "\"Arimo\",sans-serif"
+  ],
+  "google-arizonia": [
+    "Arizonia",
+    "\"Arizonia\",cursive"
+  ],
+  "google-armata": [
+    "Armata",
+    "\"Armata\",sans-serif"
+  ],
+  "google-arsenal": [
+    "Arsenal",
+    "\"Arsenal\",sans-serif"
+  ],
+  "google-arsenal-sc": [
+    "Arsenal SC",
+    "\"Arsenal SC\",sans-serif"
+  ],
+  "google-artifika": [
+    "Artifika",
+    "\"Artifika\",serif"
+  ],
+  "google-arvo": [
+    "Arvo",
+    "\"Arvo\",serif"
+  ],
+  "google-arya": [
+    "Arya",
+    "\"Arya\",sans-serif"
+  ],
+  "google-asap": [
+    "Asap",
+    "\"Asap\",sans-serif"
+  ],
+  "google-asap-condensed": [
+    "Asap Condensed",
+    "\"Asap Condensed\",sans-serif"
+  ],
+  "google-asap-sharp": [
+    "Asap Sharp",
+    "\"Asap Sharp\",sans-serif"
+  ],
+  "google-asar": [
+    "Asar",
+    "\"Asar\",serif"
+  ],
+  "google-asimovian": [
+    "Asimovian",
+    "\"Asimovian\",sans-serif"
+  ],
+  "google-asset": [
+    "Asset",
+    "\"Asset\",sans-serif"
+  ],
+  "google-assistant": [
+    "Assistant",
+    "\"Assistant\",sans-serif"
+  ],
+  "google-asta-sans": [
+    "Asta Sans",
+    "\"Asta Sans\",sans-serif"
+  ],
+  "google-astloch": [
+    "Astloch",
+    "\"Astloch\",sans-serif"
+  ],
+  "google-asul": [
+    "Asul",
+    "\"Asul\",serif"
+  ],
+  "google-athiti": [
+    "Athiti",
+    "\"Athiti\",sans-serif"
+  ],
+  "google-atkinson-hyperlegible": [
+    "Atkinson Hyperlegible",
+    "\"Atkinson Hyperlegible\",sans-serif"
+  ],
+  "google-atkinson-hyperlegible-mono": [
+    "Atkinson Hyperlegible Mono",
+    "\"Atkinson Hyperlegible Mono\",sans-serif"
+  ],
+  "google-atkinson-hyperlegible-next": [
+    "Atkinson Hyperlegible Next",
+    "\"Atkinson Hyperlegible Next\",sans-serif"
+  ],
+  "google-atma": [
+    "Atma",
+    "\"Atma\",sans-serif"
+  ],
+  "google-atomic-age": [
+    "Atomic Age",
+    "\"Atomic Age\",sans-serif"
+  ],
+  "google-aubrey": [
+    "Aubrey",
+    "\"Aubrey\",sans-serif"
+  ],
+  "google-audiowide": [
+    "Audiowide",
+    "\"Audiowide\",sans-serif"
+  ],
+  "google-autour-one": [
+    "Autour One",
+    "\"Autour One\",sans-serif"
+  ],
+  "google-average": [
+    "Average",
+    "\"Average\",serif"
+  ],
+  "google-average-sans": [
+    "Average Sans",
+    "\"Average Sans\",sans-serif"
+  ],
+  "google-averia-gruesa-libre": [
+    "Averia Gruesa Libre",
+    "\"Averia Gruesa Libre\",sans-serif"
+  ],
+  "google-averia-libre": [
+    "Averia Libre",
+    "\"Averia Libre\",sans-serif"
+  ],
+  "google-averia-sans-libre": [
+    "Averia Sans Libre",
+    "\"Averia Sans Libre\",sans-serif"
+  ],
+  "google-averia-serif-libre": [
+    "Averia Serif Libre",
+    "\"Averia Serif Libre\",sans-serif"
+  ],
+  "google-azeret-mono": [
+    "Azeret Mono",
+    "\"Azeret Mono\",monospace"
+  ],
+  "google-b612": [
+    "B612",
+    "\"B612\",sans-serif"
+  ],
+  "google-b612-mono": [
+    "B612 Mono",
+    "\"B612 Mono\",monospace"
+  ],
+  "google-bbh-bartle": [
+    "BBH Bartle",
+    "\"BBH Bartle\",sans-serif"
+  ],
+  "google-bbh-bogle": [
+    "BBH Bogle",
+    "\"BBH Bogle\",sans-serif"
+  ],
+  "google-bbh-hegarty": [
+    "BBH Hegarty",
+    "\"BBH Hegarty\",sans-serif"
+  ],
+  "google-biz-udgothic": [
+    "BIZ UDGothic",
+    "\"BIZ UDGothic\",sans-serif"
+  ],
+  "google-biz-udmincho": [
+    "BIZ UDMincho",
+    "\"BIZ UDMincho\",serif"
+  ],
+  "google-biz-udpgothic": [
+    "BIZ UDPGothic",
+    "\"BIZ UDPGothic\",sans-serif"
+  ],
+  "google-biz-udpmincho": [
+    "BIZ UDPMincho",
+    "\"BIZ UDPMincho\",serif"
+  ],
+  "google-bjcree": [
+    "BJCree",
+    "\"BJCree\",serif"
+  ],
+  "google-babylonica": [
+    "Babylonica",
+    "\"Babylonica\",cursive"
+  ],
+  "google-bacasime-antique": [
+    "Bacasime Antique",
+    "\"Bacasime Antique\",serif"
+  ],
+  "google-bad-script": [
+    "Bad Script",
+    "\"Bad Script\",cursive"
+  ],
+  "google-badeen-display": [
+    "Badeen Display",
+    "\"Badeen Display\",sans-serif"
+  ],
+  "google-bagel-fat-one": [
+    "Bagel Fat One",
+    "\"Bagel Fat One\",sans-serif"
+  ],
+  "google-bahiana": [
+    "Bahiana",
+    "\"Bahiana\",sans-serif"
+  ],
+  "google-bahianita": [
+    "Bahianita",
+    "\"Bahianita\",sans-serif"
+  ],
+  "google-bai-jamjuree": [
+    "Bai Jamjuree",
+    "\"Bai Jamjuree\",sans-serif"
+  ],
+  "google-bakbak-one": [
+    "Bakbak One",
+    "\"Bakbak One\",sans-serif"
+  ],
+  "google-ballet": [
+    "Ballet",
+    "\"Ballet\",cursive"
+  ],
+  "google-baloo-2": [
+    "Baloo 2",
+    "\"Baloo 2\",sans-serif"
+  ],
+  "google-baloo-bhai-2": [
+    "Baloo Bhai 2",
+    "\"Baloo Bhai 2\",sans-serif"
+  ],
+  "google-baloo-bhaijaan-2": [
+    "Baloo Bhaijaan 2",
+    "\"Baloo Bhaijaan 2\",sans-serif"
+  ],
+  "google-baloo-bhaina-2": [
+    "Baloo Bhaina 2",
+    "\"Baloo Bhaina 2\",sans-serif"
+  ],
+  "google-baloo-chettan-2": [
+    "Baloo Chettan 2",
+    "\"Baloo Chettan 2\",sans-serif"
+  ],
+  "google-baloo-da-2": [
+    "Baloo Da 2",
+    "\"Baloo Da 2\",sans-serif"
+  ],
+  "google-baloo-paaji-2": [
+    "Baloo Paaji 2",
+    "\"Baloo Paaji 2\",sans-serif"
+  ],
+  "google-baloo-tamma-2": [
+    "Baloo Tamma 2",
+    "\"Baloo Tamma 2\",sans-serif"
+  ],
+  "google-baloo-tammudu-2": [
+    "Baloo Tammudu 2",
+    "\"Baloo Tammudu 2\",sans-serif"
+  ],
+  "google-baloo-thambi-2": [
+    "Baloo Thambi 2",
+    "\"Baloo Thambi 2\",sans-serif"
+  ],
+  "google-balsamiq-sans": [
+    "Balsamiq Sans",
+    "\"Balsamiq Sans\",sans-serif"
+  ],
+  "google-balthazar": [
+    "Balthazar",
+    "\"Balthazar\",serif"
+  ],
+  "google-bangers": [
+    "Bangers",
+    "\"Bangers\",sans-serif"
+  ],
+  "google-barlow": [
+    "Barlow",
+    "\"Barlow\",sans-serif"
+  ],
+  "google-barlow-condensed": [
+    "Barlow Condensed",
+    "\"Barlow Condensed\",sans-serif"
+  ],
+  "google-barlow-semi-condensed": [
+    "Barlow Semi Condensed",
+    "\"Barlow Semi Condensed\",sans-serif"
+  ],
+  "google-barriecito": [
+    "Barriecito",
+    "\"Barriecito\",sans-serif"
+  ],
+  "google-barrio": [
+    "Barrio",
+    "\"Barrio\",sans-serif"
+  ],
+  "google-basic": [
+    "Basic",
+    "\"Basic\",sans-serif"
+  ],
+  "google-baskervville": [
+    "Baskervville",
+    "\"Baskervville\",serif"
+  ],
+  "google-baskervville-sc": [
+    "Baskervville SC",
+    "\"Baskervville SC\",serif"
+  ],
+  "google-battambang": [
+    "Battambang",
+    "\"Battambang\",sans-serif"
+  ],
+  "google-baumans": [
+    "Baumans",
+    "\"Baumans\",sans-serif"
+  ],
+  "google-bayon": [
+    "Bayon",
+    "\"Bayon\",sans-serif"
+  ],
+  "google-be-vietnam-pro": [
+    "Be Vietnam Pro",
+    "\"Be Vietnam Pro\",sans-serif"
+  ],
+  "google-beau-rivage": [
+    "Beau Rivage",
+    "\"Beau Rivage\",cursive"
+  ],
+  "google-bebas-neue": [
+    "Bebas Neue",
+    "\"Bebas Neue\",sans-serif"
+  ],
+  "google-beiruti": [
+    "Beiruti",
+    "\"Beiruti\",sans-serif"
+  ],
+  "google-belanosima": [
+    "Belanosima",
+    "\"Belanosima\",sans-serif"
+  ],
+  "google-belgrano": [
+    "Belgrano",
+    "\"Belgrano\",serif"
+  ],
+  "google-bellefair": [
+    "Bellefair",
+    "\"Bellefair\",serif"
+  ],
+  "google-belleza": [
+    "Belleza",
+    "\"Belleza\",sans-serif"
+  ],
+  "google-bellota": [
+    "Bellota",
+    "\"Bellota\",sans-serif"
+  ],
+  "google-bellota-text": [
+    "Bellota Text",
+    "\"Bellota Text\",sans-serif"
+  ],
+  "google-benchnine": [
+    "BenchNine",
+    "\"BenchNine\",sans-serif"
+  ],
+  "google-benne": [
+    "Benne",
+    "\"Benne\",serif"
+  ],
+  "google-bentham": [
+    "Bentham",
+    "\"Bentham\",serif"
+  ],
+  "google-berkshire-swash": [
+    "Berkshire Swash",
+    "\"Berkshire Swash\",cursive"
+  ],
+  "google-besley": [
+    "Besley",
+    "\"Besley\",serif"
+  ],
+  "google-betania-patmos": [
+    "Betania Patmos",
+    "\"Betania Patmos\",cursive"
+  ],
+  "google-betania-patmos-gdl": [
+    "Betania Patmos GDL",
+    "\"Betania Patmos GDL\",cursive"
+  ],
+  "google-betania-patmos-in": [
+    "Betania Patmos In",
+    "\"Betania Patmos In\",cursive"
+  ],
+  "google-betania-patmos-in-gdl": [
+    "Betania Patmos In GDL",
+    "\"Betania Patmos In GDL\",cursive"
+  ],
+  "google-beth-ellen": [
+    "Beth Ellen",
+    "\"Beth Ellen\",cursive"
+  ],
+  "google-bevan": [
+    "Bevan",
+    "\"Bevan\",serif"
+  ],
+  "google-bhutuka-expanded-one": [
+    "BhuTuka Expanded One",
+    "\"BhuTuka Expanded One\",serif"
+  ],
+  "google-big-shoulders": [
+    "Big Shoulders",
+    "\"Big Shoulders\",sans-serif"
+  ],
+  "google-big-shoulders-inline": [
+    "Big Shoulders Inline",
+    "\"Big Shoulders Inline\",sans-serif"
+  ],
+  "google-big-shoulders-stencil": [
+    "Big Shoulders Stencil",
+    "\"Big Shoulders Stencil\",sans-serif"
+  ],
+  "google-bigelow-rules": [
+    "Bigelow Rules",
+    "\"Bigelow Rules\",sans-serif"
+  ],
+  "google-bigshot-one": [
+    "Bigshot One",
+    "\"Bigshot One\",sans-serif"
+  ],
+  "google-bilbo": [
+    "Bilbo",
+    "\"Bilbo\",cursive"
+  ],
+  "google-bilbo-swash-caps": [
+    "Bilbo Swash Caps",
+    "\"Bilbo Swash Caps\",cursive"
+  ],
+  "google-biorhyme": [
+    "BioRhyme",
+    "\"BioRhyme\",serif"
+  ],
+  "google-biorhyme-expanded": [
+    "BioRhyme Expanded",
+    "\"BioRhyme Expanded\",serif"
+  ],
+  "google-birthstone": [
+    "Birthstone",
+    "\"Birthstone\",cursive"
+  ],
+  "google-birthstone-bounce": [
+    "Birthstone Bounce",
+    "\"Birthstone Bounce\",cursive"
+  ],
+  "google-biryani": [
+    "Biryani",
+    "\"Biryani\",sans-serif"
+  ],
+  "google-bitcount": [
+    "Bitcount",
+    "\"Bitcount\",sans-serif"
+  ],
+  "google-bitcount-grid-double": [
+    "Bitcount Grid Double",
+    "\"Bitcount Grid Double\",sans-serif"
+  ],
+  "google-bitcount-grid-double-ink": [
+    "Bitcount Grid Double Ink",
+    "\"Bitcount Grid Double Ink\",sans-serif"
+  ],
+  "google-bitcount-grid-single": [
+    "Bitcount Grid Single",
+    "\"Bitcount Grid Single\",sans-serif"
+  ],
+  "google-bitcount-grid-single-ink": [
+    "Bitcount Grid Single Ink",
+    "\"Bitcount Grid Single Ink\",sans-serif"
+  ],
+  "google-bitcount-ink": [
+    "Bitcount Ink",
+    "\"Bitcount Ink\",sans-serif"
+  ],
+  "google-bitcount-prop-double": [
+    "Bitcount Prop Double",
+    "\"Bitcount Prop Double\",sans-serif"
+  ],
+  "google-bitcount-prop-double-ink": [
+    "Bitcount Prop Double Ink",
+    "\"Bitcount Prop Double Ink\",sans-serif"
+  ],
+  "google-bitcount-prop-single": [
+    "Bitcount Prop Single",
+    "\"Bitcount Prop Single\",sans-serif"
+  ],
+  "google-bitcount-prop-single-ink": [
+    "Bitcount Prop Single Ink",
+    "\"Bitcount Prop Single Ink\",sans-serif"
+  ],
+  "google-bitcount-single": [
+    "Bitcount Single",
+    "\"Bitcount Single\",sans-serif"
+  ],
+  "google-bitcount-single-ink": [
+    "Bitcount Single Ink",
+    "\"Bitcount Single Ink\",sans-serif"
+  ],
+  "google-bitter": [
+    "Bitter",
+    "\"Bitter\",serif"
+  ],
+  "google-black-and-white-picture": [
+    "Black And White Picture",
+    "\"Black And White Picture\",sans-serif"
+  ],
+  "google-black-han-sans": [
+    "Black Han Sans",
+    "\"Black Han Sans\",sans-serif"
+  ],
+  "google-black-ops-one": [
+    "Black Ops One",
+    "\"Black Ops One\",sans-serif"
+  ],
+  "google-blaka": [
+    "Blaka",
+    "\"Blaka\",sans-serif"
+  ],
+  "google-blaka-hollow": [
+    "Blaka Hollow",
+    "\"Blaka Hollow\",sans-serif"
+  ],
+  "google-blaka-ink": [
+    "Blaka Ink",
+    "\"Blaka Ink\",sans-serif"
+  ],
+  "google-blinker": [
+    "Blinker",
+    "\"Blinker\",sans-serif"
+  ],
+  "google-bodoni-moda": [
+    "Bodoni Moda",
+    "\"Bodoni Moda\",serif"
+  ],
+  "google-bodoni-moda-sc": [
+    "Bodoni Moda SC",
+    "\"Bodoni Moda SC\",serif"
+  ],
+  "google-bokor": [
+    "Bokor",
+    "\"Bokor\",sans-serif"
+  ],
+  "google-boldonse": [
+    "Boldonse",
+    "\"Boldonse\",sans-serif"
+  ],
+  "google-bona-nova": [
+    "Bona Nova",
+    "\"Bona Nova\",serif"
+  ],
+  "google-bona-nova-sc": [
+    "Bona Nova SC",
+    "\"Bona Nova SC\",serif"
+  ],
+  "google-bonbon": [
+    "Bonbon",
+    "\"Bonbon\",cursive"
+  ],
+  "google-bonheur-royale": [
+    "Bonheur Royale",
+    "\"Bonheur Royale\",cursive"
+  ],
+  "google-boogaloo": [
+    "Boogaloo",
+    "\"Boogaloo\",sans-serif"
+  ],
+  "google-borel": [
+    "Borel",
+    "\"Borel\",cursive"
+  ],
+  "google-bowlby-one": [
+    "Bowlby One",
+    "\"Bowlby One\",sans-serif"
+  ],
+  "google-bowlby-one-sc": [
+    "Bowlby One SC",
+    "\"Bowlby One SC\",sans-serif"
+  ],
+  "google-bpmf-huninn": [
+    "Bpmf Huninn",
+    "\"Bpmf Huninn\",sans-serif"
+  ],
+  "google-bpmf-iansui": [
+    "Bpmf Iansui",
+    "\"Bpmf Iansui\",cursive"
+  ],
+  "google-bpmf-zihi-kai-std": [
+    "Bpmf Zihi Kai Std",
+    "\"Bpmf Zihi Kai Std\",sans-serif"
+  ],
+  "google-braah-one": [
+    "Braah One",
+    "\"Braah One\",sans-serif"
+  ],
+  "google-brawler": [
+    "Brawler",
+    "\"Brawler\",serif"
+  ],
+  "google-bree-serif": [
+    "Bree Serif",
+    "\"Bree Serif\",serif"
+  ],
+  "google-bricolage-grotesque": [
+    "Bricolage Grotesque",
+    "\"Bricolage Grotesque\",sans-serif"
+  ],
+  "google-bruno-ace": [
+    "Bruno Ace",
+    "\"Bruno Ace\",sans-serif"
+  ],
+  "google-bruno-ace-sc": [
+    "Bruno Ace SC",
+    "\"Bruno Ace SC\",sans-serif"
+  ],
+  "google-brygada-1918": [
+    "Brygada 1918",
+    "\"Brygada 1918\",serif"
+  ],
+  "google-bubblegum-sans": [
+    "Bubblegum Sans",
+    "\"Bubblegum Sans\",sans-serif"
+  ],
+  "google-bubbler-one": [
+    "Bubbler One",
+    "\"Bubbler One\",sans-serif"
+  ],
+  "google-buda": [
+    "Buda",
+    "\"Buda\",sans-serif"
+  ],
+  "google-buenard": [
+    "Buenard",
+    "\"Buenard\",serif"
+  ],
+  "google-bungee": [
+    "Bungee",
+    "\"Bungee\",sans-serif"
+  ],
+  "google-bungee-hairline": [
+    "Bungee Hairline",
+    "\"Bungee Hairline\",sans-serif"
+  ],
+  "google-bungee-inline": [
+    "Bungee Inline",
+    "\"Bungee Inline\",sans-serif"
+  ],
+  "google-bungee-outline": [
+    "Bungee Outline",
+    "\"Bungee Outline\",sans-serif"
+  ],
+  "google-bungee-shade": [
+    "Bungee Shade",
+    "\"Bungee Shade\",sans-serif"
+  ],
+  "google-bungee-spice": [
+    "Bungee Spice",
+    "\"Bungee Spice\",sans-serif"
+  ],
+  "google-bungee-tint": [
+    "Bungee Tint",
+    "\"Bungee Tint\",sans-serif"
+  ],
+  "google-butcherman": [
+    "Butcherman",
+    "\"Butcherman\",sans-serif"
+  ],
+  "google-butterfly-kids": [
+    "Butterfly Kids",
+    "\"Butterfly Kids\",cursive"
+  ],
+  "google-bytesized": [
+    "Bytesized",
+    "\"Bytesized\",sans-serif"
+  ],
+  "google-caacupe-one": [
+    "Caacupe One",
+    "\"Caacupe One\",sans-serif"
+  ],
+  "google-cabin": [
+    "Cabin",
+    "\"Cabin\",sans-serif"
+  ],
+  "google-cabin-condensed": [
+    "Cabin Condensed",
+    "\"Cabin Condensed\",sans-serif"
+  ],
+  "google-cabin-sketch": [
+    "Cabin Sketch",
+    "\"Cabin Sketch\",sans-serif"
+  ],
+  "google-cactus-classical-serif": [
+    "Cactus Classical Serif",
+    "\"Cactus Classical Serif\",serif"
+  ],
+  "google-caesar-dressing": [
+    "Caesar Dressing",
+    "\"Caesar Dressing\",sans-serif"
+  ],
+  "google-cagliostro": [
+    "Cagliostro",
+    "\"Cagliostro\",sans-serif"
+  ],
+  "google-cairo": [
+    "Cairo",
+    "\"Cairo\",sans-serif"
+  ],
+  "google-cairo-play": [
+    "Cairo Play",
+    "\"Cairo Play\",sans-serif"
+  ],
+  "google-cal-sans": [
+    "Cal Sans",
+    "\"Cal Sans\",sans-serif"
+  ],
+  "google-caladea": [
+    "Caladea",
+    "\"Caladea\",serif"
+  ],
+  "google-calistoga": [
+    "Calistoga",
+    "\"Calistoga\",sans-serif"
+  ],
+  "google-calligraffitti": [
+    "Calligraffitti",
+    "\"Calligraffitti\",cursive"
+  ],
+  "google-cambay": [
+    "Cambay",
+    "\"Cambay\",sans-serif"
+  ],
+  "google-cambo": [
+    "Cambo",
+    "\"Cambo\",serif"
+  ],
+  "google-candal": [
+    "Candal",
+    "\"Candal\",sans-serif"
+  ],
+  "google-cantarell": [
+    "Cantarell",
+    "\"Cantarell\",sans-serif"
+  ],
+  "google-cantata-one": [
+    "Cantata One",
+    "\"Cantata One\",serif"
+  ],
+  "google-cantora-one": [
+    "Cantora One",
+    "\"Cantora One\",sans-serif"
+  ],
+  "google-caprasimo": [
+    "Caprasimo",
+    "\"Caprasimo\",sans-serif"
+  ],
+  "google-capriola": [
+    "Capriola",
+    "\"Capriola\",sans-serif"
+  ],
+  "google-caramel": [
+    "Caramel",
+    "\"Caramel\",cursive"
+  ],
+  "google-carattere": [
+    "Carattere",
+    "\"Carattere\",cursive"
+  ],
+  "google-cardo": [
+    "Cardo",
+    "\"Cardo\",serif"
+  ],
+  "google-carlito": [
+    "Carlito",
+    "\"Carlito\",sans-serif"
+  ],
+  "google-carme": [
+    "Carme",
+    "\"Carme\",sans-serif"
+  ],
+  "google-carrois-gothic": [
+    "Carrois Gothic",
+    "\"Carrois Gothic\",sans-serif"
+  ],
+  "google-carrois-gothic-sc": [
+    "Carrois Gothic SC",
+    "\"Carrois Gothic SC\",sans-serif"
+  ],
+  "google-carter-one": [
+    "Carter One",
+    "\"Carter One\",sans-serif"
+  ],
+  "google-cascadia-code": [
+    "Cascadia Code",
+    "\"Cascadia Code\",sans-serif"
+  ],
+  "google-cascadia-mono": [
+    "Cascadia Mono",
+    "\"Cascadia Mono\",sans-serif"
+  ],
+  "google-castoro": [
+    "Castoro",
+    "\"Castoro\",serif"
+  ],
+  "google-castoro-titling": [
+    "Castoro Titling",
+    "\"Castoro Titling\",sans-serif"
+  ],
+  "google-catamaran": [
+    "Catamaran",
+    "\"Catamaran\",sans-serif"
+  ],
+  "google-caudex": [
+    "Caudex",
+    "\"Caudex\",serif"
+  ],
+  "google-cause": [
+    "Cause",
+    "\"Cause\",cursive"
+  ],
+  "google-caveat": [
+    "Caveat",
+    "\"Caveat\",cursive"
+  ],
+  "google-caveat-brush": [
+    "Caveat Brush",
+    "\"Caveat Brush\",cursive"
+  ],
+  "google-cedarville-cursive": [
+    "Cedarville Cursive",
+    "\"Cedarville Cursive\",cursive"
+  ],
+  "google-ceviche-one": [
+    "Ceviche One",
+    "\"Ceviche One\",sans-serif"
+  ],
+  "google-chakra-petch": [
+    "Chakra Petch",
+    "\"Chakra Petch\",sans-serif"
+  ],
+  "google-changa": [
+    "Changa",
+    "\"Changa\",sans-serif"
   ],
   "google-changa-one": [
     "Changa One",
     "\"Changa One\",sans-serif"
   ],
-  "google-oxygen": [
-    "Oxygen",
-    "\"Oxygen\",sans-serif"
+  "google-chango": [
+    "Chango",
+    "\"Chango\",sans-serif"
   ],
-  "google-red-hat-display": [
-    "Red Hat Display",
-    "\"Red Hat Display\",sans-serif"
+  "google-charis-sil": [
+    "Charis SIL",
+    "\"Charis SIL\",serif"
+  ],
+  "google-charm": [
+    "Charm",
+    "\"Charm\",cursive"
+  ],
+  "google-charmonman": [
+    "Charmonman",
+    "\"Charmonman\",cursive"
+  ],
+  "google-chathura": [
+    "Chathura",
+    "\"Chathura\",sans-serif"
+  ],
+  "google-chau-philomene-one": [
+    "Chau Philomene One",
+    "\"Chau Philomene One\",sans-serif"
+  ],
+  "google-chela-one": [
+    "Chela One",
+    "\"Chela One\",sans-serif"
+  ],
+  "google-chelsea-market": [
+    "Chelsea Market",
+    "\"Chelsea Market\",sans-serif"
+  ],
+  "google-chenla": [
+    "Chenla",
+    "\"Chenla\",sans-serif"
+  ],
+  "google-cherish": [
+    "Cherish",
+    "\"Cherish\",cursive"
+  ],
+  "google-cherry-bomb-one": [
+    "Cherry Bomb One",
+    "\"Cherry Bomb One\",sans-serif"
+  ],
+  "google-cherry-cream-soda": [
+    "Cherry Cream Soda",
+    "\"Cherry Cream Soda\",sans-serif"
+  ],
+  "google-cherry-swash": [
+    "Cherry Swash",
+    "\"Cherry Swash\",sans-serif"
+  ],
+  "google-chewy": [
+    "Chewy",
+    "\"Chewy\",sans-serif"
+  ],
+  "google-chicle": [
+    "Chicle",
+    "\"Chicle\",sans-serif"
+  ],
+  "google-chilanka": [
+    "Chilanka",
+    "\"Chilanka\",cursive"
+  ],
+  "google-chiron-goround-tc": [
+    "Chiron GoRound TC",
+    "\"Chiron GoRound TC\",sans-serif"
+  ],
+  "google-chiron-hei-hk": [
+    "Chiron Hei HK",
+    "\"Chiron Hei HK\",sans-serif"
+  ],
+  "google-chiron-sung-hk": [
+    "Chiron Sung HK",
+    "\"Chiron Sung HK\",serif"
+  ],
+  "google-chivo": [
+    "Chivo",
+    "\"Chivo\",sans-serif"
+  ],
+  "google-chivo-mono": [
+    "Chivo Mono",
+    "\"Chivo Mono\",monospace"
+  ],
+  "google-chocolate-classical-sans": [
+    "Chocolate Classical Sans",
+    "\"Chocolate Classical Sans\",sans-serif"
+  ],
+  "google-chokokutai": [
+    "Chokokutai",
+    "\"Chokokutai\",sans-serif"
+  ],
+  "google-chonburi": [
+    "Chonburi",
+    "\"Chonburi\",sans-serif"
+  ],
+  "google-cinzel": [
+    "Cinzel",
+    "\"Cinzel\",serif"
+  ],
+  "google-cinzel-decorative": [
+    "Cinzel Decorative",
+    "\"Cinzel Decorative\",sans-serif"
+  ],
+  "google-clarity-city": [
+    "Clarity City",
+    "\"Clarity City\",sans-serif"
+  ],
+  "google-clicker-script": [
+    "Clicker Script",
+    "\"Clicker Script\",cursive"
+  ],
+  "google-climate-crisis": [
+    "Climate Crisis",
+    "\"Climate Crisis\",sans-serif"
+  ],
+  "google-coda": [
+    "Coda",
+    "\"Coda\",sans-serif"
+  ],
+  "google-codystar": [
+    "Codystar",
+    "\"Codystar\",sans-serif"
+  ],
+  "google-coiny": [
+    "Coiny",
+    "\"Coiny\",sans-serif"
+  ],
+  "google-combo": [
+    "Combo",
+    "\"Combo\",sans-serif"
+  ],
+  "google-comfortaa": [
+    "Comfortaa",
+    "\"Comfortaa\",sans-serif"
+  ],
+  "google-comforter": [
+    "Comforter",
+    "\"Comforter\",cursive"
+  ],
+  "google-comforter-brush": [
+    "Comforter Brush",
+    "\"Comforter Brush\",cursive"
+  ],
+  "google-comic-neue": [
+    "Comic Neue",
+    "\"Comic Neue\",cursive"
+  ],
+  "google-comic-relief": [
+    "Comic Relief",
+    "\"Comic Relief\",sans-serif"
+  ],
+  "google-coming-soon": [
+    "Coming Soon",
+    "\"Coming Soon\",cursive"
+  ],
+  "google-comme": [
+    "Comme",
+    "\"Comme\",sans-serif"
+  ],
+  "google-commissioner": [
+    "Commissioner",
+    "\"Commissioner\",sans-serif"
+  ],
+  "google-concert-one": [
+    "Concert One",
+    "\"Concert One\",sans-serif"
+  ],
+  "google-condiment": [
+    "Condiment",
+    "\"Condiment\",cursive"
+  ],
+  "google-content": [
+    "Content",
+    "\"Content\",sans-serif"
+  ],
+  "google-contrail-one": [
+    "Contrail One",
+    "\"Contrail One\",sans-serif"
+  ],
+  "google-convergence": [
+    "Convergence",
+    "\"Convergence\",sans-serif"
+  ],
+  "google-cookie": [
+    "Cookie",
+    "\"Cookie\",cursive"
+  ],
+  "google-copse": [
+    "Copse",
+    "\"Copse\",serif"
+  ],
+  "google-coral-pixels": [
+    "Coral Pixels",
+    "\"Coral Pixels\",sans-serif"
+  ],
+  "google-corben": [
+    "Corben",
+    "\"Corben\",sans-serif"
+  ],
+  "google-corinthia": [
+    "Corinthia",
+    "\"Corinthia\",cursive"
+  ],
+  "google-cormorant": [
+    "Cormorant",
+    "\"Cormorant\",serif"
+  ],
+  "google-cormorant-garamond": [
+    "Cormorant Garamond",
+    "\"Cormorant Garamond\",serif"
+  ],
+  "google-cormorant-infant": [
+    "Cormorant Infant",
+    "\"Cormorant Infant\",serif"
+  ],
+  "google-cormorant-sc": [
+    "Cormorant SC",
+    "\"Cormorant SC\",serif"
+  ],
+  "google-cormorant-unicase": [
+    "Cormorant Unicase",
+    "\"Cormorant Unicase\",serif"
+  ],
+  "google-cormorant-upright": [
+    "Cormorant Upright",
+    "\"Cormorant Upright\",serif"
+  ],
+  "google-cossette-texte": [
+    "Cossette Texte",
+    "\"Cossette Texte\",sans-serif"
+  ],
+  "google-cossette-titre": [
+    "Cossette Titre",
+    "\"Cossette Titre\",sans-serif"
+  ],
+  "google-courgette": [
+    "Courgette",
+    "\"Courgette\",cursive"
+  ],
+  "google-courier-prime": [
+    "Courier Prime",
+    "\"Courier Prime\",monospace"
+  ],
+  "google-cousine": [
+    "Cousine",
+    "\"Cousine\",monospace"
+  ],
+  "google-coustard": [
+    "Coustard",
+    "\"Coustard\",serif"
+  ],
+  "google-covered-by-your-grace": [
+    "Covered By Your Grace",
+    "\"Covered By Your Grace\",cursive"
+  ],
+  "google-crafty-girls": [
+    "Crafty Girls",
+    "\"Crafty Girls\",cursive"
+  ],
+  "google-creepster": [
+    "Creepster",
+    "\"Creepster\",sans-serif"
+  ],
+  "google-crete-round": [
+    "Crete Round",
+    "\"Crete Round\",serif"
+  ],
+  "google-crimson-pro": [
+    "Crimson Pro",
+    "\"Crimson Pro\",serif"
+  ],
+  "google-crimson-text": [
+    "Crimson Text",
+    "\"Crimson Text\",serif"
+  ],
+  "google-croissant-one": [
+    "Croissant One",
+    "\"Croissant One\",sans-serif"
+  ],
+  "google-crushed": [
+    "Crushed",
+    "\"Crushed\",sans-serif"
+  ],
+  "google-cuprum": [
+    "Cuprum",
+    "\"Cuprum\",sans-serif"
+  ],
+  "google-cute-font": [
+    "Cute Font",
+    "\"Cute Font\",sans-serif"
+  ],
+  "google-cutive": [
+    "Cutive",
+    "\"Cutive\",serif"
+  ],
+  "google-cutive-mono": [
+    "Cutive Mono",
+    "\"Cutive Mono\",monospace"
+  ],
+  "google-dm-mono": [
+    "DM Mono",
+    "\"DM Mono\",monospace"
+  ],
+  "google-dm-sans": [
+    "DM Sans",
+    "\"DM Sans\",sans-serif"
+  ],
+  "google-dm-serif-display": [
+    "DM Serif Display",
+    "\"DM Serif Display\",serif"
+  ],
+  "google-dm-serif-text": [
+    "DM Serif Text",
+    "\"DM Serif Text\",serif"
+  ],
+  "google-dai-banna-sil": [
+    "Dai Banna SIL",
+    "\"Dai Banna SIL\",serif"
+  ],
+  "google-damion": [
+    "Damion",
+    "\"Damion\",cursive"
+  ],
+  "google-dancing-script": [
+    "Dancing Script",
+    "\"Dancing Script\",cursive"
+  ],
+  "google-danfo": [
+    "Danfo",
+    "\"Danfo\",serif"
+  ],
+  "google-dangrek": [
+    "Dangrek",
+    "\"Dangrek\",sans-serif"
+  ],
+  "google-darker-grotesque": [
+    "Darker Grotesque",
+    "\"Darker Grotesque\",sans-serif"
+  ],
+  "google-darumadrop-one": [
+    "Darumadrop One",
+    "\"Darumadrop One\",sans-serif"
+  ],
+  "google-datatype": [
+    "Datatype",
+    "\"Datatype\",monospace"
+  ],
+  "google-david-libre": [
+    "David Libre",
+    "\"David Libre\",serif"
+  ],
+  "google-dawning-of-a-new-day": [
+    "Dawning of a New Day",
+    "\"Dawning of a New Day\",cursive"
+  ],
+  "google-days-one": [
+    "Days One",
+    "\"Days One\",sans-serif"
+  ],
+  "google-dekko": [
+    "Dekko",
+    "\"Dekko\",cursive"
+  ],
+  "google-dela-gothic-one": [
+    "Dela Gothic One",
+    "\"Dela Gothic One\",sans-serif"
+  ],
+  "google-delicious-handrawn": [
+    "Delicious Handrawn",
+    "\"Delicious Handrawn\",cursive"
+  ],
+  "google-delius": [
+    "Delius",
+    "\"Delius\",cursive"
+  ],
+  "google-delius-swash-caps": [
+    "Delius Swash Caps",
+    "\"Delius Swash Caps\",cursive"
+  ],
+  "google-delius-unicase": [
+    "Delius Unicase",
+    "\"Delius Unicase\",cursive"
+  ],
+  "google-della-respira": [
+    "Della Respira",
+    "\"Della Respira\",serif"
+  ],
+  "google-denk-one": [
+    "Denk One",
+    "\"Denk One\",sans-serif"
+  ],
+  "google-devonshire": [
+    "Devonshire",
+    "\"Devonshire\",cursive"
+  ],
+  "google-dhurjati": [
+    "Dhurjati",
+    "\"Dhurjati\",sans-serif"
+  ],
+  "google-didact-gothic": [
+    "Didact Gothic",
+    "\"Didact Gothic\",sans-serif"
+  ],
+  "google-diphylleia": [
+    "Diphylleia",
+    "\"Diphylleia\",serif"
+  ],
+  "google-diplomata": [
+    "Diplomata",
+    "\"Diplomata\",sans-serif"
+  ],
+  "google-diplomata-sc": [
+    "Diplomata SC",
+    "\"Diplomata SC\",sans-serif"
+  ],
+  "google-do-hyeon": [
+    "Do Hyeon",
+    "\"Do Hyeon\",sans-serif"
+  ],
+  "google-dokdo": [
+    "Dokdo",
+    "\"Dokdo\",sans-serif"
+  ],
+  "google-domine": [
+    "Domine",
+    "\"Domine\",serif"
+  ],
+  "google-donegal-one": [
+    "Donegal One",
+    "\"Donegal One\",serif"
+  ],
+  "google-dongle": [
+    "Dongle",
+    "\"Dongle\",sans-serif"
+  ],
+  "google-doppio-one": [
+    "Doppio One",
+    "\"Doppio One\",sans-serif"
+  ],
+  "google-dorsa": [
+    "Dorsa",
+    "\"Dorsa\",sans-serif"
   ],
   "google-dosis": [
     "Dosis",
     "\"Dosis\",sans-serif"
   ],
-  "google-rajdhani": [
-    "Rajdhani",
-    "\"Rajdhani\",sans-serif"
+  "google-dotgothic16": [
+    "DotGothic16",
+    "\"DotGothic16\",sans-serif"
   ],
-  "google-overpass": [
-    "Overpass",
-    "\"Overpass\",sans-serif"
+  "google-doto": [
+    "Doto",
+    "\"Doto\",sans-serif"
+  ],
+  "google-dr-sugiyama": [
+    "Dr Sugiyama",
+    "\"Dr Sugiyama\",cursive"
+  ],
+  "google-duru-sans": [
+    "Duru Sans",
+    "\"Duru Sans\",sans-serif"
+  ],
+  "google-dynapuff": [
+    "DynaPuff",
+    "\"DynaPuff\",sans-serif"
+  ],
+  "google-dynalight": [
+    "Dynalight",
+    "\"Dynalight\",sans-serif"
+  ],
+  "google-eb-garamond": [
+    "EB Garamond",
+    "\"EB Garamond\",serif"
+  ],
+  "google-eagle-lake": [
+    "Eagle Lake",
+    "\"Eagle Lake\",cursive"
+  ],
+  "google-east-sea-dokdo": [
+    "East Sea Dokdo",
+    "\"East Sea Dokdo\",cursive"
+  ],
+  "google-eater": [
+    "Eater",
+    "\"Eater\",sans-serif"
+  ],
+  "google-economica": [
+    "Economica",
+    "\"Economica\",sans-serif"
+  ],
+  "google-eczar": [
+    "Eczar",
+    "\"Eczar\",serif"
+  ],
+  "google-edu-au-vic-wa-nt-arrows": [
+    "Edu AU VIC WA NT Arrows",
+    "\"Edu AU VIC WA NT Arrows\",cursive"
+  ],
+  "google-edu-au-vic-wa-nt-dots": [
+    "Edu AU VIC WA NT Dots",
+    "\"Edu AU VIC WA NT Dots\",cursive"
+  ],
+  "google-edu-au-vic-wa-nt-guides": [
+    "Edu AU VIC WA NT Guides",
+    "\"Edu AU VIC WA NT Guides\",cursive"
+  ],
+  "google-edu-au-vic-wa-nt-hand": [
+    "Edu AU VIC WA NT Hand",
+    "\"Edu AU VIC WA NT Hand\",cursive"
+  ],
+  "google-edu-au-vic-wa-nt-pre": [
+    "Edu AU VIC WA NT Pre",
+    "\"Edu AU VIC WA NT Pre\",cursive"
+  ],
+  "google-edu-nsw-act-cursive": [
+    "Edu NSW ACT Cursive",
+    "\"Edu NSW ACT Cursive\",cursive"
+  ],
+  "google-edu-nsw-act-foundation": [
+    "Edu NSW ACT Foundation",
+    "\"Edu NSW ACT Foundation\",cursive"
+  ],
+  "google-edu-nsw-act-hand-pre": [
+    "Edu NSW ACT Hand Pre",
+    "\"Edu NSW ACT Hand Pre\",cursive"
+  ],
+  "google-edu-qld-beginner": [
+    "Edu QLD Beginner",
+    "\"Edu QLD Beginner\",cursive"
+  ],
+  "google-edu-qld-hand": [
+    "Edu QLD Hand",
+    "\"Edu QLD Hand\",cursive"
+  ],
+  "google-edu-sa-beginner": [
+    "Edu SA Beginner",
+    "\"Edu SA Beginner\",cursive"
+  ],
+  "google-edu-sa-hand": [
+    "Edu SA Hand",
+    "\"Edu SA Hand\",cursive"
+  ],
+  "google-edu-tas-beginner": [
+    "Edu TAS Beginner",
+    "\"Edu TAS Beginner\",cursive"
+  ],
+  "google-edu-vic-wa-nt-beginner": [
+    "Edu VIC WA NT Beginner",
+    "\"Edu VIC WA NT Beginner\",cursive"
+  ],
+  "google-edu-vic-wa-nt-hand": [
+    "Edu VIC WA NT Hand",
+    "\"Edu VIC WA NT Hand\",cursive"
+  ],
+  "google-edu-vic-wa-nt-hand-pre": [
+    "Edu VIC WA NT Hand Pre",
+    "\"Edu VIC WA NT Hand Pre\",cursive"
+  ],
+  "google-el-messiri": [
+    "El Messiri",
+    "\"El Messiri\",sans-serif"
+  ],
+  "google-electrolize": [
+    "Electrolize",
+    "\"Electrolize\",sans-serif"
+  ],
+  "google-elms-sans": [
+    "Elms Sans",
+    "\"Elms Sans\",sans-serif"
+  ],
+  "google-elsie": [
+    "Elsie",
+    "\"Elsie\",sans-serif"
+  ],
+  "google-elsie-swash-caps": [
+    "Elsie Swash Caps",
+    "\"Elsie Swash Caps\",sans-serif"
+  ],
+  "google-emblema-one": [
+    "Emblema One",
+    "\"Emblema One\",sans-serif"
+  ],
+  "google-emilys-candy": [
+    "Emilys Candy",
+    "\"Emilys Candy\",sans-serif"
+  ],
+  "google-encode-sans": [
+    "Encode Sans",
+    "\"Encode Sans\",sans-serif"
+  ],
+  "google-encode-sans-condensed": [
+    "Encode Sans Condensed",
+    "\"Encode Sans Condensed\",sans-serif"
+  ],
+  "google-encode-sans-expanded": [
+    "Encode Sans Expanded",
+    "\"Encode Sans Expanded\",sans-serif"
+  ],
+  "google-encode-sans-sc": [
+    "Encode Sans SC",
+    "\"Encode Sans SC\",sans-serif"
+  ],
+  "google-encode-sans-semi-condensed": [
+    "Encode Sans Semi Condensed",
+    "\"Encode Sans Semi Condensed\",sans-serif"
+  ],
+  "google-encode-sans-semi-expanded": [
+    "Encode Sans Semi Expanded",
+    "\"Encode Sans Semi Expanded\",sans-serif"
+  ],
+  "google-engagement": [
+    "Engagement",
+    "\"Engagement\",cursive"
+  ],
+  "google-englebert": [
+    "Englebert",
+    "\"Englebert\",sans-serif"
+  ],
+  "google-enriqueta": [
+    "Enriqueta",
+    "\"Enriqueta\",serif"
+  ],
+  "google-ephesis": [
+    "Ephesis",
+    "\"Ephesis\",cursive"
+  ],
+  "google-epilogue": [
+    "Epilogue",
+    "\"Epilogue\",sans-serif"
+  ],
+  "google-epunda-sans": [
+    "Epunda Sans",
+    "\"Epunda Sans\",sans-serif"
+  ],
+  "google-epunda-slab": [
+    "Epunda Slab",
+    "\"Epunda Slab\",serif"
+  ],
+  "google-erica-one": [
+    "Erica One",
+    "\"Erica One\",sans-serif"
+  ],
+  "google-esteban": [
+    "Esteban",
+    "\"Esteban\",serif"
+  ],
+  "google-estedad": [
+    "Estedad",
+    "\"Estedad\",sans-serif"
+  ],
+  "google-estonia": [
+    "Estonia",
+    "\"Estonia\",cursive"
+  ],
+  "google-euphoria-script": [
+    "Euphoria Script",
+    "\"Euphoria Script\",cursive"
+  ],
+  "google-ewert": [
+    "Ewert",
+    "\"Ewert\",sans-serif"
+  ],
+  "google-exile": [
+    "Exile",
+    "\"Exile\",sans-serif"
+  ],
+  "google-exo": [
+    "Exo",
+    "\"Exo\",sans-serif"
+  ],
+  "google-exo-2": [
+    "Exo 2",
+    "\"Exo 2\",sans-serif"
+  ],
+  "google-expletus-sans": [
+    "Expletus Sans",
+    "\"Expletus Sans\",sans-serif"
+  ],
+  "google-explora": [
+    "Explora",
+    "\"Explora\",cursive"
+  ],
+  "google-faculty-glyphic": [
+    "Faculty Glyphic",
+    "\"Faculty Glyphic\",sans-serif"
+  ],
+  "google-fahkwang": [
+    "Fahkwang",
+    "\"Fahkwang\",sans-serif"
+  ],
+  "google-familjen-grotesk": [
+    "Familjen Grotesk",
+    "\"Familjen Grotesk\",sans-serif"
+  ],
+  "google-fanwood-text": [
+    "Fanwood Text",
+    "\"Fanwood Text\",serif"
+  ],
+  "google-farro": [
+    "Farro",
+    "\"Farro\",sans-serif"
+  ],
+  "google-farsan": [
+    "Farsan",
+    "\"Farsan\",sans-serif"
+  ],
+  "google-fascinate": [
+    "Fascinate",
+    "\"Fascinate\",sans-serif"
+  ],
+  "google-fascinate-inline": [
+    "Fascinate Inline",
+    "\"Fascinate Inline\",sans-serif"
+  ],
+  "google-faster-one": [
+    "Faster One",
+    "\"Faster One\",sans-serif"
+  ],
+  "google-fasthand": [
+    "Fasthand",
+    "\"Fasthand\",sans-serif"
+  ],
+  "google-fauna-one": [
+    "Fauna One",
+    "\"Fauna One\",serif"
+  ],
+  "google-faustina": [
+    "Faustina",
+    "\"Faustina\",serif"
+  ],
+  "google-federant": [
+    "Federant",
+    "\"Federant\",sans-serif"
+  ],
+  "google-federo": [
+    "Federo",
+    "\"Federo\",sans-serif"
+  ],
+  "google-felipa": [
+    "Felipa",
+    "\"Felipa\",cursive"
+  ],
+  "google-fenix": [
+    "Fenix",
+    "\"Fenix\",serif"
+  ],
+  "google-festive": [
+    "Festive",
+    "\"Festive\",cursive"
+  ],
+  "google-figtree": [
+    "Figtree",
+    "\"Figtree\",sans-serif"
+  ],
+  "google-finger-paint": [
+    "Finger Paint",
+    "\"Finger Paint\",sans-serif"
+  ],
+  "google-finlandica-headline": [
+    "Finlandica Headline",
+    "\"Finlandica Headline\",sans-serif"
+  ],
+  "google-finlandica-text": [
+    "Finlandica Text",
+    "\"Finlandica Text\",sans-serif"
+  ],
+  "google-fira-code": [
+    "Fira Code",
+    "\"Fira Code\",monospace"
+  ],
+  "google-fira-mono": [
+    "Fira Mono",
+    "\"Fira Mono\",monospace"
+  ],
+  "google-fira-sans": [
+    "Fira Sans",
+    "\"Fira Sans\",sans-serif"
+  ],
+  "google-fira-sans-condensed": [
+    "Fira Sans Condensed",
+    "\"Fira Sans Condensed\",sans-serif"
+  ],
+  "google-fira-sans-extra-condensed": [
+    "Fira Sans Extra Condensed",
+    "\"Fira Sans Extra Condensed\",sans-serif"
+  ],
+  "google-fjalla-one": [
+    "Fjalla One",
+    "\"Fjalla One\",sans-serif"
+  ],
+  "google-fjord-one": [
+    "Fjord One",
+    "\"Fjord One\",serif"
+  ],
+  "google-flamenco": [
+    "Flamenco",
+    "\"Flamenco\",sans-serif"
+  ],
+  "google-flavors": [
+    "Flavors",
+    "\"Flavors\",sans-serif"
+  ],
+  "google-fleur-de-leah": [
+    "Fleur De Leah",
+    "\"Fleur De Leah\",cursive"
+  ],
+  "google-flow-block": [
+    "Flow Block",
+    "\"Flow Block\",sans-serif"
+  ],
+  "google-flow-circular": [
+    "Flow Circular",
+    "\"Flow Circular\",sans-serif"
+  ],
+  "google-flow-rounded": [
+    "Flow Rounded",
+    "\"Flow Rounded\",sans-serif"
+  ],
+  "google-foldit": [
+    "Foldit",
+    "\"Foldit\",sans-serif"
+  ],
+  "google-fondamento": [
+    "Fondamento",
+    "\"Fondamento\",cursive"
+  ],
+  "google-fontdiner-swanky": [
+    "Fontdiner Swanky",
+    "\"Fontdiner Swanky\",sans-serif"
+  ],
+  "google-forum": [
+    "Forum",
+    "\"Forum\",sans-serif"
+  ],
+  "google-fragment-mono": [
+    "Fragment Mono",
+    "\"Fragment Mono\",monospace"
+  ],
+  "google-francois-one": [
+    "Francois One",
+    "\"Francois One\",sans-serif"
+  ],
+  "google-frank-ruhl-libre": [
+    "Frank Ruhl Libre",
+    "\"Frank Ruhl Libre\",serif"
+  ],
+  "google-fraunces": [
+    "Fraunces",
+    "\"Fraunces\",serif"
+  ],
+  "google-freckle-face": [
+    "Freckle Face",
+    "\"Freckle Face\",sans-serif"
+  ],
+  "google-fredericka-the-great": [
+    "Fredericka the Great",
+    "\"Fredericka the Great\",sans-serif"
   ],
   "google-fredoka": [
     "Fredoka",
     "\"Fredoka\",sans-serif"
   ],
-  "google-exo-2": [
-    "Exo 2",
-    "\"Exo 2\",sans-serif"
+  "google-freehand": [
+    "Freehand",
+    "\"Freehand\",sans-serif"
+  ],
+  "google-freeman": [
+    "Freeman",
+    "\"Freeman\",sans-serif"
+  ],
+  "google-fresca": [
+    "Fresca",
+    "\"Fresca\",sans-serif"
+  ],
+  "google-frijole": [
+    "Frijole",
+    "\"Frijole\",sans-serif"
+  ],
+  "google-fruktur": [
+    "Fruktur",
+    "\"Fruktur\",sans-serif"
+  ],
+  "google-fugaz-one": [
+    "Fugaz One",
+    "\"Fugaz One\",sans-serif"
+  ],
+  "google-fuggles": [
+    "Fuggles",
+    "\"Fuggles\",cursive"
+  ],
+  "google-funnel-display": [
+    "Funnel Display",
+    "\"Funnel Display\",sans-serif"
+  ],
+  "google-funnel-sans": [
+    "Funnel Sans",
+    "\"Funnel Sans\",sans-serif"
+  ],
+  "google-fustat": [
+    "Fustat",
+    "\"Fustat\",sans-serif"
+  ],
+  "google-fuzzy-bubbles": [
+    "Fuzzy Bubbles",
+    "\"Fuzzy Bubbles\",cursive"
+  ],
+  "google-gfs-didot": [
+    "GFS Didot",
+    "\"GFS Didot\",serif"
+  ],
+  "google-gfs-neohellenic": [
+    "GFS Neohellenic",
+    "\"GFS Neohellenic\",sans-serif"
+  ],
+  "google-ga-maamli": [
+    "Ga Maamli",
+    "\"Ga Maamli\",sans-serif"
+  ],
+  "google-gabarito": [
+    "Gabarito",
+    "\"Gabarito\",sans-serif"
+  ],
+  "google-gabriela": [
+    "Gabriela",
+    "\"Gabriela\",serif"
+  ],
+  "google-gaegu": [
+    "Gaegu",
+    "\"Gaegu\",cursive"
+  ],
+  "google-gafata": [
+    "Gafata",
+    "\"Gafata\",sans-serif"
+  ],
+  "google-gajraj-one": [
+    "Gajraj One",
+    "\"Gajraj One\",sans-serif"
+  ],
+  "google-galada": [
+    "Galada",
+    "\"Galada\",sans-serif"
+  ],
+  "google-galdeano": [
+    "Galdeano",
+    "\"Galdeano\",sans-serif"
+  ],
+  "google-galindo": [
+    "Galindo",
+    "\"Galindo\",sans-serif"
+  ],
+  "google-gamja-flower": [
+    "Gamja Flower",
+    "\"Gamja Flower\",cursive"
+  ],
+  "google-gantari": [
+    "Gantari",
+    "\"Gantari\",sans-serif"
+  ],
+  "google-gasoek-one": [
+    "Gasoek One",
+    "\"Gasoek One\",sans-serif"
+  ],
+  "google-gayathri": [
+    "Gayathri",
+    "\"Gayathri\",sans-serif"
+  ],
+  "google-geist": [
+    "Geist",
+    "\"Geist\",sans-serif"
+  ],
+  "google-geist-mono": [
+    "Geist Mono",
+    "\"Geist Mono\",monospace"
+  ],
+  "google-geist-pixel": [
+    "Geist Pixel",
+    "\"Geist Pixel\",sans-serif"
+  ],
+  "google-gelasio": [
+    "Gelasio",
+    "\"Gelasio\",serif"
+  ],
+  "google-gemunu-libre": [
+    "Gemunu Libre",
+    "\"Gemunu Libre\",sans-serif"
+  ],
+  "google-genos": [
+    "Genos",
+    "\"Genos\",sans-serif"
+  ],
+  "google-gentium-book-plus": [
+    "Gentium Book Plus",
+    "\"Gentium Book Plus\",serif"
+  ],
+  "google-gentium-plus": [
+    "Gentium Plus",
+    "\"Gentium Plus\",serif"
+  ],
+  "google-geo": [
+    "Geo",
+    "\"Geo\",sans-serif"
+  ],
+  "google-geologica": [
+    "Geologica",
+    "\"Geologica\",sans-serif"
+  ],
+  "google-geom": [
+    "Geom",
+    "\"Geom\",sans-serif"
+  ],
+  "google-geomini": [
+    "Geomini",
+    "\"Geomini\",sans-serif"
+  ],
+  "google-georama": [
+    "Georama",
+    "\"Georama\",sans-serif"
+  ],
+  "google-geostar": [
+    "Geostar",
+    "\"Geostar\",sans-serif"
+  ],
+  "google-geostar-fill": [
+    "Geostar Fill",
+    "\"Geostar Fill\",sans-serif"
+  ],
+  "google-germania-one": [
+    "Germania One",
+    "\"Germania One\",sans-serif"
+  ],
+  "google-gideon-roman": [
+    "Gideon Roman",
+    "\"Gideon Roman\",sans-serif"
+  ],
+  "google-gidole": [
+    "Gidole",
+    "\"Gidole\",sans-serif"
+  ],
+  "google-gidugu": [
+    "Gidugu",
+    "\"Gidugu\",sans-serif"
+  ],
+  "google-gilda-display": [
+    "Gilda Display",
+    "\"Gilda Display\",serif"
+  ],
+  "google-girassol": [
+    "Girassol",
+    "\"Girassol\",sans-serif"
+  ],
+  "google-give-you-glory": [
+    "Give You Glory",
+    "\"Give You Glory\",cursive"
+  ],
+  "google-glass-antiqua": [
+    "Glass Antiqua",
+    "\"Glass Antiqua\",sans-serif"
+  ],
+  "google-glegoo": [
+    "Glegoo",
+    "\"Glegoo\",serif"
+  ],
+  "google-gloock": [
+    "Gloock",
+    "\"Gloock\",serif"
+  ],
+  "google-gloria-hallelujah": [
+    "Gloria Hallelujah",
+    "\"Gloria Hallelujah\",cursive"
+  ],
+  "google-glory": [
+    "Glory",
+    "\"Glory\",sans-serif"
+  ],
+  "google-gluten": [
+    "Gluten",
+    "\"Gluten\",sans-serif"
+  ],
+  "google-goblin-one": [
+    "Goblin One",
+    "\"Goblin One\",sans-serif"
+  ],
+  "google-gochi-hand": [
+    "Gochi Hand",
+    "\"Gochi Hand\",cursive"
+  ],
+  "google-goldman": [
+    "Goldman",
+    "\"Goldman\",sans-serif"
+  ],
+  "google-golos-text": [
+    "Golos Text",
+    "\"Golos Text\",sans-serif"
+  ],
+  "google-google-sans": [
+    "Google Sans",
+    "\"Google Sans\",sans-serif"
+  ],
+  "google-google-sans-code": [
+    "Google Sans Code",
+    "\"Google Sans Code\",monospace"
+  ],
+  "google-google-sans-flex": [
+    "Google Sans Flex",
+    "\"Google Sans Flex\",sans-serif"
+  ],
+  "google-gorditas": [
+    "Gorditas",
+    "\"Gorditas\",sans-serif"
+  ],
+  "google-gothic-a1": [
+    "Gothic A1",
+    "\"Gothic A1\",sans-serif"
+  ],
+  "google-gotu": [
+    "Gotu",
+    "\"Gotu\",sans-serif"
+  ],
+  "google-goudy-bookletter-1911": [
+    "Goudy Bookletter 1911",
+    "\"Goudy Bookletter 1911\",serif"
+  ],
+  "google-gowun-batang": [
+    "Gowun Batang",
+    "\"Gowun Batang\",serif"
+  ],
+  "google-gowun-dodum": [
+    "Gowun Dodum",
+    "\"Gowun Dodum\",sans-serif"
+  ],
+  "google-graduate": [
+    "Graduate",
+    "\"Graduate\",serif"
+  ],
+  "google-grand-hotel": [
+    "Grand Hotel",
+    "\"Grand Hotel\",cursive"
+  ],
+  "google-grandiflora-one": [
+    "Grandiflora One",
+    "\"Grandiflora One\",serif"
+  ],
+  "google-grandstander": [
+    "Grandstander",
+    "\"Grandstander\",sans-serif"
+  ],
+  "google-grape-nuts": [
+    "Grape Nuts",
+    "\"Grape Nuts\",cursive"
+  ],
+  "google-gravitas-one": [
+    "Gravitas One",
+    "\"Gravitas One\",sans-serif"
+  ],
+  "google-great-vibes": [
+    "Great Vibes",
+    "\"Great Vibes\",cursive"
+  ],
+  "google-grechen-fuemen": [
+    "Grechen Fuemen",
+    "\"Grechen Fuemen\",cursive"
+  ],
+  "google-grenze": [
+    "Grenze",
+    "\"Grenze\",serif"
+  ],
+  "google-grenze-gotisch": [
+    "Grenze Gotisch",
+    "\"Grenze Gotisch\",sans-serif"
+  ],
+  "google-grey-qo": [
+    "Grey Qo",
+    "\"Grey Qo\",cursive"
+  ],
+  "google-griffy": [
+    "Griffy",
+    "\"Griffy\",sans-serif"
+  ],
+  "google-gruppo": [
+    "Gruppo",
+    "\"Gruppo\",sans-serif"
+  ],
+  "google-gudea": [
+    "Gudea",
+    "\"Gudea\",sans-serif"
+  ],
+  "google-gugi": [
+    "Gugi",
+    "\"Gugi\",sans-serif"
+  ],
+  "google-gulzar": [
+    "Gulzar",
+    "\"Gulzar\",serif"
+  ],
+  "google-gupter": [
+    "Gupter",
+    "\"Gupter\",serif"
+  ],
+  "google-gurajada": [
+    "Gurajada",
+    "\"Gurajada\",sans-serif"
+  ],
+  "google-gveret-levin": [
+    "Gveret Levin",
+    "\"Gveret Levin\",cursive"
+  ],
+  "google-gwendolyn": [
+    "Gwendolyn",
+    "\"Gwendolyn\",cursive"
+  ],
+  "google-habibi": [
+    "Habibi",
+    "\"Habibi\",serif"
+  ],
+  "google-hachi-maru-pop": [
+    "Hachi Maru Pop",
+    "\"Hachi Maru Pop\",cursive"
+  ],
+  "google-hahmlet": [
+    "Hahmlet",
+    "\"Hahmlet\",serif"
+  ],
+  "google-halant": [
+    "Halant",
+    "\"Halant\",serif"
+  ],
+  "google-hammersmith-one": [
+    "Hammersmith One",
+    "\"Hammersmith One\",sans-serif"
+  ],
+  "google-hanalei": [
+    "Hanalei",
+    "\"Hanalei\",sans-serif"
+  ],
+  "google-hanalei-fill": [
+    "Hanalei Fill",
+    "\"Hanalei Fill\",sans-serif"
+  ],
+  "google-handjet": [
+    "Handjet",
+    "\"Handjet\",sans-serif"
+  ],
+  "google-handlee": [
+    "Handlee",
+    "\"Handlee\",cursive"
+  ],
+  "google-hanken-grotesk": [
+    "Hanken Grotesk",
+    "\"Hanken Grotesk\",sans-serif"
+  ],
+  "google-hanuman": [
+    "Hanuman",
+    "\"Hanuman\",serif"
+  ],
+  "google-happy-monkey": [
+    "Happy Monkey",
+    "\"Happy Monkey\",sans-serif"
+  ],
+  "google-harmattan": [
+    "Harmattan",
+    "\"Harmattan\",sans-serif"
+  ],
+  "google-headland-one": [
+    "Headland One",
+    "\"Headland One\",serif"
+  ],
+  "google-hedvig-letters-sans": [
+    "Hedvig Letters Sans",
+    "\"Hedvig Letters Sans\",sans-serif"
+  ],
+  "google-hedvig-letters-serif": [
+    "Hedvig Letters Serif",
+    "\"Hedvig Letters Serif\",serif"
+  ],
+  "google-heebo": [
+    "Heebo",
+    "\"Heebo\",sans-serif"
+  ],
+  "google-henny-penny": [
+    "Henny Penny",
+    "\"Henny Penny\",sans-serif"
+  ],
+  "google-hepta-slab": [
+    "Hepta Slab",
+    "\"Hepta Slab\",serif"
+  ],
+  "google-herr-von-muellerhoff": [
+    "Herr Von Muellerhoff",
+    "\"Herr Von Muellerhoff\",cursive"
+  ],
+  "google-hi-melody": [
+    "Hi Melody",
+    "\"Hi Melody\",cursive"
+  ],
+  "google-hibur-mono": [
+    "Hibur Mono",
+    "\"Hibur Mono\",monospace"
+  ],
+  "google-hina-mincho": [
+    "Hina Mincho",
+    "\"Hina Mincho\",serif"
+  ],
+  "google-hind": [
+    "Hind",
+    "\"Hind\",sans-serif"
+  ],
+  "google-hind-guntur": [
+    "Hind Guntur",
+    "\"Hind Guntur\",sans-serif"
+  ],
+  "google-hind-madurai": [
+    "Hind Madurai",
+    "\"Hind Madurai\",sans-serif"
+  ],
+  "google-hind-mysuru": [
+    "Hind Mysuru",
+    "\"Hind Mysuru\",sans-serif"
+  ],
+  "google-hind-siliguri": [
+    "Hind Siliguri",
+    "\"Hind Siliguri\",sans-serif"
+  ],
+  "google-hind-vadodara": [
+    "Hind Vadodara",
+    "\"Hind Vadodara\",sans-serif"
+  ],
+  "google-holtwood-one-sc": [
+    "Holtwood One SC",
+    "\"Holtwood One SC\",serif"
+  ],
+  "google-homemade-apple": [
+    "Homemade Apple",
+    "\"Homemade Apple\",cursive"
+  ],
+  "google-homenaje": [
+    "Homenaje",
+    "\"Homenaje\",sans-serif"
+  ],
+  "google-honk": [
+    "Honk",
+    "\"Honk\",sans-serif"
+  ],
+  "google-host-grotesk": [
+    "Host Grotesk",
+    "\"Host Grotesk\",sans-serif"
+  ],
+  "google-hubballi": [
+    "Hubballi",
+    "\"Hubballi\",sans-serif"
+  ],
+  "google-hubot-sans": [
+    "Hubot Sans",
+    "\"Hubot Sans\",sans-serif"
+  ],
+  "google-huninn": [
+    "Huninn",
+    "\"Huninn\",sans-serif"
+  ],
+  "google-hurricane": [
+    "Hurricane",
+    "\"Hurricane\",cursive"
+  ],
+  "google-ibm-plex-mono": [
+    "IBM Plex Mono",
+    "\"IBM Plex Mono\",monospace"
+  ],
+  "google-ibm-plex-sans": [
+    "IBM Plex Sans",
+    "\"IBM Plex Sans\",sans-serif"
+  ],
+  "google-ibm-plex-sans-arabic": [
+    "IBM Plex Sans Arabic",
+    "\"IBM Plex Sans Arabic\",sans-serif"
+  ],
+  "google-ibm-plex-sans-condensed": [
+    "IBM Plex Sans Condensed",
+    "\"IBM Plex Sans Condensed\",sans-serif"
+  ],
+  "google-ibm-plex-sans-devanagari": [
+    "IBM Plex Sans Devanagari",
+    "\"IBM Plex Sans Devanagari\",sans-serif"
+  ],
+  "google-ibm-plex-sans-hebrew": [
+    "IBM Plex Sans Hebrew",
+    "\"IBM Plex Sans Hebrew\",sans-serif"
+  ],
+  "google-ibm-plex-sans-jp": [
+    "IBM Plex Sans JP",
+    "\"IBM Plex Sans JP\",sans-serif"
+  ],
+  "google-ibm-plex-sans-kr": [
+    "IBM Plex Sans KR",
+    "\"IBM Plex Sans KR\",sans-serif"
+  ],
+  "google-ibm-plex-sans-thai": [
+    "IBM Plex Sans Thai",
+    "\"IBM Plex Sans Thai\",sans-serif"
+  ],
+  "google-ibm-plex-sans-thai-looped": [
+    "IBM Plex Sans Thai Looped",
+    "\"IBM Plex Sans Thai Looped\",sans-serif"
+  ],
+  "google-ibm-plex-serif": [
+    "IBM Plex Serif",
+    "\"IBM Plex Serif\",serif"
+  ],
+  "google-im-fell-dw-pica": [
+    "IM Fell DW Pica",
+    "\"IM Fell DW Pica\",serif"
+  ],
+  "google-im-fell-dw-pica-sc": [
+    "IM Fell DW Pica SC",
+    "\"IM Fell DW Pica SC\",serif"
+  ],
+  "google-im-fell-double-pica": [
+    "IM Fell Double Pica",
+    "\"IM Fell Double Pica\",serif"
+  ],
+  "google-im-fell-double-pica-sc": [
+    "IM Fell Double Pica SC",
+    "\"IM Fell Double Pica SC\",serif"
+  ],
+  "google-im-fell-english": [
+    "IM Fell English",
+    "\"IM Fell English\",serif"
+  ],
+  "google-im-fell-english-sc": [
+    "IM Fell English SC",
+    "\"IM Fell English SC\",serif"
+  ],
+  "google-im-fell-french-canon": [
+    "IM Fell French Canon",
+    "\"IM Fell French Canon\",serif"
+  ],
+  "google-im-fell-french-canon-sc": [
+    "IM Fell French Canon SC",
+    "\"IM Fell French Canon SC\",serif"
+  ],
+  "google-im-fell-great-primer": [
+    "IM Fell Great Primer",
+    "\"IM Fell Great Primer\",serif"
+  ],
+  "google-im-fell-great-primer-sc": [
+    "IM Fell Great Primer SC",
+    "\"IM Fell Great Primer SC\",serif"
+  ],
+  "google-iansui": [
+    "Iansui",
+    "\"Iansui\",cursive"
+  ],
+  "google-ibarra-real-nova": [
+    "Ibarra Real Nova",
+    "\"Ibarra Real Nova\",serif"
+  ],
+  "google-iceberg": [
+    "Iceberg",
+    "\"Iceberg\",sans-serif"
+  ],
+  "google-iceland": [
+    "Iceland",
+    "\"Iceland\",sans-serif"
+  ],
+  "google-idiqlat": [
+    "Idiqlat",
+    "\"Idiqlat\",serif"
+  ],
+  "google-imbue": [
+    "Imbue",
+    "\"Imbue\",serif"
+  ],
+  "google-imperial-script": [
+    "Imperial Script",
+    "\"Imperial Script\",cursive"
+  ],
+  "google-imprima": [
+    "Imprima",
+    "\"Imprima\",sans-serif"
+  ],
+  "google-inclusive-sans": [
+    "Inclusive Sans",
+    "\"Inclusive Sans\",sans-serif"
+  ],
+  "google-inconsolata": [
+    "Inconsolata",
+    "\"Inconsolata\",monospace"
+  ],
+  "google-inder": [
+    "Inder",
+    "\"Inder\",sans-serif"
+  ],
+  "google-indie-flower": [
+    "Indie Flower",
+    "\"Indie Flower\",cursive"
+  ],
+  "google-ingrid-darling": [
+    "Ingrid Darling",
+    "\"Ingrid Darling\",cursive"
+  ],
+  "google-inika": [
+    "Inika",
+    "\"Inika\",serif"
+  ],
+  "google-inknut-antiqua": [
+    "Inknut Antiqua",
+    "\"Inknut Antiqua\",serif"
+  ],
+  "google-inria-sans": [
+    "Inria Sans",
+    "\"Inria Sans\",sans-serif"
+  ],
+  "google-inria-serif": [
+    "Inria Serif",
+    "\"Inria Serif\",serif"
+  ],
+  "google-inspiration": [
+    "Inspiration",
+    "\"Inspiration\",cursive"
+  ],
+  "google-instrument-sans": [
+    "Instrument Sans",
+    "\"Instrument Sans\",sans-serif"
+  ],
+  "google-instrument-serif": [
+    "Instrument Serif",
+    "\"Instrument Serif\",serif"
+  ],
+  "google-intel-one-mono": [
+    "Intel One Mono",
+    "\"Intel One Mono\",monospace"
+  ],
+  "google-inter": [
+    "Inter",
+    "\"Inter\",sans-serif"
+  ],
+  "google-inter-tight": [
+    "Inter Tight",
+    "\"Inter Tight\",sans-serif"
+  ],
+  "google-iosevka-charon": [
+    "Iosevka Charon",
+    "\"Iosevka Charon\",monospace"
+  ],
+  "google-iosevka-charon-mono": [
+    "Iosevka Charon Mono",
+    "\"Iosevka Charon Mono\",monospace"
+  ],
+  "google-irish-grover": [
+    "Irish Grover",
+    "\"Irish Grover\",sans-serif"
+  ],
+  "google-island-moments": [
+    "Island Moments",
+    "\"Island Moments\",cursive"
+  ],
+  "google-isometra": [
+    "Isometra",
+    "\"Isometra\",serif"
+  ],
+  "google-istok-web": [
+    "Istok Web",
+    "\"Istok Web\",sans-serif"
+  ],
+  "google-italiana": [
+    "Italiana",
+    "\"Italiana\",sans-serif"
+  ],
+  "google-italianno": [
+    "Italianno",
+    "\"Italianno\",cursive"
+  ],
+  "google-itim": [
+    "Itim",
+    "\"Itim\",cursive"
+  ],
+  "google-jacquard-12": [
+    "Jacquard 12",
+    "\"Jacquard 12\",sans-serif"
+  ],
+  "google-jacquard-12-charted": [
+    "Jacquard 12 Charted",
+    "\"Jacquard 12 Charted\",sans-serif"
+  ],
+  "google-jacquard-24": [
+    "Jacquard 24",
+    "\"Jacquard 24\",sans-serif"
+  ],
+  "google-jacquard-24-charted": [
+    "Jacquard 24 Charted",
+    "\"Jacquard 24 Charted\",sans-serif"
+  ],
+  "google-jacquarda-bastarda-9": [
+    "Jacquarda Bastarda 9",
+    "\"Jacquarda Bastarda 9\",sans-serif"
+  ],
+  "google-jacquarda-bastarda-9-charted": [
+    "Jacquarda Bastarda 9 Charted",
+    "\"Jacquarda Bastarda 9 Charted\",sans-serif"
+  ],
+  "google-jacques-francois": [
+    "Jacques Francois",
+    "\"Jacques Francois\",serif"
+  ],
+  "google-jacques-francois-shadow": [
+    "Jacques Francois Shadow",
+    "\"Jacques Francois Shadow\",sans-serif"
+  ],
+  "google-jaini": [
+    "Jaini",
+    "\"Jaini\",sans-serif"
+  ],
+  "google-jaini-purva": [
+    "Jaini Purva",
+    "\"Jaini Purva\",sans-serif"
+  ],
+  "google-jaldi": [
+    "Jaldi",
+    "\"Jaldi\",sans-serif"
+  ],
+  "google-jaro": [
+    "Jaro",
+    "\"Jaro\",sans-serif"
+  ],
+  "google-jersey-10": [
+    "Jersey 10",
+    "\"Jersey 10\",sans-serif"
+  ],
+  "google-jersey-10-charted": [
+    "Jersey 10 Charted",
+    "\"Jersey 10 Charted\",sans-serif"
+  ],
+  "google-jersey-15": [
+    "Jersey 15",
+    "\"Jersey 15\",sans-serif"
+  ],
+  "google-jersey-15-charted": [
+    "Jersey 15 Charted",
+    "\"Jersey 15 Charted\",sans-serif"
+  ],
+  "google-jersey-20": [
+    "Jersey 20",
+    "\"Jersey 20\",sans-serif"
+  ],
+  "google-jersey-20-charted": [
+    "Jersey 20 Charted",
+    "\"Jersey 20 Charted\",sans-serif"
+  ],
+  "google-jersey-25": [
+    "Jersey 25",
+    "\"Jersey 25\",sans-serif"
+  ],
+  "google-jersey-25-charted": [
+    "Jersey 25 Charted",
+    "\"Jersey 25 Charted\",sans-serif"
+  ],
+  "google-jetbrains-mono": [
+    "JetBrains Mono",
+    "\"JetBrains Mono\",monospace"
+  ],
+  "google-jim-nightshade": [
+    "Jim Nightshade",
+    "\"Jim Nightshade\",cursive"
+  ],
+  "google-joan": [
+    "Joan",
+    "\"Joan\",serif"
+  ],
+  "google-jockey-one": [
+    "Jockey One",
+    "\"Jockey One\",sans-serif"
+  ],
+  "google-jolly-lodger": [
+    "Jolly Lodger",
+    "\"Jolly Lodger\",sans-serif"
+  ],
+  "google-jomhuria": [
+    "Jomhuria",
+    "\"Jomhuria\",sans-serif"
+  ],
+  "google-jomolhari": [
+    "Jomolhari",
+    "\"Jomolhari\",serif"
+  ],
+  "google-josefin-sans": [
+    "Josefin Sans",
+    "\"Josefin Sans\",sans-serif"
+  ],
+  "google-josefin-slab": [
+    "Josefin Slab",
+    "\"Josefin Slab\",serif"
+  ],
+  "google-jost": [
+    "Jost",
+    "\"Jost\",sans-serif"
+  ],
+  "google-joti-one": [
+    "Joti One",
+    "\"Joti One\",sans-serif"
+  ],
+  "google-jua": [
+    "Jua",
+    "\"Jua\",sans-serif"
+  ],
+  "google-judson": [
+    "Judson",
+    "\"Judson\",serif"
+  ],
+  "google-julee": [
+    "Julee",
+    "\"Julee\",cursive"
+  ],
+  "google-julius-sans-one": [
+    "Julius Sans One",
+    "\"Julius Sans One\",sans-serif"
+  ],
+  "google-junge": [
+    "Junge",
+    "\"Junge\",serif"
+  ],
+  "google-jura": [
+    "Jura",
+    "\"Jura\",sans-serif"
+  ],
+  "google-just-another-hand": [
+    "Just Another Hand",
+    "\"Just Another Hand\",cursive"
+  ],
+  "google-just-me-again-down-here": [
+    "Just Me Again Down Here",
+    "\"Just Me Again Down Here\",cursive"
+  ],
+  "google-k2d": [
+    "K2D",
+    "\"K2D\",sans-serif"
+  ],
+  "google-kablammo": [
+    "Kablammo",
+    "\"Kablammo\",sans-serif"
+  ],
+  "google-kadwa": [
+    "Kadwa",
+    "\"Kadwa\",serif"
+  ],
+  "google-kaisei-decol": [
+    "Kaisei Decol",
+    "\"Kaisei Decol\",serif"
+  ],
+  "google-kaisei-harunoumi": [
+    "Kaisei HarunoUmi",
+    "\"Kaisei HarunoUmi\",serif"
+  ],
+  "google-kaisei-opti": [
+    "Kaisei Opti",
+    "\"Kaisei Opti\",serif"
+  ],
+  "google-kaisei-tokumin": [
+    "Kaisei Tokumin",
+    "\"Kaisei Tokumin\",serif"
+  ],
+  "google-kalam": [
+    "Kalam",
+    "\"Kalam\",cursive"
+  ],
+  "google-kalnia": [
+    "Kalnia",
+    "\"Kalnia\",serif"
+  ],
+  "google-kalnia-glaze": [
+    "Kalnia Glaze",
+    "\"Kalnia Glaze\",sans-serif"
+  ],
+  "google-kameron": [
+    "Kameron",
+    "\"Kameron\",serif"
+  ],
+  "google-kanchenjunga": [
+    "Kanchenjunga",
+    "\"Kanchenjunga\",sans-serif"
+  ],
+  "google-kanit": [
+    "Kanit",
+    "\"Kanit\",sans-serif"
+  ],
+  "google-kantumruy-pro": [
+    "Kantumruy Pro",
+    "\"Kantumruy Pro\",sans-serif"
+  ],
+  "google-kapakana": [
+    "Kapakana",
+    "\"Kapakana\",cursive"
+  ],
+  "google-karantina": [
+    "Karantina",
+    "\"Karantina\",sans-serif"
+  ],
+  "google-karla": [
+    "Karla",
+    "\"Karla\",sans-serif"
+  ],
+  "google-karla-tamil-inclined": [
+    "Karla Tamil Inclined",
+    "\"Karla Tamil Inclined\",sans-serif"
+  ],
+  "google-karla-tamil-upright": [
+    "Karla Tamil Upright",
+    "\"Karla Tamil Upright\",sans-serif"
+  ],
+  "google-karma": [
+    "Karma",
+    "\"Karma\",serif"
+  ],
+  "google-katibeh": [
+    "Katibeh",
+    "\"Katibeh\",sans-serif"
+  ],
+  "google-kaushan-script": [
+    "Kaushan Script",
+    "\"Kaushan Script\",cursive"
+  ],
+  "google-kavivanar": [
+    "Kavivanar",
+    "\"Kavivanar\",cursive"
+  ],
+  "google-kavoon": [
+    "Kavoon",
+    "\"Kavoon\",sans-serif"
+  ],
+  "google-kay-pho-du": [
+    "Kay Pho Du",
+    "\"Kay Pho Du\",serif"
+  ],
+  "google-kdam-thmor-pro": [
+    "Kdam Thmor Pro",
+    "\"Kdam Thmor Pro\",sans-serif"
+  ],
+  "google-keania-one": [
+    "Keania One",
+    "\"Keania One\",sans-serif"
+  ],
+  "google-kedebideri": [
+    "Kedebideri",
+    "\"Kedebideri\",sans-serif"
+  ],
+  "google-kelly-slab": [
+    "Kelly Slab",
+    "\"Kelly Slab\",sans-serif"
+  ],
+  "google-kenia": [
+    "Kenia",
+    "\"Kenia\",sans-serif"
+  ],
+  "google-khand": [
+    "Khand",
+    "\"Khand\",sans-serif"
+  ],
+  "google-khmer": [
+    "Khmer",
+    "\"Khmer\",sans-serif"
+  ],
+  "google-khula": [
+    "Khula",
+    "\"Khula\",sans-serif"
+  ],
+  "google-kings": [
+    "Kings",
+    "\"Kings\",cursive"
+  ],
+  "google-kirang-haerang": [
+    "Kirang Haerang",
+    "\"Kirang Haerang\",sans-serif"
+  ],
+  "google-kite-one": [
+    "Kite One",
+    "\"Kite One\",sans-serif"
+  ],
+  "google-kiwi-maru": [
+    "Kiwi Maru",
+    "\"Kiwi Maru\",serif"
+  ],
+  "google-klee-one": [
+    "Klee One",
+    "\"Klee One\",cursive"
+  ],
+  "google-knewave": [
+    "Knewave",
+    "\"Knewave\",sans-serif"
+  ],
+  "google-koho": [
+    "KoHo",
+    "\"KoHo\",sans-serif"
+  ],
+  "google-kodchasan": [
+    "Kodchasan",
+    "\"Kodchasan\",sans-serif"
+  ],
+  "google-kode-mono": [
+    "Kode Mono",
+    "\"Kode Mono\",monospace"
+  ],
+  "google-koh-santepheap": [
+    "Koh Santepheap",
+    "\"Koh Santepheap\",serif"
+  ],
+  "google-kolker-brush": [
+    "Kolker Brush",
+    "\"Kolker Brush\",cursive"
+  ],
+  "google-konkhmer-sleokchher": [
+    "Konkhmer Sleokchher",
+    "\"Konkhmer Sleokchher\",sans-serif"
+  ],
+  "google-kosugi": [
+    "Kosugi",
+    "\"Kosugi\",sans-serif"
+  ],
+  "google-kosugi-maru": [
+    "Kosugi Maru",
+    "\"Kosugi Maru\",sans-serif"
+  ],
+  "google-kotta-one": [
+    "Kotta One",
+    "\"Kotta One\",serif"
+  ],
+  "google-koulen": [
+    "Koulen",
+    "\"Koulen\",sans-serif"
+  ],
+  "google-kranky": [
+    "Kranky",
+    "\"Kranky\",sans-serif"
+  ],
+  "google-kreon": [
+    "Kreon",
+    "\"Kreon\",serif"
+  ],
+  "google-kripa": [
+    "Kripa",
+    "\"Kripa\",sans-serif"
+  ],
+  "google-kristi": [
+    "Kristi",
+    "\"Kristi\",cursive"
+  ],
+  "google-krona-one": [
+    "Krona One",
+    "\"Krona One\",sans-serif"
+  ],
+  "google-krub": [
+    "Krub",
+    "\"Krub\",sans-serif"
+  ],
+  "google-kufam": [
+    "Kufam",
+    "\"Kufam\",sans-serif"
+  ],
+  "google-kulim-park": [
+    "Kulim Park",
+    "\"Kulim Park\",sans-serif"
+  ],
+  "google-kumar-one": [
+    "Kumar One",
+    "\"Kumar One\",sans-serif"
+  ],
+  "google-kumar-one-outline": [
+    "Kumar One Outline",
+    "\"Kumar One Outline\",sans-serif"
+  ],
+  "google-kumbh-sans": [
+    "Kumbh Sans",
+    "\"Kumbh Sans\",sans-serif"
+  ],
+  "google-kurale": [
+    "Kurale",
+    "\"Kurale\",serif"
+  ],
+  "google-line-seed-jp": [
+    "LINE Seed JP",
+    "\"LINE Seed JP\",sans-serif"
+  ],
+  "google-lxgw-marker-gothic": [
+    "LXGW Marker Gothic",
+    "\"LXGW Marker Gothic\",sans-serif"
+  ],
+  "google-lxgw-wenkai-mono-tc": [
+    "LXGW WenKai Mono TC",
+    "\"LXGW WenKai Mono TC\",monospace"
+  ],
+  "google-lxgw-wenkai-tc": [
+    "LXGW WenKai TC",
+    "\"LXGW WenKai TC\",cursive"
+  ],
+  "google-la-belle-aurore": [
+    "La Belle Aurore",
+    "\"La Belle Aurore\",cursive"
+  ],
+  "google-labrada": [
+    "Labrada",
+    "\"Labrada\",serif"
+  ],
+  "google-lacquer": [
+    "Lacquer",
+    "\"Lacquer\",sans-serif"
+  ],
+  "google-laila": [
+    "Laila",
+    "\"Laila\",serif"
+  ],
+  "google-lakki-reddy": [
+    "Lakki Reddy",
+    "\"Lakki Reddy\",cursive"
+  ],
+  "google-lalezar": [
+    "Lalezar",
+    "\"Lalezar\",sans-serif"
+  ],
+  "google-lancelot": [
+    "Lancelot",
+    "\"Lancelot\",sans-serif"
+  ],
+  "google-langar": [
+    "Langar",
+    "\"Langar\",sans-serif"
+  ],
+  "google-lateef": [
+    "Lateef",
+    "\"Lateef\",serif"
+  ],
+  "google-lato": [
+    "Lato",
+    "\"Lato\",sans-serif"
+  ],
+  "google-lavishly-yours": [
+    "Lavishly Yours",
+    "\"Lavishly Yours\",cursive"
+  ],
+  "google-league-gothic": [
+    "League Gothic",
+    "\"League Gothic\",sans-serif"
+  ],
+  "google-league-script": [
+    "League Script",
+    "\"League Script\",cursive"
+  ],
+  "google-league-spartan": [
+    "League Spartan",
+    "\"League Spartan\",sans-serif"
+  ],
+  "google-leckerli-one": [
+    "Leckerli One",
+    "\"Leckerli One\",cursive"
+  ],
+  "google-ledger": [
+    "Ledger",
+    "\"Ledger\",serif"
+  ],
+  "google-lekton": [
+    "Lekton",
+    "\"Lekton\",monospace"
+  ],
+  "google-lemon": [
+    "Lemon",
+    "\"Lemon\",sans-serif"
+  ],
+  "google-lemonada": [
+    "Lemonada",
+    "\"Lemonada\",sans-serif"
+  ],
+  "google-lexend": [
+    "Lexend",
+    "\"Lexend\",sans-serif"
+  ],
+  "google-lexend-deca": [
+    "Lexend Deca",
+    "\"Lexend Deca\",sans-serif"
+  ],
+  "google-lexend-exa": [
+    "Lexend Exa",
+    "\"Lexend Exa\",sans-serif"
+  ],
+  "google-lexend-giga": [
+    "Lexend Giga",
+    "\"Lexend Giga\",sans-serif"
+  ],
+  "google-lexend-mega": [
+    "Lexend Mega",
+    "\"Lexend Mega\",sans-serif"
+  ],
+  "google-lexend-peta": [
+    "Lexend Peta",
+    "\"Lexend Peta\",sans-serif"
+  ],
+  "google-lexend-tera": [
+    "Lexend Tera",
+    "\"Lexend Tera\",sans-serif"
+  ],
+  "google-lexend-zetta": [
+    "Lexend Zetta",
+    "\"Lexend Zetta\",sans-serif"
+  ],
+  "google-libertinus-keyboard": [
+    "Libertinus Keyboard",
+    "\"Libertinus Keyboard\",sans-serif"
+  ],
+  "google-libertinus-math": [
+    "Libertinus Math",
+    "\"Libertinus Math\",sans-serif"
+  ],
+  "google-libertinus-mono": [
+    "Libertinus Mono",
+    "\"Libertinus Mono\",monospace"
+  ],
+  "google-libertinus-sans": [
+    "Libertinus Sans",
+    "\"Libertinus Sans\",sans-serif"
+  ],
+  "google-libertinus-serif": [
+    "Libertinus Serif",
+    "\"Libertinus Serif\",serif"
+  ],
+  "google-libertinus-serif-display": [
+    "Libertinus Serif Display",
+    "\"Libertinus Serif Display\",sans-serif"
+  ],
+  "google-libre-barcode-128": [
+    "Libre Barcode 128",
+    "\"Libre Barcode 128\",sans-serif"
+  ],
+  "google-libre-barcode-128-text": [
+    "Libre Barcode 128 Text",
+    "\"Libre Barcode 128 Text\",sans-serif"
+  ],
+  "google-libre-barcode-39": [
+    "Libre Barcode 39",
+    "\"Libre Barcode 39\",sans-serif"
+  ],
+  "google-libre-barcode-39-extended": [
+    "Libre Barcode 39 Extended",
+    "\"Libre Barcode 39 Extended\",sans-serif"
+  ],
+  "google-libre-barcode-39-extended-text": [
+    "Libre Barcode 39 Extended Text",
+    "\"Libre Barcode 39 Extended Text\",sans-serif"
+  ],
+  "google-libre-barcode-39-text": [
+    "Libre Barcode 39 Text",
+    "\"Libre Barcode 39 Text\",sans-serif"
+  ],
+  "google-libre-barcode-ean13-text": [
+    "Libre Barcode EAN13 Text",
+    "\"Libre Barcode EAN13 Text\",sans-serif"
+  ],
+  "google-libre-baskerville": [
+    "Libre Baskerville",
+    "\"Libre Baskerville\",serif"
+  ],
+  "google-libre-bodoni": [
+    "Libre Bodoni",
+    "\"Libre Bodoni\",serif"
+  ],
+  "google-libre-caslon-condensed": [
+    "Libre Caslon Condensed",
+    "\"Libre Caslon Condensed\",serif"
+  ],
+  "google-libre-caslon-display": [
+    "Libre Caslon Display",
+    "\"Libre Caslon Display\",serif"
+  ],
+  "google-libre-caslon-text": [
+    "Libre Caslon Text",
+    "\"Libre Caslon Text\",serif"
+  ],
+  "google-libre-franklin": [
+    "Libre Franklin",
+    "\"Libre Franklin\",sans-serif"
+  ],
+  "google-licorice": [
+    "Licorice",
+    "\"Licorice\",cursive"
+  ],
+  "google-life-savers": [
+    "Life Savers",
+    "\"Life Savers\",sans-serif"
+  ],
+  "google-lilex": [
+    "Lilex",
+    "\"Lilex\",monospace"
+  ],
+  "google-lilita-one": [
+    "Lilita One",
+    "\"Lilita One\",sans-serif"
+  ],
+  "google-lily-script-one": [
+    "Lily Script One",
+    "\"Lily Script One\",sans-serif"
+  ],
+  "google-limelight": [
+    "Limelight",
+    "\"Limelight\",sans-serif"
+  ],
+  "google-linden-hill": [
+    "Linden Hill",
+    "\"Linden Hill\",serif"
+  ],
+  "google-linefont": [
+    "Linefont",
+    "\"Linefont\",sans-serif"
+  ],
+  "google-lisu-bosa": [
+    "Lisu Bosa",
+    "\"Lisu Bosa\",serif"
+  ],
+  "google-liter": [
+    "Liter",
+    "\"Liter\",sans-serif"
+  ],
+  "google-literata": [
+    "Literata",
+    "\"Literata\",serif"
+  ],
+  "google-liu-jian-mao-cao": [
+    "Liu Jian Mao Cao",
+    "\"Liu Jian Mao Cao\",cursive"
+  ],
+  "google-livvic": [
+    "Livvic",
+    "\"Livvic\",sans-serif"
+  ],
+  "google-lobster": [
+    "Lobster",
+    "\"Lobster\",sans-serif"
+  ],
+  "google-lobster-two": [
+    "Lobster Two",
+    "\"Lobster Two\",sans-serif"
+  ],
+  "google-londrina-outline": [
+    "Londrina Outline",
+    "\"Londrina Outline\",sans-serif"
+  ],
+  "google-londrina-shadow": [
+    "Londrina Shadow",
+    "\"Londrina Shadow\",sans-serif"
+  ],
+  "google-londrina-sketch": [
+    "Londrina Sketch",
+    "\"Londrina Sketch\",sans-serif"
+  ],
+  "google-londrina-solid": [
+    "Londrina Solid",
+    "\"Londrina Solid\",sans-serif"
+  ],
+  "google-long-cang": [
+    "Long Cang",
+    "\"Long Cang\",cursive"
+  ],
+  "google-lora": [
+    "Lora",
+    "\"Lora\",serif"
+  ],
+  "google-love-light": [
+    "Love Light",
+    "\"Love Light\",cursive"
+  ],
+  "google-love-ya-like-a-sister": [
+    "Love Ya Like A Sister",
+    "\"Love Ya Like A Sister\",sans-serif"
+  ],
+  "google-loved-by-the-king": [
+    "Loved by the King",
+    "\"Loved by the King\",cursive"
+  ],
+  "google-lovers-quarrel": [
+    "Lovers Quarrel",
+    "\"Lovers Quarrel\",cursive"
+  ],
+  "google-luckiest-guy": [
+    "Luckiest Guy",
+    "\"Luckiest Guy\",sans-serif"
+  ],
+  "google-lugrasimo": [
+    "Lugrasimo",
+    "\"Lugrasimo\",cursive"
+  ],
+  "google-lumanosimo": [
+    "Lumanosimo",
+    "\"Lumanosimo\",cursive"
+  ],
+  "google-lunasima": [
+    "Lunasima",
+    "\"Lunasima\",sans-serif"
+  ],
+  "google-lusitana": [
+    "Lusitana",
+    "\"Lusitana\",serif"
+  ],
+  "google-lustria": [
+    "Lustria",
+    "\"Lustria\",serif"
+  ],
+  "google-luxurious-roman": [
+    "Luxurious Roman",
+    "\"Luxurious Roman\",sans-serif"
+  ],
+  "google-luxurious-script": [
+    "Luxurious Script",
+    "\"Luxurious Script\",cursive"
+  ],
+  "google-m-plus-1": [
+    "M PLUS 1",
+    "\"M PLUS 1\",sans-serif"
+  ],
+  "google-m-plus-1-code": [
+    "M PLUS 1 Code",
+    "\"M PLUS 1 Code\",monospace"
+  ],
+  "google-m-plus-1p": [
+    "M PLUS 1p",
+    "\"M PLUS 1p\",sans-serif"
+  ],
+  "google-m-plus-2": [
+    "M PLUS 2",
+    "\"M PLUS 2\",sans-serif"
+  ],
+  "google-m-plus-code-latin": [
+    "M PLUS Code Latin",
+    "\"M PLUS Code Latin\",sans-serif"
+  ],
+  "google-m-plus-rounded-1c": [
+    "M PLUS Rounded 1c",
+    "\"M PLUS Rounded 1c\",sans-serif"
+  ],
+  "google-m-plus-u": [
+    "M PLUS U",
+    "\"M PLUS U\",sans-serif"
+  ],
+  "google-ma-shan-zheng": [
+    "Ma Shan Zheng",
+    "\"Ma Shan Zheng\",cursive"
+  ],
+  "google-macondo": [
+    "Macondo",
+    "\"Macondo\",sans-serif"
+  ],
+  "google-macondo-swash-caps": [
+    "Macondo Swash Caps",
+    "\"Macondo Swash Caps\",sans-serif"
+  ],
+  "google-mada": [
+    "Mada",
+    "\"Mada\",sans-serif"
+  ],
+  "google-madimi-one": [
+    "Madimi One",
+    "\"Madimi One\",sans-serif"
+  ],
+  "google-magra": [
+    "Magra",
+    "\"Magra\",sans-serif"
+  ],
+  "google-maiden-orange": [
+    "Maiden Orange",
+    "\"Maiden Orange\",serif"
+  ],
+  "google-maitree": [
+    "Maitree",
+    "\"Maitree\",serif"
+  ],
+  "google-major-mono-display": [
+    "Major Mono Display",
+    "\"Major Mono Display\",monospace"
+  ],
+  "google-mako": [
+    "Mako",
+    "\"Mako\",sans-serif"
+  ],
+  "google-mali": [
+    "Mali",
+    "\"Mali\",cursive"
+  ],
+  "google-mallanna": [
+    "Mallanna",
+    "\"Mallanna\",sans-serif"
+  ],
+  "google-maname": [
+    "Maname",
+    "\"Maname\",serif"
+  ],
+  "google-mandali": [
+    "Mandali",
+    "\"Mandali\",sans-serif"
+  ],
+  "google-manjari": [
+    "Manjari",
+    "\"Manjari\",sans-serif"
+  ],
+  "google-manrope": [
+    "Manrope",
+    "\"Manrope\",sans-serif"
+  ],
+  "google-mansalva": [
+    "Mansalva",
+    "\"Mansalva\",cursive"
+  ],
+  "google-manuale": [
+    "Manuale",
+    "\"Manuale\",serif"
+  ],
+  "google-manufacturing-consent": [
+    "Manufacturing Consent",
+    "\"Manufacturing Consent\",sans-serif"
+  ],
+  "google-marcellus": [
+    "Marcellus",
+    "\"Marcellus\",serif"
+  ],
+  "google-marcellus-sc": [
+    "Marcellus SC",
+    "\"Marcellus SC\",serif"
+  ],
+  "google-marck-script": [
+    "Marck Script",
+    "\"Marck Script\",cursive"
+  ],
+  "google-margarine": [
+    "Margarine",
+    "\"Margarine\",sans-serif"
+  ],
+  "google-marhey": [
+    "Marhey",
+    "\"Marhey\",sans-serif"
+  ],
+  "google-markazi-text": [
+    "Markazi Text",
+    "\"Markazi Text\",serif"
+  ],
+  "google-marko-one": [
+    "Marko One",
+    "\"Marko One\",serif"
+  ],
+  "google-marmelad": [
+    "Marmelad",
+    "\"Marmelad\",sans-serif"
+  ],
+  "google-martel": [
+    "Martel",
+    "\"Martel\",serif"
+  ],
+  "google-martel-sans": [
+    "Martel Sans",
+    "\"Martel Sans\",sans-serif"
+  ],
+  "google-martian-mono": [
+    "Martian Mono",
+    "\"Martian Mono\",monospace"
+  ],
+  "google-marvel": [
+    "Marvel",
+    "\"Marvel\",sans-serif"
+  ],
+  "google-matangi": [
+    "Matangi",
+    "\"Matangi\",sans-serif"
+  ],
+  "google-mate": [
+    "Mate",
+    "\"Mate\",serif"
+  ],
+  "google-mate-sc": [
+    "Mate SC",
+    "\"Mate SC\",serif"
+  ],
+  "google-matemasie": [
+    "Matemasie",
+    "\"Matemasie\",sans-serif"
+  ],
+  "google-maven-pro": [
+    "Maven Pro",
+    "\"Maven Pro\",sans-serif"
+  ],
+  "google-mclaren": [
+    "McLaren",
+    "\"McLaren\",sans-serif"
+  ],
+  "google-mea-culpa": [
+    "Mea Culpa",
+    "\"Mea Culpa\",cursive"
+  ],
+  "google-meddon": [
+    "Meddon",
+    "\"Meddon\",cursive"
+  ],
+  "google-medievalsharp": [
+    "MedievalSharp",
+    "\"MedievalSharp\",sans-serif"
+  ],
+  "google-medula-one": [
+    "Medula One",
+    "\"Medula One\",sans-serif"
+  ],
+  "google-meera-inimai": [
+    "Meera Inimai",
+    "\"Meera Inimai\",sans-serif"
+  ],
+  "google-megrim": [
+    "Megrim",
+    "\"Megrim\",sans-serif"
+  ],
+  "google-meie-script": [
+    "Meie Script",
+    "\"Meie Script\",cursive"
+  ],
+  "google-menbere": [
+    "Menbere",
+    "\"Menbere\",sans-serif"
+  ],
+  "google-meow-script": [
+    "Meow Script",
+    "\"Meow Script\",cursive"
+  ],
+  "google-merienda": [
+    "Merienda",
+    "\"Merienda\",cursive"
+  ],
+  "google-merriweather": [
+    "Merriweather",
+    "\"Merriweather\",serif"
+  ],
+  "google-merriweather-sans": [
+    "Merriweather Sans",
+    "\"Merriweather Sans\",sans-serif"
+  ],
+  "google-metal": [
+    "Metal",
+    "\"Metal\",sans-serif"
+  ],
+  "google-metal-mania": [
+    "Metal Mania",
+    "\"Metal Mania\",sans-serif"
+  ],
+  "google-metamorphous": [
+    "Metamorphous",
+    "\"Metamorphous\",sans-serif"
+  ],
+  "google-metrophobic": [
+    "Metrophobic",
+    "\"Metrophobic\",sans-serif"
+  ],
+  "google-michroma": [
+    "Michroma",
+    "\"Michroma\",sans-serif"
+  ],
+  "google-micro-5": [
+    "Micro 5",
+    "\"Micro 5\",sans-serif"
+  ],
+  "google-micro-5-charted": [
+    "Micro 5 Charted",
+    "\"Micro 5 Charted\",sans-serif"
+  ],
+  "google-milonga": [
+    "Milonga",
+    "\"Milonga\",sans-serif"
+  ],
+  "google-miltonian": [
+    "Miltonian",
+    "\"Miltonian\",sans-serif"
+  ],
+  "google-miltonian-tattoo": [
+    "Miltonian Tattoo",
+    "\"Miltonian Tattoo\",sans-serif"
+  ],
+  "google-mina": [
+    "Mina",
+    "\"Mina\",sans-serif"
+  ],
+  "google-mingzat": [
+    "Mingzat",
+    "\"Mingzat\",sans-serif"
+  ],
+  "google-miniver": [
+    "Miniver",
+    "\"Miniver\",sans-serif"
+  ],
+  "google-miranda-sans": [
+    "Miranda Sans",
+    "\"Miranda Sans\",sans-serif"
+  ],
+  "google-miriam-libre": [
+    "Miriam Libre",
+    "\"Miriam Libre\",sans-serif"
+  ],
+  "google-mirza": [
+    "Mirza",
+    "\"Mirza\",serif"
+  ],
+  "google-miss-fajardose": [
+    "Miss Fajardose",
+    "\"Miss Fajardose\",cursive"
+  ],
+  "google-mitr": [
+    "Mitr",
+    "\"Mitr\",sans-serif"
+  ],
+  "google-mochiy-pop-one": [
+    "Mochiy Pop One",
+    "\"Mochiy Pop One\",sans-serif"
+  ],
+  "google-mochiy-pop-p-one": [
+    "Mochiy Pop P One",
+    "\"Mochiy Pop P One\",sans-serif"
+  ],
+  "google-modak": [
+    "Modak",
+    "\"Modak\",sans-serif"
+  ],
+  "google-modern-antiqua": [
+    "Modern Antiqua",
+    "\"Modern Antiqua\",sans-serif"
+  ],
+  "google-moderustic": [
+    "Moderustic",
+    "\"Moderustic\",sans-serif"
+  ],
+  "google-mogra": [
+    "Mogra",
+    "\"Mogra\",sans-serif"
+  ],
+  "google-mohave": [
+    "Mohave",
+    "\"Mohave\",sans-serif"
+  ],
+  "google-moirai-one": [
+    "Moirai One",
+    "\"Moirai One\",sans-serif"
+  ],
+  "google-molengo": [
+    "Molengo",
+    "\"Molengo\",sans-serif"
+  ],
+  "google-molle": [
+    "Molle",
+    "\"Molle\",cursive"
+  ],
+  "google-momo-signature": [
+    "Momo Signature",
+    "\"Momo Signature\",sans-serif"
+  ],
+  "google-momo-trust-display": [
+    "Momo Trust Display",
+    "\"Momo Trust Display\",sans-serif"
+  ],
+  "google-momo-trust-sans": [
+    "Momo Trust Sans",
+    "\"Momo Trust Sans\",sans-serif"
+  ],
+  "google-mona-sans": [
+    "Mona Sans",
+    "\"Mona Sans\",sans-serif"
+  ],
+  "google-monda": [
+    "Monda",
+    "\"Monda\",sans-serif"
+  ],
+  "google-monofett": [
+    "Monofett",
+    "\"Monofett\",monospace"
+  ],
+  "google-monomakh": [
+    "Monomakh",
+    "\"Monomakh\",sans-serif"
+  ],
+  "google-monomaniac-one": [
+    "Monomaniac One",
+    "\"Monomaniac One\",sans-serif"
+  ],
+  "google-monoton": [
+    "Monoton",
+    "\"Monoton\",sans-serif"
+  ],
+  "google-monsieur-la-doulaise": [
+    "Monsieur La Doulaise",
+    "\"Monsieur La Doulaise\",cursive"
+  ],
+  "google-montaga": [
+    "Montaga",
+    "\"Montaga\",serif"
+  ],
+  "google-montagu-slab": [
+    "Montagu Slab",
+    "\"Montagu Slab\",serif"
+  ],
+  "google-montecarlo": [
+    "MonteCarlo",
+    "\"MonteCarlo\",cursive"
+  ],
+  "google-montenegrin-gothic-one": [
+    "Montenegrin Gothic One",
+    "\"Montenegrin Gothic One\",serif"
+  ],
+  "google-montez": [
+    "Montez",
+    "\"Montez\",cursive"
+  ],
+  "google-montserrat": [
+    "Montserrat",
+    "\"Montserrat\",sans-serif"
+  ],
+  "google-montserrat-alternates": [
+    "Montserrat Alternates",
+    "\"Montserrat Alternates\",sans-serif"
+  ],
+  "google-montserrat-underline": [
+    "Montserrat Underline",
+    "\"Montserrat Underline\",sans-serif"
+  ],
+  "google-moo-lah-lah": [
+    "Moo Lah Lah",
+    "\"Moo Lah Lah\",sans-serif"
+  ],
+  "google-mooli": [
+    "Mooli",
+    "\"Mooli\",sans-serif"
+  ],
+  "google-moon-dance": [
+    "Moon Dance",
+    "\"Moon Dance\",cursive"
+  ],
+  "google-moul": [
+    "Moul",
+    "\"Moul\",sans-serif"
+  ],
+  "google-moulpali": [
+    "Moulpali",
+    "\"Moulpali\",sans-serif"
+  ],
+  "google-mountains-of-christmas": [
+    "Mountains of Christmas",
+    "\"Mountains of Christmas\",sans-serif"
+  ],
+  "google-mouse-memoirs": [
+    "Mouse Memoirs",
+    "\"Mouse Memoirs\",sans-serif"
+  ],
+  "google-mozilla-headline": [
+    "Mozilla Headline",
+    "\"Mozilla Headline\",sans-serif"
+  ],
+  "google-mozilla-text": [
+    "Mozilla Text",
+    "\"Mozilla Text\",sans-serif"
+  ],
+  "google-mr-bedfort": [
+    "Mr Bedfort",
+    "\"Mr Bedfort\",cursive"
+  ],
+  "google-mr-dafoe": [
+    "Mr Dafoe",
+    "\"Mr Dafoe\",cursive"
+  ],
+  "google-mr-de-haviland": [
+    "Mr De Haviland",
+    "\"Mr De Haviland\",cursive"
+  ],
+  "google-mrs-saint-delafield": [
+    "Mrs Saint Delafield",
+    "\"Mrs Saint Delafield\",cursive"
+  ],
+  "google-mrs-sheppards": [
+    "Mrs Sheppards",
+    "\"Mrs Sheppards\",cursive"
+  ],
+  "google-ms-madi": [
+    "Ms Madi",
+    "\"Ms Madi\",cursive"
+  ],
+  "google-mukta": [
+    "Mukta",
+    "\"Mukta\",sans-serif"
+  ],
+  "google-mukta-mahee": [
+    "Mukta Mahee",
+    "\"Mukta Mahee\",sans-serif"
+  ],
+  "google-mukta-malar": [
+    "Mukta Malar",
+    "\"Mukta Malar\",sans-serif"
+  ],
+  "google-mukta-vaani": [
+    "Mukta Vaani",
+    "\"Mukta Vaani\",sans-serif"
+  ],
+  "google-mulish": [
+    "Mulish",
+    "\"Mulish\",sans-serif"
+  ],
+  "google-murecho": [
+    "Murecho",
+    "\"Murecho\",sans-serif"
+  ],
+  "google-museomoderno": [
+    "MuseoModerno",
+    "\"MuseoModerno\",sans-serif"
+  ],
+  "google-my-soul": [
+    "My Soul",
+    "\"My Soul\",cursive"
+  ],
+  "google-mynerve": [
+    "Mynerve",
+    "\"Mynerve\",cursive"
+  ],
+  "google-mystery-quest": [
+    "Mystery Quest",
+    "\"Mystery Quest\",sans-serif"
+  ],
+  "google-ntr": [
+    "NTR",
+    "\"NTR\",sans-serif"
+  ],
+  "google-nabla": [
+    "Nabla",
+    "\"Nabla\",sans-serif"
+  ],
+  "google-namdhinggo": [
+    "Namdhinggo",
+    "\"Namdhinggo\",serif"
+  ],
+  "google-nanum-brush-script": [
+    "Nanum Brush Script",
+    "\"Nanum Brush Script\",cursive"
+  ],
+  "google-nanum-gothic": [
+    "Nanum Gothic",
+    "\"Nanum Gothic\",sans-serif"
+  ],
+  "google-nanum-gothic-coding": [
+    "Nanum Gothic Coding",
+    "\"Nanum Gothic Coding\",cursive"
+  ],
+  "google-nanum-myeongjo": [
+    "Nanum Myeongjo",
+    "\"Nanum Myeongjo\",serif"
+  ],
+  "google-nanum-pen-script": [
+    "Nanum Pen Script",
+    "\"Nanum Pen Script\",cursive"
+  ],
+  "google-narnoor": [
+    "Narnoor",
+    "\"Narnoor\",sans-serif"
+  ],
+  "google-nata-sans": [
+    "Nata Sans",
+    "\"Nata Sans\",sans-serif"
+  ],
+  "google-national-park": [
+    "National Park",
+    "\"National Park\",sans-serif"
+  ],
+  "google-neonderthaw": [
+    "Neonderthaw",
+    "\"Neonderthaw\",cursive"
+  ],
+  "google-nerko-one": [
+    "Nerko One",
+    "\"Nerko One\",cursive"
+  ],
+  "google-neucha": [
+    "Neucha",
+    "\"Neucha\",cursive"
+  ],
+  "google-neuton": [
+    "Neuton",
+    "\"Neuton\",serif"
+  ],
+  "google-new-amsterdam": [
+    "New Amsterdam",
+    "\"New Amsterdam\",sans-serif"
+  ],
+  "google-new-rocker": [
+    "New Rocker",
+    "\"New Rocker\",sans-serif"
+  ],
+  "google-new-tegomin": [
+    "New Tegomin",
+    "\"New Tegomin\",serif"
+  ],
+  "google-news-cycle": [
+    "News Cycle",
+    "\"News Cycle\",sans-serif"
+  ],
+  "google-newsreader": [
+    "Newsreader",
+    "\"Newsreader\",serif"
+  ],
+  "google-niconne": [
+    "Niconne",
+    "\"Niconne\",cursive"
+  ],
+  "google-niramit": [
+    "Niramit",
+    "\"Niramit\",sans-serif"
+  ],
+  "google-nixie-one": [
+    "Nixie One",
+    "\"Nixie One\",sans-serif"
+  ],
+  "google-nobile": [
+    "Nobile",
+    "\"Nobile\",sans-serif"
+  ],
+  "google-nokora": [
+    "Nokora",
+    "\"Nokora\",sans-serif"
+  ],
+  "google-norican": [
+    "Norican",
+    "\"Norican\",cursive"
+  ],
+  "google-nosifer": [
+    "Nosifer",
+    "\"Nosifer\",sans-serif"
+  ],
+  "google-notable": [
+    "Notable",
+    "\"Notable\",sans-serif"
+  ],
+  "google-nothing-you-could-do": [
+    "Nothing You Could Do",
+    "\"Nothing You Could Do\",cursive"
+  ],
+  "google-noticia-text": [
+    "Noticia Text",
+    "\"Noticia Text\",serif"
+  ],
+  "google-noto-color-emoji": [
+    "Noto Color Emoji",
+    "\"Noto Color Emoji\",sans-serif"
+  ],
+  "google-noto-emoji": [
+    "Noto Emoji",
+    "\"Noto Emoji\",sans-serif"
+  ],
+  "google-noto-kufi-arabic": [
+    "Noto Kufi Arabic",
+    "\"Noto Kufi Arabic\",sans-serif"
+  ],
+  "google-noto-music": [
+    "Noto Music",
+    "\"Noto Music\",sans-serif"
+  ],
+  "google-noto-naskh-arabic": [
+    "Noto Naskh Arabic",
+    "\"Noto Naskh Arabic\",serif"
+  ],
+  "google-noto-nastaliq-urdu": [
+    "Noto Nastaliq Urdu",
+    "\"Noto Nastaliq Urdu\",serif"
+  ],
+  "google-noto-rashi-hebrew": [
+    "Noto Rashi Hebrew",
+    "\"Noto Rashi Hebrew\",serif"
+  ],
+  "google-noto-sans": [
+    "Noto Sans",
+    "\"Noto Sans\",sans-serif"
+  ],
+  "google-noto-sans-adlam": [
+    "Noto Sans Adlam",
+    "\"Noto Sans Adlam\",sans-serif"
+  ],
+  "google-noto-sans-adlam-unjoined": [
+    "Noto Sans Adlam Unjoined",
+    "\"Noto Sans Adlam Unjoined\",sans-serif"
+  ],
+  "google-noto-sans-anatolian-hieroglyphs": [
+    "Noto Sans Anatolian Hieroglyphs",
+    "\"Noto Sans Anatolian Hieroglyphs\",sans-serif"
+  ],
+  "google-noto-sans-arabic": [
+    "Noto Sans Arabic",
+    "\"Noto Sans Arabic\",sans-serif"
+  ],
+  "google-noto-sans-armenian": [
+    "Noto Sans Armenian",
+    "\"Noto Sans Armenian\",sans-serif"
+  ],
+  "google-noto-sans-avestan": [
+    "Noto Sans Avestan",
+    "\"Noto Sans Avestan\",sans-serif"
+  ],
+  "google-noto-sans-balinese": [
+    "Noto Sans Balinese",
+    "\"Noto Sans Balinese\",sans-serif"
+  ],
+  "google-noto-sans-bamum": [
+    "Noto Sans Bamum",
+    "\"Noto Sans Bamum\",sans-serif"
+  ],
+  "google-noto-sans-bassa-vah": [
+    "Noto Sans Bassa Vah",
+    "\"Noto Sans Bassa Vah\",sans-serif"
+  ],
+  "google-noto-sans-batak": [
+    "Noto Sans Batak",
+    "\"Noto Sans Batak\",sans-serif"
+  ],
+  "google-noto-sans-bengali": [
+    "Noto Sans Bengali",
+    "\"Noto Sans Bengali\",sans-serif"
+  ],
+  "google-noto-sans-bhaiksuki": [
+    "Noto Sans Bhaiksuki",
+    "\"Noto Sans Bhaiksuki\",sans-serif"
+  ],
+  "google-noto-sans-brahmi": [
+    "Noto Sans Brahmi",
+    "\"Noto Sans Brahmi\",sans-serif"
+  ],
+  "google-noto-sans-buginese": [
+    "Noto Sans Buginese",
+    "\"Noto Sans Buginese\",sans-serif"
+  ],
+  "google-noto-sans-buhid": [
+    "Noto Sans Buhid",
+    "\"Noto Sans Buhid\",sans-serif"
+  ],
+  "google-noto-sans-canadian-aboriginal": [
+    "Noto Sans Canadian Aboriginal",
+    "\"Noto Sans Canadian Aboriginal\",sans-serif"
+  ],
+  "google-noto-sans-carian": [
+    "Noto Sans Carian",
+    "\"Noto Sans Carian\",sans-serif"
+  ],
+  "google-noto-sans-caucasian-albanian": [
+    "Noto Sans Caucasian Albanian",
+    "\"Noto Sans Caucasian Albanian\",sans-serif"
+  ],
+  "google-noto-sans-chakma": [
+    "Noto Sans Chakma",
+    "\"Noto Sans Chakma\",sans-serif"
+  ],
+  "google-noto-sans-cham": [
+    "Noto Sans Cham",
+    "\"Noto Sans Cham\",sans-serif"
+  ],
+  "google-noto-sans-cherokee": [
+    "Noto Sans Cherokee",
+    "\"Noto Sans Cherokee\",sans-serif"
+  ],
+  "google-noto-sans-chorasmian": [
+    "Noto Sans Chorasmian",
+    "\"Noto Sans Chorasmian\",sans-serif"
+  ],
+  "google-noto-sans-coptic": [
+    "Noto Sans Coptic",
+    "\"Noto Sans Coptic\",sans-serif"
+  ],
+  "google-noto-sans-cuneiform": [
+    "Noto Sans Cuneiform",
+    "\"Noto Sans Cuneiform\",sans-serif"
+  ],
+  "google-noto-sans-cypriot": [
+    "Noto Sans Cypriot",
+    "\"Noto Sans Cypriot\",sans-serif"
+  ],
+  "google-noto-sans-cypro-minoan": [
+    "Noto Sans Cypro Minoan",
+    "\"Noto Sans Cypro Minoan\",sans-serif"
+  ],
+  "google-noto-sans-deseret": [
+    "Noto Sans Deseret",
+    "\"Noto Sans Deseret\",sans-serif"
+  ],
+  "google-noto-sans-devanagari": [
+    "Noto Sans Devanagari",
+    "\"Noto Sans Devanagari\",sans-serif"
+  ],
+  "google-noto-sans-display": [
+    "Noto Sans Display",
+    "\"Noto Sans Display\",sans-serif"
+  ],
+  "google-noto-sans-duployan": [
+    "Noto Sans Duployan",
+    "\"Noto Sans Duployan\",sans-serif"
+  ],
+  "google-noto-sans-egyptian-hieroglyphs": [
+    "Noto Sans Egyptian Hieroglyphs",
+    "\"Noto Sans Egyptian Hieroglyphs\",sans-serif"
+  ],
+  "google-noto-sans-elbasan": [
+    "Noto Sans Elbasan",
+    "\"Noto Sans Elbasan\",sans-serif"
+  ],
+  "google-noto-sans-elymaic": [
+    "Noto Sans Elymaic",
+    "\"Noto Sans Elymaic\",sans-serif"
+  ],
+  "google-noto-sans-ethiopic": [
+    "Noto Sans Ethiopic",
+    "\"Noto Sans Ethiopic\",sans-serif"
+  ],
+  "google-noto-sans-georgian": [
+    "Noto Sans Georgian",
+    "\"Noto Sans Georgian\",sans-serif"
+  ],
+  "google-noto-sans-glagolitic": [
+    "Noto Sans Glagolitic",
+    "\"Noto Sans Glagolitic\",sans-serif"
+  ],
+  "google-noto-sans-gothic": [
+    "Noto Sans Gothic",
+    "\"Noto Sans Gothic\",sans-serif"
+  ],
+  "google-noto-sans-grantha": [
+    "Noto Sans Grantha",
+    "\"Noto Sans Grantha\",sans-serif"
+  ],
+  "google-noto-sans-gujarati": [
+    "Noto Sans Gujarati",
+    "\"Noto Sans Gujarati\",sans-serif"
+  ],
+  "google-noto-sans-gunjala-gondi": [
+    "Noto Sans Gunjala Gondi",
+    "\"Noto Sans Gunjala Gondi\",sans-serif"
+  ],
+  "google-noto-sans-gurmukhi": [
+    "Noto Sans Gurmukhi",
+    "\"Noto Sans Gurmukhi\",sans-serif"
+  ],
+  "google-noto-sans-hk": [
+    "Noto Sans HK",
+    "\"Noto Sans HK\",sans-serif"
+  ],
+  "google-noto-sans-hanifi-rohingya": [
+    "Noto Sans Hanifi Rohingya",
+    "\"Noto Sans Hanifi Rohingya\",sans-serif"
+  ],
+  "google-noto-sans-hanunoo": [
+    "Noto Sans Hanunoo",
+    "\"Noto Sans Hanunoo\",sans-serif"
+  ],
+  "google-noto-sans-hatran": [
+    "Noto Sans Hatran",
+    "\"Noto Sans Hatran\",sans-serif"
+  ],
+  "google-noto-sans-hebrew": [
+    "Noto Sans Hebrew",
+    "\"Noto Sans Hebrew\",sans-serif"
+  ],
+  "google-noto-sans-imperial-aramaic": [
+    "Noto Sans Imperial Aramaic",
+    "\"Noto Sans Imperial Aramaic\",sans-serif"
+  ],
+  "google-noto-sans-indic-siyaq-numbers": [
+    "Noto Sans Indic Siyaq Numbers",
+    "\"Noto Sans Indic Siyaq Numbers\",sans-serif"
+  ],
+  "google-noto-sans-inscriptional-pahlavi": [
+    "Noto Sans Inscriptional Pahlavi",
+    "\"Noto Sans Inscriptional Pahlavi\",sans-serif"
+  ],
+  "google-noto-sans-inscriptional-parthian": [
+    "Noto Sans Inscriptional Parthian",
+    "\"Noto Sans Inscriptional Parthian\",sans-serif"
+  ],
+  "google-noto-sans-jp": [
+    "Noto Sans JP",
+    "\"Noto Sans JP\",sans-serif"
+  ],
+  "google-noto-sans-javanese": [
+    "Noto Sans Javanese",
+    "\"Noto Sans Javanese\",sans-serif"
+  ],
+  "google-noto-sans-kr": [
+    "Noto Sans KR",
+    "\"Noto Sans KR\",sans-serif"
+  ],
+  "google-noto-sans-kaithi": [
+    "Noto Sans Kaithi",
+    "\"Noto Sans Kaithi\",sans-serif"
+  ],
+  "google-noto-sans-kannada": [
+    "Noto Sans Kannada",
+    "\"Noto Sans Kannada\",sans-serif"
+  ],
+  "google-noto-sans-kawi": [
+    "Noto Sans Kawi",
+    "\"Noto Sans Kawi\",sans-serif"
+  ],
+  "google-noto-sans-kayah-li": [
+    "Noto Sans Kayah Li",
+    "\"Noto Sans Kayah Li\",sans-serif"
+  ],
+  "google-noto-sans-kharoshthi": [
+    "Noto Sans Kharoshthi",
+    "\"Noto Sans Kharoshthi\",sans-serif"
+  ],
+  "google-noto-sans-khmer": [
+    "Noto Sans Khmer",
+    "\"Noto Sans Khmer\",sans-serif"
+  ],
+  "google-noto-sans-khojki": [
+    "Noto Sans Khojki",
+    "\"Noto Sans Khojki\",sans-serif"
+  ],
+  "google-noto-sans-khudawadi": [
+    "Noto Sans Khudawadi",
+    "\"Noto Sans Khudawadi\",sans-serif"
+  ],
+  "google-noto-sans-lao": [
+    "Noto Sans Lao",
+    "\"Noto Sans Lao\",sans-serif"
+  ],
+  "google-noto-sans-lao-looped": [
+    "Noto Sans Lao Looped",
+    "\"Noto Sans Lao Looped\",sans-serif"
+  ],
+  "google-noto-sans-lepcha": [
+    "Noto Sans Lepcha",
+    "\"Noto Sans Lepcha\",sans-serif"
+  ],
+  "google-noto-sans-limbu": [
+    "Noto Sans Limbu",
+    "\"Noto Sans Limbu\",sans-serif"
+  ],
+  "google-noto-sans-linear-a": [
+    "Noto Sans Linear A",
+    "\"Noto Sans Linear A\",sans-serif"
+  ],
+  "google-noto-sans-linear-b": [
+    "Noto Sans Linear B",
+    "\"Noto Sans Linear B\",sans-serif"
+  ],
+  "google-noto-sans-lisu": [
+    "Noto Sans Lisu",
+    "\"Noto Sans Lisu\",sans-serif"
+  ],
+  "google-noto-sans-lycian": [
+    "Noto Sans Lycian",
+    "\"Noto Sans Lycian\",sans-serif"
+  ],
+  "google-noto-sans-lydian": [
+    "Noto Sans Lydian",
+    "\"Noto Sans Lydian\",sans-serif"
+  ],
+  "google-noto-sans-mahajani": [
+    "Noto Sans Mahajani",
+    "\"Noto Sans Mahajani\",sans-serif"
+  ],
+  "google-noto-sans-malayalam": [
+    "Noto Sans Malayalam",
+    "\"Noto Sans Malayalam\",sans-serif"
+  ],
+  "google-noto-sans-mandaic": [
+    "Noto Sans Mandaic",
+    "\"Noto Sans Mandaic\",sans-serif"
+  ],
+  "google-noto-sans-manichaean": [
+    "Noto Sans Manichaean",
+    "\"Noto Sans Manichaean\",sans-serif"
+  ],
+  "google-noto-sans-marchen": [
+    "Noto Sans Marchen",
+    "\"Noto Sans Marchen\",sans-serif"
+  ],
+  "google-noto-sans-masaram-gondi": [
+    "Noto Sans Masaram Gondi",
+    "\"Noto Sans Masaram Gondi\",sans-serif"
+  ],
+  "google-noto-sans-math": [
+    "Noto Sans Math",
+    "\"Noto Sans Math\",sans-serif"
+  ],
+  "google-noto-sans-mayan-numerals": [
+    "Noto Sans Mayan Numerals",
+    "\"Noto Sans Mayan Numerals\",sans-serif"
+  ],
+  "google-noto-sans-medefaidrin": [
+    "Noto Sans Medefaidrin",
+    "\"Noto Sans Medefaidrin\",sans-serif"
+  ],
+  "google-noto-sans-meetei-mayek": [
+    "Noto Sans Meetei Mayek",
+    "\"Noto Sans Meetei Mayek\",sans-serif"
+  ],
+  "google-noto-sans-mende-kikakui": [
+    "Noto Sans Mende Kikakui",
+    "\"Noto Sans Mende Kikakui\",sans-serif"
+  ],
+  "google-noto-sans-meroitic": [
+    "Noto Sans Meroitic",
+    "\"Noto Sans Meroitic\",sans-serif"
+  ],
+  "google-noto-sans-miao": [
+    "Noto Sans Miao",
+    "\"Noto Sans Miao\",sans-serif"
+  ],
+  "google-noto-sans-modi": [
+    "Noto Sans Modi",
+    "\"Noto Sans Modi\",sans-serif"
+  ],
+  "google-noto-sans-mongolian": [
+    "Noto Sans Mongolian",
+    "\"Noto Sans Mongolian\",sans-serif"
+  ],
+  "google-noto-sans-mono": [
+    "Noto Sans Mono",
+    "\"Noto Sans Mono\",sans-serif"
+  ],
+  "google-noto-sans-mro": [
+    "Noto Sans Mro",
+    "\"Noto Sans Mro\",sans-serif"
+  ],
+  "google-noto-sans-multani": [
+    "Noto Sans Multani",
+    "\"Noto Sans Multani\",sans-serif"
+  ],
+  "google-noto-sans-myanmar": [
+    "Noto Sans Myanmar",
+    "\"Noto Sans Myanmar\",sans-serif"
+  ],
+  "google-noto-sans-nko": [
+    "Noto Sans NKo",
+    "\"Noto Sans NKo\",sans-serif"
+  ],
+  "google-noto-sans-nko-unjoined": [
+    "Noto Sans NKo Unjoined",
+    "\"Noto Sans NKo Unjoined\",sans-serif"
+  ],
+  "google-noto-sans-nabataean": [
+    "Noto Sans Nabataean",
+    "\"Noto Sans Nabataean\",sans-serif"
+  ],
+  "google-noto-sans-nag-mundari": [
+    "Noto Sans Nag Mundari",
+    "\"Noto Sans Nag Mundari\",sans-serif"
+  ],
+  "google-noto-sans-nandinagari": [
+    "Noto Sans Nandinagari",
+    "\"Noto Sans Nandinagari\",sans-serif"
+  ],
+  "google-noto-sans-new-tai-lue": [
+    "Noto Sans New Tai Lue",
+    "\"Noto Sans New Tai Lue\",sans-serif"
+  ],
+  "google-noto-sans-newa": [
+    "Noto Sans Newa",
+    "\"Noto Sans Newa\",sans-serif"
+  ],
+  "google-noto-sans-nushu": [
+    "Noto Sans Nushu",
+    "\"Noto Sans Nushu\",sans-serif"
+  ],
+  "google-noto-sans-ogham": [
+    "Noto Sans Ogham",
+    "\"Noto Sans Ogham\",sans-serif"
+  ],
+  "google-noto-sans-ol-chiki": [
+    "Noto Sans Ol Chiki",
+    "\"Noto Sans Ol Chiki\",sans-serif"
+  ],
+  "google-noto-sans-old-hungarian": [
+    "Noto Sans Old Hungarian",
+    "\"Noto Sans Old Hungarian\",sans-serif"
+  ],
+  "google-noto-sans-old-italic": [
+    "Noto Sans Old Italic",
+    "\"Noto Sans Old Italic\",sans-serif"
+  ],
+  "google-noto-sans-old-north-arabian": [
+    "Noto Sans Old North Arabian",
+    "\"Noto Sans Old North Arabian\",sans-serif"
+  ],
+  "google-noto-sans-old-permic": [
+    "Noto Sans Old Permic",
+    "\"Noto Sans Old Permic\",sans-serif"
+  ],
+  "google-noto-sans-old-persian": [
+    "Noto Sans Old Persian",
+    "\"Noto Sans Old Persian\",sans-serif"
+  ],
+  "google-noto-sans-old-sogdian": [
+    "Noto Sans Old Sogdian",
+    "\"Noto Sans Old Sogdian\",sans-serif"
+  ],
+  "google-noto-sans-old-south-arabian": [
+    "Noto Sans Old South Arabian",
+    "\"Noto Sans Old South Arabian\",sans-serif"
+  ],
+  "google-noto-sans-old-turkic": [
+    "Noto Sans Old Turkic",
+    "\"Noto Sans Old Turkic\",sans-serif"
+  ],
+  "google-noto-sans-oriya": [
+    "Noto Sans Oriya",
+    "\"Noto Sans Oriya\",sans-serif"
+  ],
+  "google-noto-sans-osage": [
+    "Noto Sans Osage",
+    "\"Noto Sans Osage\",sans-serif"
+  ],
+  "google-noto-sans-osmanya": [
+    "Noto Sans Osmanya",
+    "\"Noto Sans Osmanya\",sans-serif"
+  ],
+  "google-noto-sans-pahawh-hmong": [
+    "Noto Sans Pahawh Hmong",
+    "\"Noto Sans Pahawh Hmong\",sans-serif"
+  ],
+  "google-noto-sans-palmyrene": [
+    "Noto Sans Palmyrene",
+    "\"Noto Sans Palmyrene\",sans-serif"
+  ],
+  "google-noto-sans-pau-cin-hau": [
+    "Noto Sans Pau Cin Hau",
+    "\"Noto Sans Pau Cin Hau\",sans-serif"
+  ],
+  "google-noto-sans-phagspa": [
+    "Noto Sans PhagsPa",
+    "\"Noto Sans PhagsPa\",sans-serif"
+  ],
+  "google-noto-sans-phoenician": [
+    "Noto Sans Phoenician",
+    "\"Noto Sans Phoenician\",sans-serif"
+  ],
+  "google-noto-sans-psalter-pahlavi": [
+    "Noto Sans Psalter Pahlavi",
+    "\"Noto Sans Psalter Pahlavi\",sans-serif"
+  ],
+  "google-noto-sans-rejang": [
+    "Noto Sans Rejang",
+    "\"Noto Sans Rejang\",sans-serif"
+  ],
+  "google-noto-sans-runic": [
+    "Noto Sans Runic",
+    "\"Noto Sans Runic\",sans-serif"
+  ],
+  "google-noto-sans-sc": [
+    "Noto Sans SC",
+    "\"Noto Sans SC\",sans-serif"
+  ],
+  "google-noto-sans-samaritan": [
+    "Noto Sans Samaritan",
+    "\"Noto Sans Samaritan\",sans-serif"
+  ],
+  "google-noto-sans-saurashtra": [
+    "Noto Sans Saurashtra",
+    "\"Noto Sans Saurashtra\",sans-serif"
+  ],
+  "google-noto-sans-sharada": [
+    "Noto Sans Sharada",
+    "\"Noto Sans Sharada\",sans-serif"
+  ],
+  "google-noto-sans-shavian": [
+    "Noto Sans Shavian",
+    "\"Noto Sans Shavian\",sans-serif"
+  ],
+  "google-noto-sans-siddham": [
+    "Noto Sans Siddham",
+    "\"Noto Sans Siddham\",sans-serif"
+  ],
+  "google-noto-sans-signwriting": [
+    "Noto Sans SignWriting",
+    "\"Noto Sans SignWriting\",sans-serif"
+  ],
+  "google-noto-sans-sinhala": [
+    "Noto Sans Sinhala",
+    "\"Noto Sans Sinhala\",sans-serif"
+  ],
+  "google-noto-sans-sogdian": [
+    "Noto Sans Sogdian",
+    "\"Noto Sans Sogdian\",sans-serif"
+  ],
+  "google-noto-sans-sora-sompeng": [
+    "Noto Sans Sora Sompeng",
+    "\"Noto Sans Sora Sompeng\",sans-serif"
+  ],
+  "google-noto-sans-soyombo": [
+    "Noto Sans Soyombo",
+    "\"Noto Sans Soyombo\",sans-serif"
+  ],
+  "google-noto-sans-sundanese": [
+    "Noto Sans Sundanese",
+    "\"Noto Sans Sundanese\",sans-serif"
+  ],
+  "google-noto-sans-sunuwar": [
+    "Noto Sans Sunuwar",
+    "\"Noto Sans Sunuwar\",sans-serif"
+  ],
+  "google-noto-sans-syloti-nagri": [
+    "Noto Sans Syloti Nagri",
+    "\"Noto Sans Syloti Nagri\",sans-serif"
+  ],
+  "google-noto-sans-symbols": [
+    "Noto Sans Symbols",
+    "\"Noto Sans Symbols\",sans-serif"
+  ],
+  "google-noto-sans-symbols-2": [
+    "Noto Sans Symbols 2",
+    "\"Noto Sans Symbols 2\",sans-serif"
+  ],
+  "google-noto-sans-syriac": [
+    "Noto Sans Syriac",
+    "\"Noto Sans Syriac\",sans-serif"
+  ],
+  "google-noto-sans-syriac-eastern": [
+    "Noto Sans Syriac Eastern",
+    "\"Noto Sans Syriac Eastern\",sans-serif"
+  ],
+  "google-noto-sans-syriac-western": [
+    "Noto Sans Syriac Western",
+    "\"Noto Sans Syriac Western\",sans-serif"
+  ],
+  "google-noto-sans-tc": [
+    "Noto Sans TC",
+    "\"Noto Sans TC\",sans-serif"
+  ],
+  "google-noto-sans-tagalog": [
+    "Noto Sans Tagalog",
+    "\"Noto Sans Tagalog\",sans-serif"
+  ],
+  "google-noto-sans-tagbanwa": [
+    "Noto Sans Tagbanwa",
+    "\"Noto Sans Tagbanwa\",sans-serif"
+  ],
+  "google-noto-sans-tai-le": [
+    "Noto Sans Tai Le",
+    "\"Noto Sans Tai Le\",sans-serif"
+  ],
+  "google-noto-sans-tai-tham": [
+    "Noto Sans Tai Tham",
+    "\"Noto Sans Tai Tham\",sans-serif"
+  ],
+  "google-noto-sans-tai-viet": [
+    "Noto Sans Tai Viet",
+    "\"Noto Sans Tai Viet\",sans-serif"
+  ],
+  "google-noto-sans-takri": [
+    "Noto Sans Takri",
+    "\"Noto Sans Takri\",sans-serif"
+  ],
+  "google-noto-sans-tamil": [
+    "Noto Sans Tamil",
+    "\"Noto Sans Tamil\",sans-serif"
+  ],
+  "google-noto-sans-tamil-supplement": [
+    "Noto Sans Tamil Supplement",
+    "\"Noto Sans Tamil Supplement\",sans-serif"
+  ],
+  "google-noto-sans-tangsa": [
+    "Noto Sans Tangsa",
+    "\"Noto Sans Tangsa\",sans-serif"
+  ],
+  "google-noto-sans-telugu": [
+    "Noto Sans Telugu",
+    "\"Noto Sans Telugu\",sans-serif"
+  ],
+  "google-noto-sans-thaana": [
+    "Noto Sans Thaana",
+    "\"Noto Sans Thaana\",sans-serif"
+  ],
+  "google-noto-sans-thai": [
+    "Noto Sans Thai",
+    "\"Noto Sans Thai\",sans-serif"
+  ],
+  "google-noto-sans-thai-looped": [
+    "Noto Sans Thai Looped",
+    "\"Noto Sans Thai Looped\",sans-serif"
+  ],
+  "google-noto-sans-tifinagh": [
+    "Noto Sans Tifinagh",
+    "\"Noto Sans Tifinagh\",sans-serif"
+  ],
+  "google-noto-sans-tirhuta": [
+    "Noto Sans Tirhuta",
+    "\"Noto Sans Tirhuta\",sans-serif"
+  ],
+  "google-noto-sans-ugaritic": [
+    "Noto Sans Ugaritic",
+    "\"Noto Sans Ugaritic\",sans-serif"
+  ],
+  "google-noto-sans-vai": [
+    "Noto Sans Vai",
+    "\"Noto Sans Vai\",sans-serif"
+  ],
+  "google-noto-sans-vithkuqi": [
+    "Noto Sans Vithkuqi",
+    "\"Noto Sans Vithkuqi\",sans-serif"
+  ],
+  "google-noto-sans-wancho": [
+    "Noto Sans Wancho",
+    "\"Noto Sans Wancho\",sans-serif"
+  ],
+  "google-noto-sans-warang-citi": [
+    "Noto Sans Warang Citi",
+    "\"Noto Sans Warang Citi\",sans-serif"
+  ],
+  "google-noto-sans-yi": [
+    "Noto Sans Yi",
+    "\"Noto Sans Yi\",sans-serif"
+  ],
+  "google-noto-sans-zanabazar-square": [
+    "Noto Sans Zanabazar Square",
+    "\"Noto Sans Zanabazar Square\",sans-serif"
+  ],
+  "google-noto-serif": [
+    "Noto Serif",
+    "\"Noto Serif\",serif"
+  ],
+  "google-noto-serif-ahom": [
+    "Noto Serif Ahom",
+    "\"Noto Serif Ahom\",serif"
+  ],
+  "google-noto-serif-armenian": [
+    "Noto Serif Armenian",
+    "\"Noto Serif Armenian\",serif"
+  ],
+  "google-noto-serif-balinese": [
+    "Noto Serif Balinese",
+    "\"Noto Serif Balinese\",serif"
+  ],
+  "google-noto-serif-bengali": [
+    "Noto Serif Bengali",
+    "\"Noto Serif Bengali\",serif"
+  ],
+  "google-noto-serif-devanagari": [
+    "Noto Serif Devanagari",
+    "\"Noto Serif Devanagari\",serif"
+  ],
+  "google-noto-serif-display": [
+    "Noto Serif Display",
+    "\"Noto Serif Display\",serif"
+  ],
+  "google-noto-serif-dives-akuru": [
+    "Noto Serif Dives Akuru",
+    "\"Noto Serif Dives Akuru\",serif"
+  ],
+  "google-noto-serif-dogra": [
+    "Noto Serif Dogra",
+    "\"Noto Serif Dogra\",serif"
+  ],
+  "google-noto-serif-ethiopic": [
+    "Noto Serif Ethiopic",
+    "\"Noto Serif Ethiopic\",serif"
+  ],
+  "google-noto-serif-georgian": [
+    "Noto Serif Georgian",
+    "\"Noto Serif Georgian\",serif"
+  ],
+  "google-noto-serif-grantha": [
+    "Noto Serif Grantha",
+    "\"Noto Serif Grantha\",serif"
+  ],
+  "google-noto-serif-gujarati": [
+    "Noto Serif Gujarati",
+    "\"Noto Serif Gujarati\",serif"
+  ],
+  "google-noto-serif-gurmukhi": [
+    "Noto Serif Gurmukhi",
+    "\"Noto Serif Gurmukhi\",serif"
+  ],
+  "google-noto-serif-hk": [
+    "Noto Serif HK",
+    "\"Noto Serif HK\",serif"
+  ],
+  "google-noto-serif-hebrew": [
+    "Noto Serif Hebrew",
+    "\"Noto Serif Hebrew\",serif"
+  ],
+  "google-noto-serif-hentaigana": [
+    "Noto Serif Hentaigana",
+    "\"Noto Serif Hentaigana\",serif"
+  ],
+  "google-noto-serif-jp": [
+    "Noto Serif JP",
+    "\"Noto Serif JP\",serif"
+  ],
+  "google-noto-serif-kr": [
+    "Noto Serif KR",
+    "\"Noto Serif KR\",serif"
+  ],
+  "google-noto-serif-kannada": [
+    "Noto Serif Kannada",
+    "\"Noto Serif Kannada\",serif"
+  ],
+  "google-noto-serif-khitan-small-script": [
+    "Noto Serif Khitan Small Script",
+    "\"Noto Serif Khitan Small Script\",serif"
+  ],
+  "google-noto-serif-khmer": [
+    "Noto Serif Khmer",
+    "\"Noto Serif Khmer\",serif"
+  ],
+  "google-noto-serif-khojki": [
+    "Noto Serif Khojki",
+    "\"Noto Serif Khojki\",serif"
+  ],
+  "google-noto-serif-lao": [
+    "Noto Serif Lao",
+    "\"Noto Serif Lao\",serif"
+  ],
+  "google-noto-serif-makasar": [
+    "Noto Serif Makasar",
+    "\"Noto Serif Makasar\",serif"
+  ],
+  "google-noto-serif-malayalam": [
+    "Noto Serif Malayalam",
+    "\"Noto Serif Malayalam\",serif"
+  ],
+  "google-noto-serif-myanmar": [
+    "Noto Serif Myanmar",
+    "\"Noto Serif Myanmar\",serif"
+  ],
+  "google-noto-serif-np-hmong": [
+    "Noto Serif NP Hmong",
+    "\"Noto Serif NP Hmong\",serif"
+  ],
+  "google-noto-serif-old-uyghur": [
+    "Noto Serif Old Uyghur",
+    "\"Noto Serif Old Uyghur\",serif"
+  ],
+  "google-noto-serif-oriya": [
+    "Noto Serif Oriya",
+    "\"Noto Serif Oriya\",serif"
+  ],
+  "google-noto-serif-ottoman-siyaq": [
+    "Noto Serif Ottoman Siyaq",
+    "\"Noto Serif Ottoman Siyaq\",serif"
+  ],
+  "google-noto-serif-sc": [
+    "Noto Serif SC",
+    "\"Noto Serif SC\",serif"
+  ],
+  "google-noto-serif-sinhala": [
+    "Noto Serif Sinhala",
+    "\"Noto Serif Sinhala\",serif"
+  ],
+  "google-noto-serif-tc": [
+    "Noto Serif TC",
+    "\"Noto Serif TC\",serif"
+  ],
+  "google-noto-serif-tamil": [
+    "Noto Serif Tamil",
+    "\"Noto Serif Tamil\",serif"
+  ],
+  "google-noto-serif-tangut": [
+    "Noto Serif Tangut",
+    "\"Noto Serif Tangut\",serif"
+  ],
+  "google-noto-serif-telugu": [
+    "Noto Serif Telugu",
+    "\"Noto Serif Telugu\",serif"
+  ],
+  "google-noto-serif-thai": [
+    "Noto Serif Thai",
+    "\"Noto Serif Thai\",serif"
+  ],
+  "google-noto-serif-tibetan": [
+    "Noto Serif Tibetan",
+    "\"Noto Serif Tibetan\",serif"
+  ],
+  "google-noto-serif-todhri": [
+    "Noto Serif Todhri",
+    "\"Noto Serif Todhri\",serif"
+  ],
+  "google-noto-serif-toto": [
+    "Noto Serif Toto",
+    "\"Noto Serif Toto\",serif"
+  ],
+  "google-noto-serif-vithkuqi": [
+    "Noto Serif Vithkuqi",
+    "\"Noto Serif Vithkuqi\",serif"
+  ],
+  "google-noto-serif-yezidi": [
+    "Noto Serif Yezidi",
+    "\"Noto Serif Yezidi\",serif"
+  ],
+  "google-noto-traditional-nushu": [
+    "Noto Traditional Nushu",
+    "\"Noto Traditional Nushu\",sans-serif"
+  ],
+  "google-noto-znamenny-musical-notation": [
+    "Noto Znamenny Musical Notation",
+    "\"Noto Znamenny Musical Notation\",sans-serif"
+  ],
+  "google-nova-cut": [
+    "Nova Cut",
+    "\"Nova Cut\",sans-serif"
+  ],
+  "google-nova-flat": [
+    "Nova Flat",
+    "\"Nova Flat\",sans-serif"
+  ],
+  "google-nova-mono": [
+    "Nova Mono",
+    "\"Nova Mono\",monospace"
+  ],
+  "google-nova-oval": [
+    "Nova Oval",
+    "\"Nova Oval\",sans-serif"
+  ],
+  "google-nova-round": [
+    "Nova Round",
+    "\"Nova Round\",sans-serif"
+  ],
+  "google-nova-script": [
+    "Nova Script",
+    "\"Nova Script\",sans-serif"
+  ],
+  "google-nova-slim": [
+    "Nova Slim",
+    "\"Nova Slim\",sans-serif"
+  ],
+  "google-nova-square": [
+    "Nova Square",
+    "\"Nova Square\",sans-serif"
+  ],
+  "google-numans": [
+    "Numans",
+    "\"Numans\",sans-serif"
+  ],
+  "google-nunito": [
+    "Nunito",
+    "\"Nunito\",sans-serif"
+  ],
+  "google-nunito-sans": [
+    "Nunito Sans",
+    "\"Nunito Sans\",sans-serif"
+  ],
+  "google-nuosu-sil": [
+    "Nuosu SIL",
+    "\"Nuosu SIL\",sans-serif"
+  ],
+  "google-odibee-sans": [
+    "Odibee Sans",
+    "\"Odibee Sans\",sans-serif"
+  ],
+  "google-odor-mean-chey": [
+    "Odor Mean Chey",
+    "\"Odor Mean Chey\",serif"
+  ],
+  "google-offside": [
+    "Offside",
+    "\"Offside\",sans-serif"
+  ],
+  "google-oi": [
+    "Oi",
+    "\"Oi\",sans-serif"
+  ],
+  "google-ojuju": [
+    "Ojuju",
+    "\"Ojuju\",sans-serif"
+  ],
+  "google-old-standard-tt": [
+    "Old Standard TT",
+    "\"Old Standard TT\",serif"
+  ],
+  "google-oldenburg": [
+    "Oldenburg",
+    "\"Oldenburg\",sans-serif"
+  ],
+  "google-ole": [
+    "Ole",
+    "\"Ole\",cursive"
+  ],
+  "google-oleo-script": [
+    "Oleo Script",
+    "\"Oleo Script\",sans-serif"
+  ],
+  "google-oleo-script-swash-caps": [
+    "Oleo Script Swash Caps",
+    "\"Oleo Script Swash Caps\",sans-serif"
+  ],
+  "google-onest": [
+    "Onest",
+    "\"Onest\",sans-serif"
+  ],
+  "google-oooh-baby": [
+    "Oooh Baby",
+    "\"Oooh Baby\",cursive"
+  ],
+  "google-open-sans": [
+    "Open Sans",
+    "\"Open Sans\",sans-serif"
+  ],
+  "google-oranienbaum": [
+    "Oranienbaum",
+    "\"Oranienbaum\",serif"
+  ],
+  "google-orbit": [
+    "Orbit",
+    "\"Orbit\",sans-serif"
+  ],
+  "google-orbitron": [
+    "Orbitron",
+    "\"Orbitron\",sans-serif"
+  ],
+  "google-oregano": [
+    "Oregano",
+    "\"Oregano\",sans-serif"
+  ],
+  "google-orelega-one": [
+    "Orelega One",
+    "\"Orelega One\",sans-serif"
+  ],
+  "google-orienta": [
+    "Orienta",
+    "\"Orienta\",sans-serif"
+  ],
+  "google-original-surfer": [
+    "Original Surfer",
+    "\"Original Surfer\",sans-serif"
+  ],
+  "google-oswald": [
+    "Oswald",
+    "\"Oswald\",sans-serif"
+  ],
+  "google-outfit": [
+    "Outfit",
+    "\"Outfit\",sans-serif"
+  ],
+  "google-over-the-rainbow": [
+    "Over the Rainbow",
+    "\"Over the Rainbow\",cursive"
+  ],
+  "google-overlock": [
+    "Overlock",
+    "\"Overlock\",sans-serif"
+  ],
+  "google-overlock-sc": [
+    "Overlock SC",
+    "\"Overlock SC\",sans-serif"
+  ],
+  "google-overpass": [
+    "Overpass",
+    "\"Overpass\",sans-serif"
+  ],
+  "google-overpass-mono": [
+    "Overpass Mono",
+    "\"Overpass Mono\",monospace"
+  ],
+  "google-ovo": [
+    "Ovo",
+    "\"Ovo\",serif"
+  ],
+  "google-oxanium": [
+    "Oxanium",
+    "\"Oxanium\",sans-serif"
+  ],
+  "google-oxygen": [
+    "Oxygen",
+    "\"Oxygen\",sans-serif"
+  ],
+  "google-oxygen-mono": [
+    "Oxygen Mono",
+    "\"Oxygen Mono\",monospace"
+  ],
+  "google-pt-mono": [
+    "PT Mono",
+    "\"PT Mono\",monospace"
+  ],
+  "google-pt-sans": [
+    "PT Sans",
+    "\"PT Sans\",sans-serif"
+  ],
+  "google-pt-sans-caption": [
+    "PT Sans Caption",
+    "\"PT Sans Caption\",sans-serif"
+  ],
+  "google-pt-sans-narrow": [
+    "PT Sans Narrow",
+    "\"PT Sans Narrow\",sans-serif"
+  ],
+  "google-pt-serif": [
+    "PT Serif",
+    "\"PT Serif\",serif"
+  ],
+  "google-pt-serif-caption": [
+    "PT Serif Caption",
+    "\"PT Serif Caption\",serif"
+  ],
+  "google-pacifico": [
+    "Pacifico",
+    "\"Pacifico\",cursive"
+  ],
+  "google-padauk": [
+    "Padauk",
+    "\"Padauk\",sans-serif"
+  ],
+  "google-padyakke-expanded-one": [
+    "Padyakke Expanded One",
+    "\"Padyakke Expanded One\",serif"
+  ],
+  "google-palanquin": [
+    "Palanquin",
+    "\"Palanquin\",sans-serif"
+  ],
+  "google-palanquin-dark": [
+    "Palanquin Dark",
+    "\"Palanquin Dark\",sans-serif"
+  ],
+  "google-palette-mosaic": [
+    "Palette Mosaic",
+    "\"Palette Mosaic\",sans-serif"
+  ],
+  "google-pangolin": [
+    "Pangolin",
+    "\"Pangolin\",cursive"
+  ],
+  "google-paprika": [
+    "Paprika",
+    "\"Paprika\",sans-serif"
+  ],
+  "google-parastoo": [
+    "Parastoo",
+    "\"Parastoo\",serif"
+  ],
+  "google-parisienne": [
+    "Parisienne",
+    "\"Parisienne\",cursive"
+  ],
+  "google-parkinsans": [
+    "Parkinsans",
+    "\"Parkinsans\",sans-serif"
+  ],
+  "google-passero-one": [
+    "Passero One",
+    "\"Passero One\",sans-serif"
+  ],
+  "google-passion-one": [
+    "Passion One",
+    "\"Passion One\",sans-serif"
+  ],
+  "google-passions-conflict": [
+    "Passions Conflict",
+    "\"Passions Conflict\",cursive"
+  ],
+  "google-pathway-extreme": [
+    "Pathway Extreme",
+    "\"Pathway Extreme\",sans-serif"
+  ],
+  "google-pathway-gothic-one": [
+    "Pathway Gothic One",
+    "\"Pathway Gothic One\",sans-serif"
+  ],
+  "google-patrick-hand": [
+    "Patrick Hand",
+    "\"Patrick Hand\",cursive"
+  ],
+  "google-patrick-hand-sc": [
+    "Patrick Hand SC",
+    "\"Patrick Hand SC\",cursive"
+  ],
+  "google-pattaya": [
+    "Pattaya",
+    "\"Pattaya\",sans-serif"
+  ],
+  "google-patua-one": [
+    "Patua One",
+    "\"Patua One\",sans-serif"
+  ],
+  "google-pavanam": [
+    "Pavanam",
+    "\"Pavanam\",sans-serif"
+  ],
+  "google-paytone-one": [
+    "Paytone One",
+    "\"Paytone One\",sans-serif"
+  ],
+  "google-peddana": [
+    "Peddana",
+    "\"Peddana\",serif"
+  ],
+  "google-peralta": [
+    "Peralta",
+    "\"Peralta\",serif"
+  ],
+  "google-permanent-marker": [
+    "Permanent Marker",
+    "\"Permanent Marker\",cursive"
+  ],
+  "google-petemoss": [
+    "Petemoss",
+    "\"Petemoss\",cursive"
+  ],
+  "google-petit-formal-script": [
+    "Petit Formal Script",
+    "\"Petit Formal Script\",cursive"
+  ],
+  "google-petrona": [
+    "Petrona",
+    "\"Petrona\",serif"
+  ],
+  "google-phetsarath": [
+    "Phetsarath",
+    "\"Phetsarath\",sans-serif"
+  ],
+  "google-philosopher": [
+    "Philosopher",
+    "\"Philosopher\",sans-serif"
+  ],
+  "google-phudu": [
+    "Phudu",
+    "\"Phudu\",sans-serif"
+  ],
+  "google-piazzolla": [
+    "Piazzolla",
+    "\"Piazzolla\",serif"
+  ],
+  "google-piedra": [
+    "Piedra",
+    "\"Piedra\",sans-serif"
+  ],
+  "google-pinyon-script": [
+    "Pinyon Script",
+    "\"Pinyon Script\",cursive"
+  ],
+  "google-pirata-one": [
+    "Pirata One",
+    "\"Pirata One\",sans-serif"
+  ],
+  "google-pixelify-sans": [
+    "Pixelify Sans",
+    "\"Pixelify Sans\",sans-serif"
+  ],
+  "google-plaster": [
+    "Plaster",
+    "\"Plaster\",sans-serif"
+  ],
+  "google-platypi": [
+    "Platypi",
+    "\"Platypi\",serif"
+  ],
+  "google-play": [
+    "Play",
+    "\"Play\",sans-serif"
+  ],
+  "google-playball": [
+    "Playball",
+    "\"Playball\",sans-serif"
+  ],
+  "google-playfair": [
+    "Playfair",
+    "\"Playfair\",serif"
+  ],
+  "google-playfair-display": [
+    "Playfair Display",
+    "\"Playfair Display\",serif"
+  ],
+  "google-playfair-display-sc": [
+    "Playfair Display SC",
+    "\"Playfair Display SC\",serif"
+  ],
+  "google-playpen-sans": [
+    "Playpen Sans",
+    "\"Playpen Sans\",cursive"
+  ],
+  "google-playpen-sans-arabic": [
+    "Playpen Sans Arabic",
+    "\"Playpen Sans Arabic\",cursive"
+  ],
+  "google-playpen-sans-deva": [
+    "Playpen Sans Deva",
+    "\"Playpen Sans Deva\",cursive"
+  ],
+  "google-playpen-sans-hebrew": [
+    "Playpen Sans Hebrew",
+    "\"Playpen Sans Hebrew\",cursive"
+  ],
+  "google-playpen-sans-thai": [
+    "Playpen Sans Thai",
+    "\"Playpen Sans Thai\",cursive"
+  ],
+  "google-playwrite-ar": [
+    "Playwrite AR",
+    "\"Playwrite AR\",cursive"
+  ],
+  "google-playwrite-ar-guides": [
+    "Playwrite AR Guides",
+    "\"Playwrite AR Guides\",cursive"
+  ],
+  "google-playwrite-at": [
+    "Playwrite AT",
+    "\"Playwrite AT\",cursive"
+  ],
+  "google-playwrite-at-guides": [
+    "Playwrite AT Guides",
+    "\"Playwrite AT Guides\",cursive"
+  ],
+  "google-playwrite-au-nsw": [
+    "Playwrite AU NSW",
+    "\"Playwrite AU NSW\",cursive"
+  ],
+  "google-playwrite-au-nsw-guides": [
+    "Playwrite AU NSW Guides",
+    "\"Playwrite AU NSW Guides\",cursive"
+  ],
+  "google-playwrite-au-qld": [
+    "Playwrite AU QLD",
+    "\"Playwrite AU QLD\",cursive"
+  ],
+  "google-playwrite-au-qld-guides": [
+    "Playwrite AU QLD Guides",
+    "\"Playwrite AU QLD Guides\",cursive"
+  ],
+  "google-playwrite-au-sa": [
+    "Playwrite AU SA",
+    "\"Playwrite AU SA\",cursive"
+  ],
+  "google-playwrite-au-sa-guides": [
+    "Playwrite AU SA Guides",
+    "\"Playwrite AU SA Guides\",cursive"
+  ],
+  "google-playwrite-au-tas": [
+    "Playwrite AU TAS",
+    "\"Playwrite AU TAS\",cursive"
+  ],
+  "google-playwrite-au-tas-guides": [
+    "Playwrite AU TAS Guides",
+    "\"Playwrite AU TAS Guides\",cursive"
+  ],
+  "google-playwrite-au-vic": [
+    "Playwrite AU VIC",
+    "\"Playwrite AU VIC\",cursive"
+  ],
+  "google-playwrite-au-vic-guides": [
+    "Playwrite AU VIC Guides",
+    "\"Playwrite AU VIC Guides\",cursive"
+  ],
+  "google-playwrite-be-vlg": [
+    "Playwrite BE VLG",
+    "\"Playwrite BE VLG\",cursive"
+  ],
+  "google-playwrite-be-vlg-guides": [
+    "Playwrite BE VLG Guides",
+    "\"Playwrite BE VLG Guides\",cursive"
+  ],
+  "google-playwrite-be-wal": [
+    "Playwrite BE WAL",
+    "\"Playwrite BE WAL\",cursive"
+  ],
+  "google-playwrite-be-wal-guides": [
+    "Playwrite BE WAL Guides",
+    "\"Playwrite BE WAL Guides\",cursive"
+  ],
+  "google-playwrite-br": [
+    "Playwrite BR",
+    "\"Playwrite BR\",cursive"
+  ],
+  "google-playwrite-br-guides": [
+    "Playwrite BR Guides",
+    "\"Playwrite BR Guides\",cursive"
+  ],
+  "google-playwrite-ca": [
+    "Playwrite CA",
+    "\"Playwrite CA\",cursive"
+  ],
+  "google-playwrite-ca-guides": [
+    "Playwrite CA Guides",
+    "\"Playwrite CA Guides\",cursive"
+  ],
+  "google-playwrite-cl": [
+    "Playwrite CL",
+    "\"Playwrite CL\",cursive"
+  ],
+  "google-playwrite-cl-guides": [
+    "Playwrite CL Guides",
+    "\"Playwrite CL Guides\",cursive"
+  ],
+  "google-playwrite-co": [
+    "Playwrite CO",
+    "\"Playwrite CO\",cursive"
+  ],
+  "google-playwrite-co-guides": [
+    "Playwrite CO Guides",
+    "\"Playwrite CO Guides\",cursive"
+  ],
+  "google-playwrite-cu": [
+    "Playwrite CU",
+    "\"Playwrite CU\",cursive"
+  ],
+  "google-playwrite-cu-guides": [
+    "Playwrite CU Guides",
+    "\"Playwrite CU Guides\",cursive"
+  ],
+  "google-playwrite-cz": [
+    "Playwrite CZ",
+    "\"Playwrite CZ\",cursive"
+  ],
+  "google-playwrite-cz-guides": [
+    "Playwrite CZ Guides",
+    "\"Playwrite CZ Guides\",cursive"
+  ],
+  "google-playwrite-de-grund": [
+    "Playwrite DE Grund",
+    "\"Playwrite DE Grund\",cursive"
+  ],
+  "google-playwrite-de-grund-guides": [
+    "Playwrite DE Grund Guides",
+    "\"Playwrite DE Grund Guides\",cursive"
+  ],
+  "google-playwrite-de-la": [
+    "Playwrite DE LA",
+    "\"Playwrite DE LA\",cursive"
+  ],
+  "google-playwrite-de-la-guides": [
+    "Playwrite DE LA Guides",
+    "\"Playwrite DE LA Guides\",cursive"
+  ],
+  "google-playwrite-de-sas": [
+    "Playwrite DE SAS",
+    "\"Playwrite DE SAS\",cursive"
+  ],
+  "google-playwrite-de-sas-guides": [
+    "Playwrite DE SAS Guides",
+    "\"Playwrite DE SAS Guides\",cursive"
+  ],
+  "google-playwrite-de-va": [
+    "Playwrite DE VA",
+    "\"Playwrite DE VA\",cursive"
+  ],
+  "google-playwrite-de-va-guides": [
+    "Playwrite DE VA Guides",
+    "\"Playwrite DE VA Guides\",cursive"
+  ],
+  "google-playwrite-dk-loopet": [
+    "Playwrite DK Loopet",
+    "\"Playwrite DK Loopet\",cursive"
+  ],
+  "google-playwrite-dk-loopet-guides": [
+    "Playwrite DK Loopet Guides",
+    "\"Playwrite DK Loopet Guides\",cursive"
+  ],
+  "google-playwrite-dk-uloopet": [
+    "Playwrite DK Uloopet",
+    "\"Playwrite DK Uloopet\",cursive"
+  ],
+  "google-playwrite-dk-uloopet-guides": [
+    "Playwrite DK Uloopet Guides",
+    "\"Playwrite DK Uloopet Guides\",cursive"
+  ],
+  "google-playwrite-es": [
+    "Playwrite ES",
+    "\"Playwrite ES\",cursive"
+  ],
+  "google-playwrite-es-deco": [
+    "Playwrite ES Deco",
+    "\"Playwrite ES Deco\",cursive"
+  ],
+  "google-playwrite-es-deco-guides": [
+    "Playwrite ES Deco Guides",
+    "\"Playwrite ES Deco Guides\",cursive"
+  ],
+  "google-playwrite-es-guides": [
+    "Playwrite ES Guides",
+    "\"Playwrite ES Guides\",cursive"
+  ],
+  "google-playwrite-fr-moderne": [
+    "Playwrite FR Moderne",
+    "\"Playwrite FR Moderne\",cursive"
+  ],
+  "google-playwrite-fr-moderne-guides": [
+    "Playwrite FR Moderne Guides",
+    "\"Playwrite FR Moderne Guides\",cursive"
+  ],
+  "google-playwrite-fr-trad": [
+    "Playwrite FR Trad",
+    "\"Playwrite FR Trad\",cursive"
+  ],
+  "google-playwrite-fr-trad-guides": [
+    "Playwrite FR Trad Guides",
+    "\"Playwrite FR Trad Guides\",cursive"
+  ],
+  "google-playwrite-gb-j": [
+    "Playwrite GB J",
+    "\"Playwrite GB J\",cursive"
+  ],
+  "google-playwrite-gb-j-guides": [
+    "Playwrite GB J Guides",
+    "\"Playwrite GB J Guides\",cursive"
+  ],
+  "google-playwrite-gb-s": [
+    "Playwrite GB S",
+    "\"Playwrite GB S\",cursive"
+  ],
+  "google-playwrite-gb-s-guides": [
+    "Playwrite GB S Guides",
+    "\"Playwrite GB S Guides\",cursive"
+  ],
+  "google-playwrite-hr": [
+    "Playwrite HR",
+    "\"Playwrite HR\",cursive"
+  ],
+  "google-playwrite-hr-guides": [
+    "Playwrite HR Guides",
+    "\"Playwrite HR Guides\",cursive"
+  ],
+  "google-playwrite-hr-lijeva": [
+    "Playwrite HR Lijeva",
+    "\"Playwrite HR Lijeva\",cursive"
+  ],
+  "google-playwrite-hr-lijeva-guides": [
+    "Playwrite HR Lijeva Guides",
+    "\"Playwrite HR Lijeva Guides\",cursive"
+  ],
+  "google-playwrite-hu": [
+    "Playwrite HU",
+    "\"Playwrite HU\",cursive"
+  ],
+  "google-playwrite-hu-guides": [
+    "Playwrite HU Guides",
+    "\"Playwrite HU Guides\",cursive"
+  ],
+  "google-playwrite-id": [
+    "Playwrite ID",
+    "\"Playwrite ID\",cursive"
+  ],
+  "google-playwrite-id-guides": [
+    "Playwrite ID Guides",
+    "\"Playwrite ID Guides\",cursive"
+  ],
+  "google-playwrite-ie": [
+    "Playwrite IE",
+    "\"Playwrite IE\",cursive"
+  ],
+  "google-playwrite-ie-guides": [
+    "Playwrite IE Guides",
+    "\"Playwrite IE Guides\",cursive"
+  ],
+  "google-playwrite-in": [
+    "Playwrite IN",
+    "\"Playwrite IN\",cursive"
+  ],
+  "google-playwrite-in-guides": [
+    "Playwrite IN Guides",
+    "\"Playwrite IN Guides\",cursive"
+  ],
+  "google-playwrite-is": [
+    "Playwrite IS",
+    "\"Playwrite IS\",cursive"
+  ],
+  "google-playwrite-is-guides": [
+    "Playwrite IS Guides",
+    "\"Playwrite IS Guides\",cursive"
+  ],
+  "google-playwrite-it-moderna": [
+    "Playwrite IT Moderna",
+    "\"Playwrite IT Moderna\",cursive"
+  ],
+  "google-playwrite-it-moderna-guides": [
+    "Playwrite IT Moderna Guides",
+    "\"Playwrite IT Moderna Guides\",cursive"
+  ],
+  "google-playwrite-it-trad": [
+    "Playwrite IT Trad",
+    "\"Playwrite IT Trad\",cursive"
+  ],
+  "google-playwrite-it-trad-guides": [
+    "Playwrite IT Trad Guides",
+    "\"Playwrite IT Trad Guides\",cursive"
+  ],
+  "google-playwrite-mx": [
+    "Playwrite MX",
+    "\"Playwrite MX\",cursive"
+  ],
+  "google-playwrite-mx-guides": [
+    "Playwrite MX Guides",
+    "\"Playwrite MX Guides\",cursive"
+  ],
+  "google-playwrite-ng-modern": [
+    "Playwrite NG Modern",
+    "\"Playwrite NG Modern\",cursive"
+  ],
+  "google-playwrite-ng-modern-guides": [
+    "Playwrite NG Modern Guides",
+    "\"Playwrite NG Modern Guides\",cursive"
+  ],
+  "google-playwrite-nl": [
+    "Playwrite NL",
+    "\"Playwrite NL\",cursive"
+  ],
+  "google-playwrite-nl-guides": [
+    "Playwrite NL Guides",
+    "\"Playwrite NL Guides\",cursive"
+  ],
+  "google-playwrite-no": [
+    "Playwrite NO",
+    "\"Playwrite NO\",cursive"
+  ],
+  "google-playwrite-no-guides": [
+    "Playwrite NO Guides",
+    "\"Playwrite NO Guides\",cursive"
+  ],
+  "google-playwrite-nz": [
+    "Playwrite NZ",
+    "\"Playwrite NZ\",cursive"
+  ],
+  "google-playwrite-nz-basic": [
+    "Playwrite NZ Basic",
+    "\"Playwrite NZ Basic\",cursive"
+  ],
+  "google-playwrite-nz-basic-guides": [
+    "Playwrite NZ Basic Guides",
+    "\"Playwrite NZ Basic Guides\",cursive"
+  ],
+  "google-playwrite-nz-guides": [
+    "Playwrite NZ Guides",
+    "\"Playwrite NZ Guides\",cursive"
+  ],
+  "google-playwrite-pe": [
+    "Playwrite PE",
+    "\"Playwrite PE\",cursive"
+  ],
+  "google-playwrite-pe-guides": [
+    "Playwrite PE Guides",
+    "\"Playwrite PE Guides\",cursive"
+  ],
+  "google-playwrite-pl": [
+    "Playwrite PL",
+    "\"Playwrite PL\",cursive"
+  ],
+  "google-playwrite-pl-guides": [
+    "Playwrite PL Guides",
+    "\"Playwrite PL Guides\",cursive"
+  ],
+  "google-playwrite-pt": [
+    "Playwrite PT",
+    "\"Playwrite PT\",cursive"
+  ],
+  "google-playwrite-pt-guides": [
+    "Playwrite PT Guides",
+    "\"Playwrite PT Guides\",cursive"
+  ],
+  "google-playwrite-ro": [
+    "Playwrite RO",
+    "\"Playwrite RO\",cursive"
+  ],
+  "google-playwrite-ro-guides": [
+    "Playwrite RO Guides",
+    "\"Playwrite RO Guides\",cursive"
+  ],
+  "google-playwrite-sk": [
+    "Playwrite SK",
+    "\"Playwrite SK\",cursive"
+  ],
+  "google-playwrite-sk-guides": [
+    "Playwrite SK Guides",
+    "\"Playwrite SK Guides\",cursive"
+  ],
+  "google-playwrite-tz": [
+    "Playwrite TZ",
+    "\"Playwrite TZ\",cursive"
+  ],
+  "google-playwrite-tz-guides": [
+    "Playwrite TZ Guides",
+    "\"Playwrite TZ Guides\",cursive"
+  ],
+  "google-playwrite-us-modern": [
+    "Playwrite US Modern",
+    "\"Playwrite US Modern\",cursive"
+  ],
+  "google-playwrite-us-modern-guides": [
+    "Playwrite US Modern Guides",
+    "\"Playwrite US Modern Guides\",cursive"
+  ],
+  "google-playwrite-us-trad": [
+    "Playwrite US Trad",
+    "\"Playwrite US Trad\",cursive"
+  ],
+  "google-playwrite-us-trad-guides": [
+    "Playwrite US Trad Guides",
+    "\"Playwrite US Trad Guides\",cursive"
+  ],
+  "google-playwrite-vn": [
+    "Playwrite VN",
+    "\"Playwrite VN\",cursive"
+  ],
+  "google-playwrite-vn-guides": [
+    "Playwrite VN Guides",
+    "\"Playwrite VN Guides\",cursive"
+  ],
+  "google-playwrite-za": [
+    "Playwrite ZA",
+    "\"Playwrite ZA\",cursive"
+  ],
+  "google-playwrite-za-guides": [
+    "Playwrite ZA Guides",
+    "\"Playwrite ZA Guides\",cursive"
+  ],
+  "google-pliant": [
+    "Pliant",
+    "\"Pliant\",sans-serif"
+  ],
+  "google-plus-jakarta-sans": [
+    "Plus Jakarta Sans",
+    "\"Plus Jakarta Sans\",sans-serif"
+  ],
+  "google-pochaevsk": [
+    "Pochaevsk",
+    "\"Pochaevsk\",sans-serif"
+  ],
+  "google-podkova": [
+    "Podkova",
+    "\"Podkova\",serif"
+  ],
+  "google-poetsen-one": [
+    "Poetsen One",
+    "\"Poetsen One\",sans-serif"
+  ],
+  "google-poiret-one": [
+    "Poiret One",
+    "\"Poiret One\",sans-serif"
+  ],
+  "google-poller-one": [
+    "Poller One",
+    "\"Poller One\",sans-serif"
+  ],
+  "google-poltawski-nowy": [
+    "Poltawski Nowy",
+    "\"Poltawski Nowy\",serif"
+  ],
+  "google-poly": [
+    "Poly",
+    "\"Poly\",serif"
+  ],
+  "google-pompiere": [
+    "Pompiere",
+    "\"Pompiere\",sans-serif"
+  ],
+  "google-ponnala": [
+    "Ponnala",
+    "\"Ponnala\",sans-serif"
+  ],
+  "google-ponomar": [
+    "Ponomar",
+    "\"Ponomar\",sans-serif"
+  ],
+  "google-pontano-sans": [
+    "Pontano Sans",
+    "\"Pontano Sans\",sans-serif"
+  ],
+  "google-poor-story": [
+    "Poor Story",
+    "\"Poor Story\",sans-serif"
+  ],
+  "google-poppins": [
+    "Poppins",
+    "\"Poppins\",sans-serif"
+  ],
+  "google-port-lligat-sans": [
+    "Port Lligat Sans",
+    "\"Port Lligat Sans\",sans-serif"
+  ],
+  "google-port-lligat-slab": [
+    "Port Lligat Slab",
+    "\"Port Lligat Slab\",serif"
+  ],
+  "google-potta-one": [
+    "Potta One",
+    "\"Potta One\",sans-serif"
+  ],
+  "google-pragati-narrow": [
+    "Pragati Narrow",
+    "\"Pragati Narrow\",sans-serif"
+  ],
+  "google-praise": [
+    "Praise",
+    "\"Praise\",cursive"
+  ],
+  "google-prata": [
+    "Prata",
+    "\"Prata\",serif"
+  ],
+  "google-preahvihear": [
+    "Preahvihear",
+    "\"Preahvihear\",sans-serif"
+  ],
+  "google-press-start-2p": [
+    "Press Start 2P",
+    "\"Press Start 2P\",sans-serif"
+  ],
+  "google-pridi": [
+    "Pridi",
+    "\"Pridi\",serif"
+  ],
+  "google-princess-sofia": [
+    "Princess Sofia",
+    "\"Princess Sofia\",cursive"
+  ],
+  "google-prociono": [
+    "Prociono",
+    "\"Prociono\",serif"
+  ],
+  "google-prompt": [
+    "Prompt",
+    "\"Prompt\",sans-serif"
+  ],
+  "google-prosto-one": [
+    "Prosto One",
+    "\"Prosto One\",sans-serif"
+  ],
+  "google-protest-guerrilla": [
+    "Protest Guerrilla",
+    "\"Protest Guerrilla\",sans-serif"
+  ],
+  "google-protest-revolution": [
+    "Protest Revolution",
+    "\"Protest Revolution\",sans-serif"
+  ],
+  "google-protest-riot": [
+    "Protest Riot",
+    "\"Protest Riot\",sans-serif"
+  ],
+  "google-protest-strike": [
+    "Protest Strike",
+    "\"Protest Strike\",sans-serif"
+  ],
+  "google-proza-libre": [
+    "Proza Libre",
+    "\"Proza Libre\",sans-serif"
+  ],
+  "google-public-sans": [
+    "Public Sans",
+    "\"Public Sans\",sans-serif"
+  ],
+  "google-puppies-play": [
+    "Puppies Play",
+    "\"Puppies Play\",cursive"
+  ],
+  "google-puritan": [
+    "Puritan",
+    "\"Puritan\",sans-serif"
+  ],
+  "google-purple-purse": [
+    "Purple Purse",
+    "\"Purple Purse\",sans-serif"
+  ],
+  "google-qahiri": [
+    "Qahiri",
+    "\"Qahiri\",sans-serif"
+  ],
+  "google-quando": [
+    "Quando",
+    "\"Quando\",serif"
+  ],
+  "google-quantico": [
+    "Quantico",
+    "\"Quantico\",sans-serif"
+  ],
+  "google-quattrocento": [
+    "Quattrocento",
+    "\"Quattrocento\",serif"
+  ],
+  "google-quattrocento-sans": [
+    "Quattrocento Sans",
+    "\"Quattrocento Sans\",sans-serif"
+  ],
+  "google-questrial": [
+    "Questrial",
+    "\"Questrial\",sans-serif"
+  ],
+  "google-quicksand": [
+    "Quicksand",
+    "\"Quicksand\",sans-serif"
+  ],
+  "google-quintessential": [
+    "Quintessential",
+    "\"Quintessential\",cursive"
+  ],
+  "google-qwigley": [
+    "Qwigley",
+    "\"Qwigley\",cursive"
+  ],
+  "google-qwitcher-grypen": [
+    "Qwitcher Grypen",
+    "\"Qwitcher Grypen\",cursive"
+  ],
+  "google-rem": [
+    "REM",
+    "\"REM\",sans-serif"
+  ],
+  "google-racing-sans-one": [
+    "Racing Sans One",
+    "\"Racing Sans One\",sans-serif"
+  ],
+  "google-radio-canada": [
+    "Radio Canada",
+    "\"Radio Canada\",sans-serif"
+  ],
+  "google-radio-canada-big": [
+    "Radio Canada Big",
+    "\"Radio Canada Big\",sans-serif"
+  ],
+  "google-radley": [
+    "Radley",
+    "\"Radley\",serif"
+  ],
+  "google-rajdhani": [
+    "Rajdhani",
+    "\"Rajdhani\",sans-serif"
+  ],
+  "google-rakkas": [
+    "Rakkas",
+    "\"Rakkas\",sans-serif"
+  ],
+  "google-raleway": [
+    "Raleway",
+    "\"Raleway\",sans-serif"
+  ],
+  "google-raleway-dots": [
+    "Raleway Dots",
+    "\"Raleway Dots\",sans-serif"
+  ],
+  "google-ramabhadra": [
+    "Ramabhadra",
+    "\"Ramabhadra\",sans-serif"
+  ],
+  "google-ramaraja": [
+    "Ramaraja",
+    "\"Ramaraja\",serif"
+  ],
+  "google-rambla": [
+    "Rambla",
+    "\"Rambla\",sans-serif"
+  ],
+  "google-rammetto-one": [
+    "Rammetto One",
+    "\"Rammetto One\",sans-serif"
+  ],
+  "google-rampart-one": [
+    "Rampart One",
+    "\"Rampart One\",sans-serif"
+  ],
+  "google-ramsina": [
+    "Ramsina",
+    "\"Ramsina\",serif"
+  ],
+  "google-ranchers": [
+    "Ranchers",
+    "\"Ranchers\",sans-serif"
+  ],
+  "google-rancho": [
+    "Rancho",
+    "\"Rancho\",cursive"
+  ],
+  "google-ranga": [
+    "Ranga",
+    "\"Ranga\",sans-serif"
+  ],
+  "google-rasa": [
+    "Rasa",
+    "\"Rasa\",serif"
+  ],
+  "google-rationale": [
+    "Rationale",
+    "\"Rationale\",sans-serif"
+  ],
+  "google-ravi-prakash": [
+    "Ravi Prakash",
+    "\"Ravi Prakash\",sans-serif"
+  ],
+  "google-readex-pro": [
+    "Readex Pro",
+    "\"Readex Pro\",sans-serif"
+  ],
+  "google-recursive": [
+    "Recursive",
+    "\"Recursive\",sans-serif"
+  ],
+  "google-red-hat-display": [
+    "Red Hat Display",
+    "\"Red Hat Display\",sans-serif"
+  ],
+  "google-red-hat-mono": [
+    "Red Hat Mono",
+    "\"Red Hat Mono\",monospace"
+  ],
+  "google-red-hat-text": [
+    "Red Hat Text",
+    "\"Red Hat Text\",sans-serif"
+  ],
+  "google-red-rose": [
+    "Red Rose",
+    "\"Red Rose\",sans-serif"
+  ],
+  "google-redacted": [
+    "Redacted",
+    "\"Redacted\",sans-serif"
+  ],
+  "google-redacted-script": [
+    "Redacted Script",
+    "\"Redacted Script\",sans-serif"
+  ],
+  "google-reddit-mono": [
+    "Reddit Mono",
+    "\"Reddit Mono\",monospace"
+  ],
+  "google-reddit-sans": [
+    "Reddit Sans",
+    "\"Reddit Sans\",sans-serif"
+  ],
+  "google-reddit-sans-condensed": [
+    "Reddit Sans Condensed",
+    "\"Reddit Sans Condensed\",sans-serif"
+  ],
+  "google-redressed": [
+    "Redressed",
+    "\"Redressed\",cursive"
+  ],
+  "google-reem-kufi": [
+    "Reem Kufi",
+    "\"Reem Kufi\",sans-serif"
+  ],
+  "google-reem-kufi-fun": [
+    "Reem Kufi Fun",
+    "\"Reem Kufi Fun\",sans-serif"
+  ],
+  "google-reem-kufi-ink": [
+    "Reem Kufi Ink",
+    "\"Reem Kufi Ink\",sans-serif"
+  ],
+  "google-reenie-beanie": [
+    "Reenie Beanie",
+    "\"Reenie Beanie\",cursive"
+  ],
+  "google-reggae-one": [
+    "Reggae One",
+    "\"Reggae One\",sans-serif"
+  ],
+  "google-rethink-sans": [
+    "Rethink Sans",
+    "\"Rethink Sans\",sans-serif"
+  ],
+  "google-revalia": [
+    "Revalia",
+    "\"Revalia\",sans-serif"
+  ],
+  "google-rhodium-libre": [
+    "Rhodium Libre",
+    "\"Rhodium Libre\",serif"
+  ],
+  "google-ribeye": [
+    "Ribeye",
+    "\"Ribeye\",sans-serif"
+  ],
+  "google-ribeye-marrow": [
+    "Ribeye Marrow",
+    "\"Ribeye Marrow\",sans-serif"
+  ],
+  "google-righteous": [
+    "Righteous",
+    "\"Righteous\",sans-serif"
+  ],
+  "google-risque": [
+    "Risque",
+    "\"Risque\",sans-serif"
+  ],
+  "google-road-rage": [
+    "Road Rage",
+    "\"Road Rage\",sans-serif"
+  ],
+  "google-roboto": [
+    "Roboto",
+    "\"Roboto\",sans-serif"
+  ],
+  "google-roboto-condensed": [
+    "Roboto Condensed",
+    "\"Roboto Condensed\",sans-serif"
+  ],
+  "google-roboto-flex": [
+    "Roboto Flex",
+    "\"Roboto Flex\",sans-serif"
+  ],
+  "google-roboto-mono": [
+    "Roboto Mono",
+    "\"Roboto Mono\",monospace"
+  ],
+  "google-roboto-serif": [
+    "Roboto Serif",
+    "\"Roboto Serif\",serif"
+  ],
+  "google-roboto-slab": [
+    "Roboto Slab",
+    "\"Roboto Slab\",serif"
+  ],
+  "google-rochester": [
+    "Rochester",
+    "\"Rochester\",cursive"
+  ],
+  "google-rock-3d": [
+    "Rock 3D",
+    "\"Rock 3D\",sans-serif"
+  ],
+  "google-rock-salt": [
+    "Rock Salt",
+    "\"Rock Salt\",cursive"
+  ],
+  "google-rocknroll-one": [
+    "RocknRoll One",
+    "\"RocknRoll One\",sans-serif"
+  ],
+  "google-rokkitt": [
+    "Rokkitt",
+    "\"Rokkitt\",serif"
+  ],
+  "google-romanesco": [
+    "Romanesco",
+    "\"Romanesco\",cursive"
+  ],
+  "google-ropa-sans": [
+    "Ropa Sans",
+    "\"Ropa Sans\",sans-serif"
+  ],
+  "google-rosario": [
+    "Rosario",
+    "\"Rosario\",sans-serif"
+  ],
+  "google-rosarivo": [
+    "Rosarivo",
+    "\"Rosarivo\",serif"
+  ],
+  "google-rouge-script": [
+    "Rouge Script",
+    "\"Rouge Script\",cursive"
+  ],
+  "google-rowdies": [
+    "Rowdies",
+    "\"Rowdies\",sans-serif"
+  ],
+  "google-rozha-one": [
+    "Rozha One",
+    "\"Rozha One\",serif"
+  ],
+  "google-rubik": [
+    "Rubik",
+    "\"Rubik\",sans-serif"
+  ],
+  "google-rubik-80s-fade": [
+    "Rubik 80s Fade",
+    "\"Rubik 80s Fade\",sans-serif"
+  ],
+  "google-rubik-beastly": [
+    "Rubik Beastly",
+    "\"Rubik Beastly\",sans-serif"
+  ],
+  "google-rubik-broken-fax": [
+    "Rubik Broken Fax",
+    "\"Rubik Broken Fax\",sans-serif"
+  ],
+  "google-rubik-bubbles": [
+    "Rubik Bubbles",
+    "\"Rubik Bubbles\",sans-serif"
+  ],
+  "google-rubik-burned": [
+    "Rubik Burned",
+    "\"Rubik Burned\",sans-serif"
+  ],
+  "google-rubik-dirt": [
+    "Rubik Dirt",
+    "\"Rubik Dirt\",sans-serif"
+  ],
+  "google-rubik-distressed": [
+    "Rubik Distressed",
+    "\"Rubik Distressed\",sans-serif"
+  ],
+  "google-rubik-doodle-shadow": [
+    "Rubik Doodle Shadow",
+    "\"Rubik Doodle Shadow\",sans-serif"
+  ],
+  "google-rubik-doodle-triangles": [
+    "Rubik Doodle Triangles",
+    "\"Rubik Doodle Triangles\",sans-serif"
+  ],
+  "google-rubik-gemstones": [
+    "Rubik Gemstones",
+    "\"Rubik Gemstones\",sans-serif"
+  ],
+  "google-rubik-glitch": [
+    "Rubik Glitch",
+    "\"Rubik Glitch\",sans-serif"
+  ],
+  "google-rubik-glitch-pop": [
+    "Rubik Glitch Pop",
+    "\"Rubik Glitch Pop\",sans-serif"
+  ],
+  "google-rubik-iso": [
+    "Rubik Iso",
+    "\"Rubik Iso\",sans-serif"
+  ],
+  "google-rubik-lines": [
+    "Rubik Lines",
+    "\"Rubik Lines\",sans-serif"
+  ],
+  "google-rubik-maps": [
+    "Rubik Maps",
+    "\"Rubik Maps\",sans-serif"
+  ],
+  "google-rubik-marker-hatch": [
+    "Rubik Marker Hatch",
+    "\"Rubik Marker Hatch\",sans-serif"
+  ],
+  "google-rubik-maze": [
+    "Rubik Maze",
+    "\"Rubik Maze\",sans-serif"
+  ],
+  "google-rubik-microbe": [
+    "Rubik Microbe",
+    "\"Rubik Microbe\",sans-serif"
+  ],
+  "google-rubik-mono-one": [
+    "Rubik Mono One",
+    "\"Rubik Mono One\",sans-serif"
+  ],
+  "google-rubik-moonrocks": [
+    "Rubik Moonrocks",
+    "\"Rubik Moonrocks\",sans-serif"
+  ],
+  "google-rubik-pixels": [
+    "Rubik Pixels",
+    "\"Rubik Pixels\",sans-serif"
+  ],
+  "google-rubik-puddles": [
+    "Rubik Puddles",
+    "\"Rubik Puddles\",sans-serif"
+  ],
+  "google-rubik-scribble": [
+    "Rubik Scribble",
+    "\"Rubik Scribble\",sans-serif"
+  ],
+  "google-rubik-spray-paint": [
+    "Rubik Spray Paint",
+    "\"Rubik Spray Paint\",sans-serif"
+  ],
+  "google-rubik-storm": [
+    "Rubik Storm",
+    "\"Rubik Storm\",sans-serif"
+  ],
+  "google-rubik-vinyl": [
+    "Rubik Vinyl",
+    "\"Rubik Vinyl\",sans-serif"
+  ],
+  "google-rubik-wet-paint": [
+    "Rubik Wet Paint",
+    "\"Rubik Wet Paint\",sans-serif"
+  ],
+  "google-ruda": [
+    "Ruda",
+    "\"Ruda\",sans-serif"
+  ],
+  "google-rufina": [
+    "Rufina",
+    "\"Rufina\",serif"
+  ],
+  "google-ruge-boogie": [
+    "Ruge Boogie",
+    "\"Ruge Boogie\",cursive"
+  ],
+  "google-ruluko": [
+    "Ruluko",
+    "\"Ruluko\",sans-serif"
+  ],
+  "google-rum-raisin": [
+    "Rum Raisin",
+    "\"Rum Raisin\",sans-serif"
+  ],
+  "google-ruslan-display": [
+    "Ruslan Display",
+    "\"Ruslan Display\",sans-serif"
+  ],
+  "google-russo-one": [
+    "Russo One",
+    "\"Russo One\",sans-serif"
+  ],
+  "google-ruthie": [
+    "Ruthie",
+    "\"Ruthie\",cursive"
+  ],
+  "google-ruwudu": [
+    "Ruwudu",
+    "\"Ruwudu\",serif"
+  ],
+  "google-rye": [
+    "Rye",
+    "\"Rye\",sans-serif"
+  ],
+  "google-sn-pro": [
+    "SN Pro",
+    "\"SN Pro\",sans-serif"
+  ],
+  "google-stix-two-math": [
+    "STIX Two Math",
+    "\"STIX Two Math\",serif"
+  ],
+  "google-stix-two-text": [
+    "STIX Two Text",
+    "\"STIX Two Text\",serif"
+  ],
+  "google-suse": [
+    "SUSE",
+    "\"SUSE\",sans-serif"
+  ],
+  "google-suse-mono": [
+    "SUSE Mono",
+    "\"SUSE Mono\",sans-serif"
+  ],
+  "google-sacramento": [
+    "Sacramento",
+    "\"Sacramento\",cursive"
+  ],
+  "google-sahitya": [
+    "Sahitya",
+    "\"Sahitya\",serif"
+  ],
+  "google-sail": [
+    "Sail",
+    "\"Sail\",sans-serif"
+  ],
+  "google-saira": [
+    "Saira",
+    "\"Saira\",sans-serif"
+  ],
+  "google-saira-condensed": [
+    "Saira Condensed",
+    "\"Saira Condensed\",sans-serif"
+  ],
+  "google-saira-extra-condensed": [
+    "Saira Extra Condensed",
+    "\"Saira Extra Condensed\",sans-serif"
+  ],
+  "google-saira-semi-condensed": [
+    "Saira Semi Condensed",
+    "\"Saira Semi Condensed\",sans-serif"
+  ],
+  "google-saira-stencil": [
+    "Saira Stencil",
+    "\"Saira Stencil\",sans-serif"
+  ],
+  "google-salsa": [
+    "Salsa",
+    "\"Salsa\",sans-serif"
+  ],
+  "google-sanchez": [
+    "Sanchez",
+    "\"Sanchez\",serif"
+  ],
+  "google-sancreek": [
+    "Sancreek",
+    "\"Sancreek\",sans-serif"
+  ],
+  "google-sankofa-display": [
+    "Sankofa Display",
+    "\"Sankofa Display\",sans-serif"
+  ],
+  "google-sansation": [
+    "Sansation",
+    "\"Sansation\",sans-serif"
+  ],
+  "google-sansita": [
+    "Sansita",
+    "\"Sansita\",sans-serif"
+  ],
+  "google-sansita-swashed": [
+    "Sansita Swashed",
+    "\"Sansita Swashed\",sans-serif"
+  ],
+  "google-sarabun": [
+    "Sarabun",
+    "\"Sarabun\",sans-serif"
+  ],
+  "google-sarala": [
+    "Sarala",
+    "\"Sarala\",sans-serif"
+  ],
+  "google-sarina": [
+    "Sarina",
+    "\"Sarina\",sans-serif"
+  ],
+  "google-sarpanch": [
+    "Sarpanch",
+    "\"Sarpanch\",sans-serif"
+  ],
+  "google-sassy-frass": [
+    "Sassy Frass",
+    "\"Sassy Frass\",cursive"
+  ],
+  "google-satisfy": [
+    "Satisfy",
+    "\"Satisfy\",cursive"
+  ],
+  "google-savate": [
+    "Savate",
+    "\"Savate\",sans-serif"
+  ],
+  "google-sawarabi-gothic": [
+    "Sawarabi Gothic",
+    "\"Sawarabi Gothic\",sans-serif"
+  ],
+  "google-sawarabi-mincho": [
+    "Sawarabi Mincho",
+    "\"Sawarabi Mincho\",serif"
+  ],
+  "google-scada": [
+    "Scada",
+    "\"Scada\",sans-serif"
+  ],
+  "google-scheherazade-new": [
+    "Scheherazade New",
+    "\"Scheherazade New\",serif"
+  ],
+  "google-schibsted-grotesk": [
+    "Schibsted Grotesk",
+    "\"Schibsted Grotesk\",sans-serif"
+  ],
+  "google-schoolbell": [
+    "Schoolbell",
+    "\"Schoolbell\",cursive"
+  ],
+  "google-science-gothic": [
+    "Science Gothic",
+    "\"Science Gothic\",sans-serif"
+  ],
+  "google-scope-one": [
+    "Scope One",
+    "\"Scope One\",serif"
+  ],
+  "google-scoutie-sans": [
+    "Scoutie Sans",
+    "\"Scoutie Sans\",sans-serif"
+  ],
+  "google-seaweed-script": [
+    "Seaweed Script",
+    "\"Seaweed Script\",sans-serif"
+  ],
+  "google-secular-one": [
+    "Secular One",
+    "\"Secular One\",sans-serif"
+  ],
+  "google-sedan": [
+    "Sedan",
+    "\"Sedan\",serif"
+  ],
+  "google-sedan-sc": [
+    "Sedan SC",
+    "\"Sedan SC\",serif"
+  ],
+  "google-sedgwick-ave": [
+    "Sedgwick Ave",
+    "\"Sedgwick Ave\",cursive"
+  ],
+  "google-sedgwick-ave-display": [
+    "Sedgwick Ave Display",
+    "\"Sedgwick Ave Display\",cursive"
+  ],
+  "google-sekuya": [
+    "Sekuya",
+    "\"Sekuya\",sans-serif"
+  ],
+  "google-sen": [
+    "Sen",
+    "\"Sen\",sans-serif"
+  ],
+  "google-send-flowers": [
+    "Send Flowers",
+    "\"Send Flowers\",cursive"
+  ],
+  "google-sevillana": [
+    "Sevillana",
+    "\"Sevillana\",sans-serif"
+  ],
+  "google-seymour-one": [
+    "Seymour One",
+    "\"Seymour One\",sans-serif"
+  ],
+  "google-shadows-into-light": [
+    "Shadows Into Light",
+    "\"Shadows Into Light\",cursive"
+  ],
+  "google-shadows-into-light-two": [
+    "Shadows Into Light Two",
+    "\"Shadows Into Light Two\",cursive"
+  ],
+  "google-shafarik": [
+    "Shafarik",
+    "\"Shafarik\",sans-serif"
+  ],
+  "google-shalimar": [
+    "Shalimar",
+    "\"Shalimar\",cursive"
+  ],
+  "google-shantell-sans": [
+    "Shantell Sans",
+    "\"Shantell Sans\",sans-serif"
+  ],
+  "google-shanti": [
+    "Shanti",
+    "\"Shanti\",sans-serif"
+  ],
+  "google-share": [
+    "Share",
+    "\"Share\",sans-serif"
+  ],
+  "google-share-tech": [
+    "Share Tech",
+    "\"Share Tech\",sans-serif"
+  ],
+  "google-share-tech-mono": [
+    "Share Tech Mono",
+    "\"Share Tech Mono\",monospace"
+  ],
+  "google-shippori-antique": [
+    "Shippori Antique",
+    "\"Shippori Antique\",sans-serif"
+  ],
+  "google-shippori-antique-b1": [
+    "Shippori Antique B1",
+    "\"Shippori Antique B1\",sans-serif"
+  ],
+  "google-shippori-mincho": [
+    "Shippori Mincho",
+    "\"Shippori Mincho\",serif"
+  ],
+  "google-shippori-mincho-b1": [
+    "Shippori Mincho B1",
+    "\"Shippori Mincho B1\",serif"
+  ],
+  "google-shizuru": [
+    "Shizuru",
+    "\"Shizuru\",sans-serif"
+  ],
+  "google-shojumaru": [
+    "Shojumaru",
+    "\"Shojumaru\",sans-serif"
+  ],
+  "google-short-stack": [
+    "Short Stack",
+    "\"Short Stack\",cursive"
+  ],
+  "google-shrikhand": [
+    "Shrikhand",
+    "\"Shrikhand\",sans-serif"
+  ],
+  "google-siemreap": [
+    "Siemreap",
+    "\"Siemreap\",sans-serif"
+  ],
+  "google-sigmar": [
+    "Sigmar",
+    "\"Sigmar\",sans-serif"
+  ],
+  "google-sigmar-one": [
+    "Sigmar One",
+    "\"Sigmar One\",sans-serif"
+  ],
+  "google-signika": [
+    "Signika",
+    "\"Signika\",sans-serif"
+  ],
+  "google-signika-negative": [
+    "Signika Negative",
+    "\"Signika Negative\",sans-serif"
+  ],
+  "google-silkscreen": [
+    "Silkscreen",
+    "\"Silkscreen\",sans-serif"
+  ],
+  "google-simonetta": [
+    "Simonetta",
+    "\"Simonetta\",sans-serif"
+  ],
+  "google-single-day": [
+    "Single Day",
+    "\"Single Day\",sans-serif"
+  ],
+  "google-sintony": [
+    "Sintony",
+    "\"Sintony\",sans-serif"
+  ],
+  "google-sirin-stencil": [
+    "Sirin Stencil",
+    "\"Sirin Stencil\",sans-serif"
+  ],
+  "google-sirivennela": [
+    "Sirivennela",
+    "\"Sirivennela\",sans-serif"
+  ],
+  "google-six-caps": [
+    "Six Caps",
+    "\"Six Caps\",sans-serif"
+  ],
+  "google-sixtyfour": [
+    "Sixtyfour",
+    "\"Sixtyfour\",monospace"
+  ],
+  "google-sixtyfour-convergence": [
+    "Sixtyfour Convergence",
+    "\"Sixtyfour Convergence\",monospace"
+  ],
+  "google-skranji": [
+    "Skranji",
+    "\"Skranji\",sans-serif"
+  ],
+  "google-slabo-13px": [
+    "Slabo 13px",
+    "\"Slabo 13px\",serif"
+  ],
+  "google-slabo-27px": [
+    "Slabo 27px",
+    "\"Slabo 27px\",serif"
+  ],
+  "google-slackey": [
+    "Slackey",
+    "\"Slackey\",sans-serif"
+  ],
+  "google-slackside-one": [
+    "Slackside One",
+    "\"Slackside One\",cursive"
+  ],
+  "google-smokum": [
+    "Smokum",
+    "\"Smokum\",sans-serif"
+  ],
+  "google-smooch": [
+    "Smooch",
+    "\"Smooch\",cursive"
+  ],
+  "google-smooch-sans": [
+    "Smooch Sans",
+    "\"Smooch Sans\",sans-serif"
+  ],
+  "google-smythe": [
+    "Smythe",
+    "\"Smythe\",sans-serif"
+  ],
+  "google-sniglet": [
+    "Sniglet",
+    "\"Sniglet\",sans-serif"
+  ],
+  "google-snippet": [
+    "Snippet",
+    "\"Snippet\",sans-serif"
+  ],
+  "google-snowburst-one": [
+    "Snowburst One",
+    "\"Snowburst One\",sans-serif"
+  ],
+  "google-sofadi-one": [
+    "Sofadi One",
+    "\"Sofadi One\",sans-serif"
+  ],
+  "google-sofia": [
+    "Sofia",
+    "\"Sofia\",cursive"
+  ],
+  "google-sofia-sans": [
+    "Sofia Sans",
+    "\"Sofia Sans\",sans-serif"
+  ],
+  "google-sofia-sans-condensed": [
+    "Sofia Sans Condensed",
+    "\"Sofia Sans Condensed\",sans-serif"
+  ],
+  "google-sofia-sans-extra-condensed": [
+    "Sofia Sans Extra Condensed",
+    "\"Sofia Sans Extra Condensed\",sans-serif"
+  ],
+  "google-sofia-sans-semi-condensed": [
+    "Sofia Sans Semi Condensed",
+    "\"Sofia Sans Semi Condensed\",sans-serif"
+  ],
+  "google-solitreo": [
+    "Solitreo",
+    "\"Solitreo\",cursive"
+  ],
+  "google-solway": [
+    "Solway",
+    "\"Solway\",serif"
+  ],
+  "google-sometype-mono": [
+    "Sometype Mono",
+    "\"Sometype Mono\",monospace"
+  ],
+  "google-song-myung": [
+    "Song Myung",
+    "\"Song Myung\",serif"
+  ],
+  "google-sono": [
+    "Sono",
+    "\"Sono\",sans-serif"
+  ],
+  "google-sonsie-one": [
+    "Sonsie One",
+    "\"Sonsie One\",sans-serif"
+  ],
+  "google-sora": [
+    "Sora",
+    "\"Sora\",sans-serif"
+  ],
+  "google-sorts-mill-goudy": [
+    "Sorts Mill Goudy",
+    "\"Sorts Mill Goudy\",serif"
+  ],
+  "google-sour-gummy": [
+    "Sour Gummy",
+    "\"Sour Gummy\",sans-serif"
+  ],
+  "google-source-code-pro": [
+    "Source Code Pro",
+    "\"Source Code Pro\",monospace"
+  ],
+  "google-source-sans-3": [
+    "Source Sans 3",
+    "\"Source Sans 3\",sans-serif"
+  ],
+  "google-source-serif-4": [
+    "Source Serif 4",
+    "\"Source Serif 4\",serif"
+  ],
+  "google-space-grotesk": [
+    "Space Grotesk",
+    "\"Space Grotesk\",sans-serif"
+  ],
+  "google-space-mono": [
+    "Space Mono",
+    "\"Space Mono\",monospace"
+  ],
+  "google-special-elite": [
+    "Special Elite",
+    "\"Special Elite\",sans-serif"
+  ],
+  "google-special-gothic": [
+    "Special Gothic",
+    "\"Special Gothic\",sans-serif"
+  ],
+  "google-special-gothic-condensed-one": [
+    "Special Gothic Condensed One",
+    "\"Special Gothic Condensed One\",sans-serif"
+  ],
+  "google-special-gothic-expanded-one": [
+    "Special Gothic Expanded One",
+    "\"Special Gothic Expanded One\",sans-serif"
+  ],
+  "google-spectral": [
+    "Spectral",
+    "\"Spectral\",serif"
+  ],
+  "google-spectral-sc": [
+    "Spectral SC",
+    "\"Spectral SC\",serif"
+  ],
+  "google-spicy-rice": [
+    "Spicy Rice",
+    "\"Spicy Rice\",sans-serif"
+  ],
+  "google-spinnaker": [
+    "Spinnaker",
+    "\"Spinnaker\",sans-serif"
+  ],
+  "google-spirax": [
+    "Spirax",
+    "\"Spirax\",sans-serif"
+  ],
+  "google-splash": [
+    "Splash",
+    "\"Splash\",cursive"
+  ],
+  "google-spline-sans": [
+    "Spline Sans",
+    "\"Spline Sans\",sans-serif"
+  ],
+  "google-spline-sans-mono": [
+    "Spline Sans Mono",
+    "\"Spline Sans Mono\",monospace"
+  ],
+  "google-squada-one": [
+    "Squada One",
+    "\"Squada One\",sans-serif"
+  ],
+  "google-square-peg": [
+    "Square Peg",
+    "\"Square Peg\",cursive"
+  ],
+  "google-sree-krushnadevaraya": [
+    "Sree Krushnadevaraya",
+    "\"Sree Krushnadevaraya\",serif"
+  ],
+  "google-sriracha": [
+    "Sriracha",
+    "\"Sriracha\",cursive"
+  ],
+  "google-srisakdi": [
+    "Srisakdi",
+    "\"Srisakdi\",sans-serif"
+  ],
+  "google-staatliches": [
+    "Staatliches",
+    "\"Staatliches\",sans-serif"
+  ],
+  "google-stack-sans-headline": [
+    "Stack Sans Headline",
+    "\"Stack Sans Headline\",sans-serif"
+  ],
+  "google-stack-sans-notch": [
+    "Stack Sans Notch",
+    "\"Stack Sans Notch\",sans-serif"
+  ],
+  "google-stack-sans-text": [
+    "Stack Sans Text",
+    "\"Stack Sans Text\",sans-serif"
+  ],
+  "google-stalemate": [
+    "Stalemate",
+    "\"Stalemate\",cursive"
+  ],
+  "google-stalinist-one": [
+    "Stalinist One",
+    "\"Stalinist One\",sans-serif"
+  ],
+  "google-stardos-stencil": [
+    "Stardos Stencil",
+    "\"Stardos Stencil\",sans-serif"
+  ],
+  "google-stick": [
+    "Stick",
+    "\"Stick\",sans-serif"
+  ],
+  "google-stick-no-bills": [
+    "Stick No Bills",
+    "\"Stick No Bills\",sans-serif"
+  ],
+  "google-stint-ultra-condensed": [
+    "Stint Ultra Condensed",
+    "\"Stint Ultra Condensed\",serif"
+  ],
+  "google-stint-ultra-expanded": [
+    "Stint Ultra Expanded",
+    "\"Stint Ultra Expanded\",serif"
+  ],
+  "google-stoke": [
+    "Stoke",
+    "\"Stoke\",serif"
+  ],
+  "google-story-script": [
+    "Story Script",
+    "\"Story Script\",sans-serif"
+  ],
+  "google-strait": [
+    "Strait",
+    "\"Strait\",sans-serif"
+  ],
+  "google-strichpunkt-sans": [
+    "Strichpunkt Sans",
+    "\"Strichpunkt Sans\",sans-serif"
+  ],
+  "google-style-script": [
+    "Style Script",
+    "\"Style Script\",cursive"
+  ],
+  "google-stylish": [
+    "Stylish",
+    "\"Stylish\",sans-serif"
+  ],
+  "google-sue-ellen-francisco": [
+    "Sue Ellen Francisco",
+    "\"Sue Ellen Francisco\",cursive"
+  ],
+  "google-suez-one": [
+    "Suez One",
+    "\"Suez One\",serif"
+  ],
+  "google-sulphur-point": [
+    "Sulphur Point",
+    "\"Sulphur Point\",sans-serif"
+  ],
+  "google-sumana": [
+    "Sumana",
+    "\"Sumana\",serif"
+  ],
+  "google-sunflower": [
+    "Sunflower",
+    "\"Sunflower\",sans-serif"
+  ],
+  "google-sunshiney": [
+    "Sunshiney",
+    "\"Sunshiney\",cursive"
+  ],
+  "google-supermercado-one": [
+    "Supermercado One",
+    "\"Supermercado One\",sans-serif"
+  ],
+  "google-sura": [
+    "Sura",
+    "\"Sura\",serif"
+  ],
+  "google-suranna": [
+    "Suranna",
+    "\"Suranna\",serif"
+  ],
+  "google-suravaram": [
+    "Suravaram",
+    "\"Suravaram\",serif"
+  ],
+  "google-suwannaphum": [
+    "Suwannaphum",
+    "\"Suwannaphum\",serif"
+  ],
+  "google-swanky-and-moo-moo": [
+    "Swanky and Moo Moo",
+    "\"Swanky and Moo Moo\",cursive"
+  ],
+  "google-syncopate": [
+    "Syncopate",
+    "\"Syncopate\",sans-serif"
+  ],
+  "google-syne": [
+    "Syne",
+    "\"Syne\",sans-serif"
+  ],
+  "google-syne-mono": [
+    "Syne Mono",
+    "\"Syne Mono\",monospace"
+  ],
+  "google-syne-tactile": [
+    "Syne Tactile",
+    "\"Syne Tactile\",sans-serif"
+  ],
+  "google-tasa-explorer": [
+    "TASA Explorer",
+    "\"TASA Explorer\",sans-serif"
+  ],
+  "google-tasa-orbiter": [
+    "TASA Orbiter",
+    "\"TASA Orbiter\",sans-serif"
+  ],
+  "google-tac-one": [
+    "Tac One",
+    "\"Tac One\",sans-serif"
+  ],
+  "google-tagesschrift": [
+    "Tagesschrift",
+    "\"Tagesschrift\",sans-serif"
+  ],
+  "google-tai-heritage-pro": [
+    "Tai Heritage Pro",
+    "\"Tai Heritage Pro\",serif"
+  ],
+  "google-tajawal": [
+    "Tajawal",
+    "\"Tajawal\",sans-serif"
+  ],
+  "google-tangerine": [
+    "Tangerine",
+    "\"Tangerine\",cursive"
+  ],
+  "google-tapestry": [
+    "Tapestry",
+    "\"Tapestry\",cursive"
+  ],
+  "google-taprom": [
+    "Taprom",
+    "\"Taprom\",sans-serif"
+  ],
+  "google-tauri": [
+    "Tauri",
+    "\"Tauri\",sans-serif"
+  ],
+  "google-taviraj": [
+    "Taviraj",
+    "\"Taviraj\",serif"
+  ],
+  "google-teachers": [
+    "Teachers",
+    "\"Teachers\",sans-serif"
+  ],
+  "google-teko": [
+    "Teko",
+    "\"Teko\",sans-serif"
+  ],
+  "google-tektur": [
+    "Tektur",
+    "\"Tektur\",sans-serif"
+  ],
+  "google-telex": [
+    "Telex",
+    "\"Telex\",sans-serif"
+  ],
+  "google-tenali-ramakrishna": [
+    "Tenali Ramakrishna",
+    "\"Tenali Ramakrishna\",sans-serif"
+  ],
+  "google-tenor-sans": [
+    "Tenor Sans",
+    "\"Tenor Sans\",sans-serif"
+  ],
+  "google-text-me-one": [
+    "Text Me One",
+    "\"Text Me One\",sans-serif"
+  ],
+  "google-texturina": [
+    "Texturina",
+    "\"Texturina\",serif"
+  ],
+  "google-thasadith": [
+    "Thasadith",
+    "\"Thasadith\",sans-serif"
+  ],
+  "google-the-girl-next-door": [
+    "The Girl Next Door",
+    "\"The Girl Next Door\",cursive"
+  ],
+  "google-the-nautigal": [
+    "The Nautigal",
+    "\"The Nautigal\",cursive"
+  ],
+  "google-tienne": [
+    "Tienne",
+    "\"Tienne\",serif"
+  ],
+  "google-tiktok-sans": [
+    "TikTok Sans",
+    "\"TikTok Sans\",sans-serif"
+  ],
+  "google-tillana": [
+    "Tillana",
+    "\"Tillana\",sans-serif"
+  ],
+  "google-tilt-neon": [
+    "Tilt Neon",
+    "\"Tilt Neon\",sans-serif"
+  ],
+  "google-tilt-prism": [
+    "Tilt Prism",
+    "\"Tilt Prism\",sans-serif"
+  ],
+  "google-tilt-warp": [
+    "Tilt Warp",
+    "\"Tilt Warp\",sans-serif"
+  ],
+  "google-timmana": [
+    "Timmana",
+    "\"Timmana\",sans-serif"
+  ],
+  "google-tinos": [
+    "Tinos",
+    "\"Tinos\",serif"
+  ],
+  "google-tiny5": [
+    "Tiny5",
+    "\"Tiny5\",sans-serif"
+  ],
+  "google-tiro-bangla": [
+    "Tiro Bangla",
+    "\"Tiro Bangla\",serif"
+  ],
+  "google-tiro-devanagari-hindi": [
+    "Tiro Devanagari Hindi",
+    "\"Tiro Devanagari Hindi\",serif"
+  ],
+  "google-tiro-devanagari-marathi": [
+    "Tiro Devanagari Marathi",
+    "\"Tiro Devanagari Marathi\",serif"
+  ],
+  "google-tiro-devanagari-sanskrit": [
+    "Tiro Devanagari Sanskrit",
+    "\"Tiro Devanagari Sanskrit\",serif"
+  ],
+  "google-tiro-gurmukhi": [
+    "Tiro Gurmukhi",
+    "\"Tiro Gurmukhi\",serif"
+  ],
+  "google-tiro-kannada": [
+    "Tiro Kannada",
+    "\"Tiro Kannada\",serif"
+  ],
+  "google-tiro-tamil": [
+    "Tiro Tamil",
+    "\"Tiro Tamil\",serif"
+  ],
+  "google-tiro-telugu": [
+    "Tiro Telugu",
+    "\"Tiro Telugu\",serif"
+  ],
+  "google-tirra": [
+    "Tirra",
+    "\"Tirra\",sans-serif"
+  ],
+  "google-titan-one": [
+    "Titan One",
+    "\"Titan One\",sans-serif"
+  ],
+  "google-titillium-web": [
+    "Titillium Web",
+    "\"Titillium Web\",sans-serif"
+  ],
+  "google-tomorrow": [
+    "Tomorrow",
+    "\"Tomorrow\",sans-serif"
+  ],
+  "google-tourney": [
+    "Tourney",
+    "\"Tourney\",sans-serif"
+  ],
+  "google-trade-winds": [
+    "Trade Winds",
+    "\"Trade Winds\",sans-serif"
+  ],
+  "google-train-one": [
+    "Train One",
+    "\"Train One\",sans-serif"
+  ],
+  "google-triodion": [
+    "Triodion",
+    "\"Triodion\",sans-serif"
+  ],
+  "google-trirong": [
+    "Trirong",
+    "\"Trirong\",serif"
+  ],
+  "google-trispace": [
+    "Trispace",
+    "\"Trispace\",sans-serif"
+  ],
+  "google-trocchi": [
+    "Trocchi",
+    "\"Trocchi\",serif"
+  ],
+  "google-trochut": [
+    "Trochut",
+    "\"Trochut\",sans-serif"
+  ],
+  "google-truculenta": [
+    "Truculenta",
+    "\"Truculenta\",sans-serif"
+  ],
+  "google-trykker": [
+    "Trykker",
+    "\"Trykker\",serif"
+  ],
+  "google-tsukimi-rounded": [
+    "Tsukimi Rounded",
+    "\"Tsukimi Rounded\",sans-serif"
+  ],
+  "google-tuffy": [
+    "Tuffy",
+    "\"Tuffy\",sans-serif"
+  ],
+  "google-tulpen-one": [
+    "Tulpen One",
+    "\"Tulpen One\",sans-serif"
+  ],
+  "google-turret-road": [
+    "Turret Road",
+    "\"Turret Road\",sans-serif"
+  ],
+  "google-twinkle-star": [
+    "Twinkle Star",
+    "\"Twinkle Star\",cursive"
+  ],
+  "google-ubuntu": [
+    "Ubuntu",
+    "\"Ubuntu\",sans-serif"
+  ],
+  "google-ubuntu-condensed": [
+    "Ubuntu Condensed",
+    "\"Ubuntu Condensed\",sans-serif"
+  ],
+  "google-ubuntu-mono": [
+    "Ubuntu Mono",
+    "\"Ubuntu Mono\",monospace"
+  ],
+  "google-ubuntu-sans": [
+    "Ubuntu Sans",
+    "\"Ubuntu Sans\",sans-serif"
+  ],
+  "google-ubuntu-sans-mono": [
+    "Ubuntu Sans Mono",
+    "\"Ubuntu Sans Mono\",monospace"
+  ],
+  "google-uchen": [
+    "Uchen",
+    "\"Uchen\",serif"
+  ],
+  "google-ultra": [
+    "Ultra",
+    "\"Ultra\",serif"
+  ],
+  "google-unbounded": [
+    "Unbounded",
+    "\"Unbounded\",sans-serif"
+  ],
+  "google-uncial-antiqua": [
+    "Uncial Antiqua",
+    "\"Uncial Antiqua\",sans-serif"
+  ],
+  "google-underdog": [
+    "Underdog",
+    "\"Underdog\",sans-serif"
+  ],
+  "google-unica-one": [
+    "Unica One",
+    "\"Unica One\",sans-serif"
+  ],
+  "google-unifrakturcook": [
+    "UnifrakturCook",
+    "\"UnifrakturCook\",sans-serif"
+  ],
+  "google-unifrakturmaguntia": [
+    "UnifrakturMaguntia",
+    "\"UnifrakturMaguntia\",sans-serif"
+  ],
+  "google-unkempt": [
+    "Unkempt",
+    "\"Unkempt\",sans-serif"
+  ],
+  "google-unlock": [
+    "Unlock",
+    "\"Unlock\",sans-serif"
+  ],
+  "google-unna": [
+    "Unna",
+    "\"Unna\",serif"
+  ],
+  "google-uoqmunthenkhung": [
+    "UoqMunThenKhung",
+    "\"UoqMunThenKhung\",serif"
+  ],
+  "google-updock": [
+    "Updock",
+    "\"Updock\",cursive"
+  ],
+  "google-urbanist": [
+    "Urbanist",
+    "\"Urbanist\",sans-serif"
+  ],
+  "google-vt323": [
+    "VT323",
+    "\"VT323\",monospace"
+  ],
+  "google-valley-sans": [
+    "Valley Sans",
+    "\"Valley Sans\",sans-serif"
+  ],
+  "google-vampiro-one": [
+    "Vampiro One",
+    "\"Vampiro One\",sans-serif"
+  ],
+  "google-varela": [
+    "Varela",
+    "\"Varela\",sans-serif"
+  ],
+  "google-varela-round": [
+    "Varela Round",
+    "\"Varela Round\",sans-serif"
+  ],
+  "google-varta": [
+    "Varta",
+    "\"Varta\",sans-serif"
+  ],
+  "google-vast-shadow": [
+    "Vast Shadow",
+    "\"Vast Shadow\",serif"
+  ],
+  "google-vazirmatn": [
+    "Vazirmatn",
+    "\"Vazirmatn\",sans-serif"
+  ],
+  "google-vend-sans": [
+    "Vend Sans",
+    "\"Vend Sans\",sans-serif"
+  ],
+  "google-vesper-libre": [
+    "Vesper Libre",
+    "\"Vesper Libre\",serif"
+  ],
+  "google-viaoda-libre": [
+    "Viaoda Libre",
+    "\"Viaoda Libre\",sans-serif"
+  ],
+  "google-vibes": [
+    "Vibes",
+    "\"Vibes\",sans-serif"
+  ],
+  "google-vibur": [
+    "Vibur",
+    "\"Vibur\",cursive"
+  ],
+  "google-victor-mono": [
+    "Victor Mono",
+    "\"Victor Mono\",monospace"
+  ],
+  "google-vidaloka": [
+    "Vidaloka",
+    "\"Vidaloka\",serif"
+  ],
+  "google-viga": [
+    "Viga",
+    "\"Viga\",sans-serif"
+  ],
+  "google-vina-sans": [
+    "Vina Sans",
+    "\"Vina Sans\",sans-serif"
+  ],
+  "google-voces": [
+    "Voces",
+    "\"Voces\",sans-serif"
+  ],
+  "google-volkhov": [
+    "Volkhov",
+    "\"Volkhov\",serif"
+  ],
+  "google-vollkorn": [
+    "Vollkorn",
+    "\"Vollkorn\",serif"
+  ],
+  "google-vollkorn-sc": [
+    "Vollkorn SC",
+    "\"Vollkorn SC\",serif"
+  ],
+  "google-voltaire": [
+    "Voltaire",
+    "\"Voltaire\",sans-serif"
+  ],
+  "google-vujahday-script": [
+    "Vujahday Script",
+    "\"Vujahday Script\",cursive"
+  ],
+  "google-wdxl-lubrifont-jp-n": [
+    "WDXL Lubrifont JP N",
+    "\"WDXL Lubrifont JP N\",sans-serif"
+  ],
+  "google-wdxl-lubrifont-sc": [
+    "WDXL Lubrifont SC",
+    "\"WDXL Lubrifont SC\",sans-serif"
+  ],
+  "google-wdxl-lubrifont-tc": [
+    "WDXL Lubrifont TC",
+    "\"WDXL Lubrifont TC\",sans-serif"
+  ],
+  "google-waiting-for-the-sunrise": [
+    "Waiting for the Sunrise",
+    "\"Waiting for the Sunrise\",cursive"
+  ],
+  "google-wallpoet": [
+    "Wallpoet",
+    "\"Wallpoet\",sans-serif"
+  ],
+  "google-walter-turncoat": [
+    "Walter Turncoat",
+    "\"Walter Turncoat\",cursive"
+  ],
+  "google-warnes": [
+    "Warnes",
+    "\"Warnes\",sans-serif"
+  ],
+  "google-water-brush": [
+    "Water Brush",
+    "\"Water Brush\",cursive"
+  ],
+  "google-waterfall": [
+    "Waterfall",
+    "\"Waterfall\",cursive"
+  ],
+  "google-wavefont": [
+    "Wavefont",
+    "\"Wavefont\",sans-serif"
+  ],
+  "google-wellfleet": [
+    "Wellfleet",
+    "\"Wellfleet\",serif"
+  ],
+  "google-wendy-one": [
+    "Wendy One",
+    "\"Wendy One\",sans-serif"
+  ],
+  "google-whisper": [
+    "Whisper",
+    "\"Whisper\",cursive"
+  ],
+  "google-windsong": [
+    "WindSong",
+    "\"WindSong\",cursive"
+  ],
+  "google-winky-rough": [
+    "Winky Rough",
+    "\"Winky Rough\",sans-serif"
+  ],
+  "google-winky-sans": [
+    "Winky Sans",
+    "\"Winky Sans\",sans-serif"
+  ],
+  "google-wire-one": [
+    "Wire One",
+    "\"Wire One\",sans-serif"
+  ],
+  "google-wittgenstein": [
+    "Wittgenstein",
+    "\"Wittgenstein\",serif"
+  ],
+  "google-wix-madefor-display": [
+    "Wix Madefor Display",
+    "\"Wix Madefor Display\",sans-serif"
+  ],
+  "google-wix-madefor-text": [
+    "Wix Madefor Text",
+    "\"Wix Madefor Text\",sans-serif"
+  ],
+  "google-work-sans": [
+    "Work Sans",
+    "\"Work Sans\",sans-serif"
+  ],
+  "google-workbench": [
+    "Workbench",
+    "\"Workbench\",monospace"
+  ],
+  "google-xanh-mono": [
+    "Xanh Mono",
+    "\"Xanh Mono\",monospace"
+  ],
+  "google-yaldevi": [
+    "Yaldevi",
+    "\"Yaldevi\",sans-serif"
+  ],
+  "google-yanone-kaffeesatz": [
+    "Yanone Kaffeesatz",
+    "\"Yanone Kaffeesatz\",sans-serif"
+  ],
+  "google-yantramanav": [
+    "Yantramanav",
+    "\"Yantramanav\",sans-serif"
+  ],
+  "google-yarndings-12": [
+    "Yarndings 12",
+    "\"Yarndings 12\",sans-serif"
+  ],
+  "google-yarndings-12-charted": [
+    "Yarndings 12 Charted",
+    "\"Yarndings 12 Charted\",sans-serif"
+  ],
+  "google-yarndings-20": [
+    "Yarndings 20",
+    "\"Yarndings 20\",sans-serif"
+  ],
+  "google-yarndings-20-charted": [
+    "Yarndings 20 Charted",
+    "\"Yarndings 20 Charted\",sans-serif"
+  ],
+  "google-yatra-one": [
+    "Yatra One",
+    "\"Yatra One\",sans-serif"
+  ],
+  "google-yellowtail": [
+    "Yellowtail",
+    "\"Yellowtail\",cursive"
+  ],
+  "google-yeon-sung": [
+    "Yeon Sung",
+    "\"Yeon Sung\",sans-serif"
+  ],
+  "google-yeseva-one": [
+    "Yeseva One",
+    "\"Yeseva One\",sans-serif"
+  ],
+  "google-yesteryear": [
+    "Yesteryear",
+    "\"Yesteryear\",cursive"
+  ],
+  "google-yomogi": [
+    "Yomogi",
+    "\"Yomogi\",cursive"
+  ],
+  "google-young-serif": [
+    "Young Serif",
+    "\"Young Serif\",serif"
+  ],
+  "google-yrsa": [
+    "Yrsa",
+    "\"Yrsa\",serif"
+  ],
+  "google-ysabeau": [
+    "Ysabeau",
+    "\"Ysabeau\",sans-serif"
+  ],
+  "google-ysabeau-infant": [
+    "Ysabeau Infant",
+    "\"Ysabeau Infant\",sans-serif"
+  ],
+  "google-ysabeau-office": [
+    "Ysabeau Office",
+    "\"Ysabeau Office\",sans-serif"
+  ],
+  "google-ysabeau-sc": [
+    "Ysabeau SC",
+    "\"Ysabeau SC\",sans-serif"
+  ],
+  "google-yuji-boku": [
+    "Yuji Boku",
+    "\"Yuji Boku\",serif"
+  ],
+  "google-yuji-hentaigana-akari": [
+    "Yuji Hentaigana Akari",
+    "\"Yuji Hentaigana Akari\",cursive"
+  ],
+  "google-yuji-hentaigana-akebono": [
+    "Yuji Hentaigana Akebono",
+    "\"Yuji Hentaigana Akebono\",cursive"
+  ],
+  "google-yuji-mai": [
+    "Yuji Mai",
+    "\"Yuji Mai\",serif"
+  ],
+  "google-yuji-syuku": [
+    "Yuji Syuku",
+    "\"Yuji Syuku\",serif"
+  ],
+  "google-yusei-magic": [
+    "Yusei Magic",
+    "\"Yusei Magic\",sans-serif"
+  ],
+  "google-yuyu": [
+    "Yuyu",
+    "\"Yuyu\",cursive"
+  ],
+  "google-yuyu-short": [
+    "Yuyu Short",
+    "\"Yuyu Short\",cursive"
+  ],
+  "google-zcool-kuaile": [
+    "ZCOOL KuaiLe",
+    "\"ZCOOL KuaiLe\",sans-serif"
+  ],
+  "google-zcool-qingke-huangyou": [
+    "ZCOOL QingKe HuangYou",
+    "\"ZCOOL QingKe HuangYou\",sans-serif"
+  ],
+  "google-zcool-xiaowei": [
+    "ZCOOL XiaoWei",
+    "\"ZCOOL XiaoWei\",sans-serif"
+  ],
+  "google-zain": [
+    "Zain",
+    "\"Zain\",sans-serif"
+  ],
+  "google-zalando-sans": [
+    "Zalando Sans",
+    "\"Zalando Sans\",sans-serif"
+  ],
+  "google-zalando-sans-expanded": [
+    "Zalando Sans Expanded",
+    "\"Zalando Sans Expanded\",sans-serif"
+  ],
+  "google-zalando-sans-semiexpanded": [
+    "Zalando Sans SemiExpanded",
+    "\"Zalando Sans SemiExpanded\",sans-serif"
+  ],
+  "google-zen-antique": [
+    "Zen Antique",
+    "\"Zen Antique\",serif"
+  ],
+  "google-zen-antique-soft": [
+    "Zen Antique Soft",
+    "\"Zen Antique Soft\",serif"
+  ],
+  "google-zen-dots": [
+    "Zen Dots",
+    "\"Zen Dots\",sans-serif"
+  ],
+  "google-zen-kaku-gothic-antique": [
+    "Zen Kaku Gothic Antique",
+    "\"Zen Kaku Gothic Antique\",sans-serif"
+  ],
+  "google-zen-kaku-gothic-new": [
+    "Zen Kaku Gothic New",
+    "\"Zen Kaku Gothic New\",sans-serif"
+  ],
+  "google-zen-kurenaido": [
+    "Zen Kurenaido",
+    "\"Zen Kurenaido\",sans-serif"
+  ],
+  "google-zen-loop": [
+    "Zen Loop",
+    "\"Zen Loop\",sans-serif"
+  ],
+  "google-zen-maru-gothic": [
+    "Zen Maru Gothic",
+    "\"Zen Maru Gothic\",sans-serif"
+  ],
+  "google-zen-old-mincho": [
+    "Zen Old Mincho",
+    "\"Zen Old Mincho\",serif"
+  ],
+  "google-zen-tokyo-zoo": [
+    "Zen Tokyo Zoo",
+    "\"Zen Tokyo Zoo\",sans-serif"
+  ],
+  "google-zeyada": [
+    "Zeyada",
+    "\"Zeyada\",cursive"
+  ],
+  "google-zhi-mang-xing": [
+    "Zhi Mang Xing",
+    "\"Zhi Mang Xing\",cursive"
+  ],
+  "google-zilla-slab": [
+    "Zilla Slab",
+    "\"Zilla Slab\",serif"
+  ],
+  "google-zilla-slab-highlight": [
+    "Zilla Slab Highlight",
+    "\"Zilla Slab Highlight\",serif"
   ]
 }

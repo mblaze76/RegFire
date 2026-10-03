@@ -224,7 +224,7 @@
     const select=$('page-intro-font'),current=page?.appearance?.intro_font||'default',query=$('page-intro-font-search').value.trim().toLowerCase();
     select.replaceChildren();let count=0;
     for(const [id,[label]] of Object.entries(window.WelcomeDisplay.fonts)){const match=label.toLowerCase().includes(query);if(match||id===current){select.add(new Option(label,id));if(match)count++;}}
-    select.value=current;$('page-intro-font-count').textContent=query?count+' matching fonts. Current selection is retained.':'100 popular Google Fonts plus 5 original choices.';
+    select.value=current;$('page-intro-font-count').textContent=query?count+' matching fonts. Current selection is retained.':Object.keys(window.WelcomeGoogleFonts).length.toLocaleString()+' Google Fonts families + 5 original choices. Search to preview.';
   }
   $('page-intro-font-search').oninput=introFonts;
   window.WelcomeDisplay.searchResults($('page-intro-font-search'),$('page-intro-font'));
@@ -233,7 +233,7 @@
     if(page){introFonts();const font=page.appearance.intro_font||'default';window.WelcomeDisplay.loadFont(font);$('preview-intro').style.fontFamily=(window.WelcomeDisplay.fonts[font]||window.WelcomeDisplay.fonts.default)[1];}
 
     if(!page)return;for(const [key,id,target,fallback] of [["title_color","page-title-color","preview-title","#24242a"],["intro_color","page-intro-color","preview-intro","#555c68"]]){const color=page.appearance[key]||fallback;$(id).value=color;$(target).style.color=color;}
-    const footer=page.appearance.footer||{};$("footer-enabled").checked=!!footer.enabled;for(const key of ['heading', 'message', 'email', 'phone', 'links', 'facebook','instagram','linkedin','youtube','x'])$("footer-"+key).value=footer[key]||"";window.RegistrationFooter.render($("preview-footer"),footer);
+    window.RegistrationFooter.connect($("preview-footer"),event.id);const footer=page.appearance.footer||{};window.RegistrationFooter.render($("preview-footer"),footer);
     if(!page)return;
     for(const kind of ['logo','background']){
       const id=page.appearance[kind+'_asset_id'];const image=$(kind+'-thumbnail');
@@ -261,7 +261,6 @@
     };
     $('remove-'+kind).onclick=()=>{page.appearance[kind+'_asset_id']=null;dirty();updateAppearance();};
   }
-  for(const key of ['enabled', 'heading', 'message', 'email', 'phone', 'links', 'facebook','instagram','linkedin','youtube','x'])for(const eventName of ["input","change"])$("footer-"+key).addEventListener(eventName,()=>{if(!page)return;page.appearance.footer={...(page.appearance.footer||{}),[key]:key==="enabled"?$("footer-enabled").checked:$("footer-"+key).value};dirty();window.RegistrationFooter.render($("preview-footer"),page.appearance.footer);});
   $('background-fade').oninput=()=>{if(page){page.appearance.background_fade=Number($('background-fade').value);dirty();updateAppearance();}};
   for(const [id,key] of [['page-title-color','title_color'],['page-intro-color','intro_color']])$(id).oninput=()=>{if(!page)return;page.appearance[key]=$(id).value;dirty();updateAppearance();};
   $('page-title').oninput=()=>{page.title=$('page-title').value;dirty();renderPreview();};

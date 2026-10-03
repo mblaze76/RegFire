@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 200" role="img" aria-label="Spark, a friendly flame helper">
+<defs><linearGradient id="flame" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#ffe47a"/><stop offset=".45" stop-color="#ff9b28"/><stop offset="1" stop-color="#f24716"/></linearGradient><linearGradient id="heart" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff4b4"/><stop offset="1" stop-color="#ffca54"/></linearGradient></defs>
+<ellipse cx="91" cy="184" rx="49" ry="8" fill="#33201b" opacity=".12"/>
+<path d="M76 174q-10 14-24 6" fill="none" stroke="#d95124" stroke-width="10" stroke-linecap="round"/><path d="M110 174q10 14 24 6" fill="none" stroke="#d95124" stroke-width="10" stroke-linecap="round"/>
+<path d="M44 133q-24 2-25-17M137 131q18-1 24-17" fill="none" stroke="#ff9b28" stroke-width="12" stroke-linecap="round"/>
+<path d="M91 15c10 35 42 42 39 73 10-6 14-17 12-28 25 31 31 72 8 96-15 17-34 25-61 25-37 0-67-23-67-58 0-28 17-48 38-68-2 22 8 28 13 30C61 53 89 44 91 15Z" fill="url(#flame)" stroke="#eb721c" stroke-width="2"/>
+<path d="M91 82c12 17 39 28 39 52 0 22-17 36-39 36-22 0-38-14-38-35 0-25 24-30 38-53Z" fill="url(#heart)"/>
+<ellipse cx="73" cy="126" rx="7" ry="9" fill="#38272b"/><ellipse cx="109" cy="126" rx="7" ry="9" fill="#38272b"/><circle cx="75" cy="123" r="2.5" fill="white"/><circle cx="111" cy="123" r="2.5" fill="white"/>
+<ellipse cx="61" cy="139" rx="8" ry="4" fill="#fa8055" opacity=".6"/><ellipse cx="121" cy="139" rx="8" ry="4" fill="#fa8055" opacity=".6"/>
+<path d="M81 141q10 12 20 0" fill="none" stroke="#61312b" stroke-width="3.5" stroke-linecap="round"/>
+<path d="m146 25 3 8 8 3-8 3-3 8-3-8-8-3 8-3ZM28 57l2 6 6 2-6 2-2 6-2-6-6-2 6-2Z" fill="#ffb52b"/>
+</svg>

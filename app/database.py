@@ -49,6 +49,10 @@ class Store:
             if old and old[0].get('parent_event_id'): data['parent_event_id']=old[0]['parent_event_id']
             data.update(id=event_id, status='draft', created=old[0]['created'] if old else now, updated=now)
             if editing:
+                agenda = conn.execute(psycopg.sql.SQL('SELECT body FROM {} WHERE event_id=%s').format(psycopg.sql.Identifier(self.schema,'event_sessions')), (event_id,)).fetchone()
+                if agenda:
+                    from sessions import validate as validate_sessions
+                    validate_sessions(agenda[0], data)
                 existing_page = conn.execute(psycopg.sql.SQL('SELECT body FROM {} WHERE event_id=%s').format(self.page_table()), (event_id,)).fetchone()
                 if existing_page:
                     from registration import validate_page
@@ -133,14 +137,22 @@ class Store:
             return existing
 
     def registration_page(self, event_id):
+        from event_footer import operation
+        shared = operation(self, event_id)
         from registration import starter
         with self.connect() as conn:
             event = conn.execute(psycopg.sql.SQL('SELECT body FROM {} WHERE id=%s').format(self.table()), (event_id,)).fetchone()
             if not event: return None
             page = conn.execute(psycopg.sql.SQL('SELECT body FROM {} WHERE event_id=%s').format(self.page_table()), (event_id,)).fetchone()
-            return page[0] if page else starter(event[0])
+            result = page[0] if page else starter(event[0])
+            if shared and not shared['conflict']: result.setdefault('appearance',{})['footer']=shared['footer']
+            return result
 
     def save_registration_page(self, event_id, data, now):
+        from event_footer import operation
+        shared=operation(self,event_id)
+        if shared and not shared['conflict'] and isinstance(data,dict) and isinstance(data.get('appearance',{}),dict):
+            data=dict(data,appearance={**(data.get('appearance') or {}),'footer':shared['footer']})
         with self.connect() as conn:
             event = conn.execute(psycopg.sql.SQL('SELECT body FROM {} WHERE id=%s FOR UPDATE').format(self.table()), (event_id,)).fetchone()
             if not event: return None

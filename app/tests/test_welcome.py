@@ -12,7 +12,7 @@ class WelcomeValidation(unittest.TestCase):
     def test_font_catalog_and_validation(self):
         import json
         catalog=json.loads((Path(__file__).resolve().parents[1]/'static/welcome-fonts.json').read_text())
-        self.assertEqual(len(catalog),100)
+        self.assertEqual(len(catalog),1950)
         for font in [*catalog,'default','arial','georgia','trebuchet','verdana']:
             self.assertEqual(validate({'about_font':font})['about_font'],font)
         for font in ['made-up',[],None,'google-evil;display:none']:
@@ -77,11 +77,11 @@ class WelcomePersistence(unittest.TestCase):
         event=self.request('/api/events',draft(),'POST');base='/api/events/'+event['id'];page=self.request(base+'/welcome-page')
         self.assertEqual(page['buttons'],[dict(id=event['id'],label='Attendee',flow_id=event['id'])])
         flows=self.request(base+'/flows',{'action':'create','name':'Exhibitor','kind':'exhibitor'},'POST');other=next(f for f in flows if f['id']!=event['id'])
-        page.update(about_font='google-montserrat',about='Keep this text exactly.');page['buttons'][0].update(label='Get your pass',flow_id=other['id'])
+        page.update(title='Welcome to Ignite',title_font='google-abeezee',title_color='#123abc',about_font='google-montserrat',about='Keep this text exactly.');page['buttons'][0].update(label='Get your pass',flow_id=other['id'])
         self.request(base+'/welcome-page',page,'PUT')
         self.request(base+'/flows',{'action':'rename','id':other['id'],'name':'Partners'},'POST')
         self.stop();self.store.initialize();self.start()
-        saved=self.request(base+'/welcome-page');self.assertEqual(saved['buttons'],page['buttons']);self.assertEqual(saved['about_font'],'google-montserrat');self.assertEqual(saved['about'],page['about'])
+        saved=self.request(base+'/welcome-page');self.assertEqual(saved['buttons'],page['buttons']);self.assertEqual(saved['title'],'Welcome to Ignite');self.assertEqual(saved['title_font'],'google-abeezee');self.assertEqual(saved['title_color'],'#123abc');self.assertEqual(saved['about_font'],'google-montserrat');self.assertEqual(saved['about'],page['about'])
         stranger=self.request('/api/events',draft(),'POST')
         with self.assertRaises(HTTPError):self.request(base+'/welcome-page',saved|{'buttons':[dict(id=str(uuid.uuid4()),label='Wrong event',flow_id=stranger['id'])]},'PUT')
         self.request(base+'/flows',{'action':'remove','id':other['id'],'confirm_name':'Partners'},'POST')
