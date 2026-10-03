@@ -149,3 +149,7 @@ body.welcome-site.welcome-vivid-artwork [data-welcome-heading],body.welcome-site
 body.welcome-site.welcome-has-artwork #welcome-preview-about{background:transparent;padding:0;border-radius:0}
 body.welcome-site.welcome-has-artwork>.live-toolbar{background:#25232a99}
 body.welcome-site.welcome-vivid-artwork #welcome-error{color:#fff}
+/* Embedded welcome uses the same plain text and transparent introduction as the site. */
+#welcome-preview.welcome-has-artwork [data-welcome-heading],#welcome-preview.welcome-has-artwork #welcome-preview-event-name,#welcome-preview.welcome-has-artwork .welcome-return a{text-shadow:none}
+#welcome-preview.welcome-vivid-artwork [data-welcome-heading],#welcome-preview.welcome-vivid-artwork #welcome-preview-event-name,#welcome-preview.welcome-vivid-artwork .welcome-return a{color:#fff}
+#welcome-preview.welcome-has-artwork #welcome-preview-about{background:transparent;padding:0;border-radius:0;text-shadow:none}
