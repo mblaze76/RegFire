@@ -1,6 +1,9 @@
 const form = document.querySelector('#event-form');
 const field = name => form.elements.namedItem(name);
 const feedback = document.querySelector('#feedback');
+let initializing=true, opening=false;
+function loading(text){document.body.classList.add('workspace-loading');document.getElementById('workspace-loading').textContent=text;}
+function loaded(){document.body.classList.remove('workspace-loading');}
 let events = [], selected = null, dirty = false, saving = false, activeView = 'event';
 async function api(path, options) {
   const response = await fetch(path, options);
@@ -29,8 +32,9 @@ function renderList(){
 }
 window.refreshEventOutline=renderList;
 async function openDraft(event = null) {
-  if (saving || window.RegistrationBuilder?.busy || window.DemographicsBuilder?.busy || window.MembershipBuilder?.busy || window.WelcomeBuilder?.busy) return;
+  if (opening || saving || window.RegistrationBuilder?.busy || window.DemographicsBuilder?.busy || window.MembershipBuilder?.busy || window.WelcomeBuilder?.busy) return;
   if ((dirty || window.RegistrationBuilder?.dirty || window.DemographicsBuilder?.dirty || window.MembershipBuilder?.dirty || window.WelcomeBuilder?.dirty) && !await confirmAction('Discard unsaved changes and continue?')) return;
+  opening=true;loading(event?'Loading '+event.name+'…':'Opening new event…');
   window.RegistrationBuilder?.clear(); window.DemographicsBuilder?.clear(); window.MembershipBuilder?.clear(); window.WelcomeBuilder?.clear();
   form.reset(); selected = event?.id || null;
   if (event) for (const [name, value] of Object.entries(event)) { const control = field(name); if (control) control.value = value; }
@@ -41,16 +45,17 @@ async function openDraft(event = null) {
   document.querySelector('#editor-title').textContent = event ? 'Edit event' : 'Create an event';
   document.querySelector('#save-state').textContent = event ? 'Saved draft' : 'New draft';
   message(event ? 'Last saved ' + new Date(event.updated).toLocaleString() : 'Only the event name is required.');
-  await window.RegistrationFlows.load(event);
+  try { await window.RegistrationFlows.load(event); } catch(error){opening=false;loading('Could not load this event. Reload to retry. Your saved data is unchanged.');return;}
+  opening=false;loaded();
   if(!window.RegistrationFlows.current()&&activeView!=='flows')activeView='event';
   showView(event ? activeView : 'event');
 }
 form.addEventListener('input', () => { dirty = true; document.querySelector('#save-state').textContent = 'Unsaved changes'; message('Save your draft to keep these changes.'); });
 form.addEventListener('change', formatFields);
-document.querySelector('#new').onclick = () => openDraft();
+document.querySelector('#new').onclick = () => {if(!initializing&&!opening)openDraft();};
 window.addEventListener('beforeunload', event => { if (dirty || window.RegistrationBuilder?.dirty || window.DemographicsBuilder?.dirty || window.MembershipBuilder?.dirty || window.WelcomeBuilder?.dirty) { event.preventDefault(); event.returnValue = ''; } });
 async function saveEventDraft(){
-  if(saving||!form.reportValidity())return false;
+  if(initializing||opening||saving||!form.reportValidity())return false;
   const data = Object.fromEntries(new FormData(form));
   data.address=Object.fromEntries(['line1','line2','city','region','postal','country'].map(k=>[k,field('address_'+k).value]));
   let advance=false;
@@ -89,12 +94,15 @@ async function init() {
     field('timezone').value = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
     events = await api('/api/events'); renderList();
     const locationState = new URLSearchParams(location.hash.slice(1));
-    const existing = events.find(item => item.id === locationState.get('event'));
+    const requested=locationState.get('event');
+    const existing = requested?events.find(item => item.id === requested):events[0];
+    if(requested&&!existing)throw new Error('The requested event was not found. Choose an existing event after reloading.');
     if (existing) {
       activeView = ['flows','setup','registration','demographics','membership'].includes(locationState.get('view')) ? locationState.get('view') : 'event';
-      openDraft(existing);
-    } else updateNav();
-  } catch (error) { message('Could not load drafts. Reload to retry. ' + error.message, true); }
+      await openDraft(existing);
+    } else {updateNav();loaded();}
+    initializing=false;
+  } catch (error) { loading('Could not load saved events. Reload to retry. '+error.message); }
   const context = document.modelContext;
   if (context?.registerTool) {
     try { await context.registerTool({ name:'list_event_drafts', description:'List saved Regfire event drafts on this computer.', inputSchema:{type:'object',properties:{},additionalProperties:false}, annotations:{readOnlyHint:true,untrustedContentHint:true}, execute:async () => api('/api/events') }); } catch (error) { console.warn('Optional browser tools unavailable', error); }
@@ -167,12 +175,15 @@ window.confirmAction = function(message) {
 };
 // Follow direct builder links even when the browser reuses this document.
 window.addEventListener('hashchange', async () => {
+  if(initializing)return;
+  if(opening){setLocation();return;}
   if (saving || window.RegistrationBuilder?.busy || window.DemographicsBuilder?.busy || window.MembershipBuilder?.busy || window.WelcomeBuilder?.busy) { setLocation(); return; }
   const route = new URLSearchParams(location.hash.slice(1));
   let destination = events.find(item => item.id === route.get('event')) || null;
   if (!destination && route.get('event')) {
     try { events = await api('/api/events'); destination = events.find(item => item.id === route.get('event')) || null; renderList(); } catch(error) { message('Could not open that event. Reload to retry.', true); setLocation(); return; }
   }
+  if(route.get('event')&&!destination){message('That saved event could not be found. Your current event is unchanged.',true);setLocation();return;}
   const view = destination && ['flows','setup','registration','demographics','membership'].includes(route.get('view')) ? route.get('view') : 'event';
   if (destination?.id===selected && (!route.get('flow')||route.get('flow')===window.RegistrationFlows.current()?.id) && ['setup','registration'].includes(activeView) && ['setup','registration'].includes(view)) {showView(view,true);return;}
   if ((dirty || window.RegistrationBuilder?.dirty || window.DemographicsBuilder?.dirty || window.MembershipBuilder?.dirty || window.WelcomeBuilder?.dirty) && !await confirmAction('Discard unsaved changes and open this event?')) {
@@ -208,4 +219,4 @@ document.querySelector('#delete-event').onclick=async()=>{
   finally{saving=false;controls.forEach(c=>c.disabled=false);document.querySelector('#delete-event').disabled=false;formatFields();}
 };
 
-window.DraftAutosave.register({ready:()=>dirty&&!saving&&!window.WelcomeBuilder?.busy&&activeView==='event',snapshot:()=>{const data=Object.fromEntries(new FormData(form));data.address=Object.fromEntries(['line1','line2','city','region','postal','country'].map(k=>[k,field('address_'+k).value]));data.url=field('url').value;return data;},lock:value=>saving=value,clean:()=>{dirty=false;},status:(state,text,error)=>{document.querySelector('#save-state').textContent=state;message(text,error);},save:async data=>{const wasNew=!selected;const saved=await api('/api/events'+(selected?'/'+selected:''),{method:selected?'PUT':'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});selected=saved.id;events=[saved,...events.filter(item=>item.id!==saved.id)];updateNav();setLocation();renderList();document.querySelector('#editor-title').textContent='Edit event';if(wasNew){await window.RegistrationFlows.load(saved);showView('event');}}});
+window.DraftAutosave.register({ready:()=>!initializing&&!opening&&dirty&&!saving&&!window.WelcomeBuilder?.busy&&activeView==='event',snapshot:()=>{const data=Object.fromEntries(new FormData(form));data.address=Object.fromEntries(['line1','line2','city','region','postal','country'].map(k=>[k,field('address_'+k).value]));data.url=field('url').value;return data;},lock:value=>saving=value,clean:()=>{dirty=false;},status:(state,text,error)=>{document.querySelector('#save-state').textContent=state;message(text,error);},save:async data=>{const wasNew=!selected;const saved=await api('/api/events'+(selected?'/'+selected:''),{method:selected?'PUT':'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});selected=saved.id;events=[saved,...events.filter(item=>item.id!==saved.id)];updateNav();setLocation();renderList();document.querySelector('#editor-title').textContent='Edit event';if(wasNew){await window.RegistrationFlows.load(saved);showView('event');}}});

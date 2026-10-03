@@ -142,3 +142,5 @@ body.welcome-site.welcome-has-artwork [data-welcome-heading],body.welcome-site.w
 @media(max-width:650px){body.welcome-site>.live-card{width:100%;padding:24px 18px;margin:0 auto!important}}
 
 body.welcome-site.welcome-vivid-artwork [data-welcome-heading],body.welcome-site.welcome-vivid-artwork #event-name,body.welcome-site.welcome-vivid-artwork .welcome-return a{color:#fff}
+
+#workspace-loading{display:none;padding:32px;font-size:18px}.workspace-loading #workspace-loading{display:block}.workspace-loading main>:not(#workspace-loading){display:none!important}.workspace-loading #new{pointer-events:none;opacity:.5}
