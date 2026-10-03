@@ -8,7 +8,7 @@ FIELDS=('member_id','email','active','expires')
 class Unavailable(Exception): pass
 
 def starter():
-    return dict(enabled=False,source='csv',policy='required',regtype_ids=[],api=dict(endpoint='',credential_env='',mapping={k:k for k in FIELDS}))
+    return dict(title='Verify your membership',details='If both are provided, both must match the same record. IDs are case-sensitive; email is case-insensitive.',title_font='default',details_font='default',title_color='#24242a',details_color='#24242a',enabled=False,source='csv',policy='required',regtype_ids=[],api=dict(endpoint='',credential_env='',mapping={k:k for k in FIELDS}))
 
 def endpoint(value):
     if value=='fixture://demo': return value
@@ -21,6 +21,20 @@ def endpoint(value):
 def validate(data, regtypes):
     if not isinstance(data,dict):raise ValueError('Membership settings are required.')
     result=starter()
+    from welcome import FONT_IDS
+    for key,limit in [('title',200),('details',3000)]:
+        value=data.get(key,result[key])
+        if not isinstance(value,str) or len(value)>limit:raise ValueError('Membership '+key+' is too long or invalid.')
+        result[key]=value.strip() if key=='title' else value
+    if not result['title']:result['title']='Verify your membership'
+    for key in ('title_font','details_font'):
+        value=data.get(key,'default')
+        if not isinstance(value,str) or value not in FONT_IDS:raise ValueError('Choose a supported membership font.')
+        result[key]=value
+    for key in ('title_color','details_color'):
+        value=data.get(key,'#24242a')
+        if not isinstance(value,str) or not re.fullmatch(r'#[0-9a-fA-F]{6}',value):raise ValueError('Choose a valid membership text color.')
+        result[key]=value.lower()
     if type(data.get('enabled',False)) is not bool:raise ValueError('Choose whether membership checking is enabled.')
     result['enabled']=data.get('enabled',False)
     for key,allowed in [('source',('csv','api')),('policy',('required','pending'))]:

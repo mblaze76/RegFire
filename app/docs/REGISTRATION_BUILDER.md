@@ -71,3 +71,15 @@ Uploads are event-specific. The server rejects image references from other event
 ## Separate preview and related setup
 
 Use **Open live preview ↗** for a separate attendee window that reflects unsaved edits; see LIVE_PREVIEW.md. Demographics is a separate organizer-only question/branching editor (DEMOGRAPHICS.md). Membership has its own settings and check preview (MEMBERSHIP.md). Address blocks support optional provider-ready suggestions while preserving manual entry and line 2 (ADDRESS_LOOKUP.md).
+
+## Flow agendas and speaker profiles
+
+Sessions follows Membership inside each registration flow. Agenda settings, speaker profiles, session edits/imports, and browser schedule selections are scoped to that flow ID. Existing event-keyed agendas stay with their original Attendee flow; no copies are made into other flows. The shared event footer remains event-wide. No stored agenda records are duplicated or deleted during this change.
+
+Create speakers before sessions, with first/last name, optional bio, role, organization, and normalized PNG/JPEG/WebP photo using existing validated uploads. Apply a speaker to the draft, then Save sessions. Multiple profiles can be assigned to a session. Other / N/A accepts a free-text substitute or additional speaker, and imported free-text names remain intact. Speaker cards list assigned sessions and provide Add a session.
+
+Optional CEU / CEM credits accept 0–10,000 with up to two decimals; blank differs from zero. CSV/TSV mapping supports credits, status (active/canceled), and cancellation_note in addition to the existing columns. Credits are metadata only, not attendance verification or certification. Canceling retains the session and its details; restore by choosing Active.
+
+The shared attendee renderer uses a compact sortable grid (session, day/time, speaker, room, credits), search, filters, and My schedule. Overlapping selected active rows carry explicit conflict labels and amber styling. Canceled rows carry a Canceled label and light red styling, cannot be newly selected, and remain visible/removable if already selected. Canceled selections do not create overlap warnings. Speaker hover/focus/click opens a bounded biography/photo pane; session title click opens a compact details pane. Mobile grids scroll horizontally inside the page.
+
+Spark can be dragged by mouse or touch. Arrow keys move it, Shift increases the step, and Home or Reset position returns it to the corner. Its bubble follows and stays within the viewport. Position is stored locally; chat remains a prototype with no live AI/audio backend.

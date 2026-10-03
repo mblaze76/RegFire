@@ -16,3 +16,8 @@
 @keyframes spark-turn-bounce{0%,20%,70%,100%{transform:translateY(0)}35%{transform:translateY(-4px)}50%{transform:translateY(-2px)}}
 @media(max-width:600px){.spark-turning{width:100px;height:118px}}
 @media(prefers-reduced-motion:reduce){.spark-launcher.has-turning .spark-turning{animation:none}}
+/* Movable mascot and a viewport-clamped bubble with a mouth-directed tail. */
+.spark-launcher{touch-action:none;user-select:none;cursor:grab}.spark-launcher:active,.spark-launcher.is-dragging{cursor:grabbing}.spark-launcher img{-webkit-user-drag:none}.spark-launcher.is-dragging,.spark-launcher.is-dragging .spark-turning{animation:none}
+.spark-panel{box-sizing:border-box;animation:none}.spark-panel::after{display:none}.spark-position-tail{position:fixed;inset:0;pointer-events:none;z-index:1202;overflow:visible}.spark-position-reset{align-self:flex-start;border:0;background:transparent;color:#826a54;font-size:10px;padding:5px 0 0;text-decoration:underline}.spark-messages{min-height:32px}.spark-panel{overflow:auto}
+
+.spark-launcher{animation:none;transform:none!important}

@@ -26,7 +26,7 @@ function renderList(){
   const group=document.createElement('details');group.className='event-outline';group.open=outlineState.get(event.id)??event.id===selected;
   const summary=document.createElement('summary');summary.textContent=event.name;group.append(summary);const contents=document.createElement('div');contents.className='outline-pages';group.append(contents);list.append(group);
   function link(label,view,flow){const a=document.createElement('a');a.textContent=label;a.href='#event='+event.id+'&view='+view+(flow?'&flow='+flow.id:'');if(event.id===selected&&view===activeView&&(!flow||flow.id===window.RegistrationFlows?.current()?.id))a.setAttribute('aria-current','page');a.onclick=async e=>{if(activeView==='event'&&(dirty||window.EventFooterBuilder?.dirty || window.SessionsBuilder?.dirty || window.WelcomeBuilder?.dirty)){e.preventDefault();if(!await saveEventDraft()||!await window.WelcomeBuilder.save()||!await window.EventFooterBuilder.save())return;location.hash=a.hash;}};return a;}
-  async function draw(){contents.replaceChildren(link('Event details','event'),link('Sessions','sessions'),link('Registration flows','flows'));try{const flows=event.id===selected?window.RegistrationFlows?.list()||[]:await api('/api/events/'+event.id+'/flows');if(!group.isConnected)return;for(const flow of flows){const branch=document.createElement('details'),key=event.id+':'+flow.id;branch.className='flow-outline';branch.open=outlineState.get(key)??(event.id===selected&&flow.id===window.RegistrationFlows?.current()?.id);branch.ontoggle=()=>outlineState.set(key,branch.open);const heading=document.createElement('summary');heading.textContent=flow.name;branch.append(heading);for(const [view,label] of [['setup','Show setup'],['registration',flow.kind==='attendee'?'Attendee details':'Registration details'],['demographics','Demographics'],['membership','Membership']])branch.append(link(label,view,flow));contents.append(branch);}}catch{const error=document.createElement('p');error.textContent='Could not load flows. Close and reopen this event to retry.';contents.append(error);}}
+  async function draw(){contents.replaceChildren(link('Event details','event'),link('Registration flows','flows'));try{const flows=event.id===selected?window.RegistrationFlows?.list()||[]:await api('/api/events/'+event.id+'/flows');if(!group.isConnected)return;for(const flow of flows){const branch=document.createElement('details'),key=event.id+':'+flow.id;branch.className='flow-outline';branch.open=outlineState.get(key)??(event.id===selected&&flow.id===window.RegistrationFlows?.current()?.id);branch.ontoggle=()=>outlineState.set(key,branch.open);const heading=document.createElement('summary');heading.textContent=flow.name;branch.append(heading);for(const [view,label] of [['setup','Show setup'],['registration',flow.kind==='attendee'?'Attendee details':'Registration details'],['demographics','Demographics'],['membership','Membership'],['sessions','Sessions']])branch.append(link(label,view,flow));contents.append(branch);}}catch{const error=document.createElement('p');error.textContent='Could not load flows. Close and reopen this event to retry.';contents.append(error);}}
   group.ontoggle=()=>{outlineState.set(event.id,group.open);if(group.open)draw();};if(group.open)draw();
  }
 }
@@ -128,13 +128,13 @@ function showView(view, keepRegistration = false) {
   if(view!==activeView)window.scrollTo({top:0,behavior:'instant'});
   activeView = view; updateNav(); setLocation();renderList();
   document.querySelector('#sessions-view').hidden = view !== 'sessions';
-  if(view==='sessions')window.SessionsBuilder.load(events.find(item=>item.id===selected));
+  if(view==='sessions')window.SessionsBuilder.load(window.flowEvent());
   document.querySelector('#event-view').hidden = view !== 'event';
   document.querySelector('#welcome-view').hidden = !selected;
   document.querySelector('#flows-view').hidden=view!=='flows';
   document.querySelector('#flows-event-name').textContent=events.find(item=>item.id===selected)?.name||'';
-  document.querySelector('#flow-context').hidden = ['event','flows','sessions'].includes(view);
-  for(const id of ['setup-tab','registration-tab','demographics-tab','membership-tab'])document.getElementById(id).hidden=['event','flows','sessions'].includes(view);
+  document.querySelector('#flow-context').hidden = ['event','flows'].includes(view);
+  for(const id of ['setup-tab','registration-tab','demographics-tab','membership-tab','sessions-tab'])document.getElementById(id).hidden=['event','flows'].includes(view);
   document.querySelector('#flow-context-name').textContent = window.RegistrationFlows?.current()?.name || 'Attendee';
   document.querySelector('#welcome-event-name').textContent = events.find(item => item.id === selected)?.name || '';
   document.querySelector('#builder-view').hidden = !['setup','registration'].includes(view);

@@ -65,6 +65,10 @@ class Store:
                 conn.execute(psycopg.sql.SQL("INSERT INTO {}(id,event_id,name,kind,position) VALUES(%s,%s,'Attendee','attendee',0) ON CONFLICT(id) DO NOTHING").format(flows),(event_id,event_id))
                 children=conn.execute(psycopg.sql.SQL("SELECT id,body FROM {} WHERE body->>'parent_event_id'=%s").format(self.table()),(event_id,)).fetchall()
                 for child_id,body in children:
+                    child_agenda=conn.execute(psycopg.sql.SQL('SELECT body FROM {} WHERE event_id=%s').format(psycopg.sql.Identifier(self.schema,'event_sessions')),(child_id,)).fetchone()
+                    if child_agenda:
+                        from sessions import validate as validate_sessions
+                        validate_sessions(child_agenda[0],data)
                     child_page=conn.execute(psycopg.sql.SQL('SELECT body FROM {} WHERE event_id=%s').format(self.page_table()),(child_id,)).fetchone()
                     if child_page:
                         from registration import validate_page

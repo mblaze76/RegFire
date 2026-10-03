@@ -32,3 +32,7 @@ Only public DNS/IP targets are allowed. Every resolved address is checked; conne
 Use `fixture://demo` to test entirely locally. IDs: `DEMO-ACTIVE`, `DEMO-INACTIVE`, `DEMO-EXPIRED`, `DEMO-UNAVAILABLE`. The screen clearly identifies synthetic results. This is not a real membership service.
 
 Membership settings/imports are event-scoped in PostgreSQL. RegTypes referenced by membership cannot be removed until assignments are updated. Imported member data is private local database content; use appropriate disk/account access and protected backups. The app has no authentication or public deployment and must remain loopback-only.
+
+## Page introduction
+
+Each flow stores its own title, details/instructions, independent fonts and colors. Font search uses the shared 1,955-choice picker with actual face previews; colors use the shared palette/hex/native control. Blank titles fall back to “Verify your membership”; blank instructions are hidden. Existing explanatory text remains the default. Embedded preview updates immediately; Open live preview receives unsaved settings from this editor, while Open saved preview reads saved settings. Neither creates registration or payment records.
