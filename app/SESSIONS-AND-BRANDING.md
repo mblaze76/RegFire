@@ -26,7 +26,7 @@ Use the shared color control (`color-control.js`) wherever an `input[type=color]
 
 ## Spark
 
-Spark is an original SVG flame helper with a dismissible chat panel, sample setup prompts, local message bubbles and voice preference controls. It is a **design prototype**. No messages or audio are sent, no microphone is activated, and no AI service is provisioned. Closing retains the conversation only for the current page lifetime; reloading clears it. Escape closes and restores focus to the launcher.
+Spark is an original SVG flame character in the bottom-right corner, with shades, a gentle dance and a speech bubble whose tail points to his smile. The character stays outside the bubble. The bubble contains sample setup prompts, local conversation and compact accessible voice, dance, send and minimize icon controls with tooltips. It can be minimized; Pause dance stops movement, and reduced-motion preferences disable animation. It is a **design prototype**. No messages or audio are sent, no microphone is activated, and no AI service is provisioned. Closing retains the conversation only for the current page lifetime; reloading clears it. Escape closes and restores focus to the launcher.
 
 ## Verification
 
