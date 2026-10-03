@@ -1,5 +1,7 @@
 (async()=>{
  const $=id=>document.getElementById(id),route=new URLSearchParams(location.hash.slice(1)),id=route.get('event'),editor=route.get('editor');
+ $('welcome-fullscreen').onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen();}catch{$('welcome-error').textContent='Use your browser full-screen control to expand this preview.';}};
+ document.addEventListener('fullscreenchange',()=>{$('welcome-fullscreen').textContent=document.fullscreenElement?'Exit full screen':'Full screen';});
  $('return-login').href='/registrant-login?event='+encodeURIComponent(id||'');let liveModel=null;
  function render(model){const {page,flows}=model;window.WelcomeDisplay.background(document.body,page,id);$('event-name').textContent=model.event_name||'';
  function image(asset,url,alt){const img=document.createElement('img');img.src='/api/events/'+id+'/assets/'+asset;img.alt=alt;if(url){try{const parsed=new URL(url);if(['http:','https:'].includes(parsed.protocol)){const a=document.createElement('a');a.href=parsed.href;a.target='_blank';a.rel='noopener noreferrer';a.append(img);return a;}}catch{}}return img;}
