@@ -12,3 +12,7 @@
 .spark-panel{z-index:1203}
 .spark-motion-toggle{width:28px;height:28px;display:grid;place-items:center;padding:0;font-size:15px;text-decoration:none;border-radius:50%;margin:-12px 0 6px}.spark-icon{display:grid;place-items:center;width:30px;height:30px;border:1px solid #e2d4c0;border-radius:50%;background:transparent;color:#8c6442;padding:6px}.spark-icon svg{width:17px;height:17px;fill:currentColor;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}.spark-icon[aria-pressed=true]{background:#fae1bf;color:#a44a10}.spark-compose>label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}.spark-compose button{font-size:22px;line-height:1;padding:5px 13px}.spark-voice{padding:8px 0;justify-content:flex-end}
 @media(prefers-reduced-motion:reduce){.spark-motion-toggle{display:none}}
+.spark-turning{display:none;position:absolute;inset:0;width:120px;height:140px;pointer-events:none}.spark-launcher.has-turning .spark-turning{display:block;animation:spark-turn-bounce 4.8s ease-in-out infinite}.spark-launcher.has-turning img{visibility:hidden;animation:none;transform:none}.spark-launcher.has-turning.is-speaking .spark-turning{animation:none}.spark-launcher[data-paused=true] .spark-turning{animation:none}
+@keyframes spark-turn-bounce{0%,20%,70%,100%{transform:translateY(0)}35%{transform:translateY(-4px)}50%{transform:translateY(-2px)}}
+@media(max-width:600px){.spark-turning{width:100px;height:118px}}
+@media(prefers-reduced-motion:reduce){.spark-launcher.has-turning .spark-turning{animation:none}}

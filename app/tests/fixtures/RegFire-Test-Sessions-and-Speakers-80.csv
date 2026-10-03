@@ -1,0 +1,81 @@
+title,date,start_time,end_time,location,track,speaker,description,price
+"DEMO: Welcome, ideas on fire",2026-11-18,09:00,10:00,Main Stage,Keynotes,Avery Ember,Fictional opening keynote and event orientation.,0
+DEMO: Check-in without the wait,2026-11-18,09:30,10:15,Workshop Room A,Onsite Operations,Jordan Ash,Overlaps opening keynote to demonstrate schedule warnings.,0
+"DEMO: Badges, scanners, and better arrivals",2026-11-18,10:15,11:00,Workshop Room A,Onsite Operations,Jordan Ash; Riley Flint,Adjacent to the previous session; no overlap at the boundary.,25.50
+DEMO: Design a memorable welcome,2026-11-18,11:00,12:00,Creative Studio,Experience Design,Morgan Glow,Hands-on welcome experience workshop.,75
+DEMO: Exhibitor success roundtable,2026-11-18,11:30,12:15,Roundtable Lounge,Exhibitors,Casey Bright; Taylor Blaze,Fictional speakers discuss lead capture and exhibitor support.,0
+DEMO: From registration to engagement,2026-11-18,13:00,14:00,Main Stage,Marketing,Skyler Cinder,Explore a fictional attendee communication journey.,0
+DEMO: The onsite command center,2026-11-19,09:00,10:30,Workshop Room B,Onsite Operations,Riley Flint,"Practice staffing, escalation, and event-day communications.",99
+DEMO: Accessible events by design,2026-11-19,09:30,10:15,Creative Studio,Experience Design,Drew Sol,A concurrent session for testing agenda filters and conflicts.,0
+DEMO: Sponsor stories that connect,2026-11-19,11:00,12:00,Roundtable Lounge,Marketing,Casey Bright,Build a fictional sponsor activation plan.,35
+"DEMO: Data, privacy, and trust",2026-11-19,13:00,14:00,Main Stage,Technology,Alex Kindle; Quinn Ray,Product demonstration session using synthetic attendee data only.,0
+DEMO: Hands-on badge lab,2026-11-20,09:00,10:00,Workshop Room B,Technology,Quinn Ray,Informational paid session; no purchase or seat reservation occurs.,49.95
+DEMO: What comes next?,2026-11-20,10:00,11:00,Main Stage,Keynotes,Avery Ember,Closing conversation with a back-to-back start time.,0
+DEMO 13: Exhibitors practice lab,2026-11-18,09:00,10:00,Main Stage,Exhibitors,Riley Flint,"Fictional demonstration: practical exercises, discussion, and questions.",0
+DEMO 14: Marketing practice lab,2026-11-18,09:30,10:15,Workshop Room A,Marketing,Morgan Glow,"Fictional demonstration: practical exercises, discussion, and questions.",0
+DEMO 15: Technology practice lab,2026-11-18,10:00,10:45,Workshop Room B,Technology,Casey Bright; Sage Flicker,"Fictional demonstration: practical exercises, discussion, and questions.",25.50
+DEMO 16: Onsite Operations practice lab,2026-11-18,10:30,11:30,Creative Studio,Onsite Operations,Taylor Blaze,"Fictional demonstration: practical exercises, discussion, and questions.",49.95
+DEMO 17: Experience Design practice lab,2026-11-18,11:00,11:45,Main Stage,Experience Design,Skyler Cinder,"Fictional demonstration: practical exercises, discussion, and questions.",0
+DEMO 18: Exhibitors practice lab,2026-11-18,11:30,12:15,Workshop Room A,Exhibitors,Drew Sol,"Fictional demonstration: practical exercises, discussion, and questions.",0
+DEMO 19: Marketing practice lab,2026-11-18,12:00,13:00,Workshop Room B,Marketing,Alex Kindle,"Fictional demonstration: practical exercises, discussion, and questions.",25.50
+DEMO 20: Technology practice lab,2026-11-18,12:30,13:15,Creative Studio,Technology,Quinn Ray,"Fictional demonstration: practical exercises, discussion, and questions.",49.95
+DEMO 21: Onsite Operations practice lab,2026-11-18,13:00,13:45,Main Stage,Onsite Operations,Avery Ember,"Fictional demonstration: practical exercises, discussion, and questions.",0
+DEMO 22: Experience Design practice lab,2026-11-18,13:30,14:30,Workshop Room A,Experience Design,Jordan Ash; Sage Flicker,"Fictional demonstration: practical exercises, discussion, and questions.",0
+DEMO 23: Exhibitors practice lab,2026-11-18,14:00,14:45,Workshop Room B,Exhibitors,Riley Flint,"Fictional demonstration: practical exercises, discussion, and questions.",25.50
+DEMO 24: Marketing practice lab,2026-11-18,14:30,15:15,Creative Studio,Marketing,Morgan Glow,"Fictional demonstration: practical exercises, discussion, and questions.",49.95
+DEMO 25: Technology practice lab,2026-11-18,15:00,16:00,Main Stage,Technology,Casey Bright,"Fictional demonstration: practical exercises, discussion, and questions.",0
+DEMO 26: Onsite Operations practice lab,2026-11-18,15:30,16:15,Workshop Room A,Onsite Operations,Taylor Blaze,"Fictional demonstration: practical exercises, discussion, and questions.",0
+DEMO 27: Experience Design practice lab,2026-11-19,09:00,10:00,Workshop Room B,Experience Design,Skyler Cinder,"Fictional demonstration: practical exercises, discussion, and questions.",25.50
+DEMO 28: Exhibitors practice lab,2026-11-19,09:30,10:15,Creative Studio,Exhibitors,Drew Sol,"Fictional demonstration: practical exercises, discussion, and questions.",49.95
+DEMO 29: Marketing practice lab,2026-11-19,10:00,10:45,Main Stage,Marketing,Alex Kindle; Sage Flicker,"Fictional demonstration: practical exercises, discussion, and questions.",0
+DEMO 30: Technology practice lab,2026-11-19,10:30,11:30,Workshop Room A,Technology,Quinn Ray,"Fictional demonstration: practical exercises, discussion, and questions.",0
+DEMO 31: Onsite Operations practice lab,2026-11-19,11:00,11:45,Workshop Room B,Onsite Operations,Avery Ember,"Fictional demonstration: practical exercises, discussion, and questions.",25.50
+DEMO 32: Experience Design practice lab,2026-11-19,11:30,12:15,Creative Studio,Experience Design,Jordan Ash,"Fictional demonstration: practical exercises, discussion, and questions.",49.95
+DEMO 33: Exhibitors practice lab,2026-11-19,12:00,13:00,Main Stage,Exhibitors,Riley Flint,"Fictional demonstration: practical exercises, discussion, and questions.",0
+DEMO 34: Marketing practice lab,2026-11-19,12:30,13:15,Workshop Room A,Marketing,Morgan Glow,"Fictional demonstration: practical exercises, discussion, and questions.",0
+DEMO 35: Technology practice lab,2026-11-19,13:00,13:45,Workshop Room B,Technology,Casey Bright,"Fictional demonstration: practical exercises, discussion, and questions.",25.50
+DEMO 36: Onsite Operations practice lab,2026-11-19,13:30,14:30,Creative Studio,Onsite Operations,Taylor Blaze; Sage Flicker,"Fictional demonstration: practical exercises, discussion, and questions.",49.95
+DEMO 37: Experience Design practice lab,2026-11-19,14:00,14:45,Main Stage,Experience Design,Skyler Cinder,"Fictional demonstration: practical exercises, discussion, and questions.",0
+DEMO 38: Exhibitors practice lab,2026-11-19,14:30,15:15,Workshop Room A,Exhibitors,Drew Sol,"Fictional demonstration: practical exercises, discussion, and questions.",0
+DEMO 39: Marketing practice lab,2026-11-19,15:00,16:00,Workshop Room B,Marketing,Alex Kindle,"Fictional demonstration: practical exercises, discussion, and questions.",25.50
+DEMO 40: Technology practice lab,2026-11-19,15:30,16:15,Creative Studio,Technology,Quinn Ray,"Fictional demonstration: practical exercises, discussion, and questions.",49.95
+DEMO 41: Onsite Operations practice lab,2026-11-20,09:00,10:00,Main Stage,Onsite Operations,Avery Ember,"Fictional demonstration: practical exercises, discussion, and questions.",0
+DEMO 42: Experience Design practice lab,2026-11-20,09:30,10:15,Workshop Room A,Experience Design,Jordan Ash,"Fictional demonstration: practical exercises, discussion, and questions.",0
+DEMO 43: Exhibitors practice lab,2026-11-20,10:00,10:45,Workshop Room B,Exhibitors,Riley Flint; Sage Flicker,"Fictional demonstration: practical exercises, discussion, and questions.",25.50
+DEMO 44: Marketing practice lab,2026-11-20,10:30,11:30,Creative Studio,Marketing,Morgan Glow,"Fictional demonstration: practical exercises, discussion, and questions.",49.95
+DEMO 45: Technology practice lab,2026-11-20,11:00,11:45,Main Stage,Technology,Casey Bright,"Fictional demonstration: practical exercises, discussion, and questions.",0
+DEMO 46: Onsite Operations practice lab,2026-11-20,11:30,12:15,Workshop Room A,Onsite Operations,Taylor Blaze,"Fictional demonstration: practical exercises, discussion, and questions.",0
+DEMO 47: Experience Design practice lab,2026-11-20,12:00,13:00,Workshop Room B,Experience Design,Skyler Cinder,"Fictional demonstration: practical exercises, discussion, and questions.",25.50
+DEMO 48: Exhibitors practice lab,2026-11-20,12:30,13:15,Creative Studio,Exhibitors,Drew Sol,"Fictional demonstration: practical exercises, discussion, and questions.",49.95
+DEMO 49: Marketing practice lab,2026-11-20,13:00,13:45,Main Stage,Marketing,Alex Kindle,"Fictional demonstration: practical exercises, discussion, and questions.",0
+DEMO 50: Technology practice lab,2026-11-20,13:30,14:30,Workshop Room A,Technology,Quinn Ray; Sage Flicker,"Fictional demonstration: practical exercises, discussion, and questions.",0
+DEMO 51: Onsite Operations practice lab,2026-11-20,14:00,14:45,Workshop Room B,Onsite Operations,Avery Ember,"Fictional demonstration: practical exercises, discussion, and questions.",25.50
+DEMO 52: Experience Design practice lab,2026-11-20,14:30,15:15,Creative Studio,Experience Design,Jordan Ash,"Fictional demonstration: practical exercises, discussion, and questions.",49.95
+DEMO 53: Exhibitors practice lab,2026-11-20,15:00,16:00,Main Stage,Exhibitors,Riley Flint,"Fictional demonstration: practical exercises, discussion, and questions.",0
+DEMO 54: Marketing practice lab,2026-11-20,15:30,16:15,Workshop Room A,Marketing,Morgan Glow,"Fictional demonstration: practical exercises, discussion, and questions.",0
+DEMO 55: Technology practice lab,2026-11-21,09:00,10:00,Workshop Room B,Technology,Casey Bright,"Fictional demonstration: practical exercises, discussion, and questions.",25.50
+DEMO 56: Onsite Operations practice lab,2026-11-21,09:30,10:15,Creative Studio,Onsite Operations,Taylor Blaze,"Fictional demonstration: practical exercises, discussion, and questions.",49.95
+DEMO 57: Experience Design practice lab,2026-11-21,10:00,10:45,Main Stage,Experience Design,Skyler Cinder; Sage Flicker,"Fictional demonstration: practical exercises, discussion, and questions.",0
+DEMO 58: Exhibitors practice lab,2026-11-21,10:30,11:30,Workshop Room A,Exhibitors,Drew Sol,"Fictional demonstration: practical exercises, discussion, and questions.",0
+DEMO 59: Marketing practice lab,2026-11-21,11:00,11:45,Workshop Room B,Marketing,Alex Kindle,"Fictional demonstration: practical exercises, discussion, and questions.",25.50
+DEMO 60: Technology practice lab,2026-11-21,11:30,12:15,Creative Studio,Technology,Quinn Ray,"Fictional demonstration: practical exercises, discussion, and questions.",49.95
+DEMO 61: Onsite Operations practice lab,2026-11-21,12:00,13:00,Main Stage,Onsite Operations,Avery Ember,"Fictional demonstration: practical exercises, discussion, and questions.",0
+DEMO 62: Experience Design practice lab,2026-11-21,12:30,13:15,Workshop Room A,Experience Design,Jordan Ash,"Fictional demonstration: practical exercises, discussion, and questions.",0
+DEMO 63: Exhibitors practice lab,2026-11-21,13:00,13:45,Workshop Room B,Exhibitors,Riley Flint,"Fictional demonstration: practical exercises, discussion, and questions.",25.50
+DEMO 64: Marketing practice lab,2026-11-21,13:30,14:30,Creative Studio,Marketing,Morgan Glow; Sage Flicker,"Fictional demonstration: practical exercises, discussion, and questions.",49.95
+DEMO 65: Technology practice lab,2026-11-21,14:00,14:45,Main Stage,Technology,Casey Bright,"Fictional demonstration: practical exercises, discussion, and questions.",0
+DEMO 66: Onsite Operations practice lab,2026-11-21,14:30,15:15,Workshop Room A,Onsite Operations,Taylor Blaze,"Fictional demonstration: practical exercises, discussion, and questions.",0
+DEMO 67: Experience Design practice lab,2026-11-21,15:00,16:00,Workshop Room B,Experience Design,Skyler Cinder,"Fictional demonstration: practical exercises, discussion, and questions.",25.50
+DEMO 68: Exhibitors practice lab,2026-11-21,15:30,16:15,Creative Studio,Exhibitors,Drew Sol,"Fictional demonstration: practical exercises, discussion, and questions.",49.95
+DEMO 69: Marketing practice lab,2026-11-22,09:00,10:00,Main Stage,Marketing,Alex Kindle,"Fictional demonstration: practical exercises, discussion, and questions.",0
+DEMO 70: Technology practice lab,2026-11-22,09:30,10:15,Workshop Room A,Technology,Quinn Ray,"Fictional demonstration: practical exercises, discussion, and questions.",0
+DEMO 71: Onsite Operations practice lab,2026-11-22,10:00,10:45,Workshop Room B,Onsite Operations,Avery Ember; Sage Flicker,"Fictional demonstration: practical exercises, discussion, and questions.",25.50
+DEMO 72: Experience Design practice lab,2026-11-22,10:30,11:30,Creative Studio,Experience Design,Jordan Ash,"Fictional demonstration: practical exercises, discussion, and questions.",49.95
+DEMO 73: Exhibitors practice lab,2026-11-22,11:00,11:45,Main Stage,Exhibitors,Riley Flint,"Fictional demonstration: practical exercises, discussion, and questions.",0
+DEMO 74: Marketing practice lab,2026-11-22,11:30,12:15,Workshop Room A,Marketing,Morgan Glow,"Fictional demonstration: practical exercises, discussion, and questions.",0
+DEMO 75: Technology practice lab,2026-11-22,12:00,13:00,Workshop Room B,Technology,Casey Bright,"Fictional demonstration: practical exercises, discussion, and questions.",25.50
+DEMO 76: Onsite Operations practice lab,2026-11-22,12:30,13:15,Creative Studio,Onsite Operations,Taylor Blaze,"Fictional demonstration: practical exercises, discussion, and questions.",49.95
+DEMO 77: Experience Design practice lab,2026-11-22,13:00,13:45,Main Stage,Experience Design,Skyler Cinder,"Fictional demonstration: practical exercises, discussion, and questions.",0
+DEMO 78: Exhibitors practice lab,2026-11-22,13:30,14:30,Workshop Room A,Exhibitors,Drew Sol; Sage Flicker,"Fictional demonstration: practical exercises, discussion, and questions.",0
+DEMO 79: Marketing practice lab,2026-11-22,14:00,14:45,Workshop Room B,Marketing,Alex Kindle,"Fictional demonstration: practical exercises, discussion, and questions.",25.50
+DEMO 80: Technology practice lab,2026-11-22,14:30,15:15,Creative Studio,Technology,Quinn Ray,"Fictional demonstration: practical exercises, discussion, and questions.",49.95
