@@ -39,3 +39,26 @@ class FooterPersistence(unittest.TestCase):
         state.update(footer=state['legacy'][0]['footer'],resolve_conflict=True)
         saved=self.request(base+'/event-footer',state,'PUT');self.assertFalse(saved['conflict']);self.assertEqual(len(saved['legacy']),2)
         self.assertEqual(self.request('/api/events/'+flow['id']+'/registration-page')['appearance']['footer'],saved['footer'])
+
+    upload=test_events.PostgresTest.upload
+    def test_footer_style_logo_flow_ownership_and_restart(self):
+        event=self.request('/api/events',draft(),'POST');base='/api/events/'+event['id']
+        other=self.request('/api/events',draft(),'POST')
+        logo=self.upload(event['id'],'logo');foreign=self.upload(other['id'],'logo')
+        state=self.request(base+'/event-footer')
+        state['footer'].update(enabled=True,font='default',color='#abcdef',logo_asset_id=logo['id'],message='Keep this copy')
+        saved=self.request(base+'/event-footer',state,'PUT')
+        flow=next(f for f in self.request(base+'/flows',dict(name='Staff',kind='custom'),'POST') if f['id']!=event['id'])
+        path='/api/events/'+flow['id']+'/registration-page'
+        page=self.request(path)
+        self.assertEqual(page['appearance']['footer'],saved['footer'])
+        self.assertEqual(self.request(path,page,'PUT')['appearance']['footer'],saved['footer'])
+        self.stop();self.start();self.assertEqual(self.request(base+'/event-footer'),saved)
+        for invalid in [dict(logo_asset_id=foreign['id']),dict(color='red'),dict(font='nonexistent')]:
+            bad=dict(saved,footer={**saved['footer'],**invalid})
+            with self.assertRaises(HTTPError):self.request(base+'/event-footer',bad,'PUT')
+            self.assertEqual(self.request(base+'/event-footer'),saved)
+        saved['footer']['logo_asset_id']=None
+        removed=self.request(base+'/event-footer',saved,'PUT')
+        self.assertIsNone(removed['footer']['logo_asset_id'])
+        self.assertEqual(removed['footer']['message'],'Keep this copy')

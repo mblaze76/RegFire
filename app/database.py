@@ -41,7 +41,7 @@ class Store:
         with self.connect() as conn:
             return [r[0] for r in conn.execute(psycopg.sql.SQL("SELECT body FROM {} WHERE NOT (body ? 'parent_event_id') ORDER BY updated DESC, id").format(self.table()))]
 
-    def save(self, event_id, data, now, editing):
+    def save(self, event_id, data, now, editing, creator_id=None):
         with self.connect() as conn:
             old = conn.execute(psycopg.sql.SQL('SELECT body FROM {} WHERE id=%s FOR UPDATE').format(self.table()), (event_id,)).fetchone()
             if editing and not old:
@@ -60,6 +60,8 @@ class Store:
                 conn.execute(psycopg.sql.SQL('UPDATE {} SET body=%s, updated=%s WHERE id=%s').format(self.table()), (Jsonb(data), now, event_id))
             else:
                 conn.execute(psycopg.sql.SQL('INSERT INTO {} (id,body,updated) VALUES(%s,%s,%s)').format(self.table()), (event_id, Jsonb(data), now))
+            if creator_id and not editing:
+                conn.execute(psycopg.sql.SQL('INSERT INTO {}(user_id,event_id) VALUES(%s,%s) ON CONFLICT DO NOTHING').format(psycopg.sql.Identifier(self.schema,'access_event_grants')),(creator_id,event_id))
             if not data.get('parent_event_id'):
                 flows=psycopg.sql.Identifier(self.schema,'registration_flows')
                 conn.execute(psycopg.sql.SQL("INSERT INTO {}(id,event_id,name,kind,position) VALUES(%s,%s,'Attendee','attendee',0) ON CONFLICT(id) DO NOTHING").format(flows),(event_id,event_id))
@@ -176,6 +178,8 @@ class Store:
                 validate_membership(membership[0],data['regtypes'])
             data.update(event_id=event_id, status='draft', updated=now)
             conn.execute(psycopg.sql.SQL('INSERT INTO {} (event_id,body,updated) VALUES(%s,%s,%s) ON CONFLICT(event_id) DO UPDATE SET body=excluded.body, updated=excluded.updated').format(self.page_table()), (event_id, Jsonb(data), now))
+            if shared and not shared['conflict']:
+                data['appearance']['footer']=shared['footer']
             return data
 
     def preview_registration_pricing(self, event_id, data, at=''):

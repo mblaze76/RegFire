@@ -68,12 +68,25 @@ class Access:
  def users(self,actor):
   self.require_admin(actor)
   with self.store.connect() as c:
-   rows=c.execute(self.q('SELECT id,email,role,status,password_hash IS NOT NULL FROM {} ORDER BY email','users')).fetchall()
+   rows=c.execute(self.q('SELECT id,email,role,status,password_hash IS NOT NULL,first_name,last_name,company_name FROM {} ORDER BY email','users')).fetchall()
    grants=c.execute(self.q('SELECT user_id,product_slug FROM {}','grants')).fetchall()
-   return [dict(id=str(r[0]),email=r[1],role=r[2],status=r[3],sign_in_ready=r[4],email_verified=False,products=[p for u,p in grants if u==r[0]]) for r in rows]
+   events=c.execute(self.q('SELECT user_id,event_id FROM {}','event_grants')).fetchall()
+   return [dict(id=str(r[0]),email=r[1],role=r[2],status=r[3],sign_in_ready=r[4],first_name=r[5],last_name=r[6],company_name=r[7],event_ids=[str(e) for u,e in events if u==r[0]],email_verified=False,products=[p for u,p in grants if u==r[0]]) for r in rows]
  def save_user(self,actor,data):
-  self.require_admin(actor);address=email(data.get('email'));role=data.get('role','user');status=data.get('status','assigned');products=data.get('products',[])
-  if role not in ('admin','user') or status not in ('assigned','active','suspended'):raise AccessError('Choose a valid role and status.')
+  self.require_admin(actor);address=email(data.get('email'));role=data.get('role','client');status=data.get('status','assigned');products=data.get('products',[])
+  if role=='user':role='client'
+  if role not in ('admin','client','employee') or status not in ('assigned','active','suspended'):raise AccessError('Choose a valid role and status.')
+  profile={}
+  for field in ('first_name','last_name','company_name'):
+   value=data.get(field,'')
+   if not isinstance(value,str) or len(value.strip())>120:raise AccessError('Profile fields must be text of at most 120 characters.')
+   profile[field]=value.strip()
+  event_ids=data.get('event_ids')
+  if event_ids is not None:
+   if not isinstance(event_ids,list) or len(event_ids)>1000:raise AccessError('Choose valid events.')
+   try:event_ids=[str(uuid.UUID(v)) for v in event_ids]
+   except (ValueError,TypeError,AttributeError):raise AccessError('Choose valid events.')
+   if len(set(event_ids))!=len(event_ids):raise AccessError('Choose each event once.')
   if not isinstance(products,list) or len(products)>100 or any(not isinstance(p,str) for p in products) or len(set(products))!=len(products):raise AccessError('Choose valid products.')
   with self.store.connect() as c:
    # Serialize management writes, including concurrent grants and role changes.
@@ -87,8 +100,16 @@ class Access:
    known={r[0] for r in c.execute(self.q('SELECT slug FROM {}','products'))}
    if not set(products)<=known:raise AccessError('A selected product does not exist.')
    if status=='active' and (not row or not row[2]):raise AccessError('This user must set a password with an enrollment code before activation.')
+   if event_ids is not None:
+    known_events={str(r[0]) for r in c.execute(sql.SQL("SELECT id FROM {} WHERE NOT (body ? 'parent_event_id')").format(self.store.table()))}
+    if not set(event_ids)<=known_events:raise AccessError('A selected event is unavailable in this workspace.')
    uid=str(row[0]) if row else str(uuid.uuid4())
    c.execute(self.q('INSERT INTO {}(id,email,role,status) VALUES(%s,%s,%s,%s) ON CONFLICT(email) DO UPDATE SET role=excluded.role,status=excluded.status,updated=now()','users'),(uid,address,role,status))
+   for field,value in profile.items():
+    if field in data or not row:c.execute(sql.SQL('UPDATE {} SET {}=%s WHERE id=%s').format(self.t('users'),sql.Identifier(field)),(value,uid))
+   if event_ids is not None:
+    c.execute(self.q('DELETE FROM {} WHERE user_id=%s','event_grants'),(uid,))
+    for eid in event_ids:c.execute(self.q('INSERT INTO {}(user_id,event_id) VALUES(%s,%s)','event_grants'),(uid,eid))
    c.execute(self.q('DELETE FROM {} WHERE user_id=%s','grants'),(uid,))
    for p in products:c.execute(self.q('INSERT INTO {} VALUES(%s,%s)','grants'),(uid,p))
    c.execute(self.q('DELETE FROM {} WHERE user_id=%s','sessions'),(uid,))
@@ -121,3 +142,20 @@ class Access:
  def audit_rows(self,actor):
   self.require_admin(actor)
   with self.store.connect() as c:return [dict(action=r[0],target=r[1],created=r[2].isoformat()) for r in c.execute(self.q('SELECT action,target,created FROM {} ORDER BY id DESC LIMIT 50','audit'))]
+
+ def event_ids(self,actor):
+  with self.store.connect() as c:
+   return {str(r[0]) for r in c.execute(self.q('SELECT event_id FROM {} WHERE user_id=%s','event_grants'),(actor['id'],))}
+ def event_list(self,actor):
+  events=self.store.list()
+  if actor['role'] in ('owner','admin'):return events
+  allowed=self.event_ids(actor)
+  return [e for e in events if e['id'] in allowed]
+ def require_event(self,actor,event_id):
+  try:event_id=str(uuid.UUID(event_id))
+  except (ValueError,TypeError):raise AccessError('Event not found.',404)
+  with self.store.connect() as c:
+   row=c.execute(sql.SQL("SELECT COALESCE(body->>'parent_event_id',id::text) FROM {} WHERE id=%s").format(self.store.table()),(event_id,)).fetchone()
+   if not row:raise AccessError('Event not found.',404)
+   if actor['role'] in ('owner','admin'):return
+   if not c.execute(self.q('SELECT 1 FROM {} WHERE user_id=%s AND event_id=%s','event_grants'),(actor['id'],row[0])).fetchone():raise AccessError('Event not found or not assigned to your account.',404)

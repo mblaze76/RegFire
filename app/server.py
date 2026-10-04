@@ -103,7 +103,8 @@ class Handler(BaseHTTPRequestHandler):
             return self.respond(200,config())
         if path == '/api/events':
             try:
-                return self.respond(200, self.server.store.list())
+                from access_http import access
+                return self.respond(200, access(self).event_list(self.identity))
             except psycopg.Error: return self.respond(503, {'error': 'Drafts could not be loaded. Check the local database and retry.'})
         match = re.fullmatch(r'/api/events/([a-f0-9-]{36})/registration-page', path)
         if match:
@@ -323,7 +324,7 @@ class Handler(BaseHTTPRequestHandler):
             data = validate(json.loads(self.rfile.read(length)))
             now = datetime.now(timezone.utc).isoformat()
             event_id = path.rsplit('/', 1)[-1] if editing else str(uuid.uuid4())
-            data = self.server.store.save(event_id, data, now, editing)
+            data = self.server.store.save(event_id, data, now, editing, creator_id=self.identity['id'] if not editing else None)
             if data is None: return self.respond(404, {'error': 'This draft no longer exists.'})
             self.respond(200 if editing else 201, data)
         except (ValueError, UnicodeDecodeError) as exc: self.respond(400, {'error': str(exc)})

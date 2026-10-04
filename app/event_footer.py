@@ -19,7 +19,9 @@ def operation(store,event_id,data=None):
         owner=found[0].get('parent_event_id',event_id)
         conn.execute(sql.SQL('SELECT id FROM {} WHERE id=%s FOR UPDATE').format(store.table()),(owner,))
         row=conn.execute(sql.SQL('SELECT body,revision FROM {} WHERE event_id=%s').format(table),(owner,)).fetchone()
-        if row:body,revision=row
+        if row:
+            body,revision=row
+            body=dict(body,footer=normalize(body.get('footer',{})))
         else:
             rows=conn.execute(sql.SQL("SELECT p.event_id,p.body->'appearance'->'footer',COALESCE(f.name,'Original event') FROM {} p JOIN {} e ON e.id=p.event_id LEFT JOIN {} f ON f.id=p.event_id WHERE e.id=%s OR e.body->>'parent_event_id'=%s").format(store.page_table(),store.table(),sql.Identifier(store.schema,'registration_flows')),(owner,owner)).fetchall()
             legacy=[dict(flow_id=str(r[0]),name=r[2],footer=normalize(r[1] or {})) for r in rows]
@@ -32,7 +34,10 @@ def operation(store,event_id,data=None):
                 raise ValueError('The shared footer changed. Reload before saving again.')
             if body['conflict'] and data.get('resolve_conflict') is not True:
                 raise ValueError('Choose and review the footer to share before resolving the different legacy footers.')
-            body=dict(body,footer=normalize(data.get('footer')),conflict=False)
+            footer=normalize(data.get('footer'))
+            if footer['logo_asset_id'] and not conn.execute(sql.SQL("SELECT 1 FROM {} WHERE id=%s AND event_id=%s AND kind='logo'").format(sql.Identifier(store.schema,'registration_assets')),(footer['logo_asset_id'],owner)).fetchone():
+                raise ValueError('Choose a footer logo uploaded for this event.')
+            body=dict(body,footer=footer,conflict=False)
             revision+=1
             conn.execute(sql.SQL('UPDATE {} SET body=%s,revision=%s WHERE event_id=%s').format(table),(Jsonb(body),revision,owner))
-        return dict(event_id=owner,revision=revision,**body)
+        return dict(event_id=owner,revision=revision,**{**body,'footer':{**body['footer'],**({'asset_event_id':owner} if body['footer'].get('logo_asset_id') else {})}})

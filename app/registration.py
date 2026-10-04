@@ -139,6 +139,13 @@ def validate_page(data, zone_name='UTC'):
     enabled=footer.get('enabled',False)
     if type(enabled) is not bool: raise ValueError('Footer enabled must be true or false.')
     normalized['footer']={'enabled':enabled}
+    footer_font=footer.get('font','default')
+    if footer_font not in FONT_IDS:raise ValueError('Choose a supported footer font.')
+    footer_color=footer.get('color','#f5f3f0')
+    if not isinstance(footer_color,str) or not re.fullmatch(r'#[0-9a-fA-F]{6}',footer_color):raise ValueError('Choose a valid footer font color.')
+    logo=footer.get('logo_asset_id')
+    if logo is not None and (not isinstance(logo,str) or not re.fullmatch(r'[a-f0-9-]{36}',logo)):raise ValueError('Choose a valid footer logo.')
+    normalized['footer'].update(font=footer_font,color=footer_color,logo_asset_id=logo)
     normalized['footer']['heading']=text(footer.get('heading',''), 'Footer heading', 120)
     normalized['footer']['message']=text(footer.get('message',''), 'Footer message', 2000)
     normalized['footer']['hours']=text(footer.get('hours',''), 'Footer hours', 200)

@@ -1,5 +1,5 @@
 """HTTP boundary: every non-public route requires identity and a current product grant."""
-import json,hmac
+import json,hmac,re
 from http.cookies import SimpleCookie
 from urllib.parse import urlsplit
 import psycopg
@@ -28,6 +28,8 @@ def guard(h):
   if h.command not in ('GET','HEAD') and not hmac.compare_digest(h.headers.get('X-CSRF-Token',''),h.identity['csrf']):raise AccessError('Refresh the page before submitting changes.',403)
   if path.startswith('/api/admin/') or path=='/admin':a.require_admin(h.identity)
   elif path not in ('/products','/api/auth/logout') and 'event-builder' not in h.identity['products']:raise AccessError('RegFire Nexus access is required.',403)
+  event_match=re.match(r'^/api/events/([^/]+)(?:/|$)',path)
+  if event_match:a.require_event(h.identity,event_match[1])
   return True
  except AccessError as e:h.respond(e.status,{'error':str(e)});return False
  except psycopg.Error:h.respond(503,{'error':'Sign-in storage is unavailable.'});return False
@@ -54,7 +56,7 @@ def handle(h):
   elif path=='/api/auth/login' and h.command=='POST':respond(h,200,{'ok':True},a.login(data.get('email'),data.get('password')))
   elif path=='/api/auth/activate' and h.command=='POST':a.activate(data.get('email'),data.get('token'),data.get('password'));respond(h,200,{'ok':True})
   elif path=='/api/auth/logout' and h.command=='POST':a.logout(raw_cookie(h));respond(h,200,{'ok':True},'')
-  elif path=='/api/admin/users' and h.command=='GET':respond(h,200,{'users':a.users(h.identity),'products':a.products()})
+  elif path=='/api/admin/users' and h.command=='GET':respond(h,200,{'users':a.users(h.identity),'products':a.products(),'events':[dict(id=e['id'],name=e['name']) for e in a.event_list(h.identity)]})
   elif path=='/api/admin/users' and h.command=='POST':respond(h,200,{'id':a.save_user(h.identity,data)})
   elif path=='/api/admin/products' and h.command=='POST':a.save_product(h.identity,data);respond(h,200,{'ok':True})
   elif path=='/api/admin/enrollment' and h.command=='POST':respond(h,200,{'token':a.enrollment(h.identity,data.get('user_id')),'expires_in_hours':24})
