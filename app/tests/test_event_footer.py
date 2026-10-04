@@ -44,9 +44,9 @@ class FooterPersistence(unittest.TestCase):
     def test_footer_style_logo_flow_ownership_and_restart(self):
         event=self.request('/api/events',draft(),'POST');base='/api/events/'+event['id']
         other=self.request('/api/events',draft(),'POST')
-        logo=self.upload(event['id'],'logo');foreign=self.upload(other['id'],'logo')
+        logo=self.upload(event['id'],'logo');foreign=self.upload(other['id'],'logo');background=self.upload(event['id'],'background');foreign_background=self.upload(other['id'],'background')
         state=self.request(base+'/event-footer')
-        state['footer'].update(enabled=True,font='default',color='#abcdef',logo_asset_id=logo['id'],message='Keep this copy')
+        state['footer'].update(enabled=True,font='default',color='#abcdef',logo_asset_id=logo['id'],message='Keep this copy',background_mode='image',background_asset_id=background['id'],background_color='#102030',background_fade=35)
         saved=self.request(base+'/event-footer',state,'PUT')
         flow=next(f for f in self.request(base+'/flows',dict(name='Staff',kind='custom'),'POST') if f['id']!=event['id'])
         path='/api/events/'+flow['id']+'/registration-page'
@@ -54,7 +54,7 @@ class FooterPersistence(unittest.TestCase):
         self.assertEqual(page['appearance']['footer'],saved['footer'])
         self.assertEqual(self.request(path,page,'PUT')['appearance']['footer'],saved['footer'])
         self.stop();self.start();self.assertEqual(self.request(base+'/event-footer'),saved)
-        for invalid in [dict(logo_asset_id=foreign['id']),dict(color='red'),dict(font='nonexistent')]:
+        for invalid in [dict(background_asset_id=foreign_background['id']),dict(logo_asset_id=foreign['id']),dict(color='red'),dict(font='nonexistent')]:
             bad=dict(saved,footer={**saved['footer'],**invalid})
             with self.assertRaises(HTTPError):self.request(base+'/event-footer',bad,'PUT')
             self.assertEqual(self.request(base+'/event-footer'),saved)

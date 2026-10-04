@@ -42,6 +42,23 @@ class WelcomePersistence(unittest.TestCase):
     tearDown=test_events.PostgresTest.tearDown
     auth_headers=test_events.PostgresTest.auth_headers
     request=test_events.PostgresTest.request
+    def test_white_colors_replace_red_and_survive_reopen_restart(self):
+        event=self.request('/api/events',draft(),'POST');path='/api/events/'+event['id']+'/welcome-page'
+        page=self.request(path)
+        page.update(about='Keep event copy',about_font='trebuchet',about_color='#df1666',title_color='#a60000',background_fade=0)
+        page=self.request(path,page,'PUT')
+        page.update(about_color='#ffffff',title_color='#ffffff')
+        saved=self.request(path,page,'PUT')
+        self.assertEqual(self.request(path),saved)
+        self.stop();self.start()
+        reopened=self.request(path)
+        self.assertEqual(reopened,saved)
+        self.assertEqual(reopened['about_color'],'#ffffff')
+        self.assertEqual(reopened['title_color'],'#ffffff')
+        self.assertEqual(reopened['about'],'Keep event copy')
+        self.assertEqual(reopened['about_font'],'trebuchet')
+        self.assertEqual(reopened['background_fade'],0)
+
     def test_welcome_upload_replace_remove_restart(self):
         event=self.request('/api/events',draft(),'POST');before=self.store.list();base='/api/events/'+event['id']
         png=io.BytesIO();Image.new('RGBA',(80,40),(30,70,140,255)).save(png,format='PNG')

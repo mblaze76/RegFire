@@ -37,7 +37,9 @@ def operation(store,event_id,data=None):
             footer=normalize(data.get('footer'))
             if footer['logo_asset_id'] and not conn.execute(sql.SQL("SELECT 1 FROM {} WHERE id=%s AND event_id=%s AND kind='logo'").format(sql.Identifier(store.schema,'registration_assets')),(footer['logo_asset_id'],owner)).fetchone():
                 raise ValueError('Choose a footer logo uploaded for this event.')
+            if footer['background_asset_id'] and not conn.execute(sql.SQL("SELECT 1 FROM {} WHERE id=%s AND event_id=%s AND kind='background'").format(sql.Identifier(store.schema,'registration_assets')),(footer['background_asset_id'],owner)).fetchone():
+                raise ValueError('Choose a footer background uploaded for this event.')
             body=dict(body,footer=footer,conflict=False)
             revision+=1
             conn.execute(sql.SQL('UPDATE {} SET body=%s,revision=%s WHERE event_id=%s').format(table),(Jsonb(body),revision,owner))
-        return dict(event_id=owner,revision=revision,**{**body,'footer':{**body['footer'],**({'asset_event_id':owner} if body['footer'].get('logo_asset_id') else {})}})
+        return dict(event_id=owner,revision=revision,**{**body,'footer':{**body['footer'],**({'asset_event_id':owner} if body['footer'].get('logo_asset_id') or body['footer'].get('background_asset_id') else {})}})

@@ -53,4 +53,8 @@ def validate(data):
     fade=data.get('background_fade',80)
     if type(fade) is not int or not 0<=fade<=100:raise ValueError('Background fade must be a whole number from 0 to 100.')
     logo = data.get('logo_asset_id')
-    return dict(title=title.strip(),title_font=title_font,title_color=title_color.lower() if title_color else None,background_asset_id=asset(background) if background else None, background_fade=fade, buttons=buttons, about_font=font, about_color=color.lower(), login_url=url(data.get('login_url','')), logo_url=url(data.get('logo_url','')), sponsor_urls=[url(value) for value in links], about=about, logo_asset_id=asset(logo) if logo is not None else None, sponsor_asset_ids=[asset(value) for value in sponsors])
+    from background import validate as background_settings
+    result = dict(title=title.strip(),title_font=title_font,title_color=title_color.lower() if title_color else None,background_asset_id=asset(background) if background else None, background_fade=fade, buttons=buttons, about_font=font, about_color=color.lower(), login_url=url(data.get('login_url','')), logo_url=url(data.get('logo_url','')), sponsor_urls=[url(value) for value in links], about=about, logo_asset_id=asset(logo) if logo is not None else None, sponsor_asset_ids=[asset(value) for value in sponsors])
+
+    result.update(background_settings(data))
+    return result

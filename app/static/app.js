@@ -26,7 +26,7 @@ function renderList(){
   const group=document.createElement('details');group.className='event-outline';group.open=outlineState.get(event.id)??event.id===selected;
   const summary=document.createElement('summary');summary.textContent=event.name;group.append(summary);const contents=document.createElement('div');contents.className='outline-pages';group.append(contents);list.append(group);
   function link(label,view,flow){const a=document.createElement('a');a.textContent=label;a.href='#event='+event.id+'&view='+view+(flow?'&flow='+flow.id:'');if(event.id===selected&&view===activeView&&(!flow||flow.id===window.RegistrationFlows?.current()?.id))a.setAttribute('aria-current','page');a.onclick=async e=>{if(activeView==='event'&&(dirty||window.EventFooterBuilder?.dirty || window.SessionsBuilder?.dirty || window.WelcomeBuilder?.dirty)){e.preventDefault();if(!await saveEventDraft()||!await window.WelcomeBuilder.save()||!await window.EventFooterBuilder.save())return;location.hash=a.hash;}};return a;}
-  async function draw(){contents.replaceChildren(link('Event details','event'),link('Registration flows','flows'));try{const flows=event.id===selected?window.RegistrationFlows?.list()||[]:await api('/api/events/'+event.id+'/flows');if(!group.isConnected)return;for(const flow of flows){const branch=document.createElement('details'),key=event.id+':'+flow.id;branch.className='flow-outline';branch.open=outlineState.get(key)??(event.id===selected&&flow.id===window.RegistrationFlows?.current()?.id);branch.ontoggle=()=>outlineState.set(key,branch.open);const heading=document.createElement('summary');heading.textContent=flow.name;branch.append(heading);for(const [view,label] of [['setup','Show setup'],['registration',flow.kind==='attendee'?'Attendee details':'Registration details'],['demographics','Demographics'],['membership','Membership'],['sessions','Sessions']])branch.append(link(label,view,flow));contents.append(branch);}}catch{const error=document.createElement('p');error.textContent='Could not load flows. Close and reopen this event to retry.';contents.append(error);}}
+  async function draw(){contents.replaceChildren(link('Event details','event'),link('Registration flows','flows'));try{const flows=event.id===selected?window.RegistrationFlows?.list()||[]:await api('/api/events/'+event.id+'/flows');if(!group.isConnected)return;for(const flow of flows){const branch=document.createElement('details'),key=event.id+':'+flow.id;branch.className='flow-outline';branch.open=outlineState.get(key)??(event.id===selected&&flow.id===window.RegistrationFlows?.current()?.id);branch.ontoggle=()=>outlineState.set(key,branch.open);const heading=document.createElement('summary');heading.textContent=flow.name;branch.append(heading);for(const [view,label] of [['setup','Show setup'],['registration',flow.kind==='attendee'?'Attendee details':'Registration details'],['demographics','Demographics'],['sessions','Sessions']])branch.append(link(label,view,flow));contents.append(branch);}}catch{const error=document.createElement('p');error.textContent='Could not load flows. Close and reopen this event to retry.';contents.append(error);}}
   group.ontoggle=()=>{outlineState.set(event.id,group.open);if(group.open)draw();};if(group.open)draw();
  }
 }
@@ -75,13 +75,13 @@ async function saveEventDraft(){
   if(advance && !window.RegistrationFlows.current()){await window.RegistrationFlows.load(events.find(item=>item.id===selected));showView('event');}
   return advance;
 }
-form.addEventListener('submit',event=>{event.preventDefault();saveEventDraft();});
+form.addEventListener('submit',async event=>{event.preventDefault();if(await saveEventDraft()&&window.WelcomeBuilder?.dirty)await window.WelcomeBuilder.save();});
 async function finishEvent(){
   const status=document.getElementById('event-done-status'),button=document.getElementById('event-done');
-  if(saving||window.EventFooterBuilder?.busy || window.SessionsBuilder?.busy || window.WelcomeBuilder?.busy){status.textContent='A save or upload is still finishing. Please try Done when it completes.';return;}
+  if(saving||window.MembershipBuilder?.busy||window.EventFooterBuilder?.busy || window.SessionsBuilder?.busy || window.WelcomeBuilder?.busy){status.textContent='A save or upload is still finishing. Please try Done when it completes.';return;}
   if(!form.reportValidity()||(!document.getElementById('welcome-content').hidden&&!document.getElementById('welcome-form').reportValidity())){status.textContent='Please correct the highlighted fields before continuing.';return;}
   button.disabled=true;status.textContent='Saving event and welcome page…';
-  try{if(!await saveEventDraft()){status.textContent='Event details could not be saved. Your edits are still here.';return;}if(!await window.WelcomeBuilder.save()){status.textContent='Welcome page could not be saved. Your edits are still here.';return;}if(!await window.EventFooterBuilder.save()){status.textContent='Shared footer could not be saved.';return;}await window.RegistrationFlows.load(events.find(item=>item.id===selected));status.textContent='';showView('flows');}finally{button.disabled=false;}
+  try{if(!await saveEventDraft()){status.textContent='Event details could not be saved. Your edits are still here.';return;}if(!await window.WelcomeBuilder.save()){status.textContent='Welcome page could not be saved. Your edits are still here.';return;}if(!await window.EventFooterBuilder.save()){status.textContent='Shared footer could not be saved.';return;}if(!await window.MembershipBuilder.save()){status.textContent='Membership settings could not be saved. Your edits are still here.';return;}await window.RegistrationFlows.load(events.find(item=>item.id===selected));status.textContent='';showView('flows');}finally{button.disabled=false;}
 }
 document.getElementById('event-done').onclick=finishEvent;
 document.getElementById('flows-tab').onclick=()=>activeView==='event'?finishEvent():switchView('flows');
@@ -126,6 +126,7 @@ function updateNav() {
 }
 function showView(view, keepRegistration = false) {
   if(view!==activeView)window.scrollTo({top:0,behavior:'instant'});
+  if(view==='membership')view='event';
   activeView = view; updateNav(); setLocation();renderList();
   document.querySelector('#sessions-view').hidden = view !== 'sessions';
   if(view==='sessions')window.SessionsBuilder.load(window.flowEvent());
@@ -134,7 +135,7 @@ function showView(view, keepRegistration = false) {
   document.querySelector('#flows-view').hidden=view!=='flows';
   document.querySelector('#flows-event-name').textContent=events.find(item=>item.id===selected)?.name||'';
   document.querySelector('#flow-context').hidden = ['event','flows'].includes(view);
-  for(const id of ['setup-tab','registration-tab','demographics-tab','membership-tab','sessions-tab'])document.getElementById(id).hidden=['event','flows'].includes(view);
+  for(const id of ['setup-tab','registration-tab','demographics-tab','membership-tab','sessions-tab'])document.getElementById(id).hidden=id==='membership-tab'||['event','flows'].includes(view);
   document.querySelector('#flow-context-name').textContent = window.RegistrationFlows?.current()?.name || 'Attendee';
   document.querySelector('#welcome-event-name').textContent = events.find(item => item.id === selected)?.name || '';
   document.querySelector('#builder-view').hidden = !['setup','registration'].includes(view);
@@ -143,9 +144,9 @@ function showView(view, keepRegistration = false) {
   document.querySelector('#builder-page-title').textContent = view==='setup'?'Show setup':detailsName;
   document.querySelectorAll('#builder-form > section').forEach((section,index)=>{section.hidden = view==='setup'?index>=3:index<3;const step=section.querySelector('.step');if(step)step.textContent=String(index<3?index+1:index-2).padStart(2,'0');});
   document.querySelector('#demographics-view').hidden = view !== 'demographics';
-  document.querySelector('#membership-view').hidden = view !== 'membership';
+  document.querySelector('#membership-view').hidden = !selected || !['event','membership'].includes(view);
   if (view === 'event' && selected) {window.WelcomeBuilder.load(events.find(item => item.id === selected));window.EventFooterBuilder.load(events.find(item => item.id === selected));}
-  if (view === 'membership') window.MembershipBuilder.load(window.flowEvent());
+  if (selected && ['event','membership'].includes(view)) window.MembershipBuilder.load(window.flowEvent());
   document.querySelector('main').classList.toggle('builder-active', view !== 'event');
   if (view === 'demographics') window.DemographicsBuilder.load(window.flowEvent());
   if (['setup','registration'].includes(view) && !keepRegistration) window.RegistrationBuilder.load(window.flowEvent());

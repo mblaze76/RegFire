@@ -123,7 +123,8 @@ def validate_page(data, zone_name='UTC'):
         normalized[key]=value
     fade=appearance.get('background_fade',80)
     if type(fade) is not int or not 0<=fade<=100: raise ValueError('Background fade must be an integer from 0 to 100.')
-    normalized['background_fade']=fade
+    from background import validate as background_settings
+    normalized.update(background_settings(appearance))
     for key,default in [('title_color','#24242a'),('intro_color','#555c68')]:
         value=appearance.get(key,default)
         if not isinstance(value,str) or not re.fullmatch(r'#[0-9a-fA-F]{6}',value): raise ValueError('Choose a valid title or introduction color.')
@@ -146,6 +147,7 @@ def validate_page(data, zone_name='UTC'):
     logo=footer.get('logo_asset_id')
     if logo is not None and (not isinstance(logo,str) or not re.fullmatch(r'[a-f0-9-]{36}',logo)):raise ValueError('Choose a valid footer logo.')
     normalized['footer'].update(font=footer_font,color=footer_color,logo_asset_id=logo)
+    normalized['footer'].update(background_settings(footer,color='#242127',fade=0))
     normalized['footer']['heading']=text(footer.get('heading',''), 'Footer heading', 120)
     normalized['footer']['message']=text(footer.get('message',''), 'Footer message', 2000)
     normalized['footer']['hours']=text(footer.get('hours',''), 'Footer hours', 200)

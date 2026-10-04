@@ -244,8 +244,9 @@
     $('preview-logo').alt=page.appearance.logo_asset_id?'Show logo':'RegFire';
     const surface=document.querySelector('.preview-surface');
     surface.classList.toggle('artwork-contrast',!!page.appearance.background_asset_id && Number(page.appearance.background_fade??80)<50);
-    surface.style.setProperty('--page-background',page.appearance.background_asset_id?'url("'+assetURL(page.appearance.background_asset_id)+'")':'none');
+    surface.style.setProperty('--page-background',window.WelcomeDisplay.backgroundImage(page.appearance,event.id));
     surface.style.setProperty('--page-image-opacity',String(1-page.appearance.background_fade/100));
+    $('background-mode').value=page.appearance.background_mode||(page.appearance.background_asset_id?'image':'color');$('background-color').value=page.appearance.background_color||'#ffffff';
     $('background-fade').value=page.appearance.background_fade;$('fade-value').value=page.appearance.background_fade+'%';
   }
   for(const kind of ['logo','background']){
@@ -255,12 +256,13 @@
       busy=true;const controls=[...$('builder-form').elements];controls.forEach(c=>c.disabled=true);say('Checking and storing image…');
       try{
         const asset=await api('/api/events/'+event.id+'/assets/'+kind,{method:'POST',headers:{'Content-Type':file.type||'application/octet-stream'},body:file});
-        page.appearance[kind+'_asset_id']=asset.id;dirty();say('Image ready. Save the page draft to keep this selection.');
+        page.appearance[kind+'_asset_id']=asset.id;if(kind==='background')page.appearance.background_mode='image';dirty();say('Image ready. Save the page draft to keep this selection.');
       }catch(error){say(error.message,true);}
       finally{busy=false;controls.forEach(c=>c.disabled=false);control.value='';renderTypes();renderFields();updateAppearance();}
     };
-    $('remove-'+kind).onclick=()=>{page.appearance[kind+'_asset_id']=null;dirty();updateAppearance();};
+    $('remove-'+kind).onclick=()=>{page.appearance[kind+'_asset_id']=null;if(kind==='background')page.appearance.background_mode='color';dirty();updateAppearance();};
   }
+  for(const key of ['mode','color'])$('background-'+key).addEventListener(key==='mode'?'change':'input',()=>{if(!page)return;page.appearance['background_'+key]=$('background-'+key).value;if(key==='color')page.appearance.background_mode='color';dirty();updateAppearance();});
   $('background-fade').oninput=()=>{if(page){page.appearance.background_fade=Number($('background-fade').value);dirty();updateAppearance();}};
   for(const [id,key] of [['page-title-color','title_color'],['page-intro-color','intro_color']])$(id).oninput=()=>{if(!page)return;page.appearance[key]=$(id).value;dirty();updateAppearance();};
   $('page-title').oninput=()=>{page.title=$('page-title').value;dirty();renderPreview();};
