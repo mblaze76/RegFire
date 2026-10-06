@@ -18,7 +18,10 @@ _recovery_lock=threading.Lock()
 def recovery(h):
  from password_recovery import PasswordRecovery
  with _recovery_lock:
-  if not hasattr(h.server,'recovery'):h.server.recovery=PasswordRecovery(access(h))
+  if not hasattr(h.server,'recovery'):
+   from communications import settings_for
+   from communications_providers import RecoveryTransport
+   h.server.recovery=PasswordRecovery(access(h),RecoveryTransport(settings_for(h.server)))
  return h.server.recovery
 def guard(h):
  path=urlsplit(h.path).path
@@ -32,7 +35,10 @@ def guard(h):
     h.send_response(303);h.send_header('Location','/login');h.send_header('Cache-Control','no-store');h.end_headers();return False
    raise AccessError('Sign in to continue.',401)
   if h.command not in ('GET','HEAD') and not hmac.compare_digest(h.headers.get('X-CSRF-Token',''),h.identity['csrf']):raise AccessError('Refresh the page before submitting changes.',403)
-  if path.startswith('/api/admin/') or path=='/admin':a.require_admin(h.identity)
+  if path in ('/communications','/communications.js','/communications.css','/api/admin/communications'):
+   from communications import require_owner
+   require_owner(a,h.identity)
+  elif path.startswith('/api/admin/') or path=='/admin':a.require_admin(h.identity)
   elif path not in ('/products','/api/auth/logout') and 'event-builder' not in h.identity['products']:raise AccessError('RegFire Nexus access is required.',403)
   event_match=re.match(r'^/api/events/([^/]+)(?:/|$)',path)
   if event_match:a.require_event(h.identity,event_match[1])
