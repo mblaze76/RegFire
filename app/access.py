@@ -1,4 +1,4 @@
-"""Local shared-workspace identity and product access. No email delivery or mailbox verification."""
+"""Local shared-workspace identity and product access. Mailbox recovery is handled by password_recovery."""
 import hashlib,hmac,secrets,re,uuid,threading,time
 from datetime import datetime,timezone,timedelta
 from psycopg import sql
@@ -55,10 +55,10 @@ class Access:
  def session(self,raw):
   if not raw or len(raw)>256:return None
   with self.store.connect() as c:
-   row=c.execute(self.q("SELECT u.id,u.email,u.role,s.csrf FROM {} s JOIN {} u ON u.id=s.user_id WHERE s.token_hash=%s AND s.expires>now() AND u.status='active'",'sessions','users'),(digest(raw),)).fetchone()
+   row=c.execute(self.q("SELECT u.id,u.email,u.role,s.csrf,u.email_verified_at IS NOT NULL FROM {} s JOIN {} u ON u.id=s.user_id WHERE s.token_hash=%s AND s.expires>now() AND u.status='active'",'sessions','users'),(digest(raw),)).fetchone()
    if not row:return None
    products=[r[0] for r in c.execute(self.q('SELECT g.product_slug FROM {} g JOIN {} p ON p.slug=g.product_slug WHERE g.user_id=%s AND p.enabled','grants','products'),(row[0],))]
-   return dict(id=str(row[0]),email=row[1],role=row[2],csrf=row[3],products=products,email_verified=False)
+   return dict(id=str(row[0]),email=row[1],role=row[2],csrf=row[3],products=products,email_verified=row[4])
  def logout(self,raw):
   with self.store.connect() as c:c.execute(self.q('DELETE FROM {} WHERE token_hash=%s','sessions'),(digest(raw),))
  def products(self):
@@ -68,10 +68,10 @@ class Access:
  def users(self,actor):
   self.require_admin(actor)
   with self.store.connect() as c:
-   rows=c.execute(self.q('SELECT id,email,role,status,password_hash IS NOT NULL,first_name,last_name,company_name FROM {} ORDER BY email','users')).fetchall()
+   rows=c.execute(self.q('SELECT id,email,role,status,password_hash IS NOT NULL,first_name,last_name,company_name,email_verified_at IS NOT NULL FROM {} ORDER BY email','users')).fetchall()
    grants=c.execute(self.q('SELECT user_id,product_slug FROM {}','grants')).fetchall()
    events=c.execute(self.q('SELECT user_id,event_id FROM {}','event_grants')).fetchall()
-   return [dict(id=str(r[0]),email=r[1],role=r[2],status=r[3],sign_in_ready=r[4],first_name=r[5],last_name=r[6],company_name=r[7],event_ids=[str(e) for u,e in events if u==r[0]],email_verified=False,products=[p for u,p in grants if u==r[0]]) for r in rows]
+   return [dict(id=str(r[0]),email=r[1],role=r[2],status=r[3],sign_in_ready=r[4],first_name=r[5],last_name=r[6],company_name=r[7],event_ids=[str(e) for u,e in events if u==r[0]],email_verified=r[8],products=[p for u,p in grants if u==r[0]]) for r in rows]
  def save_user(self,actor,data):
   self.require_admin(actor);address=email(data.get('email'));role=data.get('role','client');status=data.get('status','assigned');products=data.get('products',[])
   if role=='user':role='client'
@@ -113,6 +113,7 @@ class Access:
    c.execute(self.q('DELETE FROM {} WHERE user_id=%s','grants'),(uid,))
    for p in products:c.execute(self.q('INSERT INTO {} VALUES(%s,%s)','grants'),(uid,p))
    c.execute(self.q('DELETE FROM {} WHERE user_id=%s','sessions'),(uid,))
+   c.execute(self.q('DELETE FROM {} WHERE user_id=%s','password_resets'),(uid,))
    c.execute(self.q('DELETE FROM {} WHERE user_id=%s','enrollments'),(uid,));self.audit(c,actor['id'],'user_access_updated',uid)
   return uid
  def save_product(self,actor,data):
@@ -125,9 +126,14 @@ class Access:
   try:uid=str(uuid.UUID(uid))
   except (ValueError,TypeError):raise AccessError('Select a user.')
   with self.store.connect() as c:
+   c.execute(self.q('LOCK TABLE {} IN SHARE ROW EXCLUSIVE MODE','users'))
+   current=c.execute(self.q('SELECT role,status FROM {} WHERE id=%s','users'),(actor['id'],)).fetchone()
+   if not current or current[1]!='active' or current[0] not in ('owner','admin'):raise AccessError('Administrator access is required.',403)
+   if uid==actor['id']:raise AccessError('Ask another administrator to reset your account.',403)
    row=c.execute(self.q('SELECT role,status FROM {} WHERE id=%s FOR UPDATE','users'),(uid,)).fetchone()
    if not row or row[0]=='owner' or row[1]=='suspended':raise AccessError('Enrollment is unavailable for this account.')
-   if row[0]=='admin' and actor['role']!='owner':raise AccessError('Only the owner can enroll administrators.',403)
+   if row[0]=='admin' and current[0]!='owner':raise AccessError('Only the owner can enroll administrators.',403)
+   c.execute(self.q('DELETE FROM {} WHERE user_id=%s','password_resets'),(uid,))
    raw=secrets.token_urlsafe(32)
    c.execute(self.q("INSERT INTO {}(token_hash,user_id,expires) VALUES(%s,%s,now()+interval '24 hours') ON CONFLICT(user_id) DO UPDATE SET token_hash=excluded.token_hash,expires=excluded.expires",'enrollments'),(digest(raw),uid));self.audit(c,actor['id'],'enrollment_issued',uid)
    return raw
@@ -138,6 +144,7 @@ class Access:
    row=c.execute(self.q("SELECT u.id FROM {} u JOIN {} e ON e.user_id=u.id WHERE u.email=%s AND e.token_hash=%s AND e.expires>now() AND u.status!='suspended' AND u.role!='owner' FOR UPDATE OF u,e",'users','enrollments'),(address,digest(token))).fetchone()
    if not row:raise AccessError('Invalid or expired enrollment code.')
    c.execute(self.q("UPDATE {} SET password_hash=%s,status='active',updated=now() WHERE id=%s",'users'),(encoded,row[0]))
+   c.execute(self.q('DELETE FROM {} WHERE user_id=%s','password_resets'),(row[0],))
    c.execute(self.q('DELETE FROM {} WHERE user_id=%s','enrollments'),(row[0],));c.execute(self.q('DELETE FROM {} WHERE user_id=%s','sessions'),(row[0],));self.audit(c,row[0],'password_enrolled',row[0])
  def audit_rows(self,actor):
   self.require_admin(actor)
