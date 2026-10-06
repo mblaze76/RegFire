@@ -26,7 +26,7 @@ function renderList(){
   const group=document.createElement('details');group.className='event-outline';group.open=outlineState.get(event.id)??event.id===selected;
   const summary=document.createElement('summary');summary.textContent=event.name;group.append(summary);const contents=document.createElement('div');contents.className='outline-pages';group.append(contents);list.append(group);
   function link(label,view,flow){const a=document.createElement('a');a.textContent=label;a.href='#event='+event.id+'&view='+view+(flow?'&flow='+flow.id:'');if(event.id===selected&&view===activeView&&(!flow||flow.id===window.RegistrationFlows?.current()?.id))a.setAttribute('aria-current','page');a.onclick=async e=>{if(activeView==='event'&&(dirty||window.EventFooterBuilder?.dirty || window.SessionsBuilder?.dirty || window.WelcomeBuilder?.dirty)){e.preventDefault();if(!await saveEventDraft()||!await window.WelcomeBuilder.save()||!await window.EventFooterBuilder.save())return;location.hash=a.hash;}};return a;}
-  async function draw(){contents.replaceChildren(link('Event details','event'),link('Registration flows','flows'));try{const flows=event.id===selected?window.RegistrationFlows?.list()||[]:await api('/api/events/'+event.id+'/flows');if(!group.isConnected)return;for(const flow of flows){const branch=document.createElement('details'),key=event.id+':'+flow.id;branch.className='flow-outline';branch.open=outlineState.get(key)??(event.id===selected&&flow.id===window.RegistrationFlows?.current()?.id);branch.ontoggle=()=>outlineState.set(key,branch.open);const heading=document.createElement('summary');heading.textContent=flow.name;branch.append(heading);for(const [view,label] of [['setup','Show setup'],['registration',flow.kind==='attendee'?'Attendee details':'Registration details'],['demographics','Demographics'],['sessions','Sessions']])branch.append(link(label,view,flow));contents.append(branch);}}catch{const error=document.createElement('p');error.textContent='Could not load flows. Close and reopen this event to retry.';contents.append(error);}}
+  async function draw(){contents.replaceChildren(link('Event details','event'),link('Registration flows','flows'));try{const flows=event.id===selected?window.RegistrationFlows?.list()||[]:await api('/api/events/'+event.id+'/flows');if(!group.isConnected)return;for(const flow of flows){const branch=document.createElement('details'),key=event.id+':'+flow.id;branch.className='flow-outline';branch.open=outlineState.get(key)??(event.id===selected&&flow.id===window.RegistrationFlows?.current()?.id);branch.ontoggle=()=>outlineState.set(key,branch.open);const heading=document.createElement('summary');heading.textContent=flow.name;branch.append(heading);for(const [view,label] of [['setup','Website setup'],['registration',flow.kind==='attendee'?'Attendee details':'Registration details'],['demographics','Demographics'],['sessions','Sessions']])branch.append(link(label,view,flow));contents.append(branch);}}catch{const error=document.createElement('p');error.textContent='Could not load flows. Close and reopen this event to retry.';contents.append(error);}}
   group.ontoggle=()=>{outlineState.set(event.id,group.open);if(group.open)draw();};if(group.open)draw();
  }
 }
@@ -117,9 +117,8 @@ function updateNav() {
   document.querySelector('#setup-tab').disabled = !selected;
   document.querySelector('#registration-tab').disabled = !selected;
   document.querySelector('#demographics-tab').disabled = !selected;
-  document.querySelector('#membership-tab').disabled = !selected;
   document.querySelector('#nav-hint').hidden = !!selected;
-  for (const [id, view] of [['details-tab','event'],['sessions-tab','sessions'],['flows-tab','flows'],['setup-tab','setup'],['registration-tab','registration'],['demographics-tab','demographics'],['membership-tab','membership']]) {
+  for (const [id, view] of [['details-tab','event'],['sessions-tab','sessions'],['flows-tab','flows'],['setup-tab','setup'],['registration-tab','registration'],['demographics-tab','demographics']]) {
     const button = document.querySelector('#' + id);
     if (view === activeView) button.setAttribute('aria-current','page'); else button.removeAttribute('aria-current');
   }
@@ -135,13 +134,13 @@ function showView(view, keepRegistration = false) {
   document.querySelector('#flows-view').hidden=view!=='flows';
   document.querySelector('#flows-event-name').textContent=events.find(item=>item.id===selected)?.name||'';
   document.querySelector('#flow-context').hidden = ['event','flows'].includes(view);
-  for(const id of ['setup-tab','registration-tab','demographics-tab','membership-tab','sessions-tab'])document.getElementById(id).hidden=id==='membership-tab'||['event','flows'].includes(view);
+  for(const id of ['setup-tab','registration-tab','demographics-tab','sessions-tab'])document.getElementById(id).hidden=['event','flows'].includes(view);
   document.querySelector('#flow-context-name').textContent = window.RegistrationFlows?.current()?.name || 'Attendee';
   document.querySelector('#welcome-event-name').textContent = events.find(item => item.id === selected)?.name || '';
   document.querySelector('#builder-view').hidden = !['setup','registration'].includes(view);
   const detailsName=window.RegistrationFlows?.current()?.kind==='attendee'?'Attendee details':'Registration details';
   document.querySelector('#registration-tab').textContent=detailsName;
-  document.querySelector('#builder-page-title').textContent = view==='setup'?'Show setup':detailsName;
+  document.querySelector('#builder-page-title').textContent = view==='setup'?'Website setup':detailsName;
   document.querySelectorAll('#builder-form > section').forEach((section,index)=>{section.hidden = view==='setup'?index>=3:index<3;const step=section.querySelector('.step');if(step)step.textContent=String(index<3?index+1:index-2).padStart(2,'0');});
   document.querySelector('#demographics-view').hidden = view !== 'demographics';
   document.querySelector('#membership-view').hidden = !selected || !['event','membership'].includes(view);
@@ -164,7 +163,6 @@ document.querySelector('#details-tab').onclick = () => switchView('event');
 document.querySelector('#flow-back').onclick = () => switchView('flows');
 document.querySelector('#setup-tab').onclick = () => switchView('setup');
 document.querySelector('#registration-tab').onclick = () => switchView('registration');
-document.querySelector('#membership-tab').onclick = () => switchView('membership');
 document.querySelector('#demographics-tab').onclick = () => switchView('demographics');
 window.addEventListener('DOMContentLoaded', init);
 

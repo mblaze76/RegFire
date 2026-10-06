@@ -1,9 +1,9 @@
-# Membership setup and preview
+# Background membership lookup
 
-Membership is a separate organizer section and is **disabled by default**. Enable it, select one or more member RegTypes and choose a source and policy. Other RegTypes need no check. No attendee registrations, payments or manual review queue exist in this local edition.
+Membership is organizer-only configuration under Event details and is **disabled by default**. There is no attendee membership page or membership preview pane. API connection settings live in My products → Client settings → Membership integration; imported CSVs and eligibility policy remain in Membership setup. Enable it, select one or more member RegTypes and choose a source and policy. Other RegTypes need no check. No attendee registrations, payments or manual review queue exist in this local edition.
 
 - **Require verified membership:** an active, unexpired ID/email match qualifies; otherwise preview continuation is blocked and member pricing is withheld.
-- **Allow pending manual review:** an unverified result remains visibly **Pending manual review**, with the underlying reason. Preview continuation is provisional and member pricing is not confirmed. No actual review task is created.
+- **Allow pending manual review:** an unverified result allows provisional preview continuation with **Price pending**. Organizer diagnostics retain the underlying reason; member pricing is not confirmed. No actual review task is created.
 
 No match, inactive, expired and service unavailable are separate outcomes. An outage never becomes a false verification. If both ID and email are entered, both must match the same record. IDs are case-sensitive; emails are normalized case-insensitively. Expiration is a date inclusive through that date in the event timezone; the member expires at the start of the next local day. Blank means no expiration. The check uses the current time, not the registration price preview clock.
 
@@ -31,8 +31,16 @@ Only public DNS/IP targets are allowed. Every resolved address is checked; conne
 
 Use `fixture://demo` to test entirely locally. IDs: `DEMO-ACTIVE`, `DEMO-INACTIVE`, `DEMO-EXPIRED`, `DEMO-UNAVAILABLE`. The screen clearly identifies synthetic results. This is not a real membership service.
 
-Membership settings/imports are event-scoped in PostgreSQL. RegTypes referenced by membership cannot be removed until assignments are updated. Imported member data is private local database content; use appropriate disk/account access and protected backups. The app has no authentication or public deployment and must remain loopback-only.
+Membership settings/imports remain registration-flow-scoped in PostgreSQL. Moving the controls does not migrate or delete saved connections or member records. RegTypes referenced by membership cannot be removed until assignments are updated. Imported member data is private local database content; use appropriate disk/account access and protected backups. Existing product grants and event assignments protect integration reads, writes, tests, and background checks. This local edition remains loopback-only; it is not a public registration/checkout service.
 
-## Page introduction
+## Field triggers and attendee behavior
 
-Each flow stores its own title, details/instructions, independent fonts and colors. Font search uses the shared 1,955-choice picker with actual face previews; colors use the shared palette/hex/native control. Blank titles fall back to “Verify your membership”; blank instructions are hidden. Existing explanatory text remains the default. Embedded preview updates immediately; Open live preview receives unsaved settings from this editor, while Open saved preview reads saved settings. Neither creates registration or payment records.
+In Attendee details, each field has **Background membership lookup**: Don’t use for membership, Member email, or Member ID. Text and email fields support lookup; other types do not. Legacy fields default to no lookup, and their saved definitions are retained. At most one field per lookup key may be visible for any one RegType; different RegTypes may use different fields.
+
+Marked visible field values trigger a debounced background check in both the embedded registration preview and the separate attendee preview. Unmarked and hidden field values are not sent to the lookup. If both a member ID and email are supplied, they must match the same record. A stale response cannot re-enable continuation after values or RegType change. Submission checks eligibility again. Success adds no membership UI; failures stay inline on the same form with a retry control. This remains a preview, not live registration/payment enforcement.
+
+The server reads the saved membership policy and connection; field-check requests cannot override them. Disabled/non-member RegTypes do not require a lookup. Required verification holds continuation and pricing; pending policy allows provisional continuation with price marked pending. API outages never produce verified status. Configure at least one visible lookup field when enabling membership for a RegType; otherwise required verification cannot complete.
+
+Client settings updates only the connection and rejects stale connection saves. Membership setup saves omit API settings, so a stale editor cannot overwrite a newer connection. Credential values remain in server environment variables. Connection testing uses explicitly entered test identities; fixture://demo never contacts an external service.
+
+Old /membership bookmarks redirect directly to the flow’s registration details preview. Legacy membership title/font/color fields stay in the stored configuration for compatibility, but no introduction editor or attendee page renders them.

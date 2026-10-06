@@ -1,4 +1,4 @@
-/* Organizer definitions only. Preview inputs never leave the browser. */
+/* Organizer definitions and temporary preview inputs; marked lookup values go to the membership service. */
 (() => {
   const $ = id => document.getElementById(id);
   const types = {text:'Short text', email:'Email', tel:'Phone', textarea:'Long text', select:'Dropdown', radio:'Single choice', checkbox:'Checkbox', address:'Address block'};
@@ -28,7 +28,7 @@
     const ticket=++pricingTicket;
     clearTimeout(pricingTimer);
     $('preview-price').textContent='Checking…';$('preview-rate').textContent='';
-    $('preview-form').querySelector('button[type=submit]').disabled=true;
+    membershipCheck.setPricing(false);
     pricingTimer=setTimeout(async ()=>{
       if(!page||ticket!==pricingTicket)return;
       try {
@@ -39,7 +39,7 @@
         $('preview-rate').textContent=rate?rate.name+' · '+(rate.message||'Active for this preview time. Starts inclusive; ends exclusive.'):'Choose a RegType.';
         $('preview-rate').className='rate-result'+(rate?.status==='unavailable'?' error':'');
         $('preview-timezone').textContent='Event timezone: '+result.timezone+'. Checked at '+result.at+'. Blank uses current time.';
-        $('preview-form').querySelector('button[type=submit]').disabled=!rate||rate.status==='unavailable';
+        membershipCheck.setPricing(!!rate&&rate.status!=='unavailable',$('preview-price').textContent);
       }catch(error){
         if(ticket!==pricingTicket||!page)return;
         $('preview-price').textContent='Check rate settings';$('preview-rate').textContent=error.message;$('preview-rate').className='rate-result error';
@@ -161,11 +161,14 @@
       const row=node('div','field-basics');const title=input(f.label,120);title.required=true;
       title.oninput=()=>{f.label=title.value;dirty();renderPreview();};
       const type=node('select');Object.entries(types).forEach(([value,name])=>{const option=node('option','',name);option.value=value;type.append(option);});type.value=f.type;
-      type.onchange=()=>{f.type=type.value;if(['select','radio'].includes(f.type)&&f.options.length<2)f.options=['Option 1','Option 2'];dirty();renderFields();renderPreview();};
+      type.onchange=()=>{f.type=type.value;if(!['text','email'].includes(f.type))f.membership_lookup='';if(['select','radio'].includes(f.type)&&f.options.length<2)f.options=['Option 1','Option 2'];dirty();renderFields();renderPreview();};
       row.append(label('Field label',title),label('Field type',type));
       const required=node('input');required.type='checkbox';required.checked=f.required;required.onchange=()=>{f.required=required.checked;dirty();renderPreview();};
       const req=node('label','check-label');req.append(required,document.createTextNode('Required when visible'));
       card.append(heading,row,req);
+      const lookup=node('select');for(const [value,title] of [['','Don’t use for membership'],['email','Member email'],['member_id','Member ID']])lookup.append(new Option(title,value));lookup.value=f.membership_lookup||'';lookup.disabled=!['text','email'].includes(f.type);lookup.onchange=()=>{f.membership_lookup=lookup.value;dirty();renderPreview();};
+      card.append(label('Background membership lookup',lookup),node('p','field-note','Use a text or email field to check membership automatically. The saved integration and member RegType policy apply; attendees see no extra page.'));
+
       if(f.type==='address') card.append(node('p','field-note','Address line 1, city, state / province / region, postal code and country follow this required setting. Address line 2 is always optional.'));
       if(f.type==='tel'){const consent=node('input');consent.type='checkbox';consent.checked=f.sms_consent??(f.id==='cell-phone'||/cell|mobile/i.test(f.label));consent.onchange=()=>{f.sms_consent=consent.checked;dirty();renderPreview();};const consentLabel=node('label','check-label');consentLabel.append(consent,document.createTextNode('Show text-message consent checkbox'));card.append(consentLabel);}
       if(f.type==='tel') card.append(node('p','field-note','Accepts international formats, including +, spaces and extensions.'));
@@ -216,8 +219,9 @@
         f.options.forEach((choice,i)=>{const radio=previewInput('radio',f.required,id+'-'+i);radio.name=id;radio.value=choice;const l=node('label','check-label');l.append(radio,document.createTextNode(choice));group.append(l);});container.append(group);
       } else if(f.type==='checkbox'){
         const checkbox=previewInput('checkbox',f.required,id);const l=node('label','check-label');l.append(checkbox,document.createTextNode(title));container.append(l);
-      } else {const input=previewInput(f.type,f.required,id);container.append(label(title,input));if(f.type==='email')window.EmailValidation.attach(input,container);if(f.type==='tel'&&(f.sms_consent??(f.id==='cell-phone'||/cell|mobile/i.test(f.label))))window.PhoneConsent.attach(input,container,event.name);}
+      } else {const input=previewInput(f.type,f.required,id);if(f.membership_lookup)input.dataset.membershipField=f.id;container.append(label(title,input));if(f.type==='email')window.EmailValidation.attach(input,container);if(f.type==='tel'&&(f.sms_consent??(f.id==='cell-phone'||/cell|mobile/i.test(f.label))))window.PhoneConsent.attach(input,container,event.name);}
     });
+    membershipCheck.refresh();
   }
   function assetURL(id){return '/api/events/'+event.id+'/assets/'+id;}
   function introFonts(){
@@ -280,7 +284,8 @@
   function nextMinute(){setTimeout(()=>{if(page&&!document.hidden&&!$('preview-at').value)updatePricing();nextMinute();},60000-(Date.now()%60000)+20);}
   nextMinute();
   document.addEventListener('visibilitychange',()=>{if(page&&!document.hidden&&!$('preview-at').value)updatePricing();});
-  $('preview-form').onsubmit=e=>{e.preventDefault();$('preview-feedback').textContent='Preview check complete. No registration or payment was submitted.';};
+  const membershipCheck=window.BackgroundMembership.attach({form:$('preview-form'),result:$('preview-feedback'),price:$('preview-price'),getContext:()=>page?{event_id:event.id,page:serializePage(),regtype_id:previewType}:null});
+  $('preview-form').onsubmit=async e=>{e.preventDefault();if(await membershipCheck.check())$('preview-feedback').textContent='Preview check complete. No registration or payment was submitted.';};
   $('builder-retry').onclick=()=>load(event);
   $('builder-form').onsubmit=async e=>{
     e.preventDefault();if(busy||!page)return;
@@ -296,6 +301,6 @@
     }catch(error){say(error.message,true);}
     finally {busy=false;controls.forEach(c=>c.disabled=false);renderTypes();renderFields();renderPreview();}
   };
-  window.RegistrationBuilder={load,snapshot(){if(!page)return null;let model,error=null;try{model=serializePage();}catch(e){error=e.message;model={...structuredClone(page),regtypes:page.regtypes.map(r=>({...r,price_minor:null}))};}return {event_id:event.id,page:model,at:$('preview-at').value,regtype:previewType,error};},clear(){generation++;pricingTicket++;clearTimeout(pricingTimer);page=null;changed=false;},get dirty(){return changed;},get busy(){return busy;}};
+  window.RegistrationBuilder={load,snapshot(){if(!page)return null;let model,error=null;try{model=serializePage();}catch(e){error=e.message;model={...structuredClone(page),regtypes:page.regtypes.map(r=>({...r,price_minor:null}))};}return {event_id:event.id,page:model,at:$('preview-at').value,regtype:previewType,error};},clear(){membershipCheck.clear();generation++;pricingTicket++;clearTimeout(pricingTimer);page=null;changed=false;},get dirty(){return changed;},get busy(){return busy;}};
   window.DraftAutosave.register({ready:()=>!!(page&&changed&&!busy),snapshot:()=>(serializePage()),lock:value=>busy=value,clean:()=>{changed=false;},status:(state,message,error)=>{$('page-save-state').textContent=state;say(message,error);},save:data=>api('/api/events/'+event.id+'/registration-page',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})});
 })();

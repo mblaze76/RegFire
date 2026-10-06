@@ -256,8 +256,15 @@ class Store:
             imported=conn.execute(psycopg.sql.SQL('SELECT records,digest,updated FROM {} WHERE event_id=%s').format(imports_table),(event_id,)).fetchone()
             info=dict(count=len(imported[0]) if imported else 0,revision=imported[1] if imported else '',updated=imported[2].isoformat() if imported else None)
             if action=='get':return dict(config=config,import_info=info,timezone=ev[0]['timezone'])
-            if action=='save':
-                config=validate(data,regtypes)
+            if action in ('save','integration'):
+                if action=='integration':
+                    # Integration edits must never overwrite concurrent membership policy changes.
+                    if data.get('expected_api')!=config['api']:raise ValueError('The API connection changed. Reload Client settings before saving.')
+                    candidate={**config,'api':data.get('api')}
+                else:
+                    # Organizer membership setup omits integration settings managed elsewhere.
+                    candidate={**data,'api':data.get('api',config['api'])}
+                config=validate(candidate,regtypes)
                 conn.execute(psycopg.sql.SQL('INSERT INTO {} (event_id,body,updated) VALUES(%s,%s,%s) ON CONFLICT(event_id) DO UPDATE SET body=excluded.body,updated=excluded.updated').format(settings_table),(event_id,Jsonb(config),now))
                 return dict(config=config,import_info=info,timezone=ev[0]['timezone'])
             if action in ('import-preview','import'):
@@ -268,12 +275,28 @@ class Store:
                     conn.execute(psycopg.sql.SQL('INSERT INTO {} (event_id,records,digest,updated) VALUES(%s,%s,%s,%s) ON CONFLICT(event_id) DO UPDATE SET records=excluded.records,digest=excluded.digest,updated=excluded.updated').format(imports_table),(event_id,Jsonb(rows),result['digest'],now))
                     return dict(count=len(rows),revision=result['digest'],updated=now)
                 result['revision']=info['revision'];return result
-            if action not in ('lookup','test'):raise ValueError('Unknown membership action.')
-            config=validate(data.get('config',config),regtypes)
+            if action not in ('lookup','check-fields','test'):raise ValueError('Unknown membership action.')
+            if action=='check-fields':
+                from registration import validate_page
+                page=validate_page(data.get('registration_page') or (reg[0] if reg else registration_starter(ev[0])),ev[0]['timezone'])
+                regtypes=page['regtypes']
+            candidate=config if action=='check-fields' else data.get('config',config)
+            if isinstance(candidate,dict):candidate={**candidate,'api':candidate.get('api',config['api'])}
+            config=validate(candidate,regtypes)
             regtype=data.get('regtype_id')
-            if action=='lookup' and regtype not in {r['id'] for r in regtypes}:raise ValueError('Choose an existing RegType.')
-            if action=='lookup' and (not config['enabled'] or regtype not in config['regtype_ids']):return outcome(config,None,ev[0]['timezone'],applies=False)
-            keys=lookup_keys(data)
+            if action in ('lookup','check-fields') and regtype not in {r['id'] for r in regtypes}:raise ValueError('Choose an existing RegType.')
+            if action in ('lookup','check-fields') and (not config['enabled'] or regtype not in config['regtype_ids']):return outcome(config,None,ev[0]['timezone'],applies=False)
+            if action=='check-fields':
+                values=data.get('values',{})
+                if not isinstance(values,dict):raise ValueError('Registration field values must be an object.')
+                selected_fields=[f for f in page['fields'] if f.get('membership_lookup') and (f['visible_to'] is None or regtype in f['visible_to'])]
+                keys={f['membership_lookup']:values.get(f['id'],'') for f in selected_fields}
+                if not any(keys.values()):
+                    result=outcome(config,None,ev[0]['timezone'])
+                    return {**result,'needs_details':True}
+                keys=lookup_keys(keys)
+            else:
+                keys=lookup_keys(data)
             unavailable=False;record=None
             if config['source']=='api' or action=='test':
                 if not config['api']['endpoint']:raise ValueError('Add an API endpoint first.')

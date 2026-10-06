@@ -85,7 +85,9 @@ def validate_page(data, zone_name='UTC'):
             options = []
         sms_consent=field.get('sms_consent', kind=='tel' and (field_id=='cell-phone' or bool(re.search(r'cell|mobile',label,re.I))))
         if type(sms_consent) is not bool: raise ValueError('Text-message consent setting must be true or false.')
-        result['fields'].append(dict(id=field_id, label=label, type=kind, required=required, options=options, visible_to=field.get('visible_to'), sms_consent=sms_consent))
+        membership_lookup=field.get('membership_lookup','')
+        if membership_lookup not in ('','email','member_id') or (membership_lookup and kind not in ('text','email')):raise ValueError('Membership lookup requires a text or email field mapped to Member ID or Member email.')
+        result['fields'].append(dict(id=field_id, label=label, type=kind, required=required, options=options, visible_to=field.get('visible_to'), sms_consent=sms_consent,membership_lookup=membership_lookup))
     regtypes = data.get('regtypes')
     if not isinstance(regtypes, list) or not 1 <= len(regtypes) <= 30:
         raise ValueError('Include between 1 and 30 RegTypes.')
@@ -109,6 +111,9 @@ def validate_page(data, zone_name='UTC'):
                 raise ValueError(f"Choose at least one RegType for {field['label']}, or show it to all types.")
             if len(set(visible)) != len(visible) or any(item not in seen for item in visible):
                 raise ValueError(f"{field['label']} references a duplicate or removed RegType. Update its visibility.")
+    for regtype in result['regtypes']:
+        lookup_fields=[f['membership_lookup'] for f in result['fields'] if f['membership_lookup'] and (f['visible_to'] is None or regtype['id'] in f['visible_to'])]
+        if len(set(lookup_fields))!=len(lookup_fields):raise ValueError('Use only one Member ID and one Member email lookup field per RegType.')
     appearance=data.get('appearance',{})
     if not isinstance(appearance,dict): raise ValueError('Appearance must be an object.')
     normalized={}
