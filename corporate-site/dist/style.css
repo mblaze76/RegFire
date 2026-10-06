@@ -22,3 +22,6 @@ header,footer{background:#000}
 .hero-film video{display:block;width:100%;aspect-ratio:16/9;object-fit:contain;background:#000}.hero-film-controls{display:flex;align-items:center;gap:12px;padding:14px 16px}.hero-film-controls button{border:1px solid #817273;border-radius:5px;padding:8px 13px;color:#fff;background:#211719;font-size:13px}.hero-film-controls #hero-sound{background:#b92520;border-color:#d3483e;font-weight:700}.hero-film-controls span{font-size:11px;color:#c3bbba;margin-left:auto}.hero-bottom{grid-column:1/-1;width:100%;z-index:1}.hero-content h1{font-size:clamp(60px,6.1vw,94px)}
 @media(max-width:900px){.hero{grid-template-columns:1fr;gap:30px;padding-bottom:0}.hero-content{max-width:650px}.hero-film{width:100%;max-width:680px;justify-self:center}.hero-bottom{margin-top:10px}.hero-film-controls{flex-wrap:wrap}.hero-art{inset:0}.hero-content h1{font-size:clamp(60px,10vw,90px)}}
 @media(max-width:480px){.hero-film-controls{gap:8px;padding:10px}.hero-film-controls span{font-size:10px}.hero-film-controls button{padding:8px 10px}}
+
+/* Keep the expanded platform copy readable on small screens. */
+@media(max-width:700px){.features{grid-template-columns:1fr}.features article{padding:24px}.features h3{font-size:24px}.features p{font-size:16px}.feature-label{font-size:10px}}
