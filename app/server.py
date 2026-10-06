@@ -127,6 +127,9 @@ class Handler(BaseHTTPRequestHandler):
         filename, content_type = files[path]; content = (ROOT / 'static' / filename).read_bytes()
         self.send_response(200); self.send_header('Content-Type', content_type + '; charset=utf-8'); self.send_header('Content-Length', str(len(content))); self.send_header('X-Content-Type-Options', 'nosniff'); self.send_header('Cache-Control','no-store'); self.send_header('Referrer-Policy','same-origin'); self.send_header('X-Frame-Options','SAMEORIGIN'); self.end_headers(); self.wfile.write(content)
     def do_POST(self):
+        if urlsplit(self.path).path == '/api/spark/chat':
+            from spark_chat import handle
+            return handle(self)
         if "/sessions/" in urlsplit(self.path).path: return self.sessions_request(urlsplit(self.path).path.rsplit("/",1)[-1])
         if urlsplit(self.path).path.endswith('/flows'):return self.flows_request(True)
         from access_http import handle
