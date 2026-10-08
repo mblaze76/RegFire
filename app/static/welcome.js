@@ -2,7 +2,7 @@
 const editor=crypto.randomUUID();const live=window.BroadcastChannel?new BroadcastChannel('regfire-welcome:'+editor):null;
 const $=id=>document.getElementById(id);let event=null,page=null,dirty=false,busy=false,serial=0;
 const say=(text,error=false)=>{ $('welcome-status').textContent=text;$('welcome-status').className=error?'error':'';};
-const controls=()=>{for(const n of $('welcome-form').elements)n.disabled=busy;$('welcome-sponsor-add').disabled=busy||!page||page.sponsor_asset_ids.length>=4;$('welcome-logo-remove').disabled=busy||!page?.logo_asset_id;$('welcome-background-remove').disabled=busy||!page?.background_asset_id;};
+const controls=()=>{for(const n of $('welcome-form').elements)n.disabled=busy;$('welcome-sponsor-add').disabled=busy||!page||page.sponsor_asset_ids.length>=4;$('welcome-logo-remove').disabled=busy||!page?.logo_asset_id;$('welcome-logo-to-sponsor').disabled=busy||!page?.logo_asset_id||page.sponsor_asset_ids.length>=4;$('welcome-background-remove').disabled=busy||!page?.background_asset_id;};
 const safeURL=value=>{try{const url=new URL(value);return ['http:','https:'].includes(url.protocol)&&!url.username&&!url.password&&!/\s/.test(value)?url.href:'';}catch{return '';}};
 const assetURL=id=>'/api/events/'+event.id+'/assets/'+id;
 function image(id,url,alt){const img=document.createElement('img');img.src=assetURL(id);img.alt=alt;if(url){try{const u=new URL(url);if(['http:','https:'].includes(u.protocol)){const a=document.createElement('a');a.href=u.href;a.target='_blank';a.rel='noopener noreferrer';a.append(img);return a;}}catch{}}return img;}
@@ -11,6 +11,7 @@ if(live)live.onmessage=e=>{if(e.data?.request===event?.id)publish();};
 function preview(){if(!page)return;window.RegistrationFooter.connect($('welcome-embedded-footer'),event.id);window.WelcomeDisplay.heading($('welcome-preview').querySelector('[data-welcome-heading]'),page);window.WelcomeDisplay.background($('welcome-preview'),page,event.id);$('welcome-background-fade').value=page.background_fade??80;$('welcome-fade-value').value=(page.background_fade??80)+'%';$('welcome-preview-event-name').textContent=event.name;$('welcome-preview-logo').replaceChildren(...(page.logo_asset_id?[image(page.logo_asset_id,page.logo_url,'Show logo')]:[]));$('welcome-preview-sponsors').replaceChildren(...page.sponsor_asset_ids.map((id,i)=>image(id,page.sponsor_urls[i],'Sponsor '+(i+1)+' logo')));window.WelcomeDisplay.body($('welcome-preview-about'),page);const login=$('welcome-preview-login');login.href='/registrant-login?event='+encodeURIComponent(event.id);login.target='_blank';login.rel='noopener noreferrer';login.onclick=null;window.WelcomeDisplay.buttons($('welcome-preview-flows'),page,window.RegistrationFlows?.list()||[],true);}
 function changed(){dirty=true;say('Unsaved welcome-page changes.');preview();publish();}
 function render(){
+ $('welcome-show-logo-thumbnail').replaceChildren(...(page.logo_asset_id?[image(page.logo_asset_id,'','Current show logo')]:[]));
  $('welcome-background-mode').value=page.background_mode||(page.background_asset_id?'image':'color');$('welcome-background-color').value=page.background_color||'#ffffff';
  $('welcome-title').value=page.title||'Welcome to online registration';$('welcome-title-color').value=page.title_color||(page.background_asset_id&&Number(page.background_fade??80)<50?'#ffffff':'#24242a');$('welcome-title-font').replaceChildren(...Object.entries(window.WelcomeDisplay.fonts).map(([id,[label]])=>new Option(label,id)));$('welcome-title-font').value=page.title_font||'default';$('welcome-title-font-search').value='';$('welcome-title-font-search').dispatchEvent(new Event('input'));
  $('welcome-open-site').href='/welcome#event='+event.id+'&editor='+editor;$('welcome-about-color').value=page.about_color||'#24242a';$('welcome-font-search').value='';$('welcome-font-search').dispatchEvent(new Event('input'));filterFonts();$('welcome-about-font').value=page.about_font||'default';$('welcome-about').value=page.about;$('welcome-logo-url').value=page.logo_url||'';$('welcome-sponsors').replaceChildren();
@@ -32,7 +33,28 @@ function renderButtons(){
  });
 }
 $('welcome-button-add').onclick=()=>{if(!page||busy)return;page.buttons.push({id:crypto.randomUUID(),label:'Register',flow_id:null});changed();renderButtons();};
-async function uploadImage(input,kind,index){const file=input.files[0];if(!file||busy||!page)return;if(kind==='sponsor'&&index===undefined&&page.sponsor_asset_ids.length>=4){say('Use up to four sponsor logos.',true);return;}busy=true;controls();say(kind==='background'?'Uploading background…':'Uploading logo…');try{const response=await fetch('/api/events/'+event.id+'/assets/'+(kind==='background'?'background':'logo'),{method:'POST',headers:{'Content-Type':file.type||'application/octet-stream'},body:file});const asset=await response.json();if(!response.ok)throw Error(asset.error||'Upload failed.');if(kind==='background'){page.background_asset_id=asset.id;page.background_mode='image';}else if(kind==='show')page.logo_asset_id=asset.id;else if(index!==undefined)page.sponsor_asset_ids[index]=asset.id;else{page.sponsor_asset_ids.push(asset.id);page.sponsor_urls.push('');}changed();render();}catch(e){say(e.message,true);}finally{busy=false;input.value='';controls();}}
+async function uploadImage(input,kind,index){
+ const files=Array.from(input.files||[]);if(!files.length||busy||!page)return;
+ const adding=kind==='sponsor'&&index===undefined;
+ if(adding&&files.length>4-page.sponsor_asset_ids.length){say('Choose up to '+(4-page.sponsor_asset_ids.length)+' more sponsor logos. No files were uploaded.',true);input.value='';return;}
+ const owner=event.id,request=serial,target=page;busy=true;controls();const failures=[];let uploaded=0;
+ try{
+  for(const file of (adding?files:files.slice(0,1))){
+   say('Uploading '+file.name+'…');
+   try{
+    const response=await fetch('/api/events/'+owner+'/assets/'+(kind==='background'?'background':'logo'),{method:'POST',headers:{'Content-Type':file.type||'application/octet-stream'},body:file});
+    const asset=await response.json();if(!response.ok)throw Error(asset.error||'Upload failed.');
+    if(request!==serial||event?.id!==owner||page!==target)return;
+    if(kind==='background'){page.background_asset_id=asset.id;page.background_mode='image';}
+    else if(kind==='show')page.logo_asset_id=asset.id;
+    else if(index!==undefined)page.sponsor_asset_ids[index]=asset.id;
+    else{page.sponsor_asset_ids.push(asset.id);page.sponsor_urls.push('');}
+    uploaded++;changed();render();
+   }catch(e){failures.push(file.name+': '+e.message);}
+  }
+  if(request===serial&&failures.length)say(uploaded+' uploaded. '+failures.join(' '),true);
+ }finally{input.value='';if(request===serial){busy=false;controls();}}
+}
 async function load(value){const request=++serial;event=value;page=null;dirty=false;busy=true;$('welcome-content').hidden=true;$('welcome-retry').hidden=true;say('Loading welcome draft…');try{const data=await api('/api/events/'+value.id+'/welcome-page');if(request!==serial)return;page={...data,logo_url:data.logo_url||'',sponsor_urls:data.sponsor_urls||data.sponsor_asset_ids.map(()=> '')};render();$('welcome-content').hidden=false;say('Welcome draft loaded.');}catch(e){if(request!==serial)return;say(e instanceof TypeError?'Cannot reach the RegFire server. Start RegFire, then choose Retry loading. Your saved welcome page is unchanged.':e.message,true);$('welcome-retry').hidden=false;}finally{if(request===serial){busy=false;controls();}}}
 $('welcome-background-upload').onchange=()=>uploadImage($('welcome-background-upload'),'background');
 $('welcome-background-remove').onclick=()=>{page.background_asset_id=null;page.background_mode='color';changed();render();};
@@ -52,6 +74,7 @@ $('welcome-about-font').onchange=()=>{page.about_font=$('welcome-about-font').va
 $('welcome-about-color').oninput=()=>{page.about_color=$('welcome-about-color').value;changed();};
 $('welcome-about').oninput=()=>{page.about=$('welcome-about').value;changed();};$('welcome-logo-url').oninput=()=>{page.logo_url=$('welcome-logo-url').value;changed();};
 $('welcome-logo-upload').onchange=()=>uploadImage($('welcome-logo-upload'),'show');$('welcome-sponsor-add').onchange=()=>uploadImage($('welcome-sponsor-add'),'sponsor');$('welcome-logo-remove').onclick=()=>{page.logo_asset_id=null;changed();render();};
+$('welcome-logo-to-sponsor').onclick=()=>{if(busy||!page?.logo_asset_id||page.sponsor_asset_ids.length>=4)return;page.sponsor_asset_ids.unshift(page.logo_asset_id);page.sponsor_urls.unshift(page.logo_url||'');page.logo_asset_id=null;page.logo_url='';changed();render();};
 async function save(){if(busy)return false;if(!page){say('Load the welcome draft before saving.',true);return false;}if(!$('welcome-form').reportValidity())return false;busy=true;controls();say('Saving welcome draft…');try{page=await api('/api/events/'+event.id+'/welcome-page',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(page)});dirty=false;render();say('Welcome draft saved.');return true;}catch(e){say(e.message,true);return false;}finally{busy=false;controls();}}
 $('welcome-form').onsubmit=e=>{e.preventDefault();save();};
 // Match event draft autosave so branding edits cannot remain behind a separate Save button.

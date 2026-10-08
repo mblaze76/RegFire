@@ -22,7 +22,7 @@
     return new Intl.NumberFormat(undefined,{style:'currency',currency:page.currency,currencyDisplay:'code'}).format(value/(digits(page.currency)?100:1));
   }
   function serializePage() {
-    return {promo_codes:page.promo_codes||[],title:page.title,intro:page.intro,currency:page.currency,appearance:{...page.appearance},fields:page.fields.map(f=>({...f,options:['select','radio'].includes(f.type)?f.options:[]})),regtypes:page.regtypes.map(r=>({id:r.id,name:r.name,show_on_welcome:r.show_on_welcome!==false,price_minor:parsePrice(r.price_text,page.currency),use_default:r.use_default,rates:r.rates.map(rate=>({id:rate.id,name:rate.name,price_minor:parsePrice(rate.price_text,page.currency),start:rate.start,end:rate.end}))}))};
+    return {promo_codes:page.promo_codes||[],title:page.title,intro:page.intro,currency:page.currency,appearance:{...page.appearance},fields:page.fields.map(f=>({...f,options:['select','radio'].includes(f.type)?f.options:[]})),regtypes:page.regtypes.map(r=>({id:r.id,name:r.name,subcategories:r.subcategories||[],show_on_welcome:r.show_on_welcome!==false,price_minor:parsePrice(r.price_text,page.currency),use_default:r.use_default,rates:r.rates.map(rate=>({id:rate.id,name:rate.name,price_minor:parsePrice(rate.price_text,page.currency),start:rate.start,end:rate.end}))}))};
   }
   function updatePricing() {
     const ticket=++pricingTicket;
@@ -50,6 +50,7 @@
   function dirty() { changed=true; $('page-save-state').textContent='Unsaved changes'; say('Save this page draft to keep your changes.'); }
   function cloneFromServer(data) { return {...data,appearance:{logo_asset_id:null,background_asset_id:null,background_fade:80,...(data.appearance||{})},fields:data.fields.map(f=>({...f,options:[...f.options],visible_to:f.visible_to===null?null:[...f.visible_to]})),regtypes:data.regtypes.map(r=>({...r,use_default:r.use_default??true,price_text:minorToText(r.price_minor,data.currency),rates:(r.rates||[]).map(rate=>({...rate,price_text:minorToText(rate.price_minor,data.currency)}))}))}; }
   async function load(ev) {
+    window.RegFireSubcategories.clear();
     const ticket=++generation; event=ev; page=null; changed=false; previewType=null;
     $('builder-content').hidden=true; $('builder-load-error').hidden=true; $('builder-loading').hidden=false;
     $('builder-event-name').textContent=ev?.name || '';
@@ -77,6 +78,17 @@
   $('add-promo').onclick=()=>{page.promo_codes??=[];if(page.promo_codes.length>=1000)return;page.promo_codes.push({code:'',type:'free',amount:0,enabled:true,allotment:null});dirty();renderPromos();};
   $('import-promos').onchange=async()=>{pendingPromos=[];$('confirm-promo-import').hidden=true;const file=$('import-promos').files[0];if(!file)return;try{if(file.size>200000)throw Error('Use a CSV smaller than 200 KB.');const rows=(await file.text()).replace(/^\uFEFF/,'').trim().split(/\r?\n/).filter(x=>x.trim());const header=rows.shift()?.trim().toLowerCase();if(!['code,type,amount','code,type,amount,allotment'].includes(header))throw Error('CSV header must be code,type,amount or code,type,amount,allotment.');const hasAllotment=header.endsWith(',allotment');const seen=new Set((page.promo_codes||[]).map(p=>p.code.toUpperCase()));for(const [index,line] of rows.entries()){const cells=line.split(',').map(x=>x.trim().replace(/^"|"$/g,''));if(cells.length!==(hasAllotment?4:3))throw Error('Check CSV row '+(index+2)+'.');const [raw,type,value]=cells,code=raw.toUpperCase(),amount=type==='free'?0:Number(value);if(!code||code.length>80||seen.has(code)||!['free','percent','fixed'].includes(type)||!Number.isFinite(amount)||(type!=='free'&&amount<=0)||(type==='percent'&&amount>100)||(type==='fixed'&&(amount>999999||Math.round(amount*100)!==amount*100)))throw Error('Invalid or duplicate code on row '+(index+2)+'.');const limit=hasAllotment?cells[3]:'';if(limit!==''&&(!/^\d+$/.test(limit)||Number(limit)>2147483647))throw Error('Allotment must be a whole number of 0 or more on row '+(index+2)+'.');const allotment=limit===''?null:Number(limit);seen.add(code);pendingPromos.push({code,type,amount,enabled:true,allotment});}if(!pendingPromos.length||seen.size>1000)throw Error('Import must contain codes, with no more than 1000 total.');$('promo-import-result').textContent=pendingPromos.length+' valid codes ready: '+pendingPromos.slice(0,10).map(p=>p.code).join(', ')+(pendingPromos.length>10?'…':'');$('confirm-promo-import').hidden=false;}catch(e){pendingPromos=[];$('promo-import-result').textContent=e.message;}};
   $('confirm-promo-import').onclick=()=>{const existing=new Set((page.promo_codes||[]).map(p=>p.code.toUpperCase()));if(pendingPromos.some(p=>existing.has(p.code))||(page.promo_codes||[]).length+pendingPromos.length>1000){$('promo-import-result').textContent='Codes changed. Select the CSV again to check duplicates.';return;}page.promo_codes=[...(page.promo_codes||[]),...pendingPromos];pendingPromos=[];dirty();renderPromos();$('confirm-promo-import').hidden=true;$('promo-import-result').textContent='Codes added. Save page draft to keep them.';$('import-promos').value='';};
+  function subcategoryEditor(parent,depth=1) {
+    const group=node('div','subcategory-editor');parent.subcategories??=[];
+    parent.subcategories.forEach((child,index)=>{
+      const card=node('div','subcategory-card'),name=input(child.name,80);name.required=true;
+      name.oninput=()=>{child.name=name.value;dirty();renderPreview();};
+      card.append(label('Subcategory name (level '+depth+')',name),button('Remove subcategory',async()=>{if(!await confirmAction('Remove this subcategory and its nested choices?'))return;parent.subcategories.splice(index,1);dirty();renderTypes();renderPreview();},'Remove subcategory '+(child.name||index+1)));
+      card.append(subcategoryEditor(child,depth+1));group.append(card);
+    });
+    if(depth<=5)group.append(button('＋ Add subcategory',()=>{parent.subcategories.push({id:crypto.randomUUID(),name:'',subcategories:[]});dirty();renderTypes();renderPreview();},'Add subcategory under '+(parent.name||'unnamed category'),parent.subcategories.length>=30));
+    return group;
+  }
   function renderTypes() {
     const container=$('regtypes-editor'); container.replaceChildren();
     page.regtypes.forEach((r,index)=>{
@@ -107,7 +119,7 @@
         rateCard.append(rateHeading,rateRow,dates);if(rateIndex>0)rateCard.append(node('p','field-note','Starts automatically when the previous rate ends, with no gap.'));rateList.append(rateCard);
       });
       const addRate=button('＋ Add rate period',()=>{if(r.rates.length&&!r.rates.at(-1).end){say('Set the previous rate period’s end time before adding another.',true);return;}r.rates.push({id:crypto.randomUUID(),name:'',price_text:r.price_text,start:r.rates.at(-1)?.end||'',end:''});dirty();renderTypes();renderPreview();},'Add rate period for '+(r.name||'unnamed RegType'),r.rates.length>=20);addRate.className='secondary';
-      card.append(rateList,addRate);container.append(card);
+      card.append(rateList,addRate,node('p','field-note','Nested subcategories inherit this registration type’s price and eligibility. Attendees choose one option at each level.'),subcategoryEditor(r));container.append(card);
     });
     $('add-regtype').disabled=page.regtypes.length>=30;
   }
@@ -204,7 +216,7 @@
     if(!page.regtypes.some(r=>r.id===previewType))previewType=page.regtypes[0]?.id;
     selector.value=previewType||'';
     updatePricing();
-    const container=$('preview-fields');container.replaceChildren();$('preview-feedback').textContent='';
+    const container=$('preview-fields');container.replaceChildren();window.RegFireSubcategories.render(container,page.regtypes.find(r=>r.id===previewType));$('preview-feedback').textContent='';
     page.fields.filter(f=>f.visible_to===null||f.visible_to.includes(previewType)).forEach(f=>{
       const title=(f.label||'Untitled field')+(f.required?' *':'');const id='preview-'+f.id;
       if(f.type==='address'){

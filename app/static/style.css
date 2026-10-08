@@ -178,3 +178,22 @@ body.welcome-site.welcome-vivid-artwork #welcome-error{color:#fff}
 
 /* Membership is organizer configuration only, without an attendee preview column. */
 .membership-setup{min-width:0;max-width:980px}.member-diagnostics{margin-top:24px;padding:20px;border:1px solid #dedad4;border-radius:10px;background:#fbfaf8}.member-diagnostics>summary{cursor:pointer;font-weight:650}.member-diagnostics input,.member-diagnostics select{max-width:100%}
+
+/* Equal sponsor slots preserve logo proportions and source transparency. */
+#welcome-preview-sponsors{display:flex;align-items:center;justify-content:space-evenly;gap:16px;width:100%}
+#welcome-preview-sponsors:empty{display:none}
+#welcome-preview-sponsors>img,#welcome-preview-sponsors>a{flex:1 1 0;min-width:0;width:0;height:90px;display:block;background:transparent;border:0}
+#welcome-preview-sponsors img{object-fit:contain;object-position:center;height:90px;max-width:100%;background:transparent;border:0}
+#welcome-preview-sponsors>a img{display:block;width:100%}
+#welcome-sponsors{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#welcome-sponsors .welcome-sponsor{min-width:0;border:1px solid #ddd;border-radius:8px;padding:12px;display:grid;gap:10px}
+#welcome-sponsors .welcome-sponsor img{display:block;width:100%;max-width:100%;height:70px;object-fit:contain;background:transparent}
+#welcome-sponsors .welcome-sponsor label{margin:0}
+#welcome-sponsors .welcome-sponsor input{min-width:0;max-width:100%}
+@media(max-width:640px){#welcome-sponsors{grid-template-columns:1fr}#welcome-preview-sponsors{gap:8px}#welcome-preview-sponsors>img,#welcome-preview-sponsors>a,#welcome-preview-sponsors img{height:64px}}
+
+.subcategory-editor{margin-top:12px}.subcategory-card{border-left:3px solid #e9af79;padding:12px;margin:12px 0;background:#fffaf4}.subcategory-editor .subcategory-editor{margin-left:8px}.subcategory-choices{margin:12px 0}
+
+.page-section-shortcuts{position:sticky;top:0;z-index:5;background:#f4f5f7f5;padding:10px 0;backdrop-filter:blur(8px)}#builder-form>section,#demo-editor>section,.sessions-editor>section{scroll-margin-top:100px}
+
+#welcome-show-logo-thumbnail img{width:140px;height:80px;object-fit:contain;display:block;margin-bottom:12px}

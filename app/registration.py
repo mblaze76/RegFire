@@ -39,6 +39,22 @@ def identity(value, seen, kind):
     return value
 
 
+def validate_subcategories(items, seen=None, depth=1):
+    if seen is None: seen=set()
+    if not isinstance(items,list) or len(items)>30: raise ValueError('Use up to 30 subcategories under each category.')
+    if items and depth>5: raise ValueError('Use up to five nested subcategory levels.')
+    result=[]; names=set()
+    for item in items:
+        if not isinstance(item,dict): raise ValueError('Each subcategory must be an object.')
+        key=identity(item.get('id'),seen,'Subcategory')
+        if len(seen)>300: raise ValueError('Use up to 300 nested subcategories per RegType.')
+        name=text(item.get('name'),'Subcategory name',80,True)
+        if name.casefold() in names: raise ValueError('Subcategory names under the same parent must be unique.')
+        names.add(name.casefold())
+        result.append(dict(id=key,name=name,subcategories=validate_subcategories(item.get('subcategories',[]),seen,depth+1)))
+    return result
+
+
 def validate_page(data, zone_name='UTC'):
     if not isinstance(data, dict): raise ValueError('A registration page object is required.')
     result = dict(title=text(data.get('title'), 'Page title', 200, True),
@@ -103,7 +119,7 @@ def validate_page(data, zone_name='UTC'):
         show_on_welcome = regtype.get('show_on_welcome', True)
         if type(show_on_welcome) is not bool: raise ValueError('Show on welcome page must be true or false.')
         rates, use_default = validate_rates(regtype, zone_name)
-        names.add(name.casefold()); result['regtypes'].append(dict(id=type_id, name=name, price_minor=price, rates=rates, use_default=use_default, show_on_welcome=show_on_welcome))
+        names.add(name.casefold()); result['regtypes'].append(dict(id=type_id, name=name, price_minor=price, rates=rates, use_default=use_default, show_on_welcome=show_on_welcome, subcategories=validate_subcategories(regtype.get('subcategories',[]))))
     for field in result['fields']:
         visible = field['visible_to']
         if visible is not None:
