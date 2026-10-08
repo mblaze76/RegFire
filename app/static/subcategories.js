@@ -10,7 +10,7 @@
    while(parent.subcategories?.length){
     const options=parent.subcategories,label=document.createElement('label'),select=document.createElement('select');
     label.append(document.createTextNode('Choose '+(parent.name||'category')+' subcategory *'));
-    select.required=true;select.name='subcategory-'+depth;select.append(new Option('Choose an option',''));
+    select.required=true;if(target.dataset.form)select.setAttribute('form',target.dataset.form);select.name='subcategory-'+depth;select.append(new Option('Choose an option',''));
     for(const child of options)select.append(new Option(child.name||'Unnamed subcategory',child.id));
     const chosen=options.find(child=>child.id===path[depth]);select.value=chosen?.id||'';
     const level=depth;select.onchange=()=>{path.splice(level,path.length-level,...(select.value?[select.value]:[]));paths.set(key,path);draw();};

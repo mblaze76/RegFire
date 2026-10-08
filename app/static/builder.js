@@ -216,7 +216,8 @@
     if(!page.regtypes.some(r=>r.id===previewType))previewType=page.regtypes[0]?.id;
     selector.value=previewType||'';
     updatePricing();
-    const container=$('preview-fields');container.replaceChildren();window.RegFireSubcategories.render(container,page.regtypes.find(r=>r.id===previewType));$('preview-feedback').textContent='';
+    const choices=$('preview-subcategories');choices.replaceChildren();window.RegFireSubcategories.render(choices,page.regtypes.find(r=>r.id===previewType));
+    const container=$('preview-fields');container.replaceChildren();$('preview-feedback').textContent='';
     page.fields.filter(f=>f.visible_to===null||f.visible_to.includes(previewType)).forEach(f=>{
       const title=(f.label||'Untitled field')+(f.required?' *':'');const id='preview-'+f.id;
       if(f.type==='address'){
