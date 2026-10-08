@@ -42,7 +42,9 @@ def validate(data, regtypes):
         result[key]=data[key]
     ids=data.get('regtype_ids',[]);known={r['id'] for r in regtypes}
     if not isinstance(ids,list) or any(not isinstance(x,str) or x not in known for x in ids) or len(set(ids))!=len(ids):raise ValueError('Membership references a missing or duplicate RegType. Update Membership before removing that RegType.')
-    if result['enabled'] and not ids:raise ValueError('Select at least one member RegType.')
+    def has_lookup(items):
+        return any(item.get('use_membership_lookup') is True or has_lookup(item.get('subcategories',[])) for item in items)
+    if result['enabled'] and not ids and not has_lookup(regtypes):raise ValueError('Select at least one member RegType or enable Use membership lookup on a subcategory.')
     result['regtype_ids']=ids
     a=data.get('api',{})
     if not isinstance(a,dict):raise ValueError('Invalid API settings.')

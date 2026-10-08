@@ -85,3 +85,25 @@ Times are local wall-clock values with an IANA timezone. Nonexistent daylight-sa
 ## Sign-in and product administration
 
 See [local sign-in and access administration](docs/ACCESS_ADMIN.md) for private owner setup, user/product grants, session security and shared-workspace limitations. The initial owner is reserved privately; no password is preset. Restart the updated local server before setup. Public client hosting and tenant isolation are not implemented.
+
+### Attendee details, categories, and membership
+
+Website setup contains the shared color selector for **Attendee details header font color**, promo-code configuration, and the existing flow-scoped Membership setup. Setup sections and individual category/field cards expand from their summaries; shortcuts open their section, and invalid fields reveal their containing cards. Automatic header color remains available for legacy drafts.
+
+Registration categories render as responsive radio cards with the effective dated rate returned by the pricing service. Nested choices retain their parent category's rate. The deepest selected explicit **Use membership lookup** checkbox controls the existing attendee-field check. Unchecked skips the provider; checked uses the configured membership source and mapped attendee field when membership is enabled. Existing records initially retain their saved membership policy (mixed checkbox); choosing checked/unchecked replaces that inherited behavior. Missing nested choices must be completed before eligibility is checked.
+
+### LinkedIn attendee profile autofill (provider configuration required)
+
+The **Fill in with LinkedIn** button imports an attendee's own first name, last name, and available email through LinkedIn's OpenID Connect consent flow. It fills only empty matching fields and leaves email confirmation, SMS consent, membership verification, and manual entry intact. LinkedIn's standard permissions do not provide employer, job title, phone, or mailing address. This feature does not sign the person into RegFire or certify membership/identity.
+
+Install `requirements.txt`, obtain approval for LinkedIn's **Sign In with LinkedIn using OpenID Connect** product in an app you control, and supply these server environment variables through your private launch configuration:
+
+- `REGFIRE_LINKEDIN_CLIENT_ID`
+- `REGFIRE_LINKEDIN_CLIENT_SECRET`
+- `REGFIRE_LINKEDIN_REDIRECT_URI`: the exact registered callback, e.g. `http://127.0.0.1:8766/api/linkedin/callback` for this local workspace.
+
+The callback must match the browser's local origin exactly; `localhost` and `127.0.0.1` are different origins. Restart the server after configuration. This repository's existing local-only host/access restrictions remain in force; public attendee deployment is separate work. The import button is unavailable until configuration exists. No provider credentials or approvals are created by the feature.
+
+The server binds one-use, ten-minute authorization state to an HttpOnly browser cookie and validates the ID token signature, issuer, audience, expiration, and nonce before retrieving the matching UserInfo subject. Tokens and profiles remain transient; callback codes are excluded from request logs. Starting import retains existing RegFire preview access requirements. Tests use synthetic provider responses, not a live LinkedIn account. A real consent/permission round trip still needs to be verified after configuration.
+
+Official reference: https://learn.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin-v2

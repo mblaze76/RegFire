@@ -285,7 +285,15 @@ class Store:
             config=validate(candidate,regtypes)
             regtype=data.get('regtype_id')
             if action in ('lookup','check-fields') and regtype not in {r['id'] for r in regtypes}:raise ValueError('Choose an existing RegType.')
-            if action in ('lookup','check-fields') and (not config['enabled'] or regtype not in config['regtype_ids']):return outcome(config,None,ev[0]['timezone'],applies=False)
+            applies=regtype in config['regtype_ids']
+            if action=='check-fields':
+                from registration import selected_membership
+                chosen=next(r for r in regtypes if r['id']==regtype)
+                requested,complete=selected_membership(chosen,data.get('subcategory_path',[]))
+                if not complete:
+                    return dict(status='choose_subcategory',can_continue=False,needs_subcategory=True,pricing='Choose a subcategory first.')
+                if requested is not None:applies=requested
+            if action in ('lookup','check-fields') and (not config['enabled'] or not applies):return outcome(config,None,ev[0]['timezone'],applies=False)
             if action=='check-fields':
                 values=data.get('values',{})
                 if not isinstance(values,dict):raise ValueError('Registration field values must be an object.')

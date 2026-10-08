@@ -22,18 +22,20 @@
     return new Intl.NumberFormat(undefined,{style:'currency',currency:page.currency,currencyDisplay:'code'}).format(value/(digits(page.currency)?100:1));
   }
   function serializePage() {
-    return {promo_codes:page.promo_codes||[],title:page.title,intro:page.intro,currency:page.currency,appearance:{...page.appearance},fields:page.fields.map(f=>({...f,options:['select','radio'].includes(f.type)?f.options:[]})),regtypes:page.regtypes.map(r=>({id:r.id,name:r.name,subcategories:r.subcategories||[],show_on_welcome:r.show_on_welcome!==false,price_minor:parsePrice(r.price_text,page.currency),use_default:r.use_default,rates:r.rates.map(rate=>({id:rate.id,name:rate.name,price_minor:parsePrice(rate.price_text,page.currency),start:rate.start,end:rate.end}))}))};
+    return {promo_codes:page.promo_codes||[],title:page.title,intro:page.intro,currency:page.currency,appearance:{...page.appearance},fields:page.fields.map(f=>({...f,options:['select','radio'].includes(f.type)?f.options:[]})),regtypes:page.regtypes.map(r=>({id:r.id,name:r.name,use_membership_lookup:r.use_membership_lookup??null,subcategories:r.subcategories||[],show_on_welcome:r.show_on_welcome!==false,price_minor:parsePrice(r.price_text,page.currency),use_default:r.use_default,rates:r.rates.map(rate=>({id:rate.id,name:rate.name,price_minor:parsePrice(rate.price_text,page.currency),start:rate.start,end:rate.end}))}))};
   }
   function updatePricing() {
     const ticket=++pricingTicket;
     clearTimeout(pricingTimer);
     $('preview-price').textContent='Checking…';$('preview-rate').textContent='';
     membershipCheck.setPricing(false);
+    window.RegFireSubcategories.rates($('preview-category-options'),null,page?.currency);
     pricingTimer=setTimeout(async ()=>{
       if(!page||ticket!==pricingTicket)return;
       try {
         const result=await api('/api/events/'+event.id+'/pricing-preview',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({page:serializePage(),at:$('preview-at').value})});
         if(ticket!==pricingTicket||!page)return;
+        window.RegFireSubcategories.rates($('preview-category-options'),result.regtypes,page.currency);
         const rate=result.regtypes[previewType];
         $('preview-price').textContent=rate?.price_minor!==null&&rate?money(rate.price_minor):'No active rate';
         $('preview-rate').textContent=rate?rate.name+' · '+(rate.message||'Active for this preview time. Starts inclusive; ends exclusive.'):'Choose a RegType.';
@@ -42,6 +44,7 @@
         membershipCheck.setPricing(!!rate&&rate.status!=='unavailable',$('preview-price').textContent);
       }catch(error){
         if(ticket!==pricingTicket||!page)return;
+        window.RegFireSubcategories.rates($('preview-category-options'),null,page.currency,'Check rate settings');
         $('preview-price').textContent='Check rate settings';$('preview-rate').textContent=error.message;$('preview-rate').className='rate-result error';
       }
     },200);
@@ -78,22 +81,30 @@
   $('add-promo').onclick=()=>{page.promo_codes??=[];if(page.promo_codes.length>=1000)return;page.promo_codes.push({code:'',type:'free',amount:0,enabled:true,allotment:null});dirty();renderPromos();};
   $('import-promos').onchange=async()=>{pendingPromos=[];$('confirm-promo-import').hidden=true;const file=$('import-promos').files[0];if(!file)return;try{if(file.size>200000)throw Error('Use a CSV smaller than 200 KB.');const rows=(await file.text()).replace(/^\uFEFF/,'').trim().split(/\r?\n/).filter(x=>x.trim());const header=rows.shift()?.trim().toLowerCase();if(!['code,type,amount','code,type,amount,allotment'].includes(header))throw Error('CSV header must be code,type,amount or code,type,amount,allotment.');const hasAllotment=header.endsWith(',allotment');const seen=new Set((page.promo_codes||[]).map(p=>p.code.toUpperCase()));for(const [index,line] of rows.entries()){const cells=line.split(',').map(x=>x.trim().replace(/^"|"$/g,''));if(cells.length!==(hasAllotment?4:3))throw Error('Check CSV row '+(index+2)+'.');const [raw,type,value]=cells,code=raw.toUpperCase(),amount=type==='free'?0:Number(value);if(!code||code.length>80||seen.has(code)||!['free','percent','fixed'].includes(type)||!Number.isFinite(amount)||(type!=='free'&&amount<=0)||(type==='percent'&&amount>100)||(type==='fixed'&&(amount>999999||Math.round(amount*100)!==amount*100)))throw Error('Invalid or duplicate code on row '+(index+2)+'.');const limit=hasAllotment?cells[3]:'';if(limit!==''&&(!/^\d+$/.test(limit)||Number(limit)>2147483647))throw Error('Allotment must be a whole number of 0 or more on row '+(index+2)+'.');const allotment=limit===''?null:Number(limit);seen.add(code);pendingPromos.push({code,type,amount,enabled:true,allotment});}if(!pendingPromos.length||seen.size>1000)throw Error('Import must contain codes, with no more than 1000 total.');$('promo-import-result').textContent=pendingPromos.length+' valid codes ready: '+pendingPromos.slice(0,10).map(p=>p.code).join(', ')+(pendingPromos.length>10?'…':'');$('confirm-promo-import').hidden=false;}catch(e){pendingPromos=[];$('promo-import-result').textContent=e.message;}};
   $('confirm-promo-import').onclick=()=>{const existing=new Set((page.promo_codes||[]).map(p=>p.code.toUpperCase()));if(pendingPromos.some(p=>existing.has(p.code))||(page.promo_codes||[]).length+pendingPromos.length>1000){$('promo-import-result').textContent='Codes changed. Select the CSV again to check duplicates.';return;}page.promo_codes=[...(page.promo_codes||[]),...pendingPromos];pendingPromos=[];dirty();renderPromos();$('confirm-promo-import').hidden=true;$('promo-import-result').textContent='Codes added. Save page draft to keep them.';$('import-promos').value='';};
+  function membershipToggle(category){
+    const group=node('div'),control=node('input');control.type='checkbox';control.checked=category.use_membership_lookup===true;control.indeterminate=category.use_membership_lookup==null;
+    const caption=node('label','check-label');caption.append(control,document.createTextNode('Use membership lookup'));
+    const note=node('p','field-note',category.use_membership_lookup==null?'Existing membership settings are retained until you choose checked or unchecked.':'Uses the membership field configured in Attendee details. The deepest selected subcategory controls lookup.');
+    control.onchange=()=>{category.use_membership_lookup=control.checked;control.indeterminate=false;note.textContent='Uses the membership field configured in Attendee details. The deepest selected subcategory controls lookup.';dirty();renderPreview();};
+    const reset=button('Use existing membership settings',()=>{category.use_membership_lookup=null;control.checked=false;control.indeterminate=true;note.textContent='Existing membership settings are retained until you choose checked or unchecked.';dirty();renderPreview();});
+    group.append(caption,note,reset);return group;
+  }
   function subcategoryEditor(parent,depth=1) {
     const group=node('div','subcategory-editor');parent.subcategories??=[];
     parent.subcategories.forEach((child,index)=>{
-      const card=node('div','subcategory-card'),name=input(child.name,80);name.required=true;
+      const card=node('div','subcategory-card'),name=input(child.name,80);card.dataset.collapseKey='subcategory-'+child.id;name.required=true;
       name.oninput=()=>{child.name=name.value;dirty();renderPreview();};
       card.append(label('Subcategory name (level '+depth+')',name),button('Remove subcategory',async()=>{if(!await confirmAction('Remove this subcategory and its nested choices?'))return;parent.subcategories.splice(index,1);dirty();renderTypes();renderPreview();},'Remove subcategory '+(child.name||index+1)));
-      card.append(subcategoryEditor(child,depth+1));group.append(card);
+      card.append(membershipToggle(child),subcategoryEditor(child,depth+1));group.append(card);
     });
-    if(depth<=5)group.append(button('＋ Add subcategory',()=>{parent.subcategories.push({id:crypto.randomUUID(),name:'',subcategories:[]});dirty();renderTypes();renderPreview();},'Add subcategory under '+(parent.name||'unnamed category'),parent.subcategories.length>=30));
+    if(depth<=5)group.append(button('＋ Add subcategory',()=>{parent.subcategories.push({id:crypto.randomUUID(),name:'',use_membership_lookup:false,subcategories:[]});dirty();renderTypes();renderPreview();},'Add subcategory under '+(parent.name||'unnamed category'),parent.subcategories.length>=30));
     return group;
   }
   function renderTypes() {
     const container=$('regtypes-editor'); container.replaceChildren();
     page.regtypes.forEach((r,index)=>{
       for(let i=1;i<r.rates.length;i++){if(r.rates[i].start!==r.rates[i-1].end){r.rates[i].start=r.rates[i-1].end;dirty();}}
-      const card=node('div','regtype-card'); const heading=node('div','item-heading'); heading.append(node('strong','', 'Subcategory '+(index+1)),controls(page.regtypes,index,'RegType',()=>{renderTypes();renderFields();},async ()=>{
+      const card=node('div','regtype-card');card.dataset.collapseKey='regtype-'+r.id; const heading=node('div','item-heading'); heading.append(node('strong','', 'Subcategory '+(index+1)),controls(page.regtypes,index,'RegType',()=>{renderTypes();renderFields();},async ()=>{
         if(page.fields.some(f=>f.visible_to?.includes(r.id))) {say('This RegType controls field visibility. Set those fields to all types or other RegTypes before removing it.',true);$('page-feedback').scrollIntoView({block:'nearest'});return;}
         if(!await confirmAction('Remove '+(r.name||'this RegType')+' from this page draft?'))return;
         page.regtypes.splice(index,1);dirty();renderTypes();renderFields();renderPreview();
@@ -102,7 +113,7 @@
       name.oninput=()=>{r.name=name.value;dirty();renderFields();renderPreview();};
       const price=input(r.price_text,14); price.inputMode='decimal'; price.required=true;
       price.oninput=()=>{r.price_text=price.value;dirty();renderPreview();};
-      row.append(label('Attendee subcategory name',name),label('Default price ('+page.currency+')',price));card.append(heading,row);
+      row.append(label('Attendee subcategory name',name),label('Default price ('+page.currency+')',price));card.append(heading,row,membershipToggle(r));
       const fallback=node('input');fallback.type='checkbox';fallback.checked=r.use_default;
       fallback.onchange=()=>{r.use_default=fallback.checked;dirty();renderPreview();};
       const fallbackLabel=node('label','check-label');fallbackLabel.append(fallback,document.createTextNode('Use default rate outside dated periods'));card.append(fallbackLabel);
@@ -119,7 +130,7 @@
         rateCard.append(rateHeading,rateRow,dates);if(rateIndex>0)rateCard.append(node('p','field-note','Starts automatically when the previous rate ends, with no gap.'));rateList.append(rateCard);
       });
       const addRate=button('＋ Add rate period',()=>{if(r.rates.length&&!r.rates.at(-1).end){say('Set the previous rate period’s end time before adding another.',true);return;}r.rates.push({id:crypto.randomUUID(),name:'',price_text:r.price_text,start:r.rates.at(-1)?.end||'',end:''});dirty();renderTypes();renderPreview();},'Add rate period for '+(r.name||'unnamed RegType'),r.rates.length>=20);addRate.className='secondary';
-      card.append(rateList,addRate,node('p','field-note','Nested subcategories inherit this registration type’s price and eligibility. Attendees choose one option at each level.'),subcategoryEditor(r));container.append(card);
+      card.append(rateList,addRate,node('p','field-note','Nested subcategories inherit this registration type’s price. Their membership checkbox controls lookup. Attendees choose one option at each level.'),subcategoryEditor(r));container.append(card);
     });
     $('add-regtype').disabled=page.regtypes.length>=30;
   }
@@ -165,7 +176,7 @@
   function renderFields() {
     const container=$('fields-editor');container.replaceChildren();
     page.fields.forEach((f,index)=>{
-      const card=node('div','field-card');card.dataset.fieldId=f.id;
+      const card=node('div','field-card');card.dataset.fieldId=f.id;card.dataset.collapseKey='field-'+f.id;
       const heading=node('div','item-heading');heading.append(dragHandle(f,index),node('strong','', 'Field '+(index+1)),controls(page.fields,index,'field',renderFields,async ()=>{
         if(!await confirmAction('Remove '+(f.label||'this field')+' from this page draft?'))return;
         page.fields.splice(index,1);dirty();renderFields();renderPreview();
@@ -215,8 +226,9 @@
     for(const r of page.regtypes){const option=node('option','',r.name||'Unnamed RegType');option.value=r.id;selector.append(option);}
     if(!page.regtypes.some(r=>r.id===previewType))previewType=page.regtypes[0]?.id;
     selector.value=previewType||'';
+    window.RegFireSubcategories.categories($('preview-category-options'),page.regtypes,previewType,id=>{previewType=id;renderPreview();});
     updatePricing();
-    const choices=$('preview-subcategories');choices.replaceChildren();window.RegFireSubcategories.render(choices,page.regtypes.find(r=>r.id===previewType));
+    const choices=$('preview-subcategories');choices.replaceChildren();window.RegFireSubcategories.render(choices,page.regtypes.find(r=>r.id===previewType),()=>membershipCheck.refresh());
     const container=$('preview-fields');container.replaceChildren();$('preview-feedback').textContent='';
     page.fields.filter(f=>f.visible_to===null||f.visible_to.includes(previewType)).forEach(f=>{
       const title=(f.label||'Untitled field')+(f.required?' *':'');const id='preview-'+f.id;
@@ -232,7 +244,7 @@
         f.options.forEach((choice,i)=>{const radio=previewInput('radio',f.required,id+'-'+i);radio.name=id;radio.value=choice;const l=node('label','check-label');l.append(radio,document.createTextNode(choice));group.append(l);});container.append(group);
       } else if(f.type==='checkbox'){
         const checkbox=previewInput('checkbox',f.required,id);const l=node('label','check-label');l.append(checkbox,document.createTextNode(title));container.append(l);
-      } else {const input=previewInput(f.type,f.required,id);if(f.membership_lookup)input.dataset.membershipField=f.id;container.append(label(title,input));if(f.type==='email')window.EmailValidation.attach(input,container);if(f.type==='tel'&&(f.sms_consent??(f.id==='cell-phone'||/cell|mobile/i.test(f.label))))window.PhoneConsent.attach(input,container,event.name);}
+      } else {const input=previewInput(f.type,f.required,id);window.LinkedInImport.field(input,f);if(f.membership_lookup)input.dataset.membershipField=f.id;container.append(label(title,input));if(f.type==='email')window.EmailValidation.attach(input,container);if(f.type==='tel'&&(f.sms_consent??(f.id==='cell-phone'||/cell|mobile/i.test(f.label))))window.PhoneConsent.attach(input,container,event.name);}
     });
     membershipCheck.refresh();
   }
@@ -250,6 +262,10 @@
     if(page){introFonts();const font=page.appearance.intro_font||'default';window.WelcomeDisplay.loadFont(font);$('preview-intro').style.fontFamily=(window.WelcomeDisplay.fonts[font]||window.WelcomeDisplay.fonts.default)[1];}
 
     if(!page)return;for(const [key,id,target,fallback] of [["title_color","page-title-color","preview-title","#24242a"],["intro_color","page-intro-color","preview-intro","#555c68"]]){const color=page.appearance[key]||fallback;$(id).value=color;$(target).style.color=color;}
+    const detailsColor=page.appearance.details_color;
+    $('page-details-color').value=detailsColor||'#22242b';
+    document.querySelector('.preview-surface').style.setProperty('--attendee-details-color',detailsColor||'');
+    window.ColorControls?.sync();
     window.RegistrationFooter.connect($("preview-footer"),event.id);const footer=page.appearance.footer||{};window.RegistrationFooter.render($("preview-footer"),footer);
     if(!page)return;
     for(const kind of ['logo','background']){
@@ -281,7 +297,8 @@
   }
   for(const key of ['mode','color'])$('background-'+key).addEventListener(key==='mode'?'change':'input',()=>{if(!page)return;page.appearance['background_'+key]=$('background-'+key).value;if(key==='color')page.appearance.background_mode='color';dirty();updateAppearance();});
   $('background-fade').oninput=()=>{if(page){page.appearance.background_fade=Number($('background-fade').value);dirty();updateAppearance();}};
-  for(const [id,key] of [['page-title-color','title_color'],['page-intro-color','intro_color']])$(id).oninput=()=>{if(!page)return;page.appearance[key]=$(id).value;dirty();updateAppearance();};
+  $('page-details-color-reset').onclick=()=>{if(!page)return;page.appearance.details_color=null;dirty();updateAppearance();};
+  for(const [id,key] of [['page-title-color','title_color'],['page-intro-color','intro_color'],['page-details-color','details_color']])$(id).oninput=()=>{if(!page)return;page.appearance[key]=$(id).value;dirty();updateAppearance();};
   $('page-title').oninput=()=>{page.title=$('page-title').value;dirty();renderPreview();};
   $('page-intro').oninput=()=>{page.intro=$('page-intro').value;dirty();renderPreview();};
   $('page-currency').onchange=async ()=>{
@@ -289,7 +306,7 @@
     if(!await confirmAction('Change the currency to '+next+' and keep the entered numeric amounts? No exchange-rate conversion will be applied.')){$('page-currency').value=page.currency;return;}
     page.currency=next;dirty();renderTypes();renderPreview();
   };
-  $('add-regtype').onclick=()=>{if(page.regtypes.length>=30)return;page.regtypes.push({id:crypto.randomUUID(),name:'',price_text:digits(page.currency)?'0.00':'0',use_default:true,rates:[]});dirty();renderTypes();renderFields();renderPreview();$('regtypes-editor').lastElementChild.querySelector('input').focus();};
+  $('add-regtype').onclick=()=>{if(page.regtypes.length>=30)return;page.regtypes.push({id:crypto.randomUUID(),name:'',price_text:digits(page.currency)?'0.00':'0',use_membership_lookup:false,use_default:true,rates:[]});dirty();renderTypes();renderFields();renderPreview();$('regtypes-editor').lastElementChild.querySelector('input').focus();};
   $('add-field').onclick=()=>{if(page.fields.length>=50)return;page.fields.push({id:crypto.randomUUID(),label:'',type:'text',required:false,options:[],visible_to:null});dirty();renderFields();renderPreview();$('fields-editor').lastElementChild.querySelector('input').focus();};
   $('preview-regtype').onchange=()=>{previewType=$('preview-regtype').value;renderPreview();};
   $('preview-at').onchange=()=>{if(page)updatePricing();};
@@ -297,7 +314,8 @@
   function nextMinute(){setTimeout(()=>{if(page&&!document.hidden&&!$('preview-at').value)updatePricing();nextMinute();},60000-(Date.now()%60000)+20);}
   nextMinute();
   document.addEventListener('visibilitychange',()=>{if(page&&!document.hidden&&!$('preview-at').value)updatePricing();});
-  const membershipCheck=window.BackgroundMembership.attach({form:$('preview-form'),result:$('preview-feedback'),price:$('preview-price'),getContext:()=>page?{event_id:event.id,page:serializePage(),regtype_id:previewType}:null});
+  window.LinkedInImport.attach({button:$('preview-linkedin-button'),status:$('preview-linkedin-status'),target:$('preview-fields'),getFlow:()=>event?.id});
+  const membershipCheck=window.BackgroundMembership.attach({form:$('preview-form'),result:$('preview-feedback'),price:$('preview-price'),getContext:()=>page?{event_id:event.id,page:serializePage(),regtype_id:previewType,subcategory_path:window.RegFireSubcategories.path('preview-subcategories',previewType)}:null});
   $('preview-form').onsubmit=async e=>{e.preventDefault();if(await membershipCheck.check())$('preview-feedback').textContent='Preview check complete. No registration or payment was submitted.';};
   $('builder-retry').onclick=()=>load(event);
   $('builder-form').onsubmit=async e=>{
@@ -314,6 +332,7 @@
     }catch(error){say(error.message,true);}
     finally {busy=false;controls.forEach(c=>c.disabled=false);renderTypes();renderFields();renderPreview();}
   };
+  setInterval(()=>{if(page&&!$('preview-at').value)updatePricing();},60000);
   window.RegistrationBuilder={load,snapshot(){if(!page)return null;let model,error=null;try{model=serializePage();}catch(e){error=e.message;model={...structuredClone(page),regtypes:page.regtypes.map(r=>({...r,price_minor:null}))};}return {event_id:event.id,page:model,at:$('preview-at').value,regtype:previewType,error};},clear(){membershipCheck.clear();generation++;pricingTicket++;clearTimeout(pricingTimer);page=null;changed=false;},get dirty(){return changed;},get busy(){return busy;}};
   window.DraftAutosave.register({ready:()=>!!(page&&changed&&!busy),snapshot:()=>(serializePage()),lock:value=>busy=value,clean:()=>{changed=false;},status:(state,message,error)=>{$('page-save-state').textContent=state;say(message,error);},save:data=>api('/api/events/'+event.id+'/registration-page',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})});
 })();

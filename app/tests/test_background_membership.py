@@ -55,6 +55,40 @@ class BackgroundMembershipTests(unittest.TestCase):
   self.fixture();self.config['source']='csv';self.request(self.base+'/membership',self.config,'PUT');body={'csv':'member_id,email,active,expires\nM1,member@example.test,true,2099-01-01\n','mapping':{k:k for k in ('member_id','email','active','expires')}}
   preview=self.request(self.base+'/membership/import-preview',body,'POST');self.request(self.base+'/membership/import',{**body,'digest':preview['digest'],'revision':preview['revision']},'POST')
   self.assertEqual(self.check({'email':'MEMBER@example.test'})['status'],'verified');self.assertEqual(self.request(self.base+'/membership')['import_info']['count'],1)
+ def test_subcategory_switching_and_saved_flags(self):
+  self.fixture()
+  self.page['regtypes'][0]['subcategories']=[{'id':'member','name':'Members','use_membership_lookup':True},{'id':'guest','name':'Guests','use_membership_lookup':False}]
+  saved=self.request(self.base+'/registration-page',self.page,'PUT')
+  reopened=self.request(self.base+'/registration-page')
+  self.assertTrue(reopened['regtypes'][0]['subcategories'][0]['use_membership_lookup'])
+  self.assertFalse(reopened['regtypes'][0]['subcategories'][1]['use_membership_lookup'])
+  self.assertTrue(self.check({},subcategory_path=[])['needs_subcategory'])
+  self.assertEqual(self.check({'email':'active@example.test'},subcategory_path=['member'])['status'],'verified')
+  self.assertFalse(self.check({'email':'inactive@example.test'},subcategory_path=['member'])['can_continue'])
+  from unittest.mock import patch
+  with patch('membership.api_lookup',side_effect=AssertionError('Unchecked choice must not call provider')):
+   self.assertEqual(self.check({'email':'inactive@example.test'},subcategory_path=['guest'])['status'],'not_required')
+  self.assertEqual(self.check({'email':'active@example.test'},subcategory_path=['member'])['status'],'verified')
+  with self.assertRaises(HTTPError):self.check({},subcategory_path=['unknown'])
+ def test_explicit_root_flag_and_deepest_nested_choice(self):
+  self.fixture()
+  self.page['regtypes'][0].update(use_membership_lookup=True,subcategories=[{'id':'day','name':'Day','use_membership_lookup':False,'subcategories':[{'id':'member','name':'Member','use_membership_lookup':True},{'id':'guest','name':'Guest','use_membership_lookup':False}]}])
+  self.request(self.base+'/registration-page',self.page,'PUT')
+  self.config['regtype_ids']=[];self.request(self.base+'/membership',self.config,'PUT')
+  self.assertEqual(self.check({'email':'active@example.test'},subcategory_path=['day','member'])['status'],'verified')
+  self.assertEqual(self.check({},subcategory_path=['day','guest'])['status'],'not_required')
+  self.assertTrue(self.check({},subcategory_path=['day'])['needs_subcategory'])
+  self.page['regtypes'][0]['subcategories']=[]
+  self.assertEqual(self.check({'email':'active@example.test'},registration_page=self.page)['status'],'verified')
+ def test_header_color_persistence_and_validation(self):
+  self.fixture();self.page['appearance']['details_color']='#FFBD18'
+  self.request(self.base+'/registration-page',self.page,'PUT')
+  self.assertEqual(self.request(self.base+'/registration-page')['appearance']['details_color'],'#ffbd18')
+  self.page['appearance']['details_color']=None
+  self.request(self.base+'/registration-page',self.page,'PUT')
+  self.assertIsNone(self.request(self.base+'/registration-page')['appearance']['details_color'])
+  self.page['appearance']['details_color']='red'
+  with self.assertRaises(HTTPError):self.request(self.base+'/registration-page',self.page,'PUT')
  def test_unassigned_client_cannot_read_or_update_connection(self):
   self.fixture();owner=self.access.session(self.raw_session);uid=self.access.save_user(owner,{'email':'client@example.test','products':['event-builder'],'event_ids':[]});code=self.access.enrollment(owner,uid);self.access.activate('client@example.test',code,self.password)
   token=self.access.login('client@example.test',self.password);self.raw_session=token;self.csrf=self.access.session(token)['csrf']

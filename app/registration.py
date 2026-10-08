@@ -39,6 +39,27 @@ def identity(value, seen, kind):
     return value
 
 
+def membership_flag(data):
+    value=data.get('use_membership_lookup')
+    if value is not None and type(value) is not bool:
+        raise ValueError('Use membership lookup must be a checkbox value.')
+    return value
+
+
+def selected_membership(regtype,path):
+    """Deepest explicit choice wins; legacy nodes retain existing policy."""
+    if not isinstance(path,list) or len(path)>5 or any(not isinstance(key,str) for key in path):
+        raise ValueError('Choose a valid subcategory path.')
+    current=regtype;required=membership_flag(current)
+    for key in path:
+        child=next((item for item in current.get('subcategories',[]) if item['id']==key),None)
+        if child is None:raise ValueError('Choose an existing subcategory.')
+        current=child
+        flag=membership_flag(current)
+        if flag is not None:required=flag
+    return required,not bool(current.get('subcategories'))
+
+
 def validate_subcategories(items, seen=None, depth=1):
     if seen is None: seen=set()
     if not isinstance(items,list) or len(items)>30: raise ValueError('Use up to 30 subcategories under each category.')
@@ -51,7 +72,7 @@ def validate_subcategories(items, seen=None, depth=1):
         name=text(item.get('name'),'Subcategory name',80,True)
         if name.casefold() in names: raise ValueError('Subcategory names under the same parent must be unique.')
         names.add(name.casefold())
-        result.append(dict(id=key,name=name,subcategories=validate_subcategories(item.get('subcategories',[]),seen,depth+1)))
+        result.append(dict(id=key,name=name,use_membership_lookup=membership_flag(item),subcategories=validate_subcategories(item.get('subcategories',[]),seen,depth+1)))
     return result
 
 
@@ -119,7 +140,7 @@ def validate_page(data, zone_name='UTC'):
         show_on_welcome = regtype.get('show_on_welcome', True)
         if type(show_on_welcome) is not bool: raise ValueError('Show on welcome page must be true or false.')
         rates, use_default = validate_rates(regtype, zone_name)
-        names.add(name.casefold()); result['regtypes'].append(dict(id=type_id, name=name, price_minor=price, rates=rates, use_default=use_default, show_on_welcome=show_on_welcome, subcategories=validate_subcategories(regtype.get('subcategories',[]))))
+        names.add(name.casefold()); result['regtypes'].append(dict(id=type_id, name=name, price_minor=price, rates=rates, use_default=use_default, show_on_welcome=show_on_welcome, use_membership_lookup=membership_flag(regtype), subcategories=validate_subcategories(regtype.get('subcategories',[]))))
     for field in result['fields']:
         visible = field['visible_to']
         if visible is not None:
@@ -150,6 +171,11 @@ def validate_page(data, zone_name='UTC'):
         value=appearance.get(key,default)
         if not isinstance(value,str) or not re.fullmatch(r'#[0-9a-fA-F]{6}',value): raise ValueError('Choose a valid title or introduction color.')
         normalized[key]=value
+
+    details_color=appearance.get('details_color')
+    if details_color is not None and (not isinstance(details_color,str) or not re.fullmatch(r'#[0-9a-fA-F]{6}',details_color)):
+        raise ValueError('Choose a valid attendee details header color.')
+    normalized['details_color']=details_color.lower() if details_color else None
 
     from welcome import FONT_IDS
     font=appearance.get('intro_font','default')

@@ -1,6 +1,7 @@
 (() => {
  const $=id=>document.getElementById(id), names={member_id:'Member ID column',email:'Email column',active:'Active status column',expires:'Expiration column'};
- $('event-view').insertBefore($('membership-view'),$('event-done').parentElement);
+ const editorColumn=document.createElement('div');editorColumn.className='registration-editor-column';$('builder-form').before(editorColumn);editorColumn.append($('builder-form'));
+ const membershipSection=document.createElement('section');membershipSection.id='website-membership-settings';const membershipHeading=document.createElement('h3');membershipHeading.textContent='Membership setup';membershipSection.append(membershipHeading,$('membership-view'));editorColumn.append(membershipSection);
  $('member-flow-select').onchange=async()=>{if(busy){$('member-flow-select').value=event?.id||'';return;}if(changed&&!await confirmAction('Discard unsaved membership settings and open the selected flow?')){$('member-flow-select').value=event.id;return;}const flow=window.RegistrationFlows.list().find(f=>f.id===$('member-flow-select').value);if(flow)load({...event,id:flow.id,name:flow.name});};
  let event=null,config=null,changed=false,busy=false,token=0,csv='',importPreview=null,info=null;
  const node=(tag,text)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;return n;};
@@ -9,7 +10,7 @@
  function read(){const c=structuredClone(config);c.enabled=$('member-enabled').checked;c.source=$('member-source').value;c.policy=$('member-policy').value;c.regtype_ids=[...$('member-regtypes').querySelectorAll('input:checked')].map(n=>n.value);delete c.api;return c;}
  function source(){const isAPI=$('member-source').value==='api';$('member-integration-note').hidden=!isAPI;$('member-csv').hidden=isAPI;}
  function count(){ $('member-import-info').textContent=info.count+' members in this event’s saved list'+(info.updated?' · Imported '+new Date(info.updated).toLocaleString():''); }
- async function load(ev){$('member-flow-select').replaceChildren(...window.RegistrationFlows.list().map(f=>new Option(f.name,f.id)));$('member-flow-select').value=ev.id;const ticket=++token;event=ev;$('member-client-settings').href='/client-settings?event='+encodeURIComponent(new URLSearchParams(location.hash.slice(1)).get('event')||ev.id)+'&flow='+encodeURIComponent(ev.id);changed=false;csv='';importPreview=null;$('member-content').hidden=true;$('member-event').textContent=ev.name;say('Loading membership settings…');
+ async function load(ev){$('member-flow-select').replaceChildren(...window.RegistrationFlows.list().map(f=>new Option(f.name,f.id)));$('member-flow-select').value=ev.id;const ticket=++token;config=null;event=ev;$('member-client-settings').href='/client-settings?event='+encodeURIComponent(new URLSearchParams(location.hash.slice(1)).get('event')||ev.id)+'&flow='+encodeURIComponent(ev.id);changed=false;csv='';importPreview=null;$('member-content').hidden=true;$('member-event').textContent=ev.name;say('Loading membership settings…');
   try{const [data,reg]=await Promise.all([api('/api/events/'+ev.id+'/membership'),api('/api/events/'+ev.id+'/registration-page')]);if(ticket!==token)return;config=data.config;info=data.import_info;
    $('member-enabled').checked=config.enabled;$('member-source').value=config.source;$('member-policy').value=config.policy;
    $('member-regtypes').replaceChildren();$('member-test-regtype').replaceChildren();for(const r of reg.regtypes){const l=node('label'),i=node('input');i.type='checkbox';i.value=r.id;i.checked=config.regtype_ids.includes(r.id);l.append(i,document.createTextNode(r.name));$('member-regtypes').append(l);const o=node('option',r.name);o.value=r.id;$('member-test-regtype').append(o);}
@@ -29,7 +30,7 @@
  $('member-replace').onclick=async()=>{if(!importPreview)return;if(!await confirmAction('Replace all '+info.count+' saved members for this event with '+importPreview.count+' validated members? Keep your source CSV for recovery.'))return;const data={...importData(),digest:importPreview.digest,revision:importPreview.revision};run(async()=>{info=await action('import',data);importPreview=null;count();$('member-import-preview').replaceChildren(node('p','Member list saved.'));say('This event’s member list was replaced successfully.');});};
  function lookup(){const data={config:read(),regtype_id:$('member-test-regtype').value,member_id:$('member-id').value,email:$('member-email').value};run(async()=>{const result=await action('lookup',data),box=$('member-result');box.replaceChildren();box.append(node('h4',result.status==='pending'?'Pending manual review':result.status.replaceAll('_',' ').replace(/^./,c=>c.toUpperCase())),node('p',result.reason),node('p',result.pricing),node('p',result.can_continue?'Continuation allowed'+(result.status==='pending'?' — provisional only.':'.'):'Continuation blocked.'));if(result.fixture)box.append(node('p','Synthetic local fixture — no external provider was contacted.'));say('Diagnostic complete. No lookup answers were saved.');});}
  $('member-lookup').onsubmit=e=>{e.preventDefault();lookup();};for(const id of ['member-id','member-email','member-test-regtype'])$(id).oninput=()=>$('member-result').replaceChildren();
- window.MembershipBuilder={load,save,clear(){token++;event=null;config=null;changed=false;csv='';importPreview=null;$('member-id').value='';$('member-email').value='';},get dirty(){return changed;},get busy(){return busy;}};
+ window.MembershipBuilder={load,save,get eventID(){return config?event?.id:null;},clear(){token++;event=null;config=null;changed=false;csv='';importPreview=null;$('member-id').value='';$('member-email').value='';},get dirty(){return changed;},get busy(){return busy;}};
   window.DraftAutosave.register({ready:()=>!!(config&&changed&&!busy),snapshot:()=>(read()),lock:value=>busy=value,clean:()=>{changed=false;},status:(state,message,error)=>{$('member-save-state').textContent=state;say(message,error);},save:data=>api('/api/events/'+event.id+'/membership',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})});
 })();
 
@@ -38,8 +39,7 @@
  const root=document.getElementById('event-view'),form=document.getElementById('event-form');
  const sections=[
   ['welcome-view','Welcome & branding','Page copy, background, show and sponsor logos, and Register buttons.'],
-  ['event-footer-settings','Shared footer','Support details, links, social accounts, and footer appearance.'],
-  ['membership-view','Membership setup','Set eligibility and choose a saved membership source for each registration flow.']
+  ['event-footer-settings','Shared footer','Support details, links, social accounts, and footer appearance.']
  ];
  const nav=document.createElement('nav');nav.className='setup-navigation';nav.setAttribute('aria-label','Event setup sections');
  const main=document.createElement('button');main.type='button';main.textContent='Event essentials';main.onclick=()=>form.scrollIntoView({behavior:'smooth',block:'start'});nav.append(main);form.before(nav);
