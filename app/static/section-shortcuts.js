@@ -16,7 +16,7 @@
  builder?.addEventListener('invalid',event=>{const section=event.target.closest('#builder-form > section');if(section?.hidden){const index=[...section.parentElement.children].filter(e=>e.tagName==='SECTION').indexOf(section);window.showView?.(index<3||section.id==='promo-settings'?'setup':'registration',true);}for(let parent=event.target.parentElement;parent&&parent!==builder;parent=parent.parentElement)if(parent.tagName==='DETAILS')parent.open=true;},true);
  // A newly added item is focused by the editor; keep its controls discoverable.
  builder?.addEventListener('focusin',event=>{if(event.target.closest('summary'))return;for(let parent=event.target.parentElement;parent&&parent!==builder;parent=parent.parentElement)if(parent.tagName==='DETAILS')parent.open=true;});
- for(const [id,selector] of [['builder-view','#builder-form > section, #website-membership-settings'],['demographics-view','#demo-editor > section'],['sessions-view','.sessions-editor > section']]){
+ for(const [id,selector] of [['builder-view','#builder-form > section, #website-membership-settings'],['demographics-view','#demo-editor > section'],['sessions-view','.sessions-editor > section'],['extras-view','.extras-editor > section']]){
   const root=document.getElementById(id);if(!root)continue;
   const nav=document.createElement('nav');nav.className='setup-navigation page-section-shortcuts';nav.setAttribute('aria-label','Page section shortcuts');
   root.querySelector('.page-heading,.builder-heading')?.after(nav);

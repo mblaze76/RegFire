@@ -10,7 +10,7 @@ from registration import text, local_instant, CURRENCIES
 from psycopg import sql
 from psycopg.types.json import Jsonb
 
-FIELDS = ('title', 'date', 'start_time', 'end_time', 'location', 'track', 'speaker', 'description', 'price', 'credits', 'status', 'cancellation_note')
+FIELDS = ('title', 'date', 'start_time', 'end_time', 'location', 'track', 'speaker', 'description', 'price', 'credits', 'status', 'cancellation_note', 'capacity')
 REQUIRED = FIELDS[:4]
 MAX_SESSIONS = 500
 
@@ -37,7 +37,9 @@ def validate(data, event):
             try:photo=str(uuid.UUID(photo))
             except (ValueError,TypeError,AttributeError):raise ValueError('Invalid speaker photo.')
         profile['photo_asset_id']=photo;profiles.append(profile)
-    result = dict(currency=currency, sessions=[],speakers=profiles)
+    show_canceled=data.get('show_canceled',True)
+    if type(show_canceled) is not bool: raise ValueError('Show canceled sessions must be on or off.')
+    result = dict(currency=currency, sessions=[],speakers=profiles,show_canceled=show_canceled)
     seen = set()
     for row in rows:
         if not isinstance(row, dict): raise ValueError('Each session must be an object.')
@@ -64,6 +66,10 @@ def validate(data, event):
         price = row.get('price_minor',0)
         if type(price) is not int or not 0 <= price <= 99999999: raise ValueError('Enter a valid non-negative session price.')
         item['price_minor'] = price
+        capacity=row.get('capacity')
+        if capacity is not None and (type(capacity) is not int or not 0 <= capacity <= 1000000):
+            raise ValueError('Capacity must be a whole number from 0 to 1,000,000, or blank for unlimited.')
+        item['capacity']=capacity
         credits=row.get('credits')
         if credits is not None:
             if type(credits) not in (int,float) or not 0 <= credits <= 10000 or Decimal(str(credits))*100 != (Decimal(str(credits))*100).to_integral_value():
@@ -122,7 +128,7 @@ def import_preview(data,event,currency):
             item={k:val(k) for k in ('title','location','track','speaker','description')}
             # Stable IDs tie confirmation to the exact content + mapping; re-import duplicates are rejected.
             id_mapping={k:v for k,v in mapping.items() if k in FIELDS[:9] or v}
-            item.update(id=str(uuid.uuid5(uuid.NAMESPACE_URL,json.dumps([event['id'],number,row,id_mapping],sort_keys=True))),start=val('date')+'T'+val('start_time'),end=val('date')+'T'+val('end_time'),price_minor=int(price*scale),credits=float(val('credits')) if val('credits') else None,status=(val('status') or 'active').lower(),cancellation_note=val('cancellation_note'))
+            item.update(id=str(uuid.uuid5(uuid.NAMESPACE_URL,json.dumps([event['id'],number,row,id_mapping],sort_keys=True))),start=val('date')+'T'+val('start_time'),end=val('date')+'T'+val('end_time'),price_minor=int(price*scale),credits=float(val('credits')) if val('credits') else None,status=(val('status') or 'active').lower(),cancellation_note=val('cancellation_note'),capacity=int(val('capacity')) if val('capacity') else None)
             normalized.append(validate(dict(currency=currency,sessions=[item]),event)['sessions'][0])
         except (ValueError,InvalidOperation,OverflowError) as exc: errors.append(dict(row=number,message=str(exc)))
     digest=hashlib.sha256(json.dumps([currency,normalized,errors],sort_keys=True).encode()).hexdigest()
@@ -158,7 +164,7 @@ def operation(store,event_id,action='get',data=None):
             preview=import_preview(data,event,page['currency'])
             if preview.get('errors') or not preview.get('sessions') or data.get('digest')!=preview.get('digest'):
                 raise ValueError('Preview this exact file and mapping and fix all errors before importing.')
-            page=validate(dict(currency=page['currency'],sessions=page['sessions']+preview['sessions'],speakers=page['speakers']),event)
+            page=validate(dict(currency=page['currency'],sessions=page['sessions']+preview['sessions'],speakers=page['speakers'],show_canceled=page['show_canceled']),event)
         else: raise ValueError('Unknown sessions action.')
         for profile in page['speakers']:
             if profile['photo_asset_id'] and not conn.execute(sql.SQL('SELECT 1 FROM {} WHERE id=%s AND event_id=%s').format(sql.Identifier(store.schema,'registration_assets')),(profile['photo_asset_id'],event_id)).fetchone():

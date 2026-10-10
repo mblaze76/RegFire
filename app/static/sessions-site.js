@@ -2,6 +2,7 @@
  const route=new URLSearchParams(location.hash.slice(1)),event=route.get('event'),editor=route.get('editor'),valid=x=>/^[a-f0-9-]{36}$/.test(x||''),status=document.getElementById('sessions-connection'),error=document.getElementById('sessions-site-error'),retry=document.getElementById('sessions-retry');
  if(!valid(event)||editor&&!valid(editor)){error.textContent='Open Sessions from an existing RegFire event.';return;}
  window.RegistrationFooter.connect(document.getElementById('sessions-shared-footer'),event);
+ document.getElementById('sessions-extras').href='/extras#event='+event;
  document.getElementById('sessions-back').href='/preview#event='+event+'&view=registration';
  const view=window.SessionBrowser.mount(document.getElementById('sessions-attendee'),{persistent:!editor});
  async function load(){retry.hidden=true;try{const response=await fetch('/api/events/'+event+'/sessions'),page=await response.json();if(!response.ok)throw Error(page.error||'Could not load agenda.');view.update(page);status.textContent=page.event_name+' · '+page.flow_name+' · Saved agenda';error.textContent='';}catch(e){error.textContent=e.message;retry.hidden=false;}}

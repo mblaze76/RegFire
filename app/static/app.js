@@ -25,17 +25,17 @@ function renderList(){
  for(const event of events){
   const group=document.createElement('details');group.className='event-outline';group.open=outlineState.get(event.id)??event.id===selected;
   const summary=document.createElement('summary');summary.textContent=event.name;group.append(summary);const contents=document.createElement('div');contents.className='outline-pages';group.append(contents);list.append(group);
-  function link(label,view,flow){const a=document.createElement('a');a.textContent=label;a.href='#event='+event.id+'&view='+view+(flow?'&flow='+flow.id:'');if(event.id===selected&&view===activeView&&(!flow||flow.id===window.RegistrationFlows?.current()?.id))a.setAttribute('aria-current','page');a.onclick=async e=>{if(activeView==='event'&&(dirty||window.EventFooterBuilder?.dirty || window.SessionsBuilder?.dirty || window.WelcomeBuilder?.dirty)){e.preventDefault();if(!await saveEventDraft()||!await window.WelcomeBuilder.save()||!await window.EventFooterBuilder.save())return;location.hash=a.hash;}};return a;}
-  async function draw(){contents.replaceChildren(link('Event details','event'),link('Registration flows','flows'));try{const flows=event.id===selected?window.RegistrationFlows?.list()||[]:await api('/api/events/'+event.id+'/flows');if(!group.isConnected)return;for(const flow of flows){const branch=document.createElement('details'),key=event.id+':'+flow.id;branch.className='flow-outline';branch.open=outlineState.get(key)??(event.id===selected&&flow.id===window.RegistrationFlows?.current()?.id);branch.ontoggle=()=>outlineState.set(key,branch.open);const heading=document.createElement('summary');heading.textContent=flow.name;branch.append(heading);for(const [view,label] of [['setup','Website setup'],['registration',flow.kind==='attendee'?'Attendee details':'Registration details'],['demographics','Demographics'],['sessions','Sessions']])branch.append(link(label,view,flow));contents.append(branch);}}catch{const error=document.createElement('p');error.textContent='Could not load flows. Close and reopen this event to retry.';contents.append(error);}}
+  function link(label,view,flow){const a=document.createElement('a');a.textContent=label;a.href='#event='+event.id+'&view='+view+(flow?'&flow='+flow.id:'');if(event.id===selected&&view===activeView&&(!flow||flow.id===window.RegistrationFlows?.current()?.id))a.setAttribute('aria-current','page');a.onclick=async e=>{if(activeView==='event'&&(dirty||window.EventFooterBuilder?.dirty || window.ExtrasBuilder?.dirty || window.SessionsBuilder?.dirty || window.WelcomeBuilder?.dirty)){e.preventDefault();if(!await saveEventDraft()||!await window.WelcomeBuilder.save()||!await window.EventFooterBuilder.save())return;location.hash=a.hash;}};return a;}
+  async function draw(){contents.replaceChildren(link('Event details','event'),link('Registration flows','flows'));try{const flows=event.id===selected?window.RegistrationFlows?.list()||[]:await api('/api/events/'+event.id+'/flows');if(!group.isConnected)return;for(const flow of flows){const branch=document.createElement('details'),key=event.id+':'+flow.id;branch.className='flow-outline';branch.open=outlineState.get(key)??(event.id===selected&&flow.id===window.RegistrationFlows?.current()?.id);branch.ontoggle=()=>outlineState.set(key,branch.open);const heading=document.createElement('summary');heading.textContent=flow.name;branch.append(heading);for(const [view,label] of [['setup','Website setup'],['registration',flow.kind==='attendee'?'Attendee details':'Registration details'],['demographics','Demographics'],['sessions','Sessions'],['extras','Extra options']])branch.append(link(label,view,flow));contents.append(branch);}}catch{const error=document.createElement('p');error.textContent='Could not load flows. Close and reopen this event to retry.';contents.append(error);}}
   group.ontoggle=()=>{outlineState.set(event.id,group.open);if(group.open)draw();};if(group.open)draw();
  }
 }
 window.refreshEventOutline=renderList;
 async function openDraft(event = null) {
-  if (opening || saving || window.RegistrationBuilder?.busy || window.DemographicsBuilder?.busy || window.MembershipBuilder?.busy || window.EventFooterBuilder?.busy || window.SessionsBuilder?.busy || window.WelcomeBuilder?.busy) return;
-  if ((dirty || window.RegistrationBuilder?.dirty || window.DemographicsBuilder?.dirty || window.MembershipBuilder?.dirty || window.EventFooterBuilder?.dirty || window.SessionsBuilder?.dirty || window.WelcomeBuilder?.dirty) && !await confirmAction('Discard unsaved changes and continue?')) return;
+  if (opening || saving || window.RegistrationBuilder?.busy || window.DemographicsBuilder?.busy || window.MembershipBuilder?.busy || window.EventFooterBuilder?.busy || window.ExtrasBuilder?.busy || window.SessionsBuilder?.busy || window.WelcomeBuilder?.busy) return;
+  if ((dirty || window.RegistrationBuilder?.dirty || window.DemographicsBuilder?.dirty || window.MembershipBuilder?.dirty || window.EventFooterBuilder?.dirty || window.ExtrasBuilder?.dirty || window.SessionsBuilder?.dirty || window.WelcomeBuilder?.dirty) && !await confirmAction('Discard unsaved changes and continue?')) return;
   opening=true;loading(event?'Loading '+event.name+'…':'Opening new event…');
-  window.RegistrationBuilder?.clear(); window.DemographicsBuilder?.clear(); window.MembershipBuilder?.clear(); window.WelcomeBuilder?.clear(); window.SessionsBuilder?.clear(); window.EventFooterBuilder?.clear();
+  window.RegistrationBuilder?.clear(); window.DemographicsBuilder?.clear(); window.MembershipBuilder?.clear(); window.WelcomeBuilder?.clear(); window.ExtrasBuilder?.clear(); window.SessionsBuilder?.clear(); window.EventFooterBuilder?.clear();
   form.reset(); selected = event?.id || null;
   if (event) for (const [name, value] of Object.entries(event)) { const control = field(name); if (control) control.value = value; }
   else field('timezone').value = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
@@ -55,7 +55,7 @@ async function openDraft(event = null) {
 form.addEventListener('input', event => { if(!event.target.name)return;dirty = true; document.querySelector('#save-state').textContent = 'Unsaved changes'; message('Save your draft to keep these changes.'); });
 form.addEventListener('change', formatFields);
 document.querySelector('#new').onclick = () => {if(!initializing&&!opening)openDraft();};
-window.addEventListener('beforeunload', event => { if (dirty || window.RegistrationBuilder?.dirty || window.DemographicsBuilder?.dirty || window.MembershipBuilder?.dirty || window.EventFooterBuilder?.dirty || window.SessionsBuilder?.dirty || window.WelcomeBuilder?.dirty) { event.preventDefault(); event.returnValue = ''; } });
+window.addEventListener('beforeunload', event => { if (dirty || window.RegistrationBuilder?.dirty || window.DemographicsBuilder?.dirty || window.MembershipBuilder?.dirty || window.EventFooterBuilder?.dirty || window.ExtrasBuilder?.dirty || window.SessionsBuilder?.dirty || window.WelcomeBuilder?.dirty) { event.preventDefault(); event.returnValue = ''; } });
 async function saveEventDraft(){
   if(initializing||opening||saving||!form.reportValidity())return false;
   const data = Object.fromEntries(new FormData(form));
@@ -81,7 +81,7 @@ async function saveEventDraft(){
 form.addEventListener('submit',async event=>{event.preventDefault();if(await saveEventDraft()&&window.WelcomeBuilder?.dirty)await window.WelcomeBuilder.save();});
 async function finishEvent(){
   const status=document.getElementById('event-done-status'),button=document.getElementById('event-done');
-  if(saving||window.MembershipBuilder?.busy||window.EventFooterBuilder?.busy || window.SessionsBuilder?.busy || window.WelcomeBuilder?.busy){status.textContent='A save or upload is still finishing. Please try Done when it completes.';return;}
+  if(saving||window.MembershipBuilder?.busy||window.EventFooterBuilder?.busy || window.ExtrasBuilder?.busy || window.SessionsBuilder?.busy || window.WelcomeBuilder?.busy){status.textContent='A save or upload is still finishing. Please try Done when it completes.';return;}
   if(!form.reportValidity()||(!document.getElementById('welcome-content').hidden&&!document.getElementById('welcome-form').reportValidity())){status.textContent='Please correct the highlighted fields before continuing.';return;}
   button.disabled=true;status.textContent='Saving event and welcome page…';
   try{if(!await saveEventDraft()){status.textContent='Event details could not be saved. Your edits are still here.';return;}if(!await window.WelcomeBuilder.save()){status.textContent='Welcome page could not be saved. Your edits are still here.';return;}if(!await window.EventFooterBuilder.save()){status.textContent='Shared footer could not be saved.';return;}await window.RegistrationFlows.load(events.find(item=>item.id===selected));status.textContent='';showView('flows');}finally{button.disabled=false;}
@@ -101,7 +101,7 @@ async function init() {
     const existing = requested?events.find(item => item.id === requested):events[0];
     if(requested&&!existing)throw new Error('The requested event was not found. Choose an existing event after reloading.');
     if (existing) {
-      activeView = ['sessions','flows','setup','registration','demographics','membership'].includes(locationState.get('view')) ? locationState.get('view') : 'event';
+      activeView = ['extras','sessions','flows','setup','registration','demographics','membership'].includes(locationState.get('view')) ? locationState.get('view') : 'event';
       await openDraft(existing);
     } else {updateNav();loaded();}
     initializing=false;
@@ -116,12 +116,12 @@ function setLocation() {
 }
 function updateNav() {
   document.getElementById('flows-tab').disabled=!selected;
-  document.getElementById('sessions-tab').disabled=!selected;
+  document.getElementById('sessions-tab').disabled=!selected;document.getElementById('extras-tab').disabled=!selected;
   document.querySelector('#setup-tab').disabled = !selected;
   document.querySelector('#registration-tab').disabled = !selected;
   document.querySelector('#demographics-tab').disabled = !selected;
   document.querySelector('#nav-hint').hidden = !!selected;
-  for (const [id, view] of [['details-tab','event'],['sessions-tab','sessions'],['flows-tab','flows'],['setup-tab','setup'],['registration-tab','registration'],['demographics-tab','demographics']]) {
+  for (const [id, view] of [['details-tab','event'],['sessions-tab','sessions'],['extras-tab','extras'],['flows-tab','flows'],['setup-tab','setup'],['registration-tab','registration'],['demographics-tab','demographics']]) {
     const button = document.querySelector('#' + id);
     if (view === activeView) button.setAttribute('aria-current','page'); else button.removeAttribute('aria-current');
   }
@@ -130,6 +130,8 @@ function showView(view, keepRegistration = false) {
   if(view!==activeView)window.scrollTo({top:0,behavior:'instant'});
   if(view==='membership')view='setup';
   activeView = view; updateNav(); setLocation();renderList();
+  document.querySelector('#extras-view').hidden=view!=='extras';
+  if(view==='extras')window.ExtrasBuilder.load(window.flowEvent());
   document.querySelector('#sessions-view').hidden = view !== 'sessions';
   if(view==='sessions')window.SessionsBuilder.load(window.flowEvent());
   document.querySelector('#event-view').hidden = view !== 'event';
@@ -137,7 +139,7 @@ function showView(view, keepRegistration = false) {
   document.querySelector('#flows-view').hidden=view!=='flows';
   document.querySelector('#flows-event-name').textContent=events.find(item=>item.id===selected)?.name||'';
   document.querySelector('#flow-context').hidden = ['event','flows'].includes(view);
-  for(const id of ['setup-tab','registration-tab','demographics-tab','sessions-tab'])document.getElementById(id).hidden=['event','flows'].includes(view);
+  for(const id of ['setup-tab','registration-tab','demographics-tab','sessions-tab','extras-tab'])document.getElementById(id).hidden=['event','flows'].includes(view);
   document.querySelector('#flow-context-name').textContent = window.RegistrationFlows?.current()?.name || 'Attendee';
   document.querySelector('#welcome-event-name').textContent = events.find(item => item.id === selected)?.name || '';
   document.querySelector('#builder-view').hidden = !['setup','registration'].includes(view);
@@ -156,13 +158,14 @@ function showView(view, keepRegistration = false) {
 }
 async function switchView(view) {
   if(window.setupAdvancing)return;
-  if (view === activeView || saving || window.RegistrationBuilder?.busy || window.DemographicsBuilder?.busy || window.MembershipBuilder?.busy || window.EventFooterBuilder?.busy || window.SessionsBuilder?.busy || window.WelcomeBuilder?.busy || (view !== 'event' && !selected)) return;
+  if (view === activeView || saving || window.RegistrationBuilder?.busy || window.DemographicsBuilder?.busy || window.MembershipBuilder?.busy || window.EventFooterBuilder?.busy || window.ExtrasBuilder?.busy || window.SessionsBuilder?.busy || window.WelcomeBuilder?.busy || (view !== 'event' && !selected)) return;
   if (['setup','registration'].includes(activeView) && ['setup','registration'].includes(view)) {showView(view,true);return;}
-  if ((dirty || window.RegistrationBuilder?.dirty || window.DemographicsBuilder?.dirty || window.MembershipBuilder?.dirty || window.EventFooterBuilder?.dirty || window.SessionsBuilder?.dirty || window.WelcomeBuilder?.dirty) && !await confirmAction('Discard unsaved changes and continue?')) return;
-  dirty = false; window.RegistrationBuilder.clear(); window.DemographicsBuilder?.clear(); window.MembershipBuilder?.clear(); window.WelcomeBuilder?.clear(); window.SessionsBuilder?.clear(); window.EventFooterBuilder?.clear();
+  if ((dirty || window.RegistrationBuilder?.dirty || window.DemographicsBuilder?.dirty || window.MembershipBuilder?.dirty || window.EventFooterBuilder?.dirty || window.ExtrasBuilder?.dirty || window.SessionsBuilder?.dirty || window.WelcomeBuilder?.dirty) && !await confirmAction('Discard unsaved changes and continue?')) return;
+  dirty = false; window.RegistrationBuilder.clear(); window.DemographicsBuilder?.clear(); window.MembershipBuilder?.clear(); window.WelcomeBuilder?.clear(); window.ExtrasBuilder?.clear(); window.SessionsBuilder?.clear(); window.EventFooterBuilder?.clear();
   activeView = view;
   openDraft(events.find(item => item.id === selected) || null);
 }
+document.getElementById('extras-tab').onclick=()=>switchView('extras');
 document.getElementById('sessions-tab').onclick=()=>switchView('sessions');
 document.querySelector('#details-tab').onclick = () => switchView('event');
 document.querySelector('#flow-back').onclick = () => switchView('flows');
@@ -185,20 +188,20 @@ window.confirmAction = function(message) {
 window.addEventListener('hashchange', async () => {
   if(initializing)return;
   if(opening){setLocation();return;}
-  if (saving || window.RegistrationBuilder?.busy || window.DemographicsBuilder?.busy || window.MembershipBuilder?.busy || window.EventFooterBuilder?.busy || window.SessionsBuilder?.busy || window.WelcomeBuilder?.busy) { setLocation(); return; }
+  if (saving || window.RegistrationBuilder?.busy || window.DemographicsBuilder?.busy || window.MembershipBuilder?.busy || window.EventFooterBuilder?.busy || window.ExtrasBuilder?.busy || window.SessionsBuilder?.busy || window.WelcomeBuilder?.busy) { setLocation(); return; }
   const route = new URLSearchParams(location.hash.slice(1));
   let destination = events.find(item => item.id === route.get('event')) || null;
   if (!destination && route.get('event')) {
     try { events = await api('/api/events'); destination = events.find(item => item.id === route.get('event')) || null; renderList(); } catch(error) { message('Could not open that event. Reload to retry.', true); setLocation(); return; }
   }
   if(route.get('event')&&!destination){message('That saved event could not be found. Your current event is unchanged.',true);setLocation();return;}
-  const view = destination && ['sessions','flows','setup','registration','demographics','membership'].includes(route.get('view')) ? route.get('view') : 'event';
+  const view = destination && ['extras','sessions','flows','setup','registration','demographics','membership'].includes(route.get('view')) ? route.get('view') : 'event';
   if (destination?.id===selected && (!route.get('flow')||route.get('flow')===window.RegistrationFlows.current()?.id) && ['setup','registration'].includes(activeView) && ['setup','registration'].includes(view)) {showView(view,true);return;}
-  if ((dirty || window.RegistrationBuilder?.dirty || window.DemographicsBuilder?.dirty || window.MembershipBuilder?.dirty || window.EventFooterBuilder?.dirty || window.SessionsBuilder?.dirty || window.WelcomeBuilder?.dirty) && !await confirmAction('Discard unsaved changes and open this event?')) {
+  if ((dirty || window.RegistrationBuilder?.dirty || window.DemographicsBuilder?.dirty || window.MembershipBuilder?.dirty || window.EventFooterBuilder?.dirty || window.ExtrasBuilder?.dirty || window.SessionsBuilder?.dirty || window.WelcomeBuilder?.dirty) && !await confirmAction('Discard unsaved changes and open this event?')) {
     setLocation(); return;
   }
   dirty = false;
-  window.RegistrationBuilder?.clear(); window.DemographicsBuilder?.clear(); window.MembershipBuilder?.clear(); window.WelcomeBuilder?.clear(); window.SessionsBuilder?.clear(); window.EventFooterBuilder?.clear();
+  window.RegistrationBuilder?.clear(); window.DemographicsBuilder?.clear(); window.MembershipBuilder?.clear(); window.WelcomeBuilder?.clear(); window.ExtrasBuilder?.clear(); window.SessionsBuilder?.clear(); window.EventFooterBuilder?.clear();
   activeView = view;
   await openDraft(destination);
 });
@@ -222,16 +225,16 @@ document.querySelector('#delete-event').onclick=async()=>{
   const event=events.find(e=>e.id===selected);if(!event||saving)return;
   if(!await confirmAction('Permanently delete “'+event.name+'”? This removes its event draft, registration page, demographic questions, membership settings, imported members, sessions, the shared footer, and uploaded images. Other events are unchanged. Cancel keeps everything.'))return;
   saving=true;const controls=[...form.elements];controls.forEach(c=>c.disabled=true);document.querySelector('#delete-event').disabled=true;
-  try{await api('/api/events/'+event.id,{method:'DELETE',headers:{'Content-Type':'application/json'},body:JSON.stringify({confirm_name:event.name})});events=events.filter(e=>e.id!==event.id);dirty=false;saving=false;activeView='event';window.RegistrationBuilder?.clear();window.DemographicsBuilder?.clear();window.MembershipBuilder?.clear(); window.WelcomeBuilder?.clear(); window.SessionsBuilder?.clear(); window.EventFooterBuilder?.clear();await openDraft();message('Event deleted. Create a new draft or choose another event.');}
+  try{await api('/api/events/'+event.id,{method:'DELETE',headers:{'Content-Type':'application/json'},body:JSON.stringify({confirm_name:event.name})});events=events.filter(e=>e.id!==event.id);dirty=false;saving=false;activeView='event';window.RegistrationBuilder?.clear();window.DemographicsBuilder?.clear();window.MembershipBuilder?.clear(); window.WelcomeBuilder?.clear(); window.ExtrasBuilder?.clear(); window.SessionsBuilder?.clear(); window.EventFooterBuilder?.clear();await openDraft();message('Event deleted. Create a new draft or choose another event.');}
   catch(e){message(e.message,true);}
   finally{saving=false;controls.forEach(c=>c.disabled=false);document.querySelector('#delete-event').disabled=false;formatFields();}
 };
 
-window.DraftAutosave.register({ready:()=>!initializing&&!opening&&dirty&&!saving&&!window.EventFooterBuilder?.busy&&!window.SessionsBuilder?.busy&&!window.WelcomeBuilder?.busy&&activeView==='event',snapshot:()=>{const data=Object.fromEntries(new FormData(form));data.photo_upload={enabled:field('allow_photo_upload').checked,safe_search:field('photo_safe_search').checked,face_check:field('photo_face_check').checked,threshold:field('photo_threshold').value};data.address=Object.fromEntries(['line1','line2','city','region','postal','country'].map(k=>[k,field('address_'+k).value]));data.url=field('url').value;return data;},lock:value=>saving=value,clean:()=>{dirty=false;},status:(state,text,error)=>{document.querySelector('#save-state').textContent=state;message(text,error);},save:async data=>{const wasNew=!selected;const saved=await api('/api/events'+(selected?'/'+selected:''),{method:selected?'PUT':'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});window.PhotoSettings?.load(saved);selected=saved.id;events=[saved,...events.filter(item=>item.id!==saved.id)];updateNav();setLocation();renderList();document.querySelector('#editor-title').textContent='Edit event';if(wasNew){await window.RegistrationFlows.load(saved);showView('event');}}});
+window.DraftAutosave.register({ready:()=>!initializing&&!opening&&dirty&&!saving&&!window.EventFooterBuilder?.busy&&!window.ExtrasBuilder?.busy&&!window.SessionsBuilder?.busy&&!window.WelcomeBuilder?.busy&&activeView==='event',snapshot:()=>{const data=Object.fromEntries(new FormData(form));data.photo_upload={enabled:field('allow_photo_upload').checked,safe_search:field('photo_safe_search').checked,face_check:field('photo_face_check').checked,threshold:field('photo_threshold').value};data.address=Object.fromEntries(['line1','line2','city','region','postal','country'].map(k=>[k,field('address_'+k).value]));data.url=field('url').value;return data;},lock:value=>saving=value,clean:()=>{dirty=false;},status:(state,text,error)=>{document.querySelector('#save-state').textContent=state;message(text,error);},save:async data=>{const wasNew=!selected;const saved=await api('/api/events'+(selected?'/'+selected:''),{method:selected?'PUT':'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});window.PhotoSettings?.load(saved);selected=saved.id;events=[saved,...events.filter(item=>item.id!==saved.id)];updateNav();setLocation();renderList();document.querySelector('#editor-title').textContent='Edit event';if(wasNew){await window.RegistrationFlows.load(saved);showView('event');}}});
 
 
 window.saveSetupNext=async()=>{
- if(window.setupAdvancing||window.RegistrationBuilder?.busy||window.MembershipBuilder?.busy||window.DemographicsBuilder?.busy||window.SessionsBuilder?.busy)return;
+ if(window.setupAdvancing||window.RegistrationBuilder?.busy||window.MembershipBuilder?.busy||window.DemographicsBuilder?.busy||window.ExtrasBuilder?.busy || window.SessionsBuilder?.busy)return;
  window.setupAdvancing=true;
  const from=activeView,flow=window.RegistrationFlows.current()?.id;
  try{
@@ -240,9 +243,10 @@ window.saveSetupNext=async()=>{
    if(from==='setup'&&!await window.MembershipBuilder.save()){document.getElementById('page-feedback').textContent='Membership settings could not be saved. Check Membership setup below; your edits are still here.';const card=document.querySelector('#website-membership-settings > details');if(card)card.open=true;return;}
   }else if(from==='demographics'){if(!await window.DemographicsBuilder.save())return;}
   else if(from==='sessions'){if(!await window.SessionsBuilder.save())return;}
+  else if(from==='extras'){if(!await window.ExtrasBuilder.save())return;}
   else return;
   if(activeView!==from||window.RegistrationFlows.current()?.id!==flow)return;
-  const next={setup:'registration',registration:'demographics',demographics:'sessions',sessions:'flows'}[from];
+  const next={setup:'registration',registration:'demographics',demographics:'sessions',sessions:'extras',extras:'flows'}[from];
   showView(next,from==='setup');
  }finally{window.setupAdvancing=false;}
 };

@@ -23,6 +23,15 @@ class SessionsValidation(unittest.TestCase):
         result=import_preview(dict(content='title,date,start_time,end_time,credits\nWorkshop,2026-10-15,09:00,10:00,1.25\n',mapping={k:k for k in ('title','date','start_time','end_time','credits')}),draft()|dict(id=str(uuid.uuid4())),'USD')
         self.assertEqual(result['sessions'][0]['credits'],1.25)
 
+    def test_capacity_and_canceled_visibility(self):
+        for capacity in (None,0,1,1000000):
+            self.assertEqual(validate(dict(sessions=[session(capacity=capacity)],show_canceled=False),draft())['sessions'][0]['capacity'],capacity)
+        for capacity in (-1,True,1.2,'3',1000001):
+            with self.subTest(capacity=capacity),self.assertRaises(ValueError):validate(dict(sessions=[session(capacity=capacity)]),draft())
+        with self.assertRaises(ValueError):validate(dict(sessions=[],show_canceled='false'),draft())
+        result=import_preview(dict(content='title,date,start_time,end_time,capacity\nWorkshop,2026-10-15,09:00,10:00,12\n',mapping={k:k for k in ('title','date','start_time','end_time','capacity')}),draft()|dict(id=str(uuid.uuid4())),'USD')
+        self.assertEqual(result['sessions'][0]['capacity'],12)
+
     def test_import_mapping_errors_and_precision(self):
         event=draft()|dict(id=str(uuid.uuid4()))
         content='Name\tDay\tFrom\tTo\tCost\n"Keynote, welcome"\t2026-10-15\t09:00\t10:00\t25.50\n'
@@ -49,8 +58,8 @@ class SessionsStorage(unittest.TestCase):
         first=self.request('/api/events',draft(),'POST');other=self.request('/api/events',draft(),'POST')
         base='/api/events/'+first['id'];path=base+'/sessions'
         flows=self.request(base+'/flows',dict(name='Exhibitor',kind='exhibitor'),'POST');child=next(f['id'] for f in flows if f['name']=='Exhibitor')
-        page=self.request(path);row=session();page['sessions']=[row]
-        saved=self.request(path,page,'PUT');self.assertEqual(saved['revision'],1)
+        page=self.request(path);row=session(capacity=25);page['sessions']=[row];page['show_canceled']=False
+        saved=self.request(path,page,'PUT');self.assertEqual(saved['revision'],1);self.assertFalse(saved['show_canceled']);self.assertEqual(saved['sessions'][0]['capacity'],25)
         child_path='/api/events/'+child+'/sessions'
         child_page=self.request(child_path)
         self.assertEqual(child_page['sessions'],[])
