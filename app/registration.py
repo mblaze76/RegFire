@@ -176,6 +176,9 @@ def validate_page(data, zone_name='UTC'):
     if details_color is not None and (not isinstance(details_color,str) or not re.fullmatch(r'#[0-9a-fA-F]{6}',details_color)):
         raise ValueError('Choose a valid attendee details header color.')
     normalized['details_color']=details_color.lower() if details_color else None
+    linkedin_enabled=appearance.get('linkedin_enabled',True)
+    if type(linkedin_enabled) is not bool:raise ValueError('Choose whether LinkedIn autofill is shown.')
+    normalized['linkedin_enabled']=linkedin_enabled
 
     from welcome import FONT_IDS
     font=appearance.get('intro_font','default')

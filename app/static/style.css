@@ -228,6 +228,10 @@ body.welcome-site.welcome-vivid-artwork #welcome-error{color:#fff}
 #website-membership-settings .membership-setup{max-width:none}
 
 .linkedin-import{margin:18px 0}
-.linkedin-import button{background:#0a66c2;color:#fff;border:0;border-radius:7px;padding:10px 16px;font-weight:650}
+.linkedin-import button{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:40px;background:#fff;color:#0a66c2;border:1px solid #0a66c2;border-radius:6px;padding:6px 12px;font-weight:650;line-height:1.25}.linkedin-import button img{display:block;width:auto;height:21px;object-fit:contain;flex:none}.linkedin-import button:focus-visible{outline:3px solid #0a66c2;outline-offset:3px}
 .linkedin-import button:disabled{opacity:.65;cursor:not-allowed}
 .linkedin-import p{font-size:13px;line-height:1.45;margin:8px 0}
+
+.photo-attendee-row{padding:14px 0;border-top:1px solid #ddd;overflow-wrap:anywhere}.photo-attendee-row p{margin:4px 0}.photo-attendee-row small{display:block;margin-bottom:8px}.photo-attendee-row a{display:inline-block;margin-right:12px}.photo-attendee-row button{margin:4px 8px 4px 0}#photo-google-config{margin:18px 0}#photo-link-url{font-size:12px}#photo-link-tools{margin-top:20px}
+/* Keep primary setup actions clear of the movable assistant's default mobile corner. */
+@media(max-width:640px){.builder-savebar,#event-view>.savebar,.sessions-editor>.savebar{flex-direction:column-reverse;align-items:flex-start;gap:6px;padding-right:106px}.builder-savebar>div{max-width:100%;overflow-wrap:anywhere}}

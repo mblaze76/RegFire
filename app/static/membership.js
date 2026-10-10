@@ -2,6 +2,7 @@
  const $=id=>document.getElementById(id), names={member_id:'Member ID column',email:'Email column',active:'Active status column',expires:'Expiration column'};
  const editorColumn=document.createElement('div');editorColumn.className='registration-editor-column';$('builder-form').before(editorColumn);editorColumn.append($('builder-form'));
  const membershipSection=document.createElement('section');membershipSection.id='website-membership-settings';const membershipHeading=document.createElement('h3');membershipHeading.textContent='Membership setup';membershipSection.append(membershipHeading,$('membership-view'));editorColumn.append(membershipSection);
+ const savebar=$('save-page').closest('.savebar');$('save-page').setAttribute('form','builder-form');editorColumn.append(savebar);
  $('member-flow-select').onchange=async()=>{if(busy){$('member-flow-select').value=event?.id||'';return;}if(changed&&!await confirmAction('Discard unsaved membership settings and open the selected flow?')){$('member-flow-select').value=event.id;return;}const flow=window.RegistrationFlows.list().find(f=>f.id===$('member-flow-select').value);if(flow)load({...event,id:flow.id,name:flow.name});};
  let event=null,config=null,changed=false,busy=false,token=0,csv='',importPreview=null,info=null;
  const node=(tag,text)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;return n;};

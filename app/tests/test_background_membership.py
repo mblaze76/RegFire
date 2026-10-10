@@ -89,6 +89,22 @@ class BackgroundMembershipTests(unittest.TestCase):
   self.assertIsNone(self.request(self.base+'/registration-page')['appearance']['details_color'])
   self.page['appearance']['details_color']='red'
   with self.assertRaises(HTTPError):self.request(self.base+'/registration-page',self.page,'PUT')
+ def test_linkedin_visibility_persists_per_flow(self):
+  self.fixture()
+  flows=self.request(self.base+'/flows',{'name':'LinkedIn isolation fixture','kind':'exhibitor'},'POST')
+  first='/api/events/'+flows[0]['id']+'/registration-page'
+  second='/api/events/'+flows[1]['id']+'/registration-page'
+  page=self.request(first);other=self.request(second)
+  self.assertTrue(page['appearance'].get('linkedin_enabled',True))
+  page['appearance']['linkedin_enabled']=False
+  self.request(first,page,'PUT')
+  self.assertFalse(self.request(first)['appearance']['linkedin_enabled'])
+  self.assertEqual(self.request(second),other)
+  page['appearance']['linkedin_enabled']=True
+  self.request(first,page,'PUT')
+  self.assertTrue(self.request(first)['appearance']['linkedin_enabled'])
+  page['appearance']['linkedin_enabled']='false'
+  with self.assertRaises(HTTPError):self.request(first,page,'PUT')
  def test_unassigned_client_cannot_read_or_update_connection(self):
   self.fixture();owner=self.access.session(self.raw_session);uid=self.access.save_user(owner,{'email':'client@example.test','products':['event-builder'],'event_ids':[]});code=self.access.enrollment(owner,uid);self.access.activate('client@example.test',code,self.password)
   token=self.access.login('client@example.test',self.password);self.raw_session=token;self.csrf=self.access.session(token)['csrf']

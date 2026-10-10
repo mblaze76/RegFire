@@ -4,7 +4,7 @@ from http.cookies import SimpleCookie
 from urllib.parse import urlsplit
 import psycopg
 from access import Access,AccessError
-PUBLIC={'/api/linkedin/callback','/api/auth/forgot-password','/api/auth/reset-password','/api/registrant-event','/registrant-login','/registrant-login.js','/login','/access.css','/access-ui.js','/regfire-logo.png','/api/auth/me','/api/auth/login','/api/auth/activate','/api/auth/setup'}
+PUBLIC={'/photo-upload','/photo-upload.js','/photo-upload.css','/api/photo-upload','/api/linkedin/callback','/api/auth/forgot-password','/api/auth/reset-password','/api/registrant-event','/registrant-login','/registrant-login.js','/login','/access.css','/access-ui.js','/regfire-logo.png','/api/auth/me','/api/auth/login','/api/auth/activate','/api/auth/setup'}
 STATIC={'/welcome-heading.js','/flows.js','/welcome-site.js','/welcome.js','/style.css','/app.js','/builder.js','/demographics.js','/membership.js','/address.js','/footer.js','/email.js','/autosave.js','/live-editor.js','/live-preview.js','/auth-client.js'}
 def cookie_name(h):return 'regfire_session_'+str(h.server.server_port)
 def raw_cookie(h):

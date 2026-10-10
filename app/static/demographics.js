@@ -107,10 +107,11 @@
   $('demo-add').onclick=()=>{page.questions.push({id:uid(),label:'',help:'',type:'text',required:false,options:[],visible_to:null,conditions:{mode:'all',rules:[]}});edited();renderQuestions();$('demo-questions').lastElementChild.querySelector('input').focus();};
   $('demo-title').oninput=()=>{page.title=$('demo-title').value;edited();};$('demo-intro').oninput=()=>{page.intro=$('demo-intro').value;edited();};
   $('demo-retry').onclick=()=>load(event);
-  $('demo-editor').onsubmit=async e=>{e.preventDefault();if(busy||!page)return;busy=true;const controls=[...$('demo-editor').elements];controls.forEach(c=>c.disabled=true);say('Saving demographics…');
-    try{page=await api('/api/events/'+event.id+'/demographics',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(page)});changed=false;$('demo-save-state').textContent='Saved demographics';say('Saved on this computer · '+new Date(page.updated).toLocaleTimeString());$('demo-title').value=page.title;$('demo-intro').value=page.intro;}
-    catch(error){say(error.message,true);}finally{busy=false;controls.forEach(c=>c.disabled=false);renderQuestions();}
+  async function save(){if(busy||!page||!$('demo-editor').reportValidity())return false;busy=true;const controls=[...$('demo-editor').elements];controls.forEach(c=>c.disabled=true);say('Saving demographics…');
+    try{page=await api('/api/events/'+event.id+'/demographics',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(page)});changed=false;$('demo-save-state').textContent='Saved demographics';say('Saved on this computer · '+new Date(page.updated).toLocaleTimeString());$('demo-title').value=page.title;$('demo-intro').value=page.intro;return true;}
+    catch(error){say(error.message,true);return false;}finally{busy=false;controls.forEach(c=>c.disabled=false);renderQuestions();}
   };
-  window.DemographicsBuilder={load,snapshot(){return page?{event_id:event.id,page:structuredClone(page)}:null;},clear(){loadToken++;page=null;changed=false;},get dirty(){return changed;},get busy(){return busy;}};
+  $('demo-editor').onsubmit=e=>{e.preventDefault();window.saveSetupNext();};
+  window.DemographicsBuilder={load,save,snapshot(){return page?{event_id:event.id,page:structuredClone(page)}:null;},clear(){loadToken++;page=null;changed=false;},get dirty(){return changed;},get busy(){return busy;}};
   window.DraftAutosave.register({ready:()=>!!(page&&changed&&!busy),snapshot:()=>(structuredClone(page)),lock:value=>busy=value,clean:()=>{changed=false;},status:(state,message,error)=>{$('demo-save-state').textContent=state;say(message,error);},save:data=>api('/api/events/'+event.id+'/demographics',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})});
 })();

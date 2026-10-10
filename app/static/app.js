@@ -39,8 +39,10 @@ async function openDraft(event = null) {
   form.reset(); selected = event?.id || null;
   if (event) for (const [name, value] of Object.entries(event)) { const control = field(name); if (control) control.value = value; }
   else field('timezone').value = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
+  const photo=event?.photo_upload||{};field('allow_photo_upload').checked=photo.enabled===true;field('photo_safe_search').checked=photo.safe_search!==false;field('photo_face_check').checked=photo.face_check!==false;field('photo_threshold').value=photo.threshold||'LIKELY';
   for(const k of ['line1','line2','city','region','postal','country'])field('address_'+k).value=event?.address?.[k]||'';
   document.querySelector('#delete-event').hidden=!event;
+  window.PhotoSettings?.load(event);
   dirty = false; formatFields(); renderList();
   document.querySelector('#editor-title').textContent = event ? 'Edit event' : 'Create an event';
   document.querySelector('#save-state').textContent = event ? 'Saved draft' : 'New draft';
@@ -50,14 +52,14 @@ async function openDraft(event = null) {
   if(!window.RegistrationFlows.current()&&activeView!=='flows')activeView='event';
   showView(event ? activeView : 'event');
 }
-form.addEventListener('input', () => { dirty = true; document.querySelector('#save-state').textContent = 'Unsaved changes'; message('Save your draft to keep these changes.'); });
+form.addEventListener('input', event => { if(!event.target.name)return;dirty = true; document.querySelector('#save-state').textContent = 'Unsaved changes'; message('Save your draft to keep these changes.'); });
 form.addEventListener('change', formatFields);
 document.querySelector('#new').onclick = () => {if(!initializing&&!opening)openDraft();};
 window.addEventListener('beforeunload', event => { if (dirty || window.RegistrationBuilder?.dirty || window.DemographicsBuilder?.dirty || window.MembershipBuilder?.dirty || window.EventFooterBuilder?.dirty || window.SessionsBuilder?.dirty || window.WelcomeBuilder?.dirty) { event.preventDefault(); event.returnValue = ''; } });
 async function saveEventDraft(){
   if(initializing||opening||saving||!form.reportValidity())return false;
   const data = Object.fromEntries(new FormData(form));
-  data.address=Object.fromEntries(['line1','line2','city','region','postal','country'].map(k=>[k,field('address_'+k).value]));
+  data.photo_upload={enabled:field('allow_photo_upload').checked,safe_search:field('photo_safe_search').checked,face_check:field('photo_face_check').checked,threshold:field('photo_threshold').value};data.address=Object.fromEntries(['line1','line2','city','region','postal','country'].map(k=>[k,field('address_'+k).value]));
   let advance=false;
   // Preserve values while switching formats, but only the selected format is displayed.
   data.url = field('url').value;
@@ -66,6 +68,7 @@ async function saveEventDraft(){
   message('Saving…');
   try {
     const saved = await api('/api/events' + (selected ? '/' + selected : ''), { method: selected ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+    window.PhotoSettings?.load(saved);
     selected = saved.id; updateNav(); setLocation(); events = [saved, ...events.filter(item => item.id !== saved.id)]; dirty = false; renderList();
     document.querySelector('#editor-title').textContent = 'Edit event'; document.querySelector('#save-state').textContent = 'Saved draft';
     advance=true;
@@ -152,6 +155,7 @@ function showView(view, keepRegistration = false) {
   if (['setup','registration'].includes(view) && !keepRegistration) window.RegistrationBuilder.load(window.flowEvent());
 }
 async function switchView(view) {
+  if(window.setupAdvancing)return;
   if (view === activeView || saving || window.RegistrationBuilder?.busy || window.DemographicsBuilder?.busy || window.MembershipBuilder?.busy || window.EventFooterBuilder?.busy || window.SessionsBuilder?.busy || window.WelcomeBuilder?.busy || (view !== 'event' && !selected)) return;
   if (['setup','registration'].includes(activeView) && ['setup','registration'].includes(view)) {showView(view,true);return;}
   if ((dirty || window.RegistrationBuilder?.dirty || window.DemographicsBuilder?.dirty || window.MembershipBuilder?.dirty || window.EventFooterBuilder?.dirty || window.SessionsBuilder?.dirty || window.WelcomeBuilder?.dirty) && !await confirmAction('Discard unsaved changes and continue?')) return;
@@ -223,4 +227,22 @@ document.querySelector('#delete-event').onclick=async()=>{
   finally{saving=false;controls.forEach(c=>c.disabled=false);document.querySelector('#delete-event').disabled=false;formatFields();}
 };
 
-window.DraftAutosave.register({ready:()=>!initializing&&!opening&&dirty&&!saving&&!window.EventFooterBuilder?.busy&&!window.SessionsBuilder?.busy&&!window.WelcomeBuilder?.busy&&activeView==='event',snapshot:()=>{const data=Object.fromEntries(new FormData(form));data.address=Object.fromEntries(['line1','line2','city','region','postal','country'].map(k=>[k,field('address_'+k).value]));data.url=field('url').value;return data;},lock:value=>saving=value,clean:()=>{dirty=false;},status:(state,text,error)=>{document.querySelector('#save-state').textContent=state;message(text,error);},save:async data=>{const wasNew=!selected;const saved=await api('/api/events'+(selected?'/'+selected:''),{method:selected?'PUT':'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});selected=saved.id;events=[saved,...events.filter(item=>item.id!==saved.id)];updateNav();setLocation();renderList();document.querySelector('#editor-title').textContent='Edit event';if(wasNew){await window.RegistrationFlows.load(saved);showView('event');}}});
+window.DraftAutosave.register({ready:()=>!initializing&&!opening&&dirty&&!saving&&!window.EventFooterBuilder?.busy&&!window.SessionsBuilder?.busy&&!window.WelcomeBuilder?.busy&&activeView==='event',snapshot:()=>{const data=Object.fromEntries(new FormData(form));data.photo_upload={enabled:field('allow_photo_upload').checked,safe_search:field('photo_safe_search').checked,face_check:field('photo_face_check').checked,threshold:field('photo_threshold').value};data.address=Object.fromEntries(['line1','line2','city','region','postal','country'].map(k=>[k,field('address_'+k).value]));data.url=field('url').value;return data;},lock:value=>saving=value,clean:()=>{dirty=false;},status:(state,text,error)=>{document.querySelector('#save-state').textContent=state;message(text,error);},save:async data=>{const wasNew=!selected;const saved=await api('/api/events'+(selected?'/'+selected:''),{method:selected?'PUT':'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});window.PhotoSettings?.load(saved);selected=saved.id;events=[saved,...events.filter(item=>item.id!==saved.id)];updateNav();setLocation();renderList();document.querySelector('#editor-title').textContent='Edit event';if(wasNew){await window.RegistrationFlows.load(saved);showView('event');}}});
+
+
+window.saveSetupNext=async()=>{
+ if(window.setupAdvancing||window.RegistrationBuilder?.busy||window.MembershipBuilder?.busy||window.DemographicsBuilder?.busy||window.SessionsBuilder?.busy)return;
+ window.setupAdvancing=true;
+ const from=activeView,flow=window.RegistrationFlows.current()?.id;
+ try{
+  if(from==='setup'||from==='registration'){
+   if(!await window.RegistrationBuilder.save())return;
+   if(from==='setup'&&!await window.MembershipBuilder.save()){document.getElementById('page-feedback').textContent='Membership settings could not be saved. Check Membership setup below; your edits are still here.';const card=document.querySelector('#website-membership-settings > details');if(card)card.open=true;return;}
+  }else if(from==='demographics'){if(!await window.DemographicsBuilder.save())return;}
+  else if(from==='sessions'){if(!await window.SessionsBuilder.save())return;}
+  else return;
+  if(activeView!==from||window.RegistrationFlows.current()?.id!==flow)return;
+  const next={setup:'registration',registration:'demographics',demographics:'sessions',sessions:'flows'}[from];
+  showView(next,from==='setup');
+ }finally{window.setupAdvancing=false;}
+};
