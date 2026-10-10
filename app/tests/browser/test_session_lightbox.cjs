@@ -1,0 +1,24 @@
+// Run with linkedom installed in the test environment (NODE_PATH if needed).
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const {parseHTML}=require('linkedom');
+const {window,document}=parseHTML('<html><body><div id="root"></div></body></html>');
+const timers=new Map();let next=0;const flush=()=>{for(const [id,fn] of [...timers]){timers.delete(id);fn();}};
+Object.defineProperty(window.HTMLSelectElement.prototype,'value',{configurable:true,get(){return this._value||'';},set(v){this._value=v;}});
+window.HTMLElement.prototype.focus=function(){document.activeElement=this;};
+const context={window,document,Intl,Set,Option:function(text,value){const o=document.createElement('option');o.textContent=text;o.value=value;return o;},setTimeout:fn=>{timers.set(++next,fn);return next;},clearTimeout:id=>timers.delete(id),localStorage:{getItem:()=>null,setItem:()=>{}}};
+vm.createContext(context);vm.runInContext(fs.readFileSync(require('node:path').join(__dirname,'../../static/sessions-common.js'),'utf8'),context);
+const root=document.getElementById('root'),view=window.SessionBrowser.mount(root);
+const speaker={id:'p',first_name:'Avery',last_name:'Finch',role:'Lead',organization:'Synthetic',bio:'<img src=x onerror=alert(1)>',photo_asset_id:'photo'};
+const row={id:'s',title:'Session',start:'2026-10-15T09:00',end:'2026-10-15T10:00',status:'active',capacity:null,price_minor:0,speaker_ids:['p'],description:'Details',location:'Hall'};
+const page={event_id:'event',event_name:'Synthetic',timezone:'UTC',currency:'USD',sessions:[row],speakers:[speaker]};view.update(page);
+const item=root.querySelector('[data-session-id]'),title=item.querySelector('button');
+item.onpointerenter({pointerType:'mouse'});assert.equal(document.querySelector('[role=dialog]'),null);flush();
+let dialog=document.querySelector('[role=dialog]');assert.ok(dialog);assert.ok(dialog.textContent.includes('Avery Finch'));assert.equal(dialog.querySelectorAll('img').length,1);assert.ok(dialog.textContent.includes('<img src=x'));assert.equal(dialog.getAttribute('aria-modal'),null);
+root.dispatchEvent(new window.Event('keydown'));item.onpointerleave();flush();assert.equal(document.querySelector('[role=dialog]'),null);
+item.onpointerenter({pointerType:'touch'});flush();assert.equal(document.querySelector('[role=dialog]'),null);
+item.onpointerenter({pointerType:'mouse'});view.update({...page,speakers:[]});flush();assert.equal(document.querySelector('[role=dialog]'),null,'Updating must cancel delayed hover');
+view.update(page);const trigger=root.querySelector('[data-session-id] button');trigger.onclick();dialog=document.querySelector('[role=dialog]');assert.equal(dialog.getAttribute('aria-modal'),'true');assert.ok(document.activeElement.classList.contains('session-popover-close'));
+root.querySelector('[data-session-id]').onpointerleave();flush();assert.ok(document.querySelector('[role=dialog]'),'Pinned panel survives pointer leave');
+dialog.onkeydown({key:'Escape',preventDefault(){},stopPropagation(){}});assert.equal(document.querySelector('[role=dialog]'),null);assert.equal(document.activeElement,trigger);
+view.update({...page,speakers:[],sessions:[{...row,speaker_ids:[]}]});root.querySelector('[data-session-id] button').onclick();assert.ok(document.querySelector('[role=dialog]').textContent.includes('Speaker to be announced'));
+console.log('Lightbox: delayed hover, touch, photos, safe text, update cleanup, pinning, Escape, focus and missing-speaker checks passed.');
