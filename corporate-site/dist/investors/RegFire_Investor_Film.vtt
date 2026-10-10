@@ -1,0 +1,317 @@
+WEBVTT
+
+1
+00:00:01.000 --> 00:00:04.465
+The first moment of an event is not on the stage.
+
+2
+00:00:04.535 --> 00:00:05.908
+It is at registration.
+
+3
+00:00:05.978 --> 00:00:06.854
+A queue.
+
+4
+00:00:06.924 --> 00:00:07.866
+A question.
+
+5
+00:00:07.936 --> 00:00:09.750
+A badge that needs to be right.
+
+6
+00:00:09.820 --> 00:00:12.363
+RegFire starts with that moment.
+
+7
+00:00:12.433 --> 00:00:17.176
+RegFire is shaped by Mike Blazejewski’s twenty-six years in registration and
+
+8
+00:00:17.246 --> 00:00:20.412
+experience across thousands of onsite shows.
+
+9
+00:00:20.482 --> 00:00:21.673
+Different audiences.
+
+10
+00:00:21.743 --> 00:00:22.237
+Different rules.
+
+11
+00:00:22.307 --> 00:00:26.452
+The same responsibility to make the opening moments work.
+
+12
+00:00:26.522 --> 00:00:31.314
+That experience informs the product: practical control for organizers, and a
+
+13
+00:00:31.384 --> 00:00:34.119
+clearer experience for the people arriving.
+
+14
+00:00:34.189 --> 00:00:37.836
+In twenty twenty-five, business events brought together one point six five
+
+15
+00:00:37.906 --> 00:00:42.183
+billion participants worldwide and generated one point three trillion dollars
+
+16
+00:00:42.253 --> 00:00:46.282
+in direct spending, according to the Events Industry Council and Oxford
+
+17
+00:00:46.352 --> 00:00:47.560
+Economics.
+
+18
+00:00:47.630 --> 00:00:52.123
+Those are industry activity figures, not registration software revenue.
+
+19
+00:00:52.193 --> 00:00:56.355
+RegFire’s opportunity is to earn a place in the workflows behind those
+
+20
+00:00:56.425 --> 00:00:57.716
+experiences.
+
+21
+00:00:57.786 --> 00:01:02.262
+A registration system has to reflect the event: who can attend, what they need
+
+22
+00:01:02.332 --> 00:01:05.946
+to answer, which price applies, and what happens when they arrive.
+
+23
+00:01:06.016 --> 00:01:10.709
+When those decisions are scattered across tools and workarounds, the organizer
+
+24
+00:01:10.779 --> 00:01:12.385
+carries the complexity.
+
+25
+00:01:12.455 --> 00:01:17.878
+RegFire’s thesis is simple: put that control into a configurable workspace.
+
+26
+00:01:17.948 --> 00:01:21.595
+The current local product already demonstrates event setup, multiple
+
+27
+00:01:21.665 --> 00:01:26.656
+registration flows, configurable questions, branding, pricing rules and
+
+28
+00:01:26.726 --> 00:01:28.100
+attendee previews.
+
+29
+00:01:28.170 --> 00:01:31.800
+Organizers can shape the journey and inspect it as they work.
+
+30
+00:01:31.870 --> 00:01:35.882
+The footage here shows the actual application with demonstration data.
+
+31
+00:01:35.952 --> 00:01:40.280
+It is a working foundation, not evidence of a completed commercial checkout or
+
+32
+00:01:40.350 --> 00:01:42.155
+live admission system.
+
+33
+00:01:42.225 --> 00:01:45.997
+The initial commercial launch is planned to serve both ticketed events and
+
+34
+00:01:46.067 --> 00:01:47.598
+badge-based registration.
+
+35
+00:01:47.668 --> 00:01:51.133
+That means completing the journey from registration and payment through
+
+36
+00:01:51.203 --> 00:01:53.356
+credential delivery and arrival.
+
+37
+00:01:53.426 --> 00:01:58.550
+Tickets, named badges, validation, corrections and reconciliation must work
+
+38
+00:01:58.620 --> 00:01:59.363
+together.
+
+39
+00:01:59.433 --> 00:02:01.736
+Both paths are launch requirements.
+
+40
+00:02:01.806 --> 00:02:06.665
+They still need end-to-end implementation, testing and operational proof.
+
+41
+00:02:06.735 --> 00:02:10.515
+The integration vision is to connect registration with the systems organizers
+
+42
+00:02:10.585 --> 00:02:15.875
+depend on: payment providers, membership records, customer systems and onsite
+
+43
+00:02:15.945 --> 00:02:16.854
+equipment.
+
+44
+00:02:16.924 --> 00:02:20.637
+Each connection needs a supported contract and a tested workflow.
+
+45
+00:02:20.707 --> 00:02:24.753
+The aim is flexible integration, with clear boundaries, rather than a promise
+
+46
+00:02:24.823 --> 00:02:27.839
+that every system already works with RegFire.
+
+47
+00:02:27.909 --> 00:02:31.921
+AI assistance is part of the roadmap across the tools: helping an organizer
+
+48
+00:02:31.991 --> 00:02:36.601
+configure an event, understand a feature, interpret their data and decide what
+
+49
+00:02:36.671 --> 00:02:37.613
+to do next.
+
+50
+00:02:37.683 --> 00:02:40.866
+The current Spark chat adapter is an early foundation.
+
+51
+00:02:40.936 --> 00:02:45.977
+Useful assistance still requires grounded answers, permissions, evaluation and
+
+52
+00:02:46.047 --> 00:02:47.271
+human control.
+
+53
+00:02:47.341 --> 00:02:52.291
+AI throughout the workflow is the ambition, not a completed capability today.
+
+54
+00:02:52.361 --> 00:02:57.244
+Onsite, the roadmap includes developing and customizing AI systems that can
+
+55
+00:02:57.314 --> 00:02:59.650
+run locally, close to the operation.
+
+56
+00:02:59.720 --> 00:03:04.197
+The goal is assistance tailored to the tasks, terminology and constraints of a
+
+57
+00:03:04.267 --> 00:03:07.997
+live event, with less dependence on venue connectivity for supported
+
+58
+00:03:08.067 --> 00:03:08.993
+functions.
+
+59
+00:03:09.063 --> 00:03:13.822
+Model selection, adaptation, privacy and device performance still have to be
+
+60
+00:03:13.892 --> 00:03:14.535
+proven.
+
+61
+00:03:14.605 --> 00:03:18.087
+This is not a claim that RegFire has trained its own foundation model.
+
+62
+00:03:18.157 --> 00:03:22.501
+The ambition spans small gatherings through major trade shows.
+
+63
+00:03:22.571 --> 00:03:26.882
+The path starts with a defined operating envelope: supported event sizes,
+
+64
+00:03:26.952 --> 00:03:30.989
+devices and workflows, then expands through measured performance.
+
+65
+00:03:31.059 --> 00:03:35.527
+Large-show scale must be earned through load tests, rehearsal and real
+
+66
+00:03:35.597 --> 00:03:37.270
+operational evidence.
+
+67
+00:03:37.340 --> 00:03:40.190
+It is a direction for the business, not a deployment claim.
+
+68
+00:03:40.260 --> 00:03:44.754
+The commercial strategy is to serve repeat organizers with software they can
+
+69
+00:03:44.824 --> 00:03:49.151
+configure themselves, supported by assisted setup and onsite services where
+
+70
+00:03:49.221 --> 00:03:49.931
+needed.
+
+71
+00:03:50.001 --> 00:03:53.665
+Pricing, retention and delivery economics must be tested with paying
+
+72
+00:03:53.735 --> 00:03:54.843
+customers.
+
+73
+00:03:54.913 --> 00:03:58.992
+The next milestone is a complete, dependable ticketing and badging workflow,
+
+74
+00:03:59.062 --> 00:04:02.095
+followed by pilots that establish repeatable value.
+
+75
+00:04:02.165 --> 00:04:05.994
+RegFire brings a practical point of view to an essential moment in every
+
+76
+00:04:06.064 --> 00:04:07.007
+event.
+
+77
+00:04:07.077 --> 00:04:10.707
+The opportunity is to turn that experience into dependable software,
+
+78
+00:04:10.777 --> 00:04:14.706
+intelligent assistance and a business organizers return to.
+
+79
+00:04:14.776 --> 00:04:17.000
+Let’s build the next chapter of registration.
