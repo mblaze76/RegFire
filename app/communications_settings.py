@@ -4,7 +4,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 from access import AccessError
 
-DEFAULT={'revision':'initial','public_url':'','email':{'provider':'sendgrid','sender':'','sender_name':'RegFire','api_key':''},'sms':{'provider':'twilio','account_sid':'','sender':'','auth_token':''}}
+DEFAULT={'revision':'initial','public_url':'','email':{'provider':'bird','sender':'','sender_name':'RegFire','api_key':''},'sms':{'provider':'bird','account_sid':'','sender':'','auth_token':''}}
 
 class Settings:
  def __init__(self,path=None):self.path=Path(path) if path else Path(__file__).resolve().parent/'.local'/'communications.json'
@@ -17,11 +17,16 @@ class Settings:
    if not isinstance(value['revision'],str) or not isinstance(value['public_url'],str):raise ValueError()
    for channel in ('email','sms'):
     if not isinstance(value[channel],dict) or any(not isinstance(value[channel].get(k),str) for k in DEFAULT[channel]):raise ValueError()
-   if value['email']['provider'] not in ('sendgrid','smtp') or value['sms']['provider']!='twilio':raise ValueError()
+   if value['email']['provider'] not in ('bird','sendgrid','smtp') or value['sms']['provider'] not in ('bird','twilio'):raise ValueError()
    return value
   except (ValueError,OSError):raise AccessError('Communications settings are unavailable. Contact the server administrator.',503) from None
  def issues(self,c,channel):
   part=c[channel];issues=[]
+  if part['provider']=='bird':
+   secret=part['api_key' if channel=='email' else 'auth_token']
+   if not re.fullmatch(r'bk_(us1|eu1)_[A-Za-z0-9_-]{16,}',secret):issues.append('Replace bk_xxxxxxxxx with your real Bird API key (bk_us1_… or bk_eu1_…).')
+   if not part['sender']:issues.append('Add a verified sender email.' if channel=='email' else 'Add your Bird sending number for free-text SMS.')
+   return issues
   if channel=='email':
    if part['provider']=='smtp':
     from password_recovery import SMTPMailer
@@ -46,9 +51,10 @@ class Settings:
    fcntl.flock(handle,fcntl.LOCK_EX)
    c=self.read()
    if data.get('revision')!=c['revision']:raise AccessError('Settings changed. Reload before replacing them.',409)
-   for channel,allowed in [('email',{'sendgrid','smtp'}),('sms',{'twilio'})]:
+   for channel,allowed in [('email',{'bird','sendgrid','smtp'}),('sms',{'bird','twilio'})]:
     part=data.get(channel)
     if not isinstance(part,dict) or part.get('provider') not in allowed:raise AccessError('Choose a supported provider.')
+    previous_provider=c[channel]['provider']
     c[channel]['provider']=part['provider']
     for key in (('sender','sender_name') if channel=='email' else ('sender','account_sid')):
      value=part.get(key,'')
@@ -57,14 +63,16 @@ class Settings:
     secret='api_key' if channel=='email' else 'auth_token'
     action=part.get('secret_action','keep')
     if action not in ('keep','replace','clear'):raise AccessError('Choose keep, replace, or clear credentials.')
+    if previous_provider!=part['provider'] and 'bird' in (previous_provider,part['provider']):c[channel][secret]=''
     if action=='clear':c[channel][secret]=''
     elif action=='replace':
      value=part.get('secret')
      if not isinstance(value,str) or not 16<=len(value)<=512 or not re.fullmatch(r'[A-Za-z0-9._-]+',value):raise AccessError('Enter a valid provider credential in the private credential field.')
+     if part['provider']=='bird' and not re.fullmatch(r'bk_(us1|eu1)_[A-Za-z0-9_-]{16,}',value):raise AccessError('Replace bk_xxxxxxxxx with your real regional Bird API key.')
      c[channel][secret]=value
    if c['email']['sender'] and not re.fullmatch(r'[^\s<>@]+@[^\s<>@]+\.[^\s<>@]+',c['email']['sender']):raise AccessError('Enter a plain sender email address.')
    if c['sms']['sender'] and not re.fullmatch(r'\+[1-9][0-9]{7,14}',c['sms']['sender']):raise AccessError('Use an international sending number, such as +15555550100.')
-   if c['sms']['account_sid'] and not re.fullmatch(r'AC[0-9a-fA-F]{32}',c['sms']['account_sid']):raise AccessError('Enter a valid Twilio account SID.')
+   if c['sms']['provider']=='twilio' and c['sms']['account_sid'] and not re.fullmatch(r'AC[0-9a-fA-F]{32}',c['sms']['account_sid']):raise AccessError('Enter a valid Twilio account SID.')
    origin=data.get('public_url','')
    if not isinstance(origin,str) or len(origin)>500:raise AccessError('Enter a valid recovery site URL.')
    origin=origin.rstrip('/')

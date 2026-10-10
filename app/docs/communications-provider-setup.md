@@ -1,19 +1,24 @@
-# Email and SMS setup for RegFire
+# RegFire communications: Bird
 
-The current code uses **SendGrid for email** (with an existing SMTP alternative) and **Twilio for SMS**. Provider settings are owner-only, stored on the server, and masked in responses. No live provider connection or delivery was verified in this update.
+Bird is the default for new email and SMS configurations. RegFire's Python server calls Bird's documented regional HTTP API; it does not need a Node server or expose the key in browser JavaScript. The equivalent server-only TypeScript example is in `examples/bird.ts` and uses `@messagebird/sdk`.
 
-## Email
+## Private setup
 
-Create or use your SendGrid account. Verify the sending identity; SendGrid recommends authenticating your sending domain for production. Add only the DNS records SendGrid supplies, preserving existing mail records. Create a restricted API key with Mail Send permission, then enter it privately in RegFire Communications settings along with the verified sender email and display name. Never paste the key in a chat or commit it to GitHub.
+1. Open Administration → Communications as the super administrator. Select Bird for both channels.
+2. In each channel choose Replace key. **Replace `bk_xxxxxxxxx` with your real Bird API key**, entered only in the password field. Use a regional `bk_us1_…` or `bk_eu1_…` key with the corresponding email/SMS send permissions. The same appropriately scoped key can be entered for both channels, or separate keys can be used. Do not paste keys into chat, commit them, or place them in frontend code.
+3. Enter the verified email sender and name, your Bird sending number for free-text SMS, and the public recovery site URL. Complete sending-domain verification and required sender/destination setup in Bird.
+4. Save connections, then Validate saved setup. This checks configuration locally, not provider connectivity. Secrets stay in owner-only `.local/communications.json`, excluded from GitHub; saved keys are never returned to the page.
+5. Server delivery remains gated by `REGFIRE_COMMUNICATIONS_LIVE=1`. Set that only when ready for authorized live delivery, then restart the server. No messages are sent merely by saving or validating.
 
-Official instructions: [Sender identity](https://www.twilio.com/docs/sendgrid/for-developers/sending-email/sender-identity), [Domain authentication](https://www.twilio.com/docs/sendgrid/ui/account-and-settings/how-to-set-up-domain-authentication).
+Previously saved SendGrid, SMTP, or Twilio configurations continue to load. Switching to or from Bird clears the old channel credential unless you supply a replacement, so a credential cannot accidentally be sent to another provider.
 
-## SMS
+## Implemented scope
 
-Use a Twilio account, an SMS-capable sending number, the Account SID, and Auth Token. Enter the credentials privately in RegFire Communications settings. US local 10-digit business messaging requires the applicable A2P 10DLC brand and campaign registration. Other number types have their own verification requirements. Complete the requirements for the actual sending number and intended messages before sending.
+- Bird email adapter is connected to existing password recovery; existing one-use token, expiry, and owner protections remain intact.
+- Bird SMS adapter supports free-text messages (with explicit category) and `bird_otp_verification` template sends. Template sends omit `from`, as Bird requires for built-in templates.
+- SMS campaign UI, OTP generation/verification/expiry, inbound replies, delivery webhooks, and automatic attendee messaging are not implemented by this transport integration.
+- Accepted messages are recorded as submitted, never as delivered. Provider failures expose a generic error, not response contents or keys. Sends are not automatically retried.
 
-Official instructions: [SMS quickstart](https://www.twilio.com/docs/messaging/quickstart), [A2P 10DLC registration](https://www.twilio.com/docs/messaging/compliance/a2p-10dlc/quickstart).
+For a separate TypeScript server, install `@messagebird/sdk`, set `BIRD_API_KEY` privately, and import the functions from `examples/bird.ts`. The example has no hard-coded recipient or verification code and sends nothing on import. The Python app uses Communications settings rather than that environment variable.
 
-## Current boundary
-
-Saving settings does not prove delivery. The app reports connection status truthfully. General event email/SMS campaigns and registration delivery are not automatically activated by these settings. Existing password recovery has a separate server-side live-delivery switch. A separate authorized send to an agreed test recipient is needed to prove delivery. No account creation, purchase, key creation, DNS change, or live send was performed for this change batch.
+Official references: [Authentication](https://bird.com/docs/guides/authentication), [SMS](https://bird.com/docs/guides/sms/sending-sms), [Email](https://bird.com/docs/guides/email/sending-email), [TypeScript SDK](https://bird.com/docs/sdks/typescript).
