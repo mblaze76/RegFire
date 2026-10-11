@@ -21,3 +21,5 @@ soundButton.addEventListener('click',()=>{if(heroVideo.muted){heroVideo.currentT
 playButton.addEventListener('click',()=>{if(heroVideo.paused||heroVideo.ended){productVideo.pause();heroVideo.play().catch(updateVideoControls);}else {heroVideo.removeAttribute('autoplay');heroVideo.pause();}});
 productVideo.addEventListener('play',()=>heroVideo.pause());
 updateVideoControls();
+
+document.querySelector('.skip').addEventListener('click',()=>document.querySelector('#main').focus({preventScroll:true}));
