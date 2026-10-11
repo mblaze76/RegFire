@@ -36,5 +36,5 @@
    label.textContent=!values?message:rate?.price_minor!=null?new Intl.NumberFormat(undefined,{style:'currency',currency,currencyDisplay:'code'}).format(rate.price_minor/(currency==='JPY'?1:100))+' · '+rate.name:'No active rate';
   }
  }
- window.RegFireSubcategories={render,categories,rates,path(targetID,typeID){return [...(paths.get(targetID+':'+typeID)||[])];},clear(){paths.clear();}};
+ window.RegFireSubcategories={render,categories,rates,restore(targetID,typeID,path){const key=targetID+':'+typeID;if(!paths.has(key))paths.set(key,[...path]);},path(targetID,typeID){return [...(paths.get(targetID+':'+typeID)||[])];},clear(){paths.clear();}};
 })();

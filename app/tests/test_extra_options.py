@@ -23,6 +23,7 @@ class ExtrasValidation(unittest.TestCase):
   for selections in [[selection],[selection|dict(quantity=1,variant_id=b)],[selection|dict(quantity=2,variant_id=a)],[selection|dict(quantity=1,variant_id=a),selection|dict(quantity=1,variant_id=b)]]:
    with self.assertRaises(ValueError):quote(p,selections)
 class ExtrasStorage(unittest.TestCase):
+ upload=test_events.PostgresTest.upload
  setUp=test_events.PostgresTest.setUp;tearDown=test_events.PostgresTest.tearDown;start=test_events.PostgresTest.start;stop=test_events.PostgresTest.stop;request=test_events.PostgresTest.request;auth_headers=test_events.PostgresTest.auth_headers
  def test_save_isolation_conflict_restart_quote_and_delete(self):
   first=self.request('/api/events',draft(),'POST');other=self.request('/api/events',draft(),'POST');path='/api/events/'+first['id']+'/extra-options';p=self.request(path);row=item();p['items']=[row];saved=self.request(path,p,'PUT')
@@ -33,3 +34,13 @@ class ExtrasStorage(unittest.TestCase):
   self.stop();self.start();self.assertEqual(self.request(path),saved)
   self.request('/api/events/'+first['id'],dict(confirm_name=first['name']),'DELETE')
   with self.assertRaises(HTTPError):self.request(path)
+
+ def test_option_images_persist_remove_and_reject_other_flow(self):
+  first=self.request('/api/events',draft(),'POST');other=self.request('/api/events',draft(),'POST');base='/api/events/'+first['id'];path=base+'/extra-options'
+  image=self.upload(first['id'],'logo');foreign=self.upload(other['id'],'logo');page=self.request(path);page['items']=[item(image_asset_id=image['id'])];saved=self.request(path,page,'PUT')
+  self.assertEqual(saved['items'][0]['image_asset_id'],image['id']);self.stop();self.start();self.assertEqual(self.request(path),saved)
+  saved['items'][0]['image_asset_id']=foreign['id']
+  with self.assertRaises(HTTPError):self.request(path,saved,'PUT')
+  saved['items'][0]['image_asset_id']='https://example.com/image.png'
+  with self.assertRaises(HTTPError):self.request(path,saved,'PUT')
+  saved['items'][0]['image_asset_id']=None;removed=self.request(path,saved,'PUT');self.assertIsNone(removed['items'][0]['image_asset_id']);self.assertEqual(removed['items'][0]['price_minor'],2500);self.assertEqual(removed['items'][0]['inventory'],5)

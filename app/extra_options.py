@@ -26,6 +26,11 @@ def validate(data):
     for row in items:
         if not isinstance(row,dict):raise ValueError('Invalid extra option.')
         item=dict(id=ident(row.get('id')),name=text(row.get('name'),'Item name',200,True),description=text(row.get('description',''),'Description',3000))
+        image=row.get('image_asset_id')
+        if image is not None:
+            try:image=str(uuid.UUID(image))
+            except (ValueError,TypeError,AttributeError):raise ValueError('Invalid option image.')
+        item['image_asset_id']=image
         kind=row.get('kind','physical')
         if kind not in ('physical','service'):raise ValueError('Choose a physical item or service / experience.')
         price=row.get('price_minor',0)
@@ -85,6 +90,9 @@ def operation(store,event_id,action='get',data=None):
         if action!='save':raise ValueError('Unknown extra options action.')
         if type(data.get('revision')) is not int or data['revision']!=revision:raise ValueError('Extra options changed in another tab. Reload before saving; your edits are still here.')
         page=validate(data)
+        for item in page['items']:
+            if item['image_asset_id'] and not c.execute(sql.SQL('SELECT 1 FROM {} WHERE id=%s AND event_id=%s').format(sql.Identifier(store.schema,'registration_assets')),(item['image_asset_id'],event_id)).fetchone():
+                raise ValueError('Option image must belong to this registration flow.')
         c.execute(sql.SQL('INSERT INTO {}(event_id,body,revision) VALUES(%s,%s,%s) ON CONFLICT(event_id) DO UPDATE SET body=excluded.body,revision=excluded.revision').format(table),(event_id,Jsonb(page),revision+1))
         return page|meta|dict(revision=revision+1)
 

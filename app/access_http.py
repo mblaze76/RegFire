@@ -25,6 +25,8 @@ def recovery(h):
  return h.server.recovery
 def guard(h):
  path=urlsplit(h.path).path
+ if re.fullmatch(r'/api/payments/webhook/[a-f0-9-]{36}',path):
+  h.identity=None;return True  # Dedicated handler verifies provider signature and server payment state.
  try:
   a=access(h);h.identity=a.session(raw_cookie(h))
   if h.command not in ('GET','HEAD'):
@@ -35,7 +37,7 @@ def guard(h):
     h.send_response(303);h.send_header('Location','/login');h.send_header('Cache-Control','no-store');h.end_headers();return False
    raise AccessError('Sign in to continue.',401)
   if h.command not in ('GET','HEAD') and not hmac.compare_digest(h.headers.get('X-CSRF-Token',''),h.identity['csrf']):raise AccessError('Refresh the page before submitting changes.',403)
-  if path in ('/communications','/communications.js','/communications.css','/api/admin/communications'):
+  if path in ('/payment-settings','/payment-settings.js','/api/admin/payments','/communications','/communications.js','/communications.css','/api/admin/communications'):
    from communications import require_owner
    require_owner(a,h.identity)
   elif path.startswith('/api/admin/') or path=='/admin':a.require_admin(h.identity)
