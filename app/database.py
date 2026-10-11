@@ -126,9 +126,6 @@ class Store:
                 existing['buttons']=[dict(id=str(r[0]),label=r[1],flow_id=str(r[0])) for r in rows]
                 conn.execute(psycopg.sql.SQL('INSERT INTO {}(event_id,body,updated) VALUES(%s,%s,CURRENT_TIMESTAMP) ON CONFLICT(event_id) DO UPDATE SET body=excluded.body').format(table),(event_id,Jsonb(existing)))
             if data is not None:
-                # A loaded browser draft must not silently replace newer branding.
-                if 'updated' in data and data['updated'] != existing.get('updated'):
-                    raise ValueError('Welcome draft conflict: newer changes were saved in another tab. Your edits are still here. Reload the event to review the latest branding before saving.')
                 data = validate(data)
                 if data['buttons'] is None:data['buttons']=existing['buttons']
                 for button in data['buttons']:
@@ -141,8 +138,6 @@ class Store:
                 if data['background_asset_id'] and not conn.execute(psycopg.sql.SQL("SELECT 1 FROM {} WHERE id=%s AND event_id=%s AND kind='background'").format(psycopg.sql.Identifier(self.schema,'registration_assets')),(data['background_asset_id'],event_id)).fetchone():
                     raise ValueError('That background is missing or belongs to another event.')
                 data.update(event_id=event_id, updated=now, status='draft')
-                if row:
-                    conn.execute(psycopg.sql.SQL('INSERT INTO {} (event_id,body) VALUES(%s,%s)').format(psycopg.sql.Identifier(self.schema,'welcome_page_revisions')), (event_id,Jsonb(existing)))
                 conn.execute(psycopg.sql.SQL('INSERT INTO {} (event_id,body,updated) VALUES(%s,%s,%s) ON CONFLICT(event_id) DO UPDATE SET body=excluded.body, updated=excluded.updated').format(table), (event_id,Jsonb(data),now))
                 return data
             return existing
