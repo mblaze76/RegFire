@@ -25,6 +25,7 @@ class SendGridAdapter:
  def __init__(self,config,client=None):self.c=config;self.client=client or HTTPSClient()
  def submit(self,recipient,subject,body):
   payload={'personalizations':[{'to':[{'email':recipient}]}],'from':{'email':self.c['sender'],'name':self.c['sender_name']},'subject':subject,'content':[{'type':'text/plain','value':body}]}
+  if self.c.get('reply_to'):payload['reply_to']={'email':self.c['reply_to']}
   status,headers,_=self.client.request('https://api.sendgrid.com/v3/mail/send',json.dumps(payload).encode(),{'Authorization':'Bearer '+self.c['api_key'],'Content-Type':'application/json'})
   if status!=202:raise DeliveryError('The provider did not accept the email.')
   return {'status':'submitted','provider_id':next((v for k,v in headers.items() if k.lower()=='x-message-id'),None)}
@@ -60,7 +61,9 @@ class BirdAdapter:
 class BirdEmailAdapter(BirdAdapter):
  channel='email'
  def submit(self,recipient,subject,body):
-  return self._submit({'from':{'email':self.c['sender'],'name':self.c['sender_name']},'to':[recipient],'subject':subject,'text':body})
+  payload={'from':{'email':self.c['sender'],'name':self.c['sender_name']},'to':[recipient],'subject':subject,'text':body,'category':'transactional'}
+  if self.c.get('reply_to'):payload['reply_to']=[self.c['reply_to']]
+  return self._submit(payload)
 
 class BirdSMSAdapter(BirdAdapter):
  channel='sms'

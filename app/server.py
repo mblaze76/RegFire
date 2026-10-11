@@ -70,6 +70,10 @@ class Handler(BaseHTTPRequestHandler):
         super().log_message(format, *args)
 
     def do_GET(self):
+        from wallet import handle as wallet_handle
+        if wallet_handle(self):return
+        from confirmation import handle as confirmation_handle
+        if confirmation_handle(self):return
         from checkout import handle as checkout_handle
         if checkout_handle(self):return
         from extra_options import handle as extras_handle
@@ -147,6 +151,10 @@ class Handler(BaseHTTPRequestHandler):
         filename, content_type = files[path]; content = (ROOT / 'static' / filename).read_bytes()
         self.send_response(200); self.send_header('Content-Type', content_type + '; charset=utf-8'); self.send_header('Content-Length', str(len(content))); self.send_header('X-Content-Type-Options', 'nosniff'); self.send_header('Cache-Control','no-store'); self.send_header('Referrer-Policy','same-origin'); self.send_header('X-Frame-Options','SAMEORIGIN'); self.end_headers(); self.wfile.write(content)
     def do_POST(self):
+        from wallet import handle as wallet_handle
+        if wallet_handle(self):return
+        from confirmation import handle as confirmation_handle
+        if confirmation_handle(self):return
         from checkout import handle as checkout_handle
         if checkout_handle(self):return
         from extra_options import handle as extras_handle
@@ -196,6 +204,10 @@ class Handler(BaseHTTPRequestHandler):
         except (ValueError, UnicodeDecodeError) as exc: return self.respond(400,{'error':str(exc)})
         except psycopg.Error: return self.respond(503,{'error':'Could not evaluate pricing. Please retry.'})
     def do_PUT(self):
+        from wallet import handle as wallet_handle
+        if wallet_handle(self):return
+        from confirmation import handle as confirmation_handle
+        if confirmation_handle(self):return
         from extra_options import handle as extras_handle
         if extras_handle(self):return
         if urlsplit(self.path).path.endswith("/event-footer"): return self.footer_request(True)

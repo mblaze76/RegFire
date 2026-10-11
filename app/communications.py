@@ -23,7 +23,12 @@ def handle(h):
  try:
   from access_http import access
   a=access(h);require_owner(a,h.identity);settings=settings_for(h.server)
-  if h.command=='GET':return h.respond(200,settings.public()) or True
+  if h.command=='GET':
+   from confirmation_delivery import readiness
+   from psycopg import sql
+   result=settings.public();result['confirmation_issues']=readiness(settings)
+   with a.store.connect() as c:result['confirmation_queue']=[dict(status=r[0],count=r[1]) for r in c.execute(sql.SQL('SELECT status,count(*) FROM {} GROUP BY status').format(sql.Identifier(a.store.schema,'confirmation_delivery'))).fetchall()]
+   return h.respond(200,result) or True
   if h.command!='POST':return h.respond(405,{'error':'Use GET or POST.'}) or True
   if not h.headers.get('Content-Type','').startswith('application/json'):raise AccessError('Send JSON.')
   length=int(h.headers.get('Content-Length','0'))

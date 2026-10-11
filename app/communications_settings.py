@@ -39,7 +39,7 @@ class Settings:
    if not part['sender']:issues.append('Add a Twilio sending number.')
   return issues
  def public(self):
-  c=self.read();return {'revision':c['revision'],'public_url':c['public_url'],'delivery_enabled':False,'connection_status':'Not tested with a live provider','email':{'provider':c['email']['provider'],'sender':c['email']['sender'],'sender_name':c['email']['sender_name'],'secret_stored':bool(c['email']['api_key']),'issues':self.issues(c,'email')},'sms':{'provider':c['sms']['provider'],'account_sid':c['sms']['account_sid'],'sender':c['sms']['sender'],'secret_stored':bool(c['sms']['auth_token']),'issues':self.issues(c,'sms')},'recovery_delivery_enabled':os.environ.get('REGFIRE_COMMUNICATIONS_LIVE')=='1'}
+  c=self.read();return {'revision':c['revision'],'public_url':c['public_url'],'delivery_enabled':False,'connection_status':'Not tested with a live provider','email':{'provider':c['email']['provider'],'sender':c['email']['sender'],'sender_name':c['email']['sender_name'],'reply_to':c['email'].get('reply_to',''),'sending_domain':c['email']['sender'].split('@')[-1] if '@' in c['email']['sender'] else '', 'secret_stored':bool(c['email']['api_key']),'issues':self.issues(c,'email')},'sms':{'provider':c['sms']['provider'],'account_sid':c['sms']['account_sid'],'sender':c['sms']['sender'],'secret_stored':bool(c['sms']['auth_token']),'issues':self.issues(c,'sms')},'recovery_delivery_enabled':os.environ.get('REGFIRE_COMMUNICATIONS_LIVE')=='1'}
  def save(self,data):
   if not isinstance(data,dict):raise AccessError('Send a settings object.')
   self.path.parent.mkdir(parents=True,exist_ok=True,mode=0o700)
@@ -56,7 +56,7 @@ class Settings:
     if not isinstance(part,dict) or part.get('provider') not in allowed:raise AccessError('Choose a supported provider.')
     previous_provider=c[channel]['provider']
     c[channel]['provider']=part['provider']
-    for key in (('sender','sender_name') if channel=='email' else ('sender','account_sid')):
+    for key in (('sender','sender_name','reply_to') if channel=='email' else ('sender','account_sid')):
      value=part.get(key,'')
      if not isinstance(value,str) or len(value)>254 or any(ord(x)<32 for x in value):raise AccessError('Sender details must be short single-line text.')
      c[channel][key]=value.strip()
@@ -71,6 +71,7 @@ class Settings:
      if part['provider']=='bird' and not re.fullmatch(r'bk_(us1|eu1)_[A-Za-z0-9_-]{16,}',value):raise AccessError('Replace bk_xxxxxxxxx with your real regional Bird API key.')
      c[channel][secret]=value
    if c['email']['sender'] and not re.fullmatch(r'[^\s<>@]+@[^\s<>@]+\.[^\s<>@]+',c['email']['sender']):raise AccessError('Enter a plain sender email address.')
+   if c['email'].get('reply_to') and not re.fullmatch(r'[^\s<>@]+@[^\s<>@]+\.[^\s<>@]+',c['email']['reply_to']):raise AccessError('Enter a plain reply-to email address.')
    if c['sms']['sender'] and not re.fullmatch(r'\+[1-9][0-9]{7,14}',c['sms']['sender']):raise AccessError('Use an international sending number, such as +15555550100.')
    if c['sms']['provider']=='twilio' and c['sms']['account_sid'] and not re.fullmatch(r'AC[0-9a-fA-F]{32}',c['sms']['account_sid']):raise AccessError('Enter a valid Twilio account SID.')
    origin=data.get('public_url','')

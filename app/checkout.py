@@ -111,7 +111,10 @@ def get_order(c,store,ident,actor=None):
  row=c.execute(sql.SQL('SELECT body FROM {} WHERE id=%s FOR UPDATE').format(table(store,'registration_orders')),(ident,)).fetchone()
  if not row or actor and row[0]['actor_id']!=actor:raise ValueError('Registration not found.')
  return row[0]
-def save_order(c,store,o):c.execute(sql.SQL('UPDATE {} SET body=%s,status=%s,updated=now() WHERE id=%s').format(table(store,'registration_orders')),(Jsonb(o),o['status'],o['id']))
+def save_order(c,store,o):
+ c.execute(sql.SQL('UPDATE {} SET body=%s,status=%s,updated=now() WHERE id=%s').format(table(store,'registration_orders')),(Jsonb(o),o['status'],o['id']))
+ from confirmation_delivery import enqueue
+ enqueue(c,store,o)
 
 def handle(h):
  path=urlsplit(h.path).path

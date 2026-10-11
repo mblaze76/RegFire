@@ -37,7 +37,7 @@ def guard(h):
     h.send_response(303);h.send_header('Location','/login');h.send_header('Cache-Control','no-store');h.end_headers();return False
    raise AccessError('Sign in to continue.',401)
   if h.command not in ('GET','HEAD') and not hmac.compare_digest(h.headers.get('X-CSRF-Token',''),h.identity['csrf']):raise AccessError('Refresh the page before submitting changes.',403)
-  if path in ('/payment-settings','/payment-settings.js','/api/admin/payments','/communications','/communications.js','/communications.css','/api/admin/communications'):
+  if path in ('/wallet-settings','/wallet-settings.js','/api/admin/wallet','/payment-settings','/payment-settings.js','/api/admin/payments','/communications','/communications.js','/communications.css','/api/admin/communications'):
    from communications import require_owner
    require_owner(a,h.identity)
   elif path.startswith('/api/admin/') or path=='/admin':a.require_admin(h.identity)
