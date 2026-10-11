@@ -53,11 +53,11 @@ class Handler(SimpleHTTPRequestHandler):
         if self.command != 'HEAD': self.wfile.write(data)
 
     def do_GET(self):
-        if self.protected() and not self.authorized(): self.gate()
+        if self.protected() and (parse_qs(urlsplit(self.path).query).get('entry') == ['1'] or not self.authorized()): self.gate()
         else: super().do_GET()
 
     def do_HEAD(self):
-        if self.protected() and not self.authorized(): self.gate()
+        if self.protected() and (parse_qs(urlsplit(self.path).query).get('entry') == ['1'] or not self.authorized()): self.gate()
         else: super().do_HEAD()
 
     def do_POST(self):

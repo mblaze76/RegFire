@@ -1,6 +1,6 @@
 # Background membership lookup
 
-Membership is organizer-only configuration under Event details and is **disabled by default**. There is no attendee membership page or membership preview pane. API connection settings live in My products → Client settings → Membership integration; imported CSVs and eligibility policy remain in Membership setup. Enable it, select one or more member RegTypes and choose a source and policy. Other RegTypes need no check. No attendee registrations, payments or manual review queue exist in this local edition.
+Membership is organizer-only configuration under Event details and is **disabled by default**. There is no attendee membership page or membership preview pane. API connection settings live in My products → Membership settings → Membership integration; imported CSVs and eligibility policy remain in Membership setup. Enable it, select one or more member RegTypes and choose a source and policy. Other RegTypes need no check. No attendee registrations, payments or manual review queue exist in this local edition.
 
 - **Require verified membership:** an active, unexpired ID/email match qualifies; otherwise preview continuation is blocked and member pricing is withheld.
 - **Allow pending manual review:** an unverified result allows provisional preview continuation with **Price pending**. Organizer diagnostics retain the underlying reason; member pricing is not confirmed. No actual review task is created.
@@ -41,6 +41,6 @@ Marked visible field values trigger a debounced background check in both the emb
 
 The server reads the saved membership policy and connection; field-check requests cannot override them. Disabled/non-member RegTypes do not require a lookup. Required verification holds continuation and pricing; pending policy allows provisional continuation with price marked pending. API outages never produce verified status. Configure at least one visible lookup field when enabling membership for a RegType; otherwise required verification cannot complete.
 
-Client settings updates only the connection and rejects stale connection saves. Membership setup saves omit API settings, so a stale editor cannot overwrite a newer connection. Credential values remain in server environment variables. Connection testing uses explicitly entered test identities; fixture://demo never contacts an external service.
+Membership settings updates only the connection and rejects stale connection saves. Membership setup saves omit API settings, so a stale editor cannot overwrite a newer connection. Credential values remain in server environment variables. Connection testing uses explicitly entered test identities; fixture://demo never contacts an external service.
 
 Old /membership bookmarks redirect directly to the flow’s registration details preview. Legacy membership title/font/color fields stay in the stored configuration for compatibility, but no introduction editor or attendee page renders them.

@@ -14,6 +14,7 @@ const page={event_id:'event',event_name:'Synthetic',timezone:'UTC',currency:'USD
 const item=root.querySelector('[data-session-id]'),title=item.querySelector('button');
 item.onpointerenter({pointerType:'mouse'});assert.equal(document.querySelector('[role=dialog]'),null);flush();
 let dialog=document.querySelector('[role=dialog]');assert.ok(dialog);assert.ok(dialog.textContent.includes('Avery Finch'));assert.equal(dialog.querySelectorAll('img').length,1);assert.ok(dialog.textContent.includes('<img src=x'));assert.equal(dialog.getAttribute('aria-modal'),null);
+view.update(JSON.parse(JSON.stringify(page)));assert.equal(document.querySelector('[role=dialog]'),dialog,'Unchanged live-preview refresh must preserve the open dialog');assert.equal(root.querySelector('[data-session-id]'),item,'Unchanged refresh must preserve hover target');
 root.dispatchEvent(new window.Event('keydown'));item.onpointerleave();flush();assert.equal(document.querySelector('[role=dialog]'),null);
 item.onpointerenter({pointerType:'touch'});flush();assert.equal(document.querySelector('[role=dialog]'),null);
 item.onpointerenter({pointerType:'mouse'});view.update({...page,speakers:[]});flush();assert.equal(document.querySelector('[role=dialog]'),null,'Updating must cancel delayed hover');

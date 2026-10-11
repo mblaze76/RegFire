@@ -5,7 +5,7 @@
  const availability=s=>s.capacity==null?'Unlimited capacity':s.capacity===0?'Sold out':s.capacity+' places available';
  const overlaps=(a,b)=>a.status!=='canceled'&&b.status!=='canceled'&&a.start<b.end&&b.start<a.end;
  function mount(root,{persistent=false}={}){
-  let page=null,chosen=new Set(),key='',storageOK=true,query='',day='',track='',cost='',only=false,sort='start',direction=1;
+  let page=null,pageSnapshot='',chosen=new Set(),key='',storageOK=true,query='',day='',track='',cost='',only=false,sort='start',direction=1;
   root.classList.add('session-browser');
   const top=el('div',undefined,'session-browser-top'),intro=el('div'),eyebrow=el('p','BUILD YOUR EXPERIENCE','eyebrow'),title=el('h2','Explore sessions'),meta=el('p','', 'session-meta'),count=el('strong','','session-count');intro.append(eyebrow,title,meta);top.append(intro,count);
   const days=el('nav',undefined,'session-days');days.setAttribute('aria-label','Choose an agenda day');
@@ -56,7 +56,7 @@
     const time=el('td',date);time.append(el('small',s.start.slice(11,16)+'–'+s.end.slice(11,16)));const speakers=el('td');for(const profile of (page.speakers||[]).filter(p=>(s.speaker_ids||[]).includes(p.id))){const button=el('button',profile.first_name+' '+profile.last_name,'session-text-button');button.type='button';button.setAttribute('aria-haspopup','dialog');button.setAttribute('aria-expanded','false');button.onclick=()=>showSpeaker(button,profile,true);button.onpointerenter=e=>{if(e.pointerType==='mouse')hoverOpen(()=>showSpeaker(button,profile));};button.onfocus=()=>{if(!suppressFocus)hoverOpen(()=>showSpeaker(button,profile));};button.onmouseleave=()=>scheduleHide();button.onblur=()=>scheduleHide();speakers.append(button);}if(s.speaker)speakers.append(el('span',s.speaker));if(!speakers.childNodes.length)speakers.textContent='—';row.append(time,speakers,el('td',s.location||'—'),el('td',s.credits==null?'—':String(s.credits)),el('td',money(s.price_minor,page.currency)));[...row.children].forEach((cell,index)=>cell.dataset.label=['Select','Session','Day / time','Speaker','Room','Credits','Price'][index]);body.append(row);
    }
   }
-  function update(next){page=next;const nextKey='regfire-agenda:'+page.event_id;if(key!==nextKey){key=nextKey;chosen=new Set();if(persistent)try{const saved=JSON.parse(localStorage.getItem(key)||'[]');if(Array.isArray(saved))chosen=new Set(saved.filter(x=>typeof x==='string'));}catch{storageOK=false;}}
+  function update(next){const snapshot=JSON.stringify(next);if(snapshot===pageSnapshot)return;pageSnapshot=snapshot;page=next;const nextKey='regfire-agenda:'+page.event_id;if(key!==nextKey){key=nextKey;chosen=new Set();if(persistent)try{const saved=JSON.parse(localStorage.getItem(key)||'[]');if(Array.isArray(saved))chosen=new Set(saved.filter(x=>typeof x==='string'));}catch{storageOK=false;}}
    const ids=new Set(page.sessions.filter(s=>s.capacity!==0&&s.status!=='canceled').map(s=>s.id));chosen=new Set([...chosen].filter(id=>ids.has(id)));meta.textContent=page.event_name+' · All times '+page.timezone.replaceAll('_',' ');
    const fill=(select,values,caption,value)=>{select.replaceChildren(new Option(caption,''),...[...new Set(values.filter(Boolean))].sort().map(v=>new Option(v,v)));select.value=value;return select.value;};day=fill(dates,page.sessions.filter(s=>page.show_canceled!==false||s.status!=='canceled').map(s=>s.start.slice(0,10)),'All dates',day);track=fill(tracks,page.sessions.map(s=>s.track),'All tracks',track);draw();
   }
