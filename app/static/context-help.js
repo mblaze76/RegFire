@@ -1,6 +1,8 @@
 /* Organizer-only contextual guidance; never writes event settings. */
 (()=>{
  const guide={
+ 'Answer choices':['Set the answers available for this question.','Edit each label or add a choice. Keep at least two choices; change any branching rule that uses a choice before removing it.','Offer Morning, Afternoon and Either as choices.'],
+ 'Branching':['Show a question based on an earlier answer.','Add a rule using an earlier question, comparison and answer. Choose whether all or any rules must match; the RegType assignment must also match. The first question cannot branch from an earlier answer.','Show dietary details only when an earlier question indicates a dietary requirement.'],
  'Attendee photo links':['Create private photo-upload links for individual attendees.','Save the event with photo uploads enabled, enter the attendee details, then create a link. Links expire after seven days and are not emailed automatically.','Create a portrait-upload link for a badge recipient.'],
  'Footer background':['Choose the background behind the shared footer.','Select a color or upload an image, then adjust transparency. Text and logos remain opaque.','Use a dark background with light contact information.'],
  'Social media':['Add your event or organization social links to the shared footer.','Enter the full https address for each profile you want to include.','Link the event’s LinkedIn page.'],
