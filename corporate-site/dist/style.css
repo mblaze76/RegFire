@@ -25,3 +25,5 @@ header,footer{background:#000}
 
 /* Keep the expanded platform copy readable on small screens. */
 @media(max-width:700px){.features{grid-template-columns:1fr}.features article{padding:24px}.features h3{font-size:24px}.features p{font-size:16px}.feature-label{font-size:10px}}
+
+.platform-concept{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;border-radius:10px;margin:16px 0 24px}
