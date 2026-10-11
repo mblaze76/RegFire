@@ -12,9 +12,12 @@ const playButton=document.querySelector('#hero-play');
 const productVideo=document.querySelector('#product-demo');
 function updateVideoControls(){playButton.textContent=heroVideo.ended?'Replay':heroVideo.paused?'Play':'Pause';playButton.setAttribute('aria-label',playButton.textContent+' teaser');soundButton.textContent=heroVideo.muted?'Play with sound':'Mute sound';soundButton.setAttribute('aria-pressed',String(!heroVideo.muted));}
 heroVideo.muted=true;
-heroVideo.play().catch(updateVideoControls);
+const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
+if(!reducedMotion.matches)heroVideo.play().catch(updateVideoControls);
+else {heroVideo.removeAttribute('autoplay');heroVideo.pause();}
+reducedMotion.addEventListener('change',event=>{if(event.matches)heroVideo.pause();});
 ['play','pause','ended','volumechange'].forEach(event=>heroVideo.addEventListener(event,updateVideoControls));
 soundButton.addEventListener('click',()=>{if(heroVideo.muted){heroVideo.currentTime=0;heroVideo.muted=false;productVideo.pause();heroVideo.play().catch(updateVideoControls);}else heroVideo.muted=true;updateVideoControls();});
-playButton.addEventListener('click',()=>{if(heroVideo.paused||heroVideo.ended){productVideo.pause();heroVideo.play().catch(updateVideoControls);}else heroVideo.pause();});
+playButton.addEventListener('click',()=>{if(heroVideo.paused||heroVideo.ended){productVideo.pause();heroVideo.play().catch(updateVideoControls);}else {heroVideo.removeAttribute('autoplay');heroVideo.pause();}});
 productVideo.addEventListener('play',()=>heroVideo.pause());
 updateVideoControls();
