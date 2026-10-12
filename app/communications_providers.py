@@ -20,14 +20,34 @@ class HTTPSClient:
     return response.status,dict(response.headers),payload
   except Exception:raise DeliveryError('The provider did not confirm submission.') from None
 
+def inline_attachments(images,provider):
+ """Accept in-memory PNGs only: no paths, remote fetches, or active content."""
+ if images is None:return []
+ if not isinstance(images,list) or len(images)>16:raise DeliveryError('Use up to sixteen inline images.')
+ result=[];seen=set();total=0
+ for item in images:
+  if not isinstance(item,dict):raise DeliveryError('Invalid inline image.')
+  cid=item.get('content_id');data=item.get('data')
+  if not isinstance(cid,str) or not re.fullmatch(r'[A-Za-z0-9_-]{1,80}',cid) or cid in seen:raise DeliveryError('Use unique inline image identifiers.')
+  if not isinstance(data,bytes) or not data.startswith(b'\x89PNG\r\n\x1a\n'):raise DeliveryError('Inline images must be PNG bytes.')
+  total+=len(data)
+  if total>5*1024*1024:raise DeliveryError('Inline images exceed the email image budget.')
+  seen.add(cid);entry=dict(filename=cid+'.png',content=base64.b64encode(data).decode(),content_id=cid)
+  if provider=='bird':entry['content_type']='image/png'
+  else:entry.update(type='image/png',disposition='inline')
+  result.append(entry)
+ return result
+
 class SendGridAdapter:
  name='sendgrid';channel='email'
  def __init__(self,config,client=None):self.c=config;self.client=client or HTTPSClient()
- def submit(self,recipient,subject,body,*,html=None):
+ def submit(self,recipient,subject,body,*,html=None,inline_images=None):
   payload={'personalizations':[{'to':[{'email':recipient}]}],'from':{'email':self.c['sender'],'name':self.c['sender_name']},'subject':subject,'content':[{'type':'text/plain','value':body}]}
   if html is not None:
    if not isinstance(html,str) or not html.strip():raise DeliveryError('HTML email content must not be empty.')
    payload['content'].append({'type':'text/html','value':html})
+  images=inline_attachments(inline_images,'sendgrid')
+  if images:payload['attachments']=images
   if self.c.get('reply_to'):payload['reply_to']={'email':self.c['reply_to']}
   status,headers,_=self.client.request('https://api.sendgrid.com/v3/mail/send',json.dumps(payload).encode(),{'Authorization':'Bearer '+self.c['api_key'],'Content-Type':'application/json'})
   if status!=202:raise DeliveryError('The provider did not accept the email.')
@@ -63,11 +83,13 @@ class BirdAdapter:
 
 class BirdEmailAdapter(BirdAdapter):
  channel='email'
- def submit(self,recipient,subject,body,*,html=None):
+ def submit(self,recipient,subject,body,*,html=None,inline_images=None):
   payload={'from':{'email':self.c['sender'],'name':self.c['sender_name']},'to':[recipient],'subject':subject,'text':body,'category':'transactional'}
   if html is not None:
    if not isinstance(html,str) or not html.strip():raise DeliveryError('HTML email content must not be empty.')
    payload['html']=html
+  images=inline_attachments(inline_images,'bird')
+  if images:payload['attachments']=images
   if self.c.get('reply_to'):payload['reply_to']=[self.c['reply_to']]
   return self._submit(payload)
 
