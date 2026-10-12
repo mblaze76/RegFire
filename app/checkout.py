@@ -16,7 +16,7 @@ def settings(server):return PaymentSettings(getattr(server,'payment_settings_pat
 def body(c,store,name,flow,default):
  row=c.execute(sql.SQL('SELECT body FROM {} WHERE event_id=%s').format(table(store,name)),(flow,)).fetchone();return row[0] if row else default
 
-def quote_order(store,c,flow,data,config,exclude=None):
+def quote_order(store,c,flow,data,config,exclude=None,extra_held=()):
  from registration import starter,validate_page,pricing_preview,selected_membership
  from demographics import starter as demo_starter,evaluate
  from extra_options import quote as extras_quote
@@ -74,7 +74,7 @@ def quote_order(store,c,flow,data,config,exclude=None):
  session_page=body(c,store,'event_sessions',flow,dict(sessions=[],currency=page['currency']));extra_page=body(c,store,'extra_options',flow,dict(items=[],currency=page['currency']))
  chosen=data.get('sessions',[])
  if not isinstance(chosen,list) or len(chosen)>500 or any(not isinstance(x,str) for x in chosen) or len(set(chosen))!=len(chosen):raise ValueError('Session selections are invalid.')
- existing=c.execute(sql.SQL('SELECT id,body FROM {} WHERE flow_id=%s AND status=ANY(%s)').format(table(store,'registration_orders')),(flow,list(ACTIVE))).fetchall();held=[r[1] for r in existing if str(r[0])!=exclude]
+ existing=c.execute(sql.SQL('SELECT id,body FROM {} WHERE flow_id=%s AND status=ANY(%s)').format(table(store,'registration_orders')),(flow,list(ACTIVE))).fetchall();held=[r[1] for r in existing if str(r[0]) not in (exclude if isinstance(exclude,(list,tuple,set)) else [exclude])]+list(extra_held)
  sessions=[];lines=[dict(name=kind['name'],quantity=1,unit_price_minor=rate['price_minor'],line_total_minor=rate['price_minor'],kind='registration')]
  for ident in chosen:
   item=next((s for s in session_page['sessions'] if s['id']==ident),None)
@@ -113,6 +113,10 @@ def get_order(c,store,ident,actor=None):
  return row[0]
 def save_order(c,store,o):
  c.execute(sql.SQL('UPDATE {} SET body=%s,status=%s,updated=now() WHERE id=%s').format(table(store,'registration_orders')),(Jsonb(o),o['status'],o['id']))
+ from attendee_accounts import complete
+ complete(c,store,o)
+ from group_checkout import propagate
+ if o.get('group_order_ids'):propagate(c,store,o)
  from confirmation_delivery import enqueue
  enqueue(c,store,o)
 
@@ -121,7 +125,7 @@ def handle(h):
  files={'/review':'review.html','/payment':'payment.html','/confirmation':'payment.html','/checkout-site.js':'checkout-site.js','/payment-settings':'payment-settings.html','/payment-settings.js':'payment-settings.js'}
  if h.command=='GET' and path in files:
   content=(Path(__file__).parent/'static'/files[path]).read_bytes();h.send_response(200);h.send_header('Content-Type','text/javascript' if path.endswith('.js') else 'text/html');h.send_header('Content-Length',str(len(content)));h.send_header('Cache-Control','no-store');h.send_header('X-Content-Type-Options','nosniff');h.end_headers();h.wfile.write(content);return True
- admin=path=='/api/admin/payments';m=re.fullmatch(r'/api/events/([a-f0-9-]{36})/checkout/(quote|save|methods)',path);order_match=re.fullmatch(r'/api/checkout/([a-f0-9-]{36})/(start|status)',path);hook=re.fullmatch(r'/api/payments/webhook/([a-f0-9-]{36})',path)
+ admin=path=='/api/admin/payments';m=re.fullmatch(r'/api/events/([a-f0-9-]{36})/checkout/(quote|save|methods|group-save|group-quote)',path);order_match=re.fullmatch(r'/api/checkout/([a-f0-9-]{36})/(start|status)',path);hook=re.fullmatch(r'/api/payments/webhook/([a-f0-9-]{36})',path)
  if not(admin or m or order_match or hook):return False
  try:
   config=settings(h.server);store=h.server.store;raw=b'';data={}
@@ -176,6 +180,10 @@ def handle(h):
     cfg=config.read();assignment=cfg['assignments'].get(event.get('parent_event_id',flow),{});available=[dict(id=c['id'],name=c['name'],provider=c['provider'],mode=c['mode'],issues=issues(c)) for c in cfg['connections'] if c['id'] in assignment.get('connections',[])]
     h.respond(200,dict(methods=available,default=assignment.get('default')));return True
    if h.command!='POST':raise ValueError('Use POST.')
+   if action in ('group-save','group-quote'):
+    from group_checkout import save
+    with store.connect() as c:result=save(store,c,flow,actor,data,config.read(),preview=action=='group-quote')
+    h.respond(200,result);return True
    # Membership eligibility is checked from saved organizer settings, never a client-supplied page.
    eligibility=store.membership(flow,'check-fields',dict(regtype_id=data.get('regtype_id'),subcategory_path=data.get('subcategory_path',[]),values=data.get('contacts',{})))
    if not eligibility or not eligibility.get('can_continue') or eligibility.get('status')=='pending':raise ValueError('Membership eligibility must be confirmed before checkout.')
@@ -193,6 +201,8 @@ def handle(h):
      if o['status']=='pending':o.update(data=clean,quote=q);save_order(c,store,o)
     else:
      o=dict(id=str(uuid.uuid4()),flow_id=flow,parent_event_id=parent,actor_id=actor,data=clean,quote=q,status='pending');c.execute(sql.SQL('INSERT INTO {}(id,flow_id,actor_id,request_key,body,status) VALUES(%s,%s,%s,%s,%s,%s)').format(table(store,'registration_orders')),(o['id'],flow,actor,request_key,Jsonb(o),o['status']))
+    from attendee_accounts import bind
+    bind(c,store,o,data.get('enrollment_token'))
    h.respond(200,public(o));return True
   if order_match:
    ident=str(uuid.UUID(order_match[1]));action=order_match[2]
@@ -201,6 +211,7 @@ def handle(h):
     o=get_order(c,store,ident,actor)
     from access_http import access
     access(h).require_event(h.identity,o['flow_id'])
+    if o.get('group_parent_id',o['id'])!=o['id']:raise ValueError('Use the combined checkout for this attendee.')
     if action=='status':
      if o.get('provider_id') and o['status'] not in ('paid','confirmed_free','expired'):
       connection=config.connection(o['connection_id']);status=providers.verify(connection,o,capture=h.command=='POST')
@@ -211,10 +222,14 @@ def handle(h):
     if o['status'] in ('paid','confirmed_free'):h.respond(200,public(o));return True
     if o['status']=='expired':raise ValueError('This checkout expired. Start a new registration attempt.')
     if o['status']=='pending':
-     eligibility=store.membership(o['flow_id'],'check-fields',dict(regtype_id=o['data']['regtype_id'],subcategory_path=o['data']['subcategory_path'],values=o['data']['contacts']))
-     if not eligibility or not eligibility.get('can_continue') or eligibility.get('status')=='pending':raise ValueError('Membership eligibility must be confirmed before payment.')
-     q,clean,parent=quote_order(store,c,o['flow_id'],o['data'],config.read(),o['id'])
-     if q!=o['quote']:raise ValueError('Prices or selections changed. Return to Verify your details before paying.')
+     if o.get('group_order_ids'):
+      from group_checkout import revalidate
+      q,parent=revalidate(store,c,o,config.read())
+     else:
+      eligibility=store.membership(o['flow_id'],'check-fields',dict(regtype_id=o['data']['regtype_id'],subcategory_path=o['data']['subcategory_path'],values=o['data']['contacts']))
+      if not eligibility or not eligibility.get('can_continue') or eligibility.get('status')=='pending':raise ValueError('Membership eligibility must be confirmed before payment.')
+      q,clean,parent=quote_order(store,c,o['flow_id'],o['data'],config.read(),o['id'])
+      if q!=o['quote']:raise ValueError('Prices or selections changed. Return to Verify your details before paying.')
      if q['grand_total_minor']==0:o['status']='confirmed_free';save_order(c,store,o);c.commit();h.respond(200,public(o));return True
      connection=config.connection(data.get('connection_id'))
      if connection['id'] not in config.read()['assignments'].get(parent,{}).get('connections',[]):raise ValueError('This payment connection is not assigned to the event.')

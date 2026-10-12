@@ -31,7 +31,8 @@ def guard(h):
   a=access(h);h.identity=a.session(raw_cookie(h))
   if h.command not in ('GET','HEAD'):
    if h.headers.get('Origin')!='http://'+h.headers.get('Host',''):raise AccessError('Use this app to submit changes.',403)
-  if path in PUBLIC or (h.command=='GET' and path in STATIC):return True
+  from attendee_accounts import PUBLIC as ATTENDEE_PUBLIC
+  if path in PUBLIC or path in ATTENDEE_PUBLIC or (h.command=='GET' and path in STATIC):return True
   if not h.identity:
    if h.command=='GET' and not path.startswith('/api/'):
     h.send_response(303);h.send_header('Location','/login');h.send_header('Cache-Control','no-store');h.end_headers();return False

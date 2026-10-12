@@ -239,14 +239,15 @@ class Store:
             conn.execute(psycopg.sql.SQL('INSERT INTO {} (event_id,body,updated) VALUES(%s,%s,%s) ON CONFLICT(event_id) DO UPDATE SET body=excluded.body,updated=excluded.updated').format(psycopg.sql.Identifier(self.schema,'demographics_pages')),(event_id,Jsonb(normalized),now))
             return normalized
 
-    def membership(self,event_id,action='get',data=None):
+    def membership(self,event_id,action='get',data=None,connection=None):
         from membership import starter,validate,parse_csv,summary,digest,lookup_keys,matches,api_lookup,outcome,Unavailable
         from registration import starter as registration_starter
         from datetime import datetime,timezone
         data=data or {};now=datetime.now(timezone.utc).isoformat()
         settings_table=psycopg.sql.Identifier(self.schema,'membership_settings')
         imports_table=psycopg.sql.Identifier(self.schema,'membership_imports')
-        with self.connect() as conn:
+        from contextlib import nullcontext
+        with (nullcontext(connection) if connection is not None else self.connect()) as conn:
             ev=conn.execute(psycopg.sql.SQL('SELECT body FROM {} WHERE id=%s FOR UPDATE').format(self.table()),(event_id,)).fetchone()
             if not ev:return None
             reg=conn.execute(psycopg.sql.SQL('SELECT body FROM {} WHERE event_id=%s').format(self.page_table()),(event_id,)).fetchone()

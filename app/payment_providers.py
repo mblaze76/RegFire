@@ -12,7 +12,8 @@ def request(url,method='GET',data=None,headers=None):
   with urlopen(Request(url,data=data,headers=headers or {},method=method),timeout=20) as r:return json.load(r)
  except (HTTPError,URLError,TimeoutError,ValueError):raise ProviderError('The payment provider did not confirm the request. Check payment status before trying again.') from None
 
-def amount(order):return str(Decimal(order['quote']['grand_total_minor'])/(1 if order['quote']['currency']=='JPY' else 100))
+def payment_quote(order):return order.get('payment_quote',order['quote'])
+def amount(order):return str(Decimal(payment_quote(order)['grand_total_minor'])/(1 if payment_quote(order)['currency']=='JPY' else 100))
 
 def stripe(c,path,method='GET',data=None,key=None):
  headers={'Authorization':'Bearer '+c['secret'],'Content-Type':'application/x-www-form-urlencoded'}
@@ -29,11 +30,11 @@ def paypal(c,path,method='GET',data=None,key=None):
 def create(c,order):
  base=c['return_base'];fragment='#event='+order['flow_id']+'&order='+order['id'];success=base+'/payment'+fragment;cancel=base+'/payment'+fragment+'&canceled=1';key=order['id']
  if c['provider']=='stripe':
-  d={'mode':'payment','success_url':success,'cancel_url':cancel,'client_reference_id':key,'metadata[regfire_order]':key,'line_items[0][price_data][currency]':order['quote']['currency'].lower(),'line_items[0][price_data][unit_amount]':order['quote']['grand_total_minor'],'line_items[0][price_data][product_data][name]':'Event registration '+key[:8],'line_items[0][quantity]':1}
+  d={'mode':'payment','success_url':success,'cancel_url':cancel,'client_reference_id':key,'metadata[regfire_order]':key,'line_items[0][price_data][currency]':payment_quote(order)['currency'].lower(),'line_items[0][price_data][unit_amount]':payment_quote(order)['grand_total_minor'],'line_items[0][price_data][product_data][name]':'Event registration '+key[:8],'line_items[0][quantity]':1}
   r=stripe(c,'checkout/sessions','POST',d,key)
   if bool(r.get('livemode'))!=(c['mode']=='live'):raise ProviderError('Stripe returned a different payment mode.')
   return dict(id=r['id'],url=r['url'])
- d={'intent':'CAPTURE','purchase_units':[{'reference_id':key,'custom_id':key,'amount':{'currency_code':order['quote']['currency'],'value':amount(order)}}],'payment_source':{'paypal':{'experience_context':{'return_url':success,'cancel_url':cancel,'user_action':'PAY_NOW','shipping_preference':'NO_SHIPPING'}}}}
+ d={'intent':'CAPTURE','purchase_units':[{'reference_id':key,'custom_id':key,'amount':{'currency_code':payment_quote(order)['currency'],'value':amount(order)}}],'payment_source':{'paypal':{'experience_context':{'return_url':success,'cancel_url':cancel,'user_action':'PAY_NOW','shipping_preference':'NO_SHIPPING'}}}}
  r=paypal(c,'/v2/checkout/orders','POST',d,key);link=next((x['href'] for x in r.get('links',[]) if x['rel'] in ('payer-action','approve')),None)
  if not link:raise ProviderError('PayPal did not return an approval link.')
  return dict(id=r['id'],url=link)
@@ -42,18 +43,18 @@ def verify(c,order,capture=False):
  ident=quote(order['provider_id'],safe='')
  if c['provider']=='stripe':
   r=stripe(c,'checkout/sessions/'+ident)
-  if r.get('client_reference_id')!=order['id'] or r.get('currency','').upper()!=order['quote']['currency'] or r.get('amount_total')!=order['quote']['grand_total_minor'] or bool(r.get('livemode'))!=(c['mode']=='live'):raise ProviderError('Payment details do not match this registration.')
+  if r.get('client_reference_id')!=order['id'] or r.get('currency','').upper()!=payment_quote(order)['currency'] or r.get('amount_total')!=payment_quote(order)['grand_total_minor'] or bool(r.get('livemode'))!=(c['mode']=='live'):raise ProviderError('Payment details do not match this registration.')
   return 'paid' if r.get('payment_status')=='paid' else 'expired' if r.get('status')=='expired' else 'pending'
  r=paypal(c,'/v2/checkout/orders/'+ident)
  units=r.get('purchase_units',[])
- if len(units)!=1 or units[0].get('custom_id')!=order['id'] or units[0].get('amount',{}).get('currency_code')!=order['quote']['currency'] or Decimal(units[0]['amount']['value'])!=Decimal(amount(order)):raise ProviderError('PayPal details do not match this registration.')
+ if len(units)!=1 or units[0].get('custom_id')!=order['id'] or units[0].get('amount',{}).get('currency_code')!=payment_quote(order)['currency'] or Decimal(units[0]['amount']['value'])!=Decimal(amount(order)):raise ProviderError('PayPal details do not match this registration.')
  if capture and r.get('status')=='APPROVED':
   paypal(c,'/v2/checkout/orders/'+ident+'/capture','POST',{},order['id']+'-capture')
   return verify(c,order,False)
  captures=units[0].get('payments',{}).get('captures',[])
  if r.get('status')=='COMPLETED' and len(captures)==1:
   cap=captures[0]
-  if cap.get('status')=='COMPLETED' and cap.get('amount',{}).get('currency_code')==order['quote']['currency'] and Decimal(cap['amount']['value'])==Decimal(amount(order)):return 'paid'
+  if cap.get('status')=='COMPLETED' and cap.get('amount',{}).get('currency_code')==payment_quote(order)['currency'] and Decimal(cap['amount']['value'])==Decimal(amount(order)):return 'paid'
  return 'expired' if r.get('status')=='VOIDED' else 'pending'
 
 def webhook(c,headers,raw):

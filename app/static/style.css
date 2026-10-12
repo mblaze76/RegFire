@@ -269,3 +269,8 @@ body.flow-branded::before{content:'';position:fixed;inset:0;z-index:-1;pointer-e
 
 /* Keep ordinary form copy readable over solid event colors; artwork retains its existing contrast treatment. */
 .flow-branded .preview-surface:not(.artwork-contrast) .preview-card{background:#fffffff2;border:1px solid #e0e2e6;border-radius:16px}
+.attendee-passwords{padding:20px;border:1px solid #bac0cb;border-radius:12px;margin:20px 0}.attendee-passwords input{width:100%;max-width:100%;box-sizing:border-box}.attendee-passwords button{min-height:44px}.attendee-passwords p{line-height:1.5}
+/* Progress chips have their own opaque surfaces, independent of photo-theme text. */
+.flow-branded .artwork-contrast .preview-card .registration-progress li{background:#eef0f4;color:#404954;font-weight:500;opacity:1}
+.flow-branded .artwork-contrast .preview-card .registration-progress li.is-earlier{background:#f4e4da;color:#663723}
+.flow-branded .artwork-contrast .preview-card .registration-progress li.is-current{background:#8c351e;color:#fff;font-weight:750;box-shadow:0 0 0 2px #f1b68d}
