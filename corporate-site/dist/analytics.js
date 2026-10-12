@@ -4,7 +4,7 @@
  if(location.hostname!=='regfire.events'||!pages.has(location.pathname))return;
  const id='G-6FBJ0NEPKF',key='regfire-analytics-consent';let started=false;
  const choice=()=>{try{return localStorage.getItem(key);}catch{return null;}};
- function start(){if(started)return;started=true;window.dataLayer=window.dataLayer||[];const tag=(...args)=>window.dataLayer.push(args);window.gtag=tag;
+ function start(){if(started)return;started=true;window.dataLayer=window.dataLayer||[];function tag(){window.dataLayer.push(arguments);}window.gtag=tag;
  tag('consent','default',{analytics_storage:'granted',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'});
  tag('js',new Date());tag('config',id,{send_page_view:false,allow_google_signals:false,allow_ad_personalization_signals:false,page_location:location.origin+location.pathname,page_referrer:document.referrer?new URL(document.referrer).origin:'',ignore_referrer:document.referrer.includes('/investors')});
  tag('event','page_view',{page_location:location.origin+location.pathname,page_title:document.title});
