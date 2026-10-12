@@ -4,12 +4,13 @@ menu.addEventListener('click', () => {const open = menu.getAttribute('aria-expan
 navigation.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{navigation.classList.remove('open');menu.setAttribute('aria-expanded','false');menu.setAttribute('aria-label','Open navigation');}));
 document.addEventListener('keydown', e=>{if(e.key==='Escape' && navigation.classList.contains('open')){navigation.classList.remove('open');menu.setAttribute('aria-expanded','false');menu.setAttribute('aria-label','Open navigation');menu.focus();}});
 
-document.querySelector('.client-login').addEventListener('click',()=>document.querySelector('#client-access').showModal());
+document.querySelector('.client-login')?.addEventListener('click',()=>document.querySelector('#client-access').showModal());
 
 const heroVideo=document.querySelector('#hero-teaser');
 const soundButton=document.querySelector('#hero-sound');
 const playButton=document.querySelector('#hero-play');
 const productVideo=document.querySelector('#product-demo');
+if(heroVideo && soundButton && playButton && productVideo){
 function updateVideoControls(){playButton.textContent=heroVideo.ended?'Replay':heroVideo.paused?'Play':'Pause';playButton.setAttribute('aria-label',playButton.textContent+' teaser');soundButton.textContent=heroVideo.muted?'Play with sound':'Mute sound';soundButton.setAttribute('aria-pressed',String(!heroVideo.muted));}
 heroVideo.muted=true;
 const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -22,4 +23,5 @@ playButton.addEventListener('click',()=>{if(heroVideo.paused||heroVideo.ended){p
 productVideo.addEventListener('play',()=>heroVideo.pause());
 updateVideoControls();
 
+}
 document.querySelector('.skip').addEventListener('click',()=>document.querySelector('#main').focus({preventScroll:true}));
