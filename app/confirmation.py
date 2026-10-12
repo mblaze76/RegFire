@@ -59,6 +59,22 @@ def qr_svg(payload):
  from reportlab.graphics import renderSVG
  q=QrCodeWidget(payload,barLevel='M',barBorder=4);x,y,w,h=q.getBounds();d=Drawing(w,h);d.add(q);return renderSVG.drawToString(d)
 
+def qr_png(event_id,confirmation_id):
+ """Email-safe QR artwork: identifiers only, integer pixels and a quiet zone."""
+ from reportlab.graphics.barcode.qr import QrCodeWidget
+ from PIL import Image,ImageDraw
+ q=QrCodeWidget(qr_payload(event_id,confirmation_id),barLevel='M')
+ q.qr.make()
+ modules=q.qr.modules;scale=6;border=4
+ image=Image.new('RGB',((len(modules)+2*border)*scale,)*2,'white')
+ draw=ImageDraw.Draw(image)
+ for y,row in enumerate(modules):
+  for x,dark in enumerate(row):
+   if dark:
+    left=(x+border)*scale;top=(y+border)*scale
+    draw.rectangle((left,top,left+scale-1,top+scale-1),fill='black')
+ output=io.BytesIO();image.save(output,format='PNG');return output.getvalue()
+
 def date_label(value,zone):
  try:return datetime.fromisoformat(value).replace(tzinfo=ZoneInfo(zone)).strftime('%b %d, %Y, %I:%M %p %Z')
  except (ValueError,TypeError):return value
