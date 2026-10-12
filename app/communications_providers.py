@@ -23,8 +23,11 @@ class HTTPSClient:
 class SendGridAdapter:
  name='sendgrid';channel='email'
  def __init__(self,config,client=None):self.c=config;self.client=client or HTTPSClient()
- def submit(self,recipient,subject,body):
+ def submit(self,recipient,subject,body,*,html=None):
   payload={'personalizations':[{'to':[{'email':recipient}]}],'from':{'email':self.c['sender'],'name':self.c['sender_name']},'subject':subject,'content':[{'type':'text/plain','value':body}]}
+  if html is not None:
+   if not isinstance(html,str) or not html.strip():raise DeliveryError('HTML email content must not be empty.')
+   payload['content'].append({'type':'text/html','value':html})
   if self.c.get('reply_to'):payload['reply_to']={'email':self.c['reply_to']}
   status,headers,_=self.client.request('https://api.sendgrid.com/v3/mail/send',json.dumps(payload).encode(),{'Authorization':'Bearer '+self.c['api_key'],'Content-Type':'application/json'})
   if status!=202:raise DeliveryError('The provider did not accept the email.')
@@ -60,8 +63,11 @@ class BirdAdapter:
 
 class BirdEmailAdapter(BirdAdapter):
  channel='email'
- def submit(self,recipient,subject,body):
+ def submit(self,recipient,subject,body,*,html=None):
   payload={'from':{'email':self.c['sender'],'name':self.c['sender_name']},'to':[recipient],'subject':subject,'text':body,'category':'transactional'}
+  if html is not None:
+   if not isinstance(html,str) or not html.strip():raise DeliveryError('HTML email content must not be empty.')
+   payload['html']=html
   if self.c.get('reply_to'):payload['reply_to']=[self.c['reply_to']]
   return self._submit(payload)
 
