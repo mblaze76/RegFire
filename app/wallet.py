@@ -2,7 +2,7 @@
 import copy,fcntl,hashlib,io,json,os,re,stat,tempfile,time,uuid,zipfile
 from datetime import datetime,timezone
 from pathlib import Path
-from urllib.parse import urlsplit
+from urllib.parse import urlsplit,parse_qs
 from cryptography import x509
 from cryptography.hazmat.primitives import hashes,serialization
 from cryptography.hazmat.primitives.asymmetric import padding,rsa,ec
@@ -129,12 +129,33 @@ def handle(h):
  if path in ('/wallet-settings','/wallet-settings.js') and h.command=='GET':
   from confirmation import send_bytes
   filename='wallet-settings.html' if path=='/wallet-settings' else 'wallet-settings.js';send_bytes(h,(ROOT/'static'/filename).read_bytes(),'text/html' if filename.endswith('.html') else 'text/javascript');return True
- if path!='/api/admin/wallet':return False
+ if path not in ('/api/admin/wallet','/api/admin/wallet/event','/api/admin/wallet/pass'):return False
  try:
   from communications import require_owner
   from access_http import access
   require_owner(access(h),h.identity);config=settings(h.server)
-  if h.command=='GET':result=config.public()
+  if path!='/api/admin/wallet':
+   if h.command!='GET':raise ValueError('Use GET.')
+   from psycopg import sql
+   from confirmation import document,send_bytes
+   query=parse_qs(urlsplit(h.path).query);event=query.get('event',[''])[0];access(h).require_event(h.identity,event)
+   with h.server.store.connect() as c:
+    flows=c.execute(sql.SQL('SELECT id,name FROM {} WHERE event_id=%s AND NOT archived ORDER BY position').format(sql.Identifier(h.server.store.schema,'registration_flows')),(event,)).fetchall()
+    rows=c.execute(sql.SQL("SELECT body FROM {} WHERE body->>'parent_event_id'=%s AND status IN ('paid','confirmed_free') ORDER BY updated DESC LIMIT 500").format(sql.Identifier(h.server.store.schema,'registration_orders')),(event,)).fetchall()
+   orders=[r[0] for r in rows if r[0].get('mode')!='sandbox']
+   if path.endswith('/event'):
+    h.respond(200,dict(event_id=event,flows=[dict(id=str(r[0]),name=r[1]) for r in flows],registrations=[dict(id=o['id'],flow_id=o['flow_id'],name=' '.join(str(v['value']) for v in o['quote']['details'] if v['label'].lower() in ('first name','last name','name')) or o['id']) for o in orders]));return True
+   ident=query.get('order',[''])[0];order=next((o for o in orders if o['id']==ident),None)
+   if not order:raise ValueError('Choose an eligible registration belonging to this event.')
+   doc=document(h.server.store,order['flow_id'],order)
+   if doc['event_id']!=event or not doc['settings']['show_wallet']:raise ValueError('Wallet is disabled or the event does not match.')
+   provider=query.get('provider',[''])[0];private=config.read()
+   if provider=='apple':send_bytes(h,apple_pass(doc,private['apple']),'application/vnd.apple.pkpass','RegFire.pkpass')
+   elif provider=='google':h.respond(200,dict(url=google_url(doc,private['google'])))
+   else:raise ValueError('Choose Apple or Google.')
+   return True
+  if h.command=='GET':
+   result=config.public();result['events']=[dict(id=e['id'],name=e['name']) for e in access(h).event_list(h.identity)]
   elif h.command=='POST':
    size=int(h.headers.get('Content-Length',0))
    if not 0<size<=90000:raise ValueError('Wallet settings are missing or too large.')

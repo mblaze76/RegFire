@@ -48,6 +48,23 @@ class ConfirmationStorage(unittest.TestCase):
   for path in ['/api/admin/wallet','/wallet-settings','/api/admin/communications']:
    with self.assertRaises(HTTPError) as caught:self.request(path)
    self.assertEqual(caught.exception.code,403)
+ def test_wallet_event_selection_isolated_and_read_only(self):
+  flow,_,data=self.setup_order(0);other,_,_=self.setup_order(0)
+  self.server.wallet_settings_path=Path(self.upload_tmp.name)/'wallet.json'
+  order=self.request('/api/events/'+flow+'/checkout/save',data,'POST')
+  self.request('/api/checkout/'+order['id']+'/start',{},'POST')
+  before=self.request('/api/admin/wallet')
+  selected=self.request('/api/admin/wallet/event?event='+flow)
+  self.assertEqual([r['id'] for r in selected['registrations']],[order['id']])
+  self.assertEqual(self.request('/api/admin/wallet/event?event='+other)['registrations'],[])
+  self.assertEqual(self.request('/api/admin/wallet'),before)
+  for query in ['event=invalid','event='+other+'&order='+order['id']+'&provider=apple','event='+flow+'&order='+order['id']+'&provider=apple']:
+   with self.assertRaises(HTTPError) as caught:self.request('/api/admin/wallet/pass?'+query)
+   self.assertIn(caught.exception.code,(400,404))
+  actor=self.access.session(self.raw_session)['id']
+  with self.store.connect() as c:c.execute(sql.SQL("UPDATE {} SET role='admin' WHERE id=%s").format(sql.Identifier(self.schema,'access_users')),(actor,))
+  with self.assertRaises(HTTPError) as caught:self.request('/api/admin/wallet/event?event='+flow)
+  self.assertEqual(caught.exception.code,403)
  def test_outbox_submission_unknown_never_retries(self):
   flow,_,data=self.setup_order(0);order=self.request('/api/events/'+flow+'/checkout/save',data,'POST');self.request('/api/checkout/'+order['id']+'/start',{},'POST')
   from communications_settings import Settings

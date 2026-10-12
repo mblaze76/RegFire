@@ -247,7 +247,7 @@ window.saveSetupNext=async()=>{
  try{
   if(from==='setup'||from==='registration'){
    if(!await window.RegistrationBuilder.save())return;
-   if(from==='setup'&&!await window.MembershipBuilder.save()){document.getElementById('page-feedback').textContent='Membership settings could not be saved. Check Membership setup below; your edits are still here.';const card=document.querySelector('#website-membership-settings > details');if(card)card.open=true;return;}
+   if(from==='setup'&&!await window.MembershipBuilder.save()){document.getElementById('page-feedback').textContent='Event Membership Setup could not be saved. Check Membership setup below; your edits are still here.';const card=document.querySelector('#website-membership-settings > details');if(card)card.open=true;return;}
   }else if(from==='demographics'){if(!await window.DemographicsBuilder.save())return;}
   else if(from==='sessions'){if(!await window.SessionsBuilder.save())return;}
   else if(from==='confirmation'){if(!await window.ConfirmationBuilder.save())return;}
