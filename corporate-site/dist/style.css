@@ -47,3 +47,7 @@ video:focus-visible{outline:3px solid var(--yellow);outline-offset:4px}
 .ignite-product{--bg:#202126;--panel:#292b32;--line:#47434a;background:#202126}.ignite-product header,.ignite-product footer{background:#202126}.ignite-product .product-intro{background:linear-gradient(140deg,#24262c,#29252a)}.ignite-product .product-direction,.ignite-product .suite-more{background:#24262c}.ignite-product .product-hero-grid figure{background:#222329;border-color:#4c4446}.ignite-product .product-benefits article,.ignite-product .suite-more a{background:#2d2e35}.ignite-product .product-description,.ignite-product .product-benefits p,.ignite-product .direction-intro p,.ignite-product .suite-note{color:#d4d1d7}
 
 .leadfire-product,.leadfire-product header,.leadfire-product footer,.leadfire-product .product-intro,.leadfire-product .product-direction,.leadfire-product .suite-more{background:#25262c}.leadfire-product .product-hero-grid figure{background:#25262c}
+
+/* Let the featured artwork fill its card height without stretching the SVG logo. */
+.product-card:first-child{background:#15171c}.product-card:first-child figure{position:relative;align-self:stretch;overflow:hidden;background:#15171c}.product-card:first-child img{position:absolute;inset:0;width:100%;height:100%;object-fit:fill}
+@media(max-width:600px){.product-card:first-child img{position:static;height:auto}}
