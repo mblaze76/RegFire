@@ -1,3 +1,4 @@
+from deployment_config import DeploymentConfig
 """Attendee identities are isolated from organizer grants and registration answer JSON."""
 import hashlib,hmac,json,re,secrets,threading,time,uuid
 from http.cookies import SimpleCookie
@@ -27,7 +28,7 @@ def raw_cookie(h):
  except Exception:return ''
 def respond(h,status,data,token=None):
  b=json.dumps(data).encode();h.send_response(status);h.send_header('Content-Type','application/json');h.send_header('Cache-Control','no-store');h.send_header('Content-Length',str(len(b)))
- if token is not None:h.send_header('Set-Cookie',cookie(h)+'='+token+'; HttpOnly; SameSite=Strict; Path=/; Max-Age='+('28800' if token else '0'))
+ if token is not None:h.send_header('Set-Cookie',cookie(h)+'='+token+('; Secure' if DeploymentConfig.load(h.server.server_port).secure_cookies else '')+'; HttpOnly; SameSite=Strict; Path=/; Max-Age='+('28800' if token else '0'))
  h.end_headers();h.wfile.write(b)
 def identity(h):
  with h.server.store.connect() as c:

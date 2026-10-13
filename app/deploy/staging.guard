@@ -1,0 +1,29 @@
+let databases = Resources.*[ Type == 'AWS::RDS::DBInstance' ]
+rule private_database when %databases !empty {
+ %databases.Properties.PubliclyAccessible == false
+ %databases.Properties.StorageEncrypted == true
+ %databases.DeletionPolicy == 'Retain'
+ %databases.UpdateReplacePolicy == 'Retain'
+ %databases.Properties.BackupRetentionPeriod >= 7
+}
+let filesystems = Resources.*[ Type == 'AWS::EFS::FileSystem' ]
+rule protected_uploads when %filesystems !empty {
+ %filesystems.Properties.Encrypted == true
+ %filesystems.DeletionPolicy == 'Retain'
+ %filesystems.Properties.BackupPolicy.Status == 'ENABLED'
+}
+rule controlled_start when Resources.Service exists {
+ Parameters.DesiredCount.Default == 0
+ Resources.Service.Properties.DeploymentConfiguration.DeploymentCircuitBreaker.Rollback == true
+ Resources.Task.Properties.ContainerDefinitions[*].ReadonlyRootFilesystem == true
+}
+let buckets = Resources.*[ Type == 'AWS::S3::Bucket' ]
+rule private_build_sources when %buckets !empty {
+ %buckets.Properties.PublicAccessBlockConfiguration.BlockPublicAcls == true
+ %buckets.Properties.PublicAccessBlockConfiguration.IgnorePublicAcls == true
+ %buckets.Properties.PublicAccessBlockConfiguration.BlockPublicPolicy == true
+ %buckets.Properties.PublicAccessBlockConfiguration.RestrictPublicBuckets == true
+ %buckets.Properties.VersioningConfiguration.Status == 'Enabled'
+ %buckets.Properties.BucketEncryption exists
+ %buckets.DeletionPolicy == 'Retain'
+}

@@ -1,0 +1,14 @@
+**
+!*.py
+!requirements.txt
+!migrations/
+!migrations/*.sql
+!static/
+!static/**
+!deploy/
+!deploy/Dockerfile
+!deploy/gunicorn.conf.py
+!deploy/requirements.txt
+!deploy/entrypoint.py
+!deploy/migrate.py
+!deploy/rds-ca.pem

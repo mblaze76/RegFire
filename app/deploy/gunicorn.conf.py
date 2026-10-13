@@ -1,0 +1,15 @@
+bind='0.0.0.0:8080'
+workers=1
+worker_class='gthread'
+threads=4
+timeout=60
+graceful_timeout=30
+keepalive=5
+limit_request_line=4094
+limit_request_fields=64
+limit_request_field_size=8190
+forwarded_allow_ips=''
+accesslog=None
+errorlog='-'
+capture_output=False
+control_socket_disable=True

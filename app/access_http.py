@@ -1,5 +1,6 @@
 """HTTP boundary: every non-public route requires identity and a current product grant."""
 import json,hmac,re,threading
+from deployment_config import DeploymentConfig
 from http.cookies import SimpleCookie
 from urllib.parse import urlsplit
 import psycopg
@@ -25,12 +26,16 @@ def recovery(h):
  return h.server.recovery
 def guard(h):
  path=urlsplit(h.path).path
+ from public_attendee import handle as public_handle
+ if public_handle(h):return False
  if re.fullmatch(r'/api/payments/webhook/[a-f0-9-]{36}',path):
   h.identity=None;return True  # Dedicated handler verifies provider signature and server payment state.
  try:
   a=access(h);h.identity=a.session(raw_cookie(h))
   if h.command not in ('GET','HEAD'):
-   if h.headers.get('Origin')!='http://'+h.headers.get('Host',''):raise AccessError('Use this app to submit changes.',403)
+   if not DeploymentConfig.load(h.server.server_port).allows_origin(h.headers.get('Origin'),h.headers.get('Host','')):raise AccessError('Use this app to submit changes.',403)
+  from public_attendee import public_presentation
+  if public_presentation(h):return True
   from attendee_accounts import PUBLIC as ATTENDEE_PUBLIC
   if path in PUBLIC or path in ATTENDEE_PUBLIC or (h.command=='GET' and path in STATIC):return True
   if not h.identity:
@@ -51,7 +56,7 @@ def guard(h):
 
 def respond(h,status,data,cookie=None):
  content=json.dumps(data).encode();h.send_response(status);h.send_header('Content-Type','application/json');h.send_header('Cache-Control','no-store');h.send_header('Content-Length',str(len(content)))
- if cookie is not None:h.send_header('Set-Cookie',cookie_name(h)+'='+cookie+'; HttpOnly; SameSite=Strict; Path=/; Max-Age='+('28800' if cookie else '0'))
+ if cookie is not None:h.send_header('Set-Cookie',cookie_name(h)+'='+cookie+('; Secure' if DeploymentConfig.load(h.server.server_port).secure_cookies else '')+'; HttpOnly; SameSite=Strict; Path=/; Max-Age='+('28800' if cookie else '0'))
  h.end_headers();h.wfile.write(content)
 def handle(h):
  path=urlsplit(h.path).path

@@ -210,7 +210,9 @@ def handle(h):
    with store.connect() as c:
     o=get_order(c,store,ident,actor)
     from access_http import access
-    access(h).require_event(h.identity,o['flow_id'])
+    if h.identity.get('role')=='public-attendee':
+     if h.identity.get('public_flow')!=o['flow_id']:raise ValueError('Registration not found.')
+    else:access(h).require_event(h.identity,o['flow_id'])
     if o.get('group_parent_id',o['id'])!=o['id']:raise ValueError('Use the combined checkout for this attendee.')
     if action=='status':
      if o.get('provider_id') and o['status'] not in ('paid','confirmed_free','expired'):

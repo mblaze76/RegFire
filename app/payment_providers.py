@@ -8,6 +8,7 @@ from urllib.error import HTTPError,URLError
 class ProviderError(Exception):pass
 
 def request(url,method='GET',data=None,headers=None):
+ if __import__('os').environ.get('REGFIRE_STAGING')=='1':raise ProviderError('External payment calls are disabled in synthetic staging.')
  try:
   with urlopen(Request(url,data=data,headers=headers or {},method=method),timeout=20) as r:return json.load(r)
  except (HTTPError,URLError,TimeoutError,ValueError):raise ProviderError('The payment provider did not confirm the request. Check payment status before trying again.') from None

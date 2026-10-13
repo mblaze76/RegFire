@@ -3,6 +3,7 @@
 import argparse, json, uuid, re
 import psycopg
 from database import Store
+from deployment_config import DeploymentConfig
 from registration import validate_page
 from assets import MAX_UPLOAD
 from pathlib import Path
@@ -56,7 +57,8 @@ def validate(data):
 class Handler(BaseHTTPRequestHandler):
     def parse_request(self):
         if not super().parse_request():return False
-        if self.headers.get('Host') not in ('127.0.0.1:'+str(self.server.server_port),'localhost:'+str(self.server.server_port)):
+        from deployment_config import DeploymentConfig
+        if not DeploymentConfig.load(self.server.server_port).allows_host(self.headers.get('Host')):
             self.send_error(403,'Use the local Regfire address.');return False
         from access_http import guard
         return guard(self)
@@ -180,7 +182,7 @@ class Handler(BaseHTTPRequestHandler):
         upload=re.fullmatch(r'/api/events/([a-f0-9-]{36})/assets/(logo|background)',urlsplit(self.path).path)
         if upload:
             origin=self.headers.get('Origin')
-            if origin and origin!='http://'+self.headers.get('Host',''):return self.respond(403,{'error':'Cross-origin requests are not allowed.'})
+            if origin and not DeploymentConfig.load(self.server.server_port).allows_origin(origin,self.headers.get('Host','')):return self.respond(403,{'error':'Cross-origin requests are not allowed.'})
             try:
                 event_id=str(uuid.UUID(upload[1]));length=int(self.headers.get('Content-Length',0))
                 if not 0<length<=MAX_UPLOAD:raise ValueError('Choose an image no larger than 8 MB.')
@@ -193,7 +195,7 @@ class Handler(BaseHTTPRequestHandler):
             if urlsplit(self.path).path!='/api/events':return self.respond(404,{'error':'Not found.'})
             return self.save(False)
         origin = self.headers.get('Origin')
-        if origin and origin != 'http://' + self.headers.get('Host', ''):
+        if origin and not DeploymentConfig.load(self.server.server_port).allows_origin(origin,self.headers.get('Host','')):
             return self.respond(403, {'error': 'Cross-origin requests are not allowed.'})
         try:
             event_id = str(uuid.UUID(match[1]))
@@ -224,7 +226,7 @@ class Handler(BaseHTTPRequestHandler):
         match = re.fullmatch(r'/api/events/([a-f0-9-]{36})/registration-page', urlsplit(self.path).path)
         if not match: return self.save(True)
         origin = self.headers.get('Origin')
-        if origin and origin != 'http://' + self.headers.get('Host', ''):
+        if origin and not DeploymentConfig.load(self.server.server_port).allows_origin(origin,self.headers.get('Host','')):
             return self.respond(403, {'error': 'Cross-origin requests are not allowed.'})
         try:
             event_id = str(uuid.UUID(match[1]))
@@ -285,7 +287,7 @@ class Handler(BaseHTTPRequestHandler):
         match=re.fullmatch(r'/api/events/([a-f0-9-]{36})/welcome-page',urlsplit(self.path).path)
         if not match:return self.respond(404,{'error':'Not found.'})
         origin=self.headers.get('Origin')
-        if save and origin and origin!='http://'+self.headers.get('Host',''):return self.respond(403,{'error':'Cross-origin requests are not allowed.'})
+        if save and origin and not DeploymentConfig.load(self.server.server_port).allows_origin(origin,self.headers.get('Host','')):return self.respond(403,{'error':'Cross-origin requests are not allowed.'})
         try:
             data=None
             if save:
@@ -299,7 +301,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def address_request(self):
         origin=self.headers.get('Origin')
-        if origin and origin!='http://'+self.headers.get('Host',''):return self.respond(403,{'error':'Cross-origin requests are not allowed.'})
+        if origin and not DeploymentConfig.load(self.server.server_port).allows_origin(origin,self.headers.get('Host','')):return self.respond(403,{'error':'Cross-origin requests are not allowed.'})
         try:
             length=int(self.headers.get('Content-Length',0))
             if not 0<length<=2000:raise ValueError('Address query is missing or too large.')
@@ -318,7 +320,7 @@ class Handler(BaseHTTPRequestHandler):
         match=re.fullmatch(r'/api/events/([a-f0-9-]{36})',urlsplit(self.path).path)
         if not match:return self.respond(404,{'error':'Not found.'})
         origin=self.headers.get('Origin')
-        if origin and origin!='http://'+self.headers.get('Host',''):return self.respond(403,{'error':'Cross-origin requests are not allowed.'})
+        if origin and not DeploymentConfig.load(self.server.server_port).allows_origin(origin,self.headers.get('Host','')):return self.respond(403,{'error':'Cross-origin requests are not allowed.'})
         try:
             length=int(self.headers.get('Content-Length',0))
             if not 0<length<=2000:raise ValueError('A named event confirmation is required.')
@@ -334,7 +336,7 @@ class Handler(BaseHTTPRequestHandler):
         match=re.fullmatch(r'/api/events/([a-f0-9-]{36})/membership'+suffix,urlsplit(self.path).path)
         if not match or action not in ('get','save','integration','import-preview','import','lookup','check-fields','test'):return self.respond(404,{'error':'Not found.'})
         origin=self.headers.get('Origin')
-        if origin and origin!='http://'+self.headers.get('Host',''):return self.respond(403,{'error':'Cross-origin requests are not allowed.'})
+        if origin and not DeploymentConfig.load(self.server.server_port).allows_origin(origin,self.headers.get('Host','')):return self.respond(403,{'error':'Cross-origin requests are not allowed.'})
         try:
             data={}
             if action!='get':
@@ -351,7 +353,7 @@ class Handler(BaseHTTPRequestHandler):
         match=re.fullmatch(r'/api/events/([a-f0-9-]{36})/'+('demographics-preview' if preview else 'demographics'),urlsplit(self.path).path)
         if not match:return self.respond(404,{'error':'Not found.'})
         origin=self.headers.get('Origin')
-        if origin and origin!='http://'+self.headers.get('Host',''):return self.respond(403,{'error':'Cross-origin requests are not allowed.'})
+        if origin and not DeploymentConfig.load(self.server.server_port).allows_origin(origin,self.headers.get('Host','')):return self.respond(403,{'error':'Cross-origin requests are not allowed.'})
         try:
             event_id=str(uuid.UUID(match[1]));length=int(self.headers.get('Content-Length',0))
             if not 0<length<=500000:raise ValueError('Demographics data is missing or exceeds 500 KB.')
@@ -366,7 +368,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def save(self, editing):
         origin = self.headers.get('Origin')
-        if origin and origin != 'http://' + self.headers.get('Host', ''): return self.respond(403, {'error': 'Cross-origin requests are not allowed.'})
+        if origin and not DeploymentConfig.load(self.server.server_port).allows_origin(origin,self.headers.get('Host','')): return self.respond(403, {'error': 'Cross-origin requests are not allowed.'})
         path = urlsplit(self.path).path
         if (not editing and path != '/api/events') or (editing and not re.fullmatch(r'/api/events/[a-f0-9-]{36}', path)): return self.respond(404, {'error': 'Not found'})
         try:
@@ -386,8 +388,11 @@ def main():
     from google_addresses import key
     if key():os.environ.setdefault("REGFIRE_ADDRESS_PROVIDER","google")
     parser = argparse.ArgumentParser(); parser.add_argument('--port', type=int, default=8765); args = parser.parse_args()
+    from deployment_config import DeploymentConfig
+    from runtime_startup import prepare_store, prepare_owner
+    deployment = DeploymentConfig.load(args.port)
     try:
-        store = Store(); store.initialize()
+        store = Store(); prepare_store(store, deployment)
     except RuntimeError as exc:
         raise SystemExit('RegFire configuration: '+str(exc)+' Existing data is unchanged.')
     except psycopg.Error as exc:
@@ -401,10 +406,11 @@ def main():
         else:
             reason='The configured PostgreSQL connection failed. Check service availability and private local connection settings.'
         raise SystemExit(reason+' No database setup or data reset was performed.')
+    from deployment_config import DeploymentConfig
+    DeploymentConfig.load(args.port)  # Fail closed on invalid production configuration.
     server = ThreadingHTTPServer(('127.0.0.1', args.port), Handler); server.store = store
     from access import Access
-    import owner_setup
-    server.access=Access(store);owner_setup.prepare(server.access)
+    server.access=Access(store);prepare_owner(server.access, deployment)
     print(f'Regfire is running at http://127.0.0.1:{args.port}', flush=True)
     try: server.serve_forever()
     except KeyboardInterrupt: pass
