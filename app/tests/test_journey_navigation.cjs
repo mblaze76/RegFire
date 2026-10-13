@@ -5,7 +5,7 @@ const source=fs.readFileSync(path.join(__dirname,'../static/attendee-journey.js'
 async function journey(page,counts={}){
  const window={addEventListener(){}};
  const model={demographics:{questions:Array(counts.demographics||0).fill({})}};
- vm.runInNewContext(source,{window,URLSearchParams,location:{pathname:'/'+page,hash:'#event=11111111-1111-1111-1111-111111111111'},sessionStorage:{getItem(){return null;}},document:{readyState:'loading',addEventListener(){},querySelectorAll(){return [];}},fetch:async url=>({ok:true,json:async()=>url.endsWith('/sessions')?{sessions:Array(counts.sessions||0).fill({})}:url.endsWith('/extra-options')?{items:Array(counts.extras||0).fill({})}:model})});
+ vm.runInNewContext(source,{window,URLSearchParams,location:{pathname:'/'+page,hash:'#event=11111111-1111-1111-1111-111111111111'},sessionStorage:{getItem(){return null;}},document:{readyState:'loading',addEventListener(){},querySelectorAll(){return [];},querySelector(){return null;}},fetch:async url=>({ok:true,json:async()=>url.endsWith('/sessions')?{sessions:Array(counts.sessions||0).fill({})}:url.endsWith('/extra-options')?{items:Array(counts.extras||0).fill({})}:model})});
  await window.RegFireJourney.ready;return window.RegFireJourney;
 }
 test('empty sessions preview links to surrounding enabled steps',async()=>{

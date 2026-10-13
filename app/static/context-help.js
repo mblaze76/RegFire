@@ -44,7 +44,7 @@
  'Your sessions':['Manage sessions already added to this flow.','Review the list and edit the session that needs a change.','Update a room or session time.'],
  'Import CSV or TSV':['Create session records from a spreadsheet export.','Follow the import instructions and review the result before relying on the agenda.','Import a conference schedule from a CSV file.'],
  'Options settings':['Configure the extra-options page.','Set the page options and review how they appear to attendees.','Introduce optional event add-ons.'],
- 'Your extra options':['Manage optional selections for attendees.','Add each option and review its available price and selection settings.','An optional event activity.']
+ 'Your additional options':['Manage optional selections for attendees.','Add each option and review its available price and selection settings.','An optional event activity.']
  };
  const panel=document.createElement('div');panel.className='context-help-panel';panel.id='regfire-context-help';panel.hidden=true;panel.setAttribute('role','dialog');panel.setAttribute('aria-label','Section help');document.body.append(panel);
  let active=null,pinned=false,timer,suppressFocus=false;

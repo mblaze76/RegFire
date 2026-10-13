@@ -10,7 +10,7 @@
  setMode();
  const validID=x=>typeof x==='string'&&/^[a-f0-9-]{36}$/.test(x);let model=null,version='',epoch=0,seq=0,lastSeen=0,selected=window.RegFireJourney.read().regtype_id||null,editorType=null,answers=window.RegFireJourney.read().answers||{},contacts=window.RegFireJourney.read().contacts||{},confirmations=window.RegFireJourney.read().confirmations||{},smsConsents=window.RegFireJourney.read().smsConsents||{},ticket=0,priceTicket=0,timer=null,errors=false,focusErrors=false,channel;
  const badge=window.BadgePreview.mount($('live-contact'));
- function updateBadge(){if(!model)return;badge.update({eventName:model.event.name,fields:model.registration.fields,values:contacts,categoryName:model.registration.regtypes.find(r=>r.id===selected)?.name,appearance:model.registration.appearance});}
+ function updateBadge(){if(!model)return;badge.update({eventID,eventName:model.event.name,fields:model.registration.fields,values:contacts,categoryName:model.registration.regtypes.find(r=>r.id===selected)?.name,appearance:model.registration.appearance});}
  $('live-fields').addEventListener('input',updateBadge);$('live-fields').addEventListener('change',updateBadge);
  const node=(tag,text)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;return n;};
  const label=(text,c)=>{const l=node('label',text);l.append(c);return l;};

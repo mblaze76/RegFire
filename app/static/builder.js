@@ -220,7 +220,7 @@
   }
   let previewValues={},previewValueEvent=null;
   const badge=window.BadgePreview.mount($('preview-form'));
-  function updateBadge(){if(!page)return;badge.update({eventName:event.name,fields:page.fields,values:window.BadgePreview.read($('preview-fields'),page.fields,'preview-'),categoryName:page.regtypes.find(r=>r.id===previewType)?.name,appearance:page.appearance});}
+  function updateBadge(){if(!page)return;badge.update({eventID:event.id,eventName:event.name,fields:page.fields,values:window.BadgePreview.read($('preview-fields'),page.fields,'preview-'),categoryName:page.regtypes.find(r=>r.id===previewType)?.name,appearance:page.appearance});}
   $('preview-fields').addEventListener('input',updateBadge);$('preview-fields').addEventListener('change',updateBadge);
   function renderPreview() {
     if(!page)return;
