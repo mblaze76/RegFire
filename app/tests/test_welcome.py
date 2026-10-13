@@ -42,6 +42,27 @@ class WelcomePersistence(unittest.TestCase):
     tearDown=test_events.PostgresTest.tearDown
     auth_headers=test_events.PostgresTest.auth_headers
     request=test_events.PostgresTest.request
+    def test_stale_welcome_draft_cannot_remove_newer_logos(self):
+        import copy
+        from psycopg import sql
+        event=self.request('/api/events',draft(),'POST');path='/api/events/'+event['id']+'/welcome-page'
+        stale=self.request(path)
+        png=io.BytesIO();Image.new('RGBA',(60,30),(220,80,20,255)).save(png,format='PNG')
+        logo=self.store.save_asset(event['id'],'logo',png.getvalue(),self.server.upload_root)['id']
+        current=self.request(path,stale|{'logo_asset_id':logo,'sponsor_asset_ids':[logo],'sponsor_urls':['']},'PUT')
+        with self.assertRaises(HTTPError) as err:self.request(path,stale|{'about':'Older tab edit'},'PUT')
+        self.assertEqual(err.exception.code,409)
+        self.assertEqual(self.request(path),current)
+        # Successive saves accept the latest revision and retain both logo slots.
+        saved=self.request(path,current|{'about':'Current tab edit'},'PUT')
+        saved=self.request(path,saved|{'about_color':'#ffffff'},'PUT')
+        self.assertEqual(saved['logo_asset_id'],logo)
+        self.assertEqual(saved['sponsor_asset_ids'],[logo])
+        with self.store.connect() as conn:
+            history=[r[0] for r in conn.execute(sql.SQL('SELECT body FROM {} WHERE event_id=%s ORDER BY id').format(sql.Identifier(self.schema,'welcome_page_revisions')),(event['id'],))]
+        self.assertEqual(len(history),3)
+        self.assertEqual(history[1],current)
+
     def test_white_colors_replace_red_and_survive_reopen_restart(self):
         event=self.request('/api/events',draft(),'POST');path='/api/events/'+event['id']+'/welcome-page'
         page=self.request(path)
@@ -116,7 +137,7 @@ class WelcomePersistence(unittest.TestCase):
         req=Request(self.url+base+'/assets/background',data=png.getvalue(),method='POST',headers=self.auth_headers()|{'Content-Type':'image/png'})
         with build_opener(ProxyHandler({})).open(req) as r:asset=json.load(r)['id']
         page=self.request(base+'/welcome-page');page.update(background_asset_id=asset,background_fade=35,about='Preserve content',about_font='google-montserrat',about_color='#123abc')
-        self.request(base+'/welcome-page',page,'PUT');self.stop();self.start()
+        page=self.request(base+'/welcome-page',page,'PUT');self.stop();self.start()
         saved=self.request(base+'/welcome-page');self.assertEqual(saved['background_asset_id'],asset);self.assertEqual(saved['background_fade'],35);self.assertEqual(saved['buttons'],page['buttons']);self.assertEqual(saved['about'],page['about'])
         self.assertIsNone(self.request(base+'/registration-page').get('appearance',{}).get('background_asset_id'))
         with self.assertRaises(HTTPError):self.request('/api/events/'+other['id']+'/welcome-page',page,'PUT')

@@ -80,11 +80,11 @@ $('welcome-form').onsubmit=e=>{e.preventDefault();save();};
 // Match event draft autosave so branding edits cannot remain behind a separate Save button.
 window.DraftAutosave.register({
  ready:()=>!!page&&!!event&&dirty&&!busy&&$('welcome-form').checkValidity(),
- snapshot:()=>structuredClone(page),
+ snapshot:()=>{const {updated,...draft}=structuredClone(page);return draft;},
  lock:value=>{busy=value;controls();},
  clean:()=>{dirty=false;},
  status:(state,text,error)=>say(text,error),
- save:async data=>{await api('/api/events/'+event.id+'/welcome-page',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});}
+ save:async data=>{const request=serial,owner=data.event_id;const saved=await api('/api/events/'+owner+'/welcome-page',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({...data,updated:page.updated})});if(request===serial&&event?.id===owner&&page)page.updated=saved.updated;}
 });
 window.WelcomeBuilder={load,preview,save,flowsChanged(){if(page){renderButtons();preview();publish();}},clear(){serial++;page=null;dirty=false;busy=false;},get dirty(){return dirty;},get busy(){return busy;}};
 })();

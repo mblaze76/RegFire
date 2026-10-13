@@ -294,7 +294,7 @@ class Handler(BaseHTTPRequestHandler):
                 data=json.loads(self.rfile.read(length))
             page=self.server.store.welcome_page(str(uuid.UUID(match[1])),data,datetime.now(timezone.utc).isoformat())
             return self.respond(200,page) if page else self.respond(404,{'error':'Event not found.'})
-        except (ValueError,UnicodeDecodeError) as exc:return self.respond(400,{'error':str(exc)})
+        except (ValueError,UnicodeDecodeError) as exc:return self.respond(409 if str(exc).startswith('Welcome draft conflict:') else 400,{'error':str(exc)})
         except psycopg.Error:return self.respond(503,{'error':'Could not access the welcome page. Your edits are still here; retry saving.'})
 
     def address_request(self):
