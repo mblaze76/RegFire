@@ -110,7 +110,7 @@ def handle(h):
  files={'/google-wallet-official.svg':'image/svg+xml','/google-wallet-official.png':'image/png','/confirmation-preview.js':'text/javascript','/confirmation-common.js':'text/javascript','/confirmation-builder.js':'text/javascript','/confirmation.css':'text/css','/confirmation-preview':'text/html'}
  if path in files and h.command=='GET':
   name='confirmation-preview.html' if path=='/confirmation-preview' else path[1:];send_bytes(h,(Path(__file__).parent/'static'/name).read_bytes(),files[path]);return True
- m=re.fullmatch(r'/api/events/([a-f0-9-]{36})/confirmation(?:/(preview|sample.pdf))?',path);o=re.fullmatch(r'/api/checkout/([a-f0-9-]{36})/confirmation(?:/(receipt.pdf|apple.pkpass|google))?',path)
+ m=re.fullmatch(r'/api/events/([a-f0-9-]{36})/confirmation(?:/(preview|email-preview|sample.pdf))?',path);o=re.fullmatch(r'/api/checkout/([a-f0-9-]{36})/confirmation(?:/(receipt.pdf|apple.pkpass|google))?',path)
  if not(m or o):return False
  try:
   store=h.server.store
@@ -149,6 +149,14 @@ def handle(h):
    if o[2]=='google':
     if not doc['wallet']['google']:raise ValueError('Google Wallet is unavailable for this confirmation.')
     h.respond(200,dict(url=doc['wallet']['google']));return True
+  if m and m[2]=='email-preview':
+   import base64
+   from confirmation_email import prepare
+   email=prepare(doc,store,getattr(h.server,'upload_root',Path(__file__).parent/'uploads'))
+   html=email['html']
+   for item in email['inline_images']:
+    html=html.replace('cid:'+item['content_id']+'"','data:image/png;base64,'+base64.b64encode(item['data']).decode()+'"')
+   h.respond(200,dict(html=html,sample=True));return True
   if (m and m[2]=='sample.pdf') or (o and o[2]):
    from confirmation_pdf import render
    content=render(doc,store,getattr(h.server,'upload_root',Path(__file__).parent/'uploads'));send_bytes(h,content,'application/pdf','RegFire_Confirmation_SAMPLE.pdf' if doc['sample'] else 'RegFire_Confirmation.pdf')

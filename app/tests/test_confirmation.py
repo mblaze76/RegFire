@@ -26,6 +26,7 @@ class ConfirmationStorage(unittest.TestCase):
  def test_persistence_preview_isolation_and_stale_revision(self):
   flow,_,_=self.setup_order();other,_,_=self.setup_order();base='/api/events/'+flow+'/confirmation';page=self.request(base);page.update(heading='See you there',layout=['message','attendee','sessions','receipt','extras','sponsors'],qr_position='left')
   preview=self.request(base+'/preview',page,'POST');self.assertEqual(preview['settings']['qr_position'],'left');self.assertEqual(self.request(base)['qr_position'],'right')
+  email=self.request(base+'/email-preview',page,'POST');self.assertTrue(email['sample']);self.assertIn('data:image/png;base64,',email['html']);self.assertIn('See you there',email['html']);self.assertEqual(self.request(base)['qr_position'],'right')
   saved=self.request(base,page,'PUT');self.assertEqual(saved['revision'],1)
   with self.assertRaises(HTTPError):self.request(base,page,'PUT')
   self.stop();self.start();self.assertEqual(self.request(base)['heading'],'See you there');self.assertEqual(self.request('/api/events/'+other+'/confirmation')['heading'],confirmation.DEFAULT['heading'])
@@ -70,11 +71,19 @@ class ConfirmationStorage(unittest.TestCase):
   from communications_settings import Settings
   settings=Settings(Path(self.upload_tmp.name)/'email.json');cfg=settings.public();cfg.update(public_url='https://regfire.example');cfg['email'].update(provider='sendgrid',sender='events@regfire.example',sender_name='RegFire',secret_action='replace',secret='synthetic_test_secret');settings.save(cfg)
   with self.assertRaises(Exception):confirmation_delivery.dispatch(self.store,settings,order['id'])
+  with patch.dict(os.environ,{'REGFIRE_CONFIRMATION_EMAIL_LIVE':'1','REGFIRE_COMMUNICATIONS_LIVE':'1'}),patch('confirmation_email.prepare',side_effect=ValueError('Missing image')),patch('confirmation_delivery.adapter_for') as adapter:
+   with self.assertRaises(ValueError):confirmation_delivery.dispatch(self.store,settings,order['id'])
+   adapter.assert_not_called()
+  with self.store.connect() as c:self.assertEqual(c.execute(sql.SQL('SELECT status FROM {} WHERE order_id=%s').format(sql.Identifier(self.schema,'confirmation_delivery')),(order['id'],)).fetchone()[0],'queued')
   with patch.dict(os.environ,{'REGFIRE_CONFIRMATION_EMAIL_LIVE':'1','REGFIRE_COMMUNICATIONS_LIVE':'1'}),patch('confirmation_delivery.adapter_for') as adapter:
    adapter.return_value.submit.side_effect=TimeoutError()
    with self.assertRaises(Exception):confirmation_delivery.dispatch(self.store,settings,order['id'])
    with self.assertRaises(Exception):confirmation_delivery.dispatch(self.store,settings,order['id'])
    self.assertEqual(adapter.return_value.submit.call_count,1)
+   sent=adapter.return_value.submit.call_args.kwargs
+   self.assertIn('Free registration confirmed',sent['html'])
+   self.assertIn('cid:confirmation-qr',sent['html'])
+   self.assertEqual(sent['inline_images'][0]['content_id'],'confirmation-qr')
   with self.store.connect() as c:self.assertEqual(c.execute(sql.SQL('SELECT status FROM {} WHERE order_id=%s').format(sql.Identifier(self.schema,'confirmation_delivery')),(order['id'],)).fetchone()[0],'unknown')
  def test_long_pdf_paginates_without_clipping(self):
   flow,_,_=self.setup_order();doc=confirmation.document(self.store,flow);doc['quote']['lines']*=60;doc['settings']['qr_position']='bottom'
