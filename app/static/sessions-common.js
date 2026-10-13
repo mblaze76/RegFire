@@ -16,7 +16,7 @@
   const dates=control('Date',el('select')),tracks=control('Track',el('select')),prices=control('Price',el('select'));prices.append(new Option('Any price',''),new Option('Included','free'),new Option('Paid','paid'));
   dates.onchange=()=>{day=dates.value;draw();};tracks.onchange=()=>{track=tracks.value;draw();};prices.onchange=()=>{cost=prices.value;draw();};
   const actions=el('div',undefined,'session-actions'),all=el('button','All sessions','secondary'),mine=el('button','My schedule','secondary'),reset=el('button','Clear filters','secondary');
-  for(const b of [all,mine,reset])b.type='button';all.onclick=()=>{only=false;draw();};mine.onclick=()=>{only=true;draw();};reset.onclick=()=>{query=day=track=cost='';search.value=dates.value=tracks.value=prices.value='';only=false;draw();};actions.append(all,mine,reset);
+  for(const b of [all,mine,reset])b.type='button';all.onclick=()=>{query=day=track=cost='';search.value=dates.value=tracks.value=prices.value='';only=false;draw();};mine.onclick=()=>{only=true;draw();};reset.onclick=()=>{query=day=track=cost='';search.value=dates.value=tracks.value=prices.value='';only=false;draw();};actions.append(all,mine,reset);
   const note=el('p','','session-note'),warning=el('div',undefined,'session-conflicts'),status=el('p','','session-meta'),cards=el('div',undefined,'session-cards');warning.setAttribute('role','status');status.setAttribute('aria-live','polite');
   root.replaceChildren(top,days,filters,actions,note,warning,status,cards);
   function persist(){if(persistent)window.RegFireJourney?.save({sessions:[...chosen]});if(!persistent)return;try{localStorage.setItem(key,JSON.stringify([...chosen]));}catch{storageOK=false;}}
