@@ -42,6 +42,38 @@ class WelcomePersistence(unittest.TestCase):
     tearDown=test_events.PostgresTest.tearDown
     auth_headers=test_events.PostgresTest.auth_headers
     request=test_events.PostgresTest.request
+    def test_event_theme_inherits_to_child_and_survives_flow_save(self):
+        event=self.request('/api/events',draft(),'POST');base='/api/events/'+event['id']
+        child=self.request(base+'/flows',{'name':'Exhibitor','kind':'exhibitor'},'POST')[-1]['id']
+        page=self.request(base+'/welcome-page')
+        self.request(base+'/welcome-page',page|{'title_font':'georgia','background_mode':'color','background_color':'#123456','background_fade':20},'PUT')
+        route='/api/events/'+child+'/registration-page'
+        reg=self.request(route);self.assertEqual(reg['appearance']['intro_font'],'georgia');self.assertEqual(reg['appearance']['background_color'],'#123456');self.assertEqual(reg['appearance']['background_owner_id'],event['id'])
+        reg['title']='Changed flow title'
+        saved=self.request(route,reg,'PUT');self.assertEqual(saved['appearance']['intro_font'],'georgia');self.assertEqual(saved['title'],'Changed flow title')
+        self.stop();self.start();self.assertEqual(self.request(route)['appearance']['background_color'],'#123456')
+
+    def test_event_font_isolates_flows_and_overrides_legacy_footer(self):
+        first=self.request('/api/events',draft(),'POST');base='/api/events/'+first['id']
+        second=self.request('/api/events',draft(),'POST');other='/api/events/'+second['id']
+        page=self.request(base+'/welcome-page')
+        self.request(base+'/welcome-page',page|{'title_font':'georgia','title_color':'#123456','about_color':'#654321'},'PUT')
+        for name in ['Attendee','Exhibitor']:
+            child=self.request(base+'/flows',{'name':name,'kind':'attendee'},'POST')[-1]['id']
+            route='/api/events/'+child+'/registration-page';reg=self.request(route)
+            reg['appearance'].update(intro_font='verdana',intro_color='#ab1234')
+            saved=self.request(route,reg,'PUT')
+            self.assertEqual(saved['appearance']['intro_font'],'georgia')
+            self.assertEqual(saved['appearance']['intro_color'],'#ab1234')
+        self.assertEqual(self.request(other+'/registration-page')['appearance']['intro_font'],'default')
+        from event_footer import operation
+        footer=operation(self.store,first['id'])
+        updated=operation(self.store,first['id'],{'revision':footer['revision'],'footer':footer['footer']|{'font':'verdana','color':'#123abc'}})
+        self.assertEqual(updated['footer']['font'],'georgia')
+        self.assertEqual(updated['footer']['color'],'#123abc')
+        self.stop();self.start()
+        self.assertEqual(self.request(base+'/registration-page')['appearance']['intro_font'],'georgia')
+
     def test_stale_welcome_draft_cannot_remove_newer_logos(self):
         import copy
         from psycopg import sql
@@ -139,7 +171,7 @@ class WelcomePersistence(unittest.TestCase):
         page=self.request(base+'/welcome-page');page.update(background_asset_id=asset,background_fade=35,about='Preserve content',about_font='google-montserrat',about_color='#123abc')
         page=self.request(base+'/welcome-page',page,'PUT');self.stop();self.start()
         saved=self.request(base+'/welcome-page');self.assertEqual(saved['background_asset_id'],asset);self.assertEqual(saved['background_fade'],35);self.assertEqual(saved['buttons'],page['buttons']);self.assertEqual(saved['about'],page['about'])
-        self.assertIsNone(self.request(base+'/registration-page').get('appearance',{}).get('background_asset_id'))
+        theme=self.request(base+'/registration-page')['appearance'];self.assertEqual(theme['background_asset_id'],asset);self.assertEqual(theme['background_owner_id'],event['id']);self.assertIsNone(self.request('/api/events/'+other['id']+'/registration-page')['appearance'].get('background_asset_id'))
         with self.assertRaises(HTTPError):self.request('/api/events/'+other['id']+'/welcome-page',page,'PUT')
         for fade in (-1,101,True,'35'):
             with self.assertRaises(HTTPError):self.request(base+'/welcome-page',page|{'background_fade':fade},'PUT')

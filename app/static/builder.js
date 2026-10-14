@@ -22,7 +22,7 @@
     return new Intl.NumberFormat(undefined,{style:'currency',currency:page.currency,currencyDisplay:'code'}).format(value/(digits(page.currency)?100:1));
   }
   function serializePage() {
-    return {promo_codes:page.promo_codes||[],title:page.title,intro:page.intro,currency:page.currency,appearance:{...page.appearance},fields:page.fields.map(f=>({...f,options:['select','radio'].includes(f.type)?f.options:[]})),regtypes:page.regtypes.map(r=>({id:r.id,name:r.name,use_membership_lookup:r.use_membership_lookup??null,subcategories:r.subcategories||[],show_on_welcome:r.show_on_welcome!==false,price_minor:parsePrice(r.price_text,page.currency),use_default:r.use_default,rates:r.rates.map(rate=>({id:rate.id,name:rate.name,price_minor:parsePrice(rate.price_text,page.currency),start:rate.start,end:rate.end}))}))};
+    return {theme_owner_id:page.theme_owner_id,promo_codes:page.promo_codes||[],title:page.title,intro:page.intro,currency:page.currency,appearance:{...page.appearance},fields:page.fields.map(f=>({...f,options:['select','radio'].includes(f.type)?f.options:[]})),regtypes:page.regtypes.map(r=>({id:r.id,name:r.name,use_membership_lookup:r.use_membership_lookup??null,subcategories:r.subcategories||[],show_on_welcome:r.show_on_welcome!==false,price_minor:parsePrice(r.price_text,page.currency),use_default:r.use_default,rates:r.rates.map(rate=>({id:rate.id,name:rate.name,price_minor:parsePrice(rate.price_text,page.currency),start:rate.start,end:rate.end}))}))};
   }
   function updatePricing() {
     const ticket=++pricingTicket;
@@ -265,6 +265,7 @@
   window.WelcomeDisplay.searchResults($('page-intro-font-search'),$('page-intro-font'));
   $('page-intro-font').onchange=()=>{if(!page)return;page.appearance.intro_font=$('page-intro-font').value;dirty();updateAppearance();};
   function updateAppearance(){
+    if(page&&event)window.RegFirePreviewBranding?.publish(event.id,page.appearance);
     if(page){introFonts();const font=page.appearance.intro_font||'default';window.WelcomeDisplay.loadFont(font);$('preview-intro').style.fontFamily=(window.WelcomeDisplay.fonts[font]||window.WelcomeDisplay.fonts.default)[1];}
 
     if(!page)return;for(const [key,id,target,fallback] of [["title_color","page-title-color","preview-title","#24242a"],["intro_color","page-intro-color","preview-intro","#555c68"]]){const color=page.appearance[key]||fallback;$(id).value=color;$(target).style.color=color;}
@@ -288,6 +289,9 @@
     surface.style.setProperty('--page-background',window.WelcomeDisplay.backgroundImage(page.appearance,event.id));
     surface.style.setProperty('--page-image-opacity',String(1-page.appearance.background_fade/100));
     $('background-mode').value=page.appearance.background_mode||(page.appearance.background_asset_id?'image':'color');$('background-color').value=page.appearance.background_color||'#ffffff';
+    window.WelcomeDisplay.applyFont(document.querySelector('.preview-surface'),page.appearance.intro_font);document.querySelector('.preview-surface').style.fontFamily=(window.WelcomeDisplay.fonts[page.appearance.intro_font]||window.WelcomeDisplay.fonts.default)[1];
+    for(const id of ['page-intro-font-search','page-intro-font','page-intro-font-count','background-mode','background-color','upload-background','background-thumbnail','remove-background','background-fade','fade-value']){const n=$(id);if(n){const label=n.closest('label');(label||n).hidden=true;}}
+    $('page-intro-font-search-results')?.setAttribute('hidden','');
     $('background-fade').value=page.appearance.background_fade;$('fade-value').value=page.appearance.background_fade+'%';
   }
   for(const kind of ['logo','background']){

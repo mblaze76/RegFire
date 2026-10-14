@@ -275,6 +275,12 @@ body.flow-branded::before{content:'';position:fixed;inset:0;z-index:-1;pointer-e
 .flow-branded .artwork-contrast .preview-card .registration-progress li.is-earlier{background:#f4e4da;color:#663723}
 .flow-branded .artwork-contrast .preview-card .registration-progress li.is-current{background:#8c351e;color:#fff;font-weight:750;box-shadow:0 0 0 2px #f1b68d}
 
+/* Event typography is configured once in Welcome and branding. */
+label:has(#welcome-font-search),label:has(#welcome-about-font),#welcome-font-count,#welcome-font-search-results,label:has(#footer-font-search),label:has(#footer-font),#footer-font-search-results,label:has(#page-intro-font-search),label:has(#page-intro-font),#page-intro-font-count,#page-intro-font-search-results{display:none!important}
+.flow-branded :is(input,select,textarea,button,h1,h2,h3,label){font-family:var(--flow-font,inherit)}
+
+.flow-branded .registration-footer{font-family:var(--flow-font,inherit)!important}
+
 .sample-badge-logo{display:block;width:auto;max-width:100%;height:70px;object-fit:contain;margin:0 auto 12px}.sample-badge-logo[hidden]{display:none}.sample-badge-title{text-align:center}
 
 .review-site .journey-card{max-width:1080px;padding:24px;background:rgba(255,255,255,.9)}.review-site #journey-content{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.review-site #journey-content>section{margin:0;padding:18px;border:1px solid #8884;border-radius:14px;min-width:0}.review-site #journey-content h2{font-size:20px;margin:0 0 10px}.review-site dl{margin:12px 0;overflow-wrap:anywhere}.review-site dd{margin:4px 0 12px}.review-site table{width:100%;overflow-wrap:anywhere}.review-site .journey-actions{gap:12px;flex-wrap:wrap}.review-site.flow-artwork-dark .journey-card{background:rgba(23,25,30,.9);color:#f4f4f5}.review-site.flow-artwork-dark #journey-content>section{background:#ffffff08}.review-site.flow-artwork-dark :is(h1,h2,dt,dd){color:inherit}.review-site.flow-artwork-dark a{color:#ffd79e}@media(max-width:650px){.review-site #journey-content{grid-template-columns:1fr}.review-site .journey-card{padding:16px}.review-site #journey-content>section{padding:14px}}
@@ -282,6 +288,9 @@ body.flow-branded::before{content:'';position:fixed;inset:0;z-index:-1;pointer-e
 .review-site #journey-content>section>div>button{margin:4px 8px 4px 0}.review-site #journey-content>section>div>p{margin:10px 0}
 
 .regfire-powered-by{display:flex;align-items:center;justify-content:center;gap:8px;width:max-content;max-width:calc(100% - 32px);margin:18px auto;padding:6px 14px;border:1px solid #ffffff60;border-radius:999px;background:#f8f9fbef;color:#454852;font:500 12px/1.4 system-ui,sans-serif;letter-spacing:.02em}.regfire-powered-by img{display:block;width:34px;height:34px;object-fit:contain}.regfire-powered-by span{white-space:nowrap}
+
+/* One event font controls attendee content, including dynamic nested controls. */
+.event-font-root,.event-font-root *{font-family:var(--event-font,inherit)!important}
 
 /* Client-owned membership integrations remain distinct from shared provider administration. */
 .membership-integration-card{padding:16px;margin:16px 0;border:1px solid #bfd6fa;border-radius:12px;background:#f2f7ff;color:#17243a}.membership-integration-card p{margin:0 0 10px}.membership-integration-link{display:inline-flex;align-items:center;min-height:44px;padding:8px 14px;border-radius:8px;background:#1559bd;color:#fff!important;font-weight:700;text-decoration:none;white-space:normal}.membership-integration-link:hover{background:#104796}.membership-integration-link:focus-visible{outline:3px solid #17243a;outline-offset:3px}.membership-integration-card .field-note{margin-top:10px;margin-bottom:0;color:#354963}

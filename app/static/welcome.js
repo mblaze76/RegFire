@@ -69,7 +69,7 @@ window.WelcomeDisplay.searchResults($('welcome-font-search'),$('welcome-about-fo
 window.WelcomeDisplay.searchResults($('welcome-title-font-search'),$('welcome-title-font'));
 $('welcome-title').oninput=()=>{page.title=$('welcome-title').value;changed();};
 $('welcome-title-color').oninput=()=>{page.title_color=$('welcome-title-color').value;changed();};
-$('welcome-title-font').onchange=()=>{page.title_font=$('welcome-title-font').value;changed();};
+$('welcome-title-font').onchange=()=>{page.title_font=$('welcome-title-font').value;page.about_font=page.title_font;changed();};
 $('welcome-about-font').onchange=()=>{page.about_font=$('welcome-about-font').value;changed();};
 $('welcome-about-color').oninput=()=>{page.about_color=$('welcome-about-color').value;changed();};
 $('welcome-about').oninput=()=>{page.about=$('welcome-about').value;changed();};$('welcome-logo-url').oninput=()=>{page.logo_url=$('welcome-logo-url').value;changed();};

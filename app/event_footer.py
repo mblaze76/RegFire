@@ -42,4 +42,7 @@ def operation(store,event_id,data=None):
             body=dict(body,footer=footer,conflict=False)
             revision+=1
             conn.execute(sql.SQL('UPDATE {} SET body=%s,revision=%s WHERE event_id=%s').format(table),(Jsonb(body),revision,owner))
+        theme=conn.execute(sql.SQL('SELECT body FROM {} WHERE event_id=%s').format(sql.Identifier(store.schema,'welcome_pages')),(owner,)).fetchone()
+        if theme:
+            body=dict(body,footer={**body['footer'],'font':theme[0].get('title_font',theme[0].get('about_font','default'))})
         return dict(event_id=owner,revision=revision,**{**body,'footer':{**body['footer'],**({'asset_event_id':owner} if body['footer'].get('logo_asset_id') or body['footer'].get('background_asset_id') else {})}})

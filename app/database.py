@@ -157,7 +157,8 @@ class Store:
             page = conn.execute(psycopg.sql.SQL('SELECT body FROM {} WHERE event_id=%s').format(self.page_table()), (event_id,)).fetchone()
             result = page[0] if page else starter(event[0])
             if shared and not shared['conflict']: result.setdefault('appearance',{})['footer']=shared['footer']
-            return result
+            from event_theme import apply
+            return apply(self,event[0],result)
 
     def save_registration_page(self, event_id, data, now):
         from event_footer import operation
@@ -168,6 +169,19 @@ class Store:
             event = conn.execute(psycopg.sql.SQL('SELECT body FROM {} WHERE id=%s FOR UPDATE').format(self.table()), (event_id,)).fetchone()
             if not event: return None
             from registration import validate_page
+            # Shared presentation is read-only here; keep the underlying flow draft intact.
+            from event_theme import FIELDS
+            from registration import starter
+            previous=conn.execute(psycopg.sql.SQL('SELECT body FROM {} WHERE event_id=%s').format(self.page_table()),(event_id,)).fetchone()
+            original=(previous[0] if previous else starter(event[0])).get('appearance',{})
+            data=dict(data,appearance=dict(data.get('appearance') or {}))
+            theme_owner=event[0].get('parent_event_id') or event_id
+            has_theme=conn.execute(psycopg.sql.SQL('SELECT 1 FROM {} WHERE event_id=%s').format(psycopg.sql.Identifier(self.schema,'welcome_pages')),(theme_owner,)).fetchone()
+            if has_theme:
+                for key in FIELDS:
+                    if key in original:data['appearance'][key]=original[key]
+                    else:data['appearance'].pop(key,None)
+            data['appearance'].pop('background_owner_id',None)
             data = validate_page(data, event[0]['timezone'])
             for key,kind in [('logo_asset_id','logo'),('background_asset_id','background')]:
                 asset_id=data['appearance'][key]
@@ -185,7 +199,8 @@ class Store:
             conn.execute(psycopg.sql.SQL('INSERT INTO {} (event_id,body,updated) VALUES(%s,%s,%s) ON CONFLICT(event_id) DO UPDATE SET body=excluded.body, updated=excluded.updated').format(self.page_table()), (event_id, Jsonb(data), now))
             if shared and not shared['conflict']:
                 data['appearance']['footer']=shared['footer']
-            return data
+            from event_theme import apply
+            return apply(self,event[0],data)
 
     def preview_registration_pricing(self, event_id, data, at=''):
         from registration import pricing_preview

@@ -26,7 +26,7 @@ function renderList(){
   const group=document.createElement('details');group.className='event-outline';group.open=outlineState.get(event.id)??event.id===selected;
   const summary=document.createElement('summary');summary.textContent=event.name;group.append(summary);const contents=document.createElement('div');contents.className='outline-pages';group.append(contents);list.append(group);
   function link(label,view,flow){const a=document.createElement('a');a.textContent=label;a.href='#event='+event.id+'&view='+view+(flow?'&flow='+flow.id:'');if(event.id===selected&&view===activeView&&(!flow||flow.id===window.RegistrationFlows?.current()?.id))a.setAttribute('aria-current','page');a.onclick=async e=>{if(activeView==='event'&&(dirty||window.EventFooterBuilder?.dirty || window.ConfirmationBuilder?.dirty || window.ExtrasBuilder?.dirty || window.SessionsBuilder?.dirty || window.WelcomeBuilder?.dirty)){e.preventDefault();if(!await saveEventDraft()||!await window.WelcomeBuilder.save()||!await window.EventFooterBuilder.save())return;location.hash=a.hash;}};return a;}
-  async function draw(){contents.replaceChildren(link('Event details','event'),link('Registration flows','flows'));try{const flows=event.id===selected?window.RegistrationFlows?.list()||[]:await api('/api/events/'+event.id+'/flows');if(!group.isConnected)return;for(const flow of flows){const branch=document.createElement('details'),key=event.id+':'+flow.id;branch.className='flow-outline';branch.open=outlineState.get(key)??(event.id===selected&&flow.id===window.RegistrationFlows?.current()?.id);branch.ontoggle=()=>outlineState.set(key,branch.open);const heading=document.createElement('summary');heading.textContent=flow.name;branch.append(heading);for(const [view,label] of [['setup','Website setup'],['registration',flow.kind==='attendee'?'Attendee details':'Registration details'],['demographics','Demographics'],['sessions','Sessions'],['extras','Additional options'],['payment-setup','Payment'],['confirmation','Confirmation setup']])branch.append(link(label,view,flow));contents.append(branch);}}catch{const error=document.createElement('p');error.textContent='Could not load flows. Close and reopen this event to retry.';contents.append(error);}}
+  async function draw(){contents.replaceChildren(link('Event details','event'),link('Registration flows','flows'));try{const flows=event.id===selected?window.RegistrationFlows?.list()||[]:await api('/api/events/'+event.id+'/flows');if(!group.isConnected)return;for(const flow of flows){const branch=document.createElement('details'),key=event.id+':'+flow.id;branch.className='flow-outline';branch.open=outlineState.get(key)??(event.id===selected&&flow.id===window.RegistrationFlows?.current()?.id);branch.ontoggle=()=>outlineState.set(key,branch.open);const heading=document.createElement('summary');heading.textContent=flow.name;branch.append(heading);for(const [view,label] of [['setup',flow.name+' setup'],['registration',flow.kind==='attendee'?'Attendee details':'Registration details'],['demographics','Demographics'],['sessions','Sessions'],['extras','Additional options'],['review-setup','Verify your details'],['payment-setup','Payment'],['confirmation','Confirmation setup']])branch.append(link(label,view,flow));contents.append(branch);}}catch{const error=document.createElement('p');error.textContent='Could not load flows. Close and reopen this event to retry.';contents.append(error);}}
   group.ontoggle=()=>{outlineState.set(event.id,group.open);if(group.open)draw();};if(group.open)draw();
  }
 }
@@ -101,7 +101,7 @@ async function init() {
     const existing = requested?events.find(item => item.id === requested):events[0];
     if(requested&&!existing)throw new Error('The requested event was not found. Choose an existing event after reloading.');
     if (existing) {
-      activeView = ['confirmation','payment-setup','extras','sessions','flows','setup','registration','demographics','membership'].includes(locationState.get('view')) ? locationState.get('view') : 'event';
+      activeView = ['review-setup','confirmation','payment-setup','extras','sessions','flows','setup','registration','demographics','membership'].includes(locationState.get('view')) ? locationState.get('view') : 'event';
       await openDraft(existing);
     } else {updateNav();loaded();}
     initializing=false;
@@ -116,12 +116,12 @@ function setLocation() {
 }
 function updateNav() {
   document.getElementById('flows-tab').disabled=!selected;
-  document.getElementById('sessions-tab').disabled=!selected;document.getElementById('extras-tab').disabled=!selected;document.getElementById('confirmation-tab').disabled=!selected;document.getElementById('payment-setup-tab').disabled=!selected;
+  document.getElementById('sessions-tab').disabled=!selected;document.getElementById('extras-tab').disabled=!selected;document.getElementById('confirmation-tab').disabled=!selected;document.getElementById('payment-setup-tab').disabled=!selected;document.getElementById('review-setup-tab').disabled=!selected;
   document.querySelector('#setup-tab').disabled = !selected;
   document.querySelector('#registration-tab').disabled = !selected;
   document.querySelector('#demographics-tab').disabled = !selected;
   document.querySelector('#nav-hint').hidden = !!selected;
-  for (const [id, view] of [['details-tab','event'],['sessions-tab','sessions'],['extras-tab','extras'],['confirmation-tab','confirmation'],['payment-setup-tab','payment-setup'],['flows-tab','flows'],['setup-tab','setup'],['registration-tab','registration'],['demographics-tab','demographics']]) {
+  for (const [id, view] of [['details-tab','event'],['sessions-tab','sessions'],['extras-tab','extras'],['confirmation-tab','confirmation'],['review-setup-tab','review-setup'],['payment-setup-tab','payment-setup'],['flows-tab','flows'],['setup-tab','setup'],['registration-tab','registration'],['demographics-tab','demographics']]) {
     const button = document.querySelector('#' + id);
     if (view === activeView) button.setAttribute('aria-current','page'); else button.removeAttribute('aria-current');
   }
@@ -132,6 +132,8 @@ function showView(view, keepRegistration = false) {
   activeView = view; updateNav(); setLocation();renderList();
   document.querySelector('#confirmation-view').hidden=view!=='confirmation';
   if(view==='confirmation')window.ConfirmationBuilder.load(window.flowEvent());
+  document.querySelector('#review-setup-view').hidden=view!=='review-setup';
+  if(view==='review-setup')document.getElementById('review-setup-preview').href='/review#event='+window.flowEvent().id;
   document.querySelector('#payment-setup-view').hidden=view!=='payment-setup';
   if(view==='payment-setup'){const flow=window.flowEvent().id;document.querySelector('#payment-setup-readiness').textContent='Checking availability…';api('/api/events/'+flow+'/checkout/methods').then(v=>{if(activeView==='payment-setup'&&window.flowEvent().id===flow)document.querySelector('#payment-setup-readiness').textContent=v.methods.some(m=>!m.issues.length)?'Payment methods are assigned. Live payment processing still depends on provider setup.':'Paid checkout is not available yet. Free registrations can still be confirmed.';}).catch(()=>document.querySelector('#payment-setup-readiness').textContent='Payment availability could not be checked.');}
   document.querySelector('#extras-view').hidden=view!=='extras';
@@ -143,13 +145,14 @@ function showView(view, keepRegistration = false) {
   document.querySelector('#flows-view').hidden=view!=='flows';
   document.querySelector('#flows-event-name').textContent=events.find(item=>item.id===selected)?.name||'';
   document.querySelector('#flow-context').hidden = ['event','flows'].includes(view);
-  for(const id of ['setup-tab','registration-tab','demographics-tab','sessions-tab','extras-tab','payment-setup-tab','confirmation-tab'])document.getElementById(id).hidden=['event','flows'].includes(view);
+  for(const id of ['setup-tab','registration-tab','demographics-tab','sessions-tab','extras-tab','review-setup-tab','payment-setup-tab','confirmation-tab'])document.getElementById(id).hidden=['event','flows'].includes(view);
   document.querySelector('#flow-context-name').textContent = window.RegistrationFlows?.current()?.name || 'Attendee';
+  document.querySelector('#setup-tab').textContent = (window.RegistrationFlows?.current()?.name || 'Registration')+' setup';
   document.querySelector('#welcome-event-name').textContent = events.find(item => item.id === selected)?.name || '';
   document.querySelector('#builder-view').hidden = !['setup','registration'].includes(view);
   const detailsName=window.RegistrationFlows?.current()?.kind==='attendee'?'Attendee details':'Registration details';
   document.querySelector('#registration-tab').textContent=detailsName;
-  document.querySelector('#builder-page-title').textContent = view==='setup'?'Website setup':detailsName;
+  document.querySelector('#builder-page-title').textContent = view==='setup'?(window.RegistrationFlows?.current()?.name||'Registration')+' setup':detailsName;
   document.querySelectorAll('#builder-form > section').forEach((section,index)=>{const websiteSection=index<3||section.id==='promo-settings';section.hidden=view==='setup'?!websiteSection:websiteSection;const step=section.querySelector('.step');if(step)step.textContent=String(section.id==='promo-settings'?4:index<3?index+1:1).padStart(2,'0');});
   document.querySelector('#demographics-view').hidden = view !== 'demographics';
   document.querySelector('#membership-view').hidden = !selected || view!=='setup';
@@ -170,6 +173,8 @@ async function switchView(view) {
   openDraft(events.find(item => item.id === selected) || null);
 }
 document.getElementById('confirmation-tab').onclick=()=>switchView('confirmation');
+document.getElementById('review-setup-tab').onclick=()=>switchView('review-setup');
+document.getElementById('review-setup-next').onclick=()=>switchView('payment-setup');
 document.getElementById('payment-setup-tab').onclick=()=>switchView('payment-setup');
 document.getElementById('payment-setup-next').onclick=()=>switchView('confirmation');
 document.getElementById('extras-tab').onclick=()=>switchView('extras');
@@ -202,7 +207,7 @@ window.addEventListener('hashchange', async () => {
     try { events = await api('/api/events'); destination = events.find(item => item.id === route.get('event')) || null; renderList(); } catch(error) { message('Could not open that event. Reload to retry.', true); setLocation(); return; }
   }
   if(route.get('event')&&!destination){message('That saved event could not be found. Your current event is unchanged.',true);setLocation();return;}
-  const view = destination && ['confirmation','payment-setup','extras','sessions','flows','setup','registration','demographics','membership'].includes(route.get('view')) ? route.get('view') : 'event';
+  const view = destination && ['review-setup','confirmation','payment-setup','extras','sessions','flows','setup','registration','demographics','membership'].includes(route.get('view')) ? route.get('view') : 'event';
   if (destination?.id===selected && (!route.get('flow')||route.get('flow')===window.RegistrationFlows.current()?.id) && ['setup','registration'].includes(activeView) && ['setup','registration'].includes(view)) {showView(view,true);return;}
   if ((dirty || window.RegistrationBuilder?.dirty || window.DemographicsBuilder?.dirty || window.MembershipBuilder?.dirty || window.EventFooterBuilder?.dirty || window.ConfirmationBuilder?.dirty || window.ExtrasBuilder?.dirty || window.SessionsBuilder?.dirty || window.WelcomeBuilder?.dirty) && !await confirmAction('Discard unsaved changes and open this event?')) {
     setLocation(); return;
@@ -254,7 +259,7 @@ window.saveSetupNext=async()=>{
   else if(from==='extras'){if(!await window.ExtrasBuilder.save())return;}
   else return;
   if(activeView!==from||window.RegistrationFlows.current()?.id!==flow)return;
-  const next={setup:'registration',registration:'demographics',demographics:'sessions',sessions:'extras',extras:'payment-setup','payment-setup':'confirmation',confirmation:'flows'}[from];
+  const next={setup:'registration',registration:'demographics',demographics:'sessions',sessions:'extras',extras:'review-setup','payment-setup':'confirmation',confirmation:'flows'}[from];
   showView(next,from==='setup');
  }finally{window.setupAdvancing=false;}
 };
