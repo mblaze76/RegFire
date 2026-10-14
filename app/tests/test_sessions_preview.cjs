@@ -13,7 +13,7 @@ function setup(){
  const pending=new Promise((a,b)=>{resolve=a;reject=b;});
  const document={getElementById:id=>nodes[id]??=( {textContent:'',hidden:false}),addEventListener(){}};
  vm.runInNewContext(source,{URLSearchParams,location:{hash:`#event=${event}&editor=${editor}`},document,
-  window:{RegistrationFooter:{connect(){}},SessionBrowser:{mount:()=>({update:p=>updates.push(p)})},RegFireJourney:{ready:new Promise(()=>{})}},
+  window:{RegistrationFooter:{connect(){}},SessionBrowser:{mount:()=>({update:p=>updates.push(p)})},RegFireJourney:{url:step=>'/'+step+'#event='+event+'&editor='+editor,ready:new Promise(()=>{})}},
   fetch:()=>pending,BroadcastChannel:class {constructor(){channel=this;}postMessage(){}},setInterval(){},Date});
  return {nodes,updates,resolve:p=>resolve({ok:true,json:async()=>p}),reject,
   live:(seq=1)=>channel.onmessage({data:{kind:'sessions',editor,seq,page:{sessions:[],event_name:'Live'}}})};
@@ -34,3 +34,5 @@ test('live recovery clears prior error and ignores stale sequence',async()=>{
  const x=setup();x.reject(Error('Offline'));await flush();assert.equal(x.nodes['sessions-site-error'].textContent,'Offline');
  x.live(2);x.live(1);assert.equal(x.updates.length,1);assert.equal(x.nodes['sessions-site-error'].textContent,'');assert.equal(x.nodes['sessions-retry'].hidden,true);
 });
+
+test('loading agenda links preserve preview identity before configuration resolves',()=>{const x=setup();assert.match(x.nodes['sessions-extras'].href,new RegExp('editor='+editor));assert.match(x.nodes['sessions-back'].href,new RegExp('editor='+editor));});

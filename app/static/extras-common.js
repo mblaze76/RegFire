@@ -20,14 +20,14 @@
   }
   async function total(target){
    const ticket=++seq,selections=[...choices].filter(([,c])=>c.quantity>0).map(([,c])=>({...c}));
-   if(saved)window.RegFireJourney?.save({extras:selections});
+   if(saved||window.RegFireJourney?.editor)window.RegFireJourney?.save({extras:selections});
    if([...choices.values()].some(c=>!Number.isInteger(c.quantity)||c.quantity<0)){target.textContent='Choose whole-number quantities.';return;}
    let amount=0;
    if(saved){try{const r=await fetch('/api/events/'+page.event_id+'/extra-options/quote',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({selections})}),q=await r.json();if(ticket!==seq)return;if(!r.ok)throw Error(q.error);amount=q.item_subtotal_minor;}catch(e){if(ticket===seq)target.textContent=e.message||'Could not check current inventory.';return;}}
    else for(const [id,c] of choices){const item=page.items.find(i=>i.id===c.item_id);if(item)amount+=item.price_minor*c.quantity;}
    if(ticket!==seq)return;target.replaceChildren(el('strong','Additional options subtotal: '+money(amount,page.currency)),el('p','Registration fees, discounts and applicable tax appear on Verify your details.'));
   }
-  return {update(next){if(page?.event_id!==next.event_id)choices=new Map((saved?window.RegFireJourney?.read().extras||[]:[]).map(c=>[c.item_id+'|'+(c.variant_id||''),{item_id:c.item_id,quantity:c.quantity,variant_id:c.variant_id}]));page=next;window.RegFirePreviewBranding?.connect(root,page.event_id);const ids=new Set(page.items.map(i=>i.id));for(const [key,c] of choices)if(!ids.has(c.item_id))choices.delete(key);draw();}};
+  return {update(next){if(page?.event_id!==next.event_id)choices=new Map(((saved||window.RegFireJourney?.editor)?window.RegFireJourney?.read().extras||[]:[]).map(c=>[c.item_id+'|'+(c.variant_id||''),{item_id:c.item_id,quantity:c.quantity,variant_id:c.variant_id}]));page=next;window.RegFirePreviewBranding?.connect(root,page.event_id);const ids=new Set(page.items.map(i=>i.id));for(const [key,c] of choices)if(!ids.has(c.item_id))choices.delete(key);draw();}};
  }
  window.ExtraOptionsBrowser={mount,money};
 })();
