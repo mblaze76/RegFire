@@ -54,3 +54,36 @@ video:focus-visible{outline:3px solid var(--yellow);outline-offset:4px}
 
 /* Approved product taglines: live text stays crisp at every viewport. */
 .product-card .brand-tagline,.product-hero-grid .brand-tagline{font-size:clamp(15px,1.25vw,21px);font-weight:600;line-height:1.4;text-align:center;padding:14px 10px 18px;color:#e5e7eb;background:#191b20;letter-spacing:.02em;border-top:0}.product-card:first-child figure{display:flex;flex-direction:column}.product-card:first-child img{position:static;flex:1;min-height:0;height:auto;object-fit:contain}.product-card:first-child .brand-tagline{flex:none}
+
+/* Balanced product suite: every brand shares the same card and artwork area. */
+.product-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;align-items:stretch}
+.product-card,.product-card:first-child{grid-column:auto;display:flex;flex-direction:column;align-items:stretch;background:#191a1e}
+.product-card figure,.product-card:first-child figure{position:relative;display:flex;flex-direction:column;align-self:auto;flex:none;background:#15171c}
+.product-card img,.product-card:first-child img{position:static;inset:auto;width:100%;height:auto;aspect-ratio:3/2;object-fit:contain;flex:none}
+.product-card-copy{display:flex;flex-direction:column;flex:1;padding:26px}
+.product-card h3{font-size:25px;line-height:1.2;letter-spacing:-.5px}
+.product-card p{font-size:15px;line-height:1.7;margin:0 0 24px;min-height:0}
+.product-explore{margin-top:auto;padding-top:18px}
+.product-card .brand-tagline{min-height:58px;display:flex;align-items:center;justify-content:center;font-size:16px;padding:12px 16px}
+.product-card:focus-visible,.suite-more a:focus-visible{outline:3px solid #ef8375;outline-offset:4px}
+.product-hero-grid{gap:5%;grid-template-columns:1.05fr 1fr}
+.product-hero-grid h1{font-size:clamp(36px,4vw,62px);max-width:14ch}
+.product-description{max-width:58ch;line-height:1.75}
+.product-hero-grid figure{width:100%;max-width:620px;justify-self:end}
+.product-hero-grid img{aspect-ratio:3/2;object-fit:contain}
+.product-benefits{gap:24px}
+.product-benefits article{border:1px solid #39343b;border-radius:12px;padding:26px;background:#19181c}
+.product-benefits h2{font-size:23px;line-height:1.3;margin:16px 0 12px}
+.product-benefits p{line-height:1.7;margin-bottom:0}
+.suite-more a{align-items:center;min-height:66px}
+@media(max-width:1050px){.product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.product-card:first-child{grid-column:auto}.product-hero-grid{grid-template-columns:1fr}.product-hero-grid figure{justify-self:start;max-width:620px}.product-benefits{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.product-grid{grid-template-columns:1fr;gap:20px}.product-card-copy{padding:22px}.product-card h3{font-size:25px}.product-hero-grid h1{font-size:38px}.product-benefits{grid-template-columns:1fr}.product-benefits article{padding:22px}.product-hero-grid .brand-tagline{font-size:17px}}
+
+.product-card figure:has(>img:only-child){padding-bottom:58px}
+
+.product-ai-note{font-size:15px;line-height:1.7;color:#c8c3cb;border-left:2px solid #b9473c;padding-left:18px;margin:24px 0 30px;max-width:58ch}.product-ai-note strong{display:block;color:#f3eae6;margin-bottom:8px}
+
+/* Founder story and approved values */
+.about-story{min-width:0}.about-story h3{margin:32px 0 12px}.founder-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:28px 0}.founder-placeholder{margin:0;padding:20px 12px;border:1px solid rgba(255,255,255,.14);border-radius:16px;background:rgba(255,255,255,.035);text-align:center}.founder-placeholder svg{display:block;width:100%;max-width:140px;height:150px;margin:auto;fill:#89939f}.founder-placeholder figcaption{font-size:12px;line-height:1.5;color:#aeb6c0;margin-top:10px}.about-values{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin:20px 0 30px}.about-values h4{font-size:17px;margin:0 0 8px}.about-values p{font-size:15px;line-height:1.7;margin:0}@media(max-width:600px){.founder-grid{gap:8px}.founder-placeholder{padding:12px 5px}.founder-placeholder svg{height:105px}.founder-placeholder figcaption{font-size:10px}.about-values{grid-template-columns:1fr;gap:20px}}
+
+.manifesto>.about-story{max-width:1100px;gap:24px 48px}.about-story>h3,.about-story>h3+p,.about-story>.founder-grid,.about-story>.about-values,.about-story>.button{grid-column:1/-1}.about-story>.button{justify-self:start}.about-story h3,.about-story h4{color:var(--ink)}
