@@ -58,7 +58,7 @@ def quote_order(store,c,flow,data,config,exclude=None,extra_held=()):
      if not Decimal(v).is_finite():raise ValueError()
     except Exception:raise ValueError('Enter a valid '+f['label']+'.')
   if f['required'] and (v is None or v == '' or v is False):raise ValueError('Complete '+f['label']+'.')
-  normalized[f['id']]=v;details.append(dict(label=f['label'],value=v))
+  normalized[f['id']]=v;details.append(dict(id=f['id'],label=f['label'],value=v))
   if typ=='tel' and f.get('sms_consent',f['id']=='cell-phone' or bool(re.search('cell|mobile',f['label'],re.I))):
    consent=data.get('smsConsents',{}).get(f['id'],False)
    if type(consent) is not bool:raise ValueError('Check SMS consent.')
@@ -125,7 +125,7 @@ def handle(h):
  files={'/review':'review.html','/payment':'payment.html','/confirmation':'payment.html','/checkout-site.js':'checkout-site.js','/payment-settings':'payment-settings.html','/payment-settings.js':'payment-settings.js'}
  if h.command=='GET' and path in files:
   content=(Path(__file__).parent/'static'/files[path]).read_bytes();h.send_response(200);h.send_header('Content-Type','text/javascript' if path.endswith('.js') else 'text/html');h.send_header('Content-Length',str(len(content)));h.send_header('Cache-Control','no-store');h.send_header('X-Content-Type-Options','nosniff');h.end_headers();h.wfile.write(content);return True
- admin=path=='/api/admin/payments';m=re.fullmatch(r'/api/events/([a-f0-9-]{36})/checkout/(quote|save|methods|group-save|group-quote)',path);order_match=re.fullmatch(r'/api/checkout/([a-f0-9-]{36})/(start|status)',path);hook=re.fullmatch(r'/api/payments/webhook/([a-f0-9-]{36})',path)
+ admin=path=='/api/admin/payments';m=re.fullmatch(r'/api/events/([a-f0-9-]{36})/checkout/(quote|save|methods|preferences|group-save|group-quote)',path);order_match=re.fullmatch(r'/api/checkout/([a-f0-9-]{36})/(start|status)',path);hook=re.fullmatch(r'/api/payments/webhook/([a-f0-9-]{36})',path)
  if not(admin or m or order_match or hook):return False
  try:
   config=settings(h.server);store=h.server.store;raw=b'';data={}
@@ -173,12 +173,16 @@ def handle(h):
   actor=h.identity['id']
   if m:
    flow=str(uuid.UUID(m[1]));action=m[2]
+   if action=='preferences':
+    if h.command not in ('GET','POST'):raise ValueError('Use GET or POST.')
+    from payment_preferences import operation
+    h.respond(200,operation(store,flow,data if h.command=='POST' else None));return True
    if action=='methods':
     event=next((e for e in store.list() if e['id']==flow),None)
     if not event:
      with store.connect() as c:event=c.execute(sql.SQL('SELECT body FROM {} WHERE id=%s').format(store.table()),(flow,)).fetchone()[0]
     cfg=config.read();assignment=cfg['assignments'].get(event.get('parent_event_id',flow),{});available=[dict(id=c['id'],name=c['name'],provider=c['provider'],mode=c['mode'],issues=issues(c)) for c in cfg['connections'] if c['id'] in assignment.get('connections',[])]
-    h.respond(200,dict(methods=available,default=assignment.get('default')));return True
+    h.respond(200,dict(methods=available,default=assignment.get('default'),preferences=__import__('payment_preferences').operation(store,flow)));return True
    if h.command!='POST':raise ValueError('Use POST.')
    if action in ('group-save','group-quote'):
     from group_checkout import save

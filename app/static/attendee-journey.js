@@ -4,6 +4,7 @@
  const live=location.pathname==='/register'||route.get('mode')==='registration';
  const key='regfire-journey:'+flow+(editor?':preview:'+editor:'')+(live?':registration':'');
  const labels={welcome:'Welcome',registration:'Attendee details',demographics:'Demographics',sessions:'Sessions',extras:'Additional options',review:'Verify your details',payment:'Payment',confirmation:'Confirmation'};
+ if(route.get('new')==='1'){sessionStorage.removeItem(key);route.delete('new');history.replaceState(null,'',location.pathname+'#'+route);}
  let state={};try{state=JSON.parse(sessionStorage.getItem(key)||'{}');}catch{}
  function save(change){state={...state,...change};try{sessionStorage.setItem(key,JSON.stringify(state));}catch{}return state;}
  function url(step){const p=new URLSearchParams({event:flow});if(editor)p.set('editor',editor);if(live)p.set('mode','registration');if(['welcome','registration','demographics'].includes(step))p.set('view',step);return (['welcome','registration','demographics'].includes(step)?(live?'/register':'/preview'):'/'+step)+'#'+p;}

@@ -34,10 +34,20 @@ class InlineAssets(unittest.TestCase):
    doc=fixture();doc.update(flow_id='flow',appearance={'logo_asset_id':'asset'})
    result=confirmation_email.prepare(doc,store,root)
    store.asset.assert_called_once_with('flow','asset')
-   self.assertEqual([a['content_id'] for a in result['inline_images']],['confirmation-qr','event-logo','google-wallet-preview'])
+   self.assertEqual([a['content_id'] for a in result['inline_images']],['confirmation-qr','event-logo','apple-wallet-preview','google-wallet-preview'])
    import io
    with Image.open(io.BytesIO(result['inline_images'][1]['data'])) as im:self.assertEqual(im.size,(900,450));self.assertEqual(im.format,'PNG')
    store.asset.return_value=None
    with self.assertRaises(ValueError):confirmation_email.prepare(doc,store,root)
    store.asset.return_value=('../outside.png',)
    with self.assertRaises(ValueError):confirmation_email.prepare(doc,store,root)
+
+class CompletePresentation(unittest.TestCase):
+ def test_rich_content_identifier_and_no_wallet_links(self):
+  doc=fixture();doc['confirmation_id']='20261014';doc['quote']['sessions']=[dict(title='Keynote',start='09:00',end='10:00',location='Hall'),dict(title='Workshop',start='11:00',end='12:00',location='Studio')]
+  doc['quote']['lines'] += [dict(name='Shirt — Medium',quantity=2,unit_price_minor=2500,line_total_minor=5000,kind='extra'),dict(name='Shirt — Large',quantity=1,unit_price_minor=2500,line_total_minor=2500,kind='extra')]
+  html=confirmation_email.render(doc,{'qr':'qr','apple-wallet':'apple','google-wallet':'google'},'https://registration.example/attendee-confirmation#order=synthetic&key=private-token')
+  for value in ['Keynote','Workshop','2 × Shirt — Medium','1 × Shirt — Large','<strong>20261014</strong>','cid:apple','cid:google','Sign in to your dashboard']:self.assertIn(value,html)
+  self.assertNotIn('Event: event',html);self.assertNotIn('SAMPLE CONFIRMATION',html)
+  self.assertIn('https://registration.example/registrant-login?event=event',html)
+  dashboard=html.split('Sign in to your dashboard')[0].rsplit('<a ',1)[-1];self.assertNotIn('private-token',dashboard)

@@ -12,7 +12,9 @@ POST={'pricing-preview','demographics-preview','membership/check-fields','attend
 
 def enabled(store,flow):
     allowed=os.environ.get('REGFIRE_STAGING_FLOW_IDS','').split(',')
-    if flow not in allowed:return False
+    if flow not in allowed:
+        if not re.fullmatch(UUID,flow or ''):return False
+        return __import__('publication').enabled(store,flow)
     with store.connect() as c:
         return bool(c.execute(sql.SQL('SELECT 1 FROM {} WHERE id=%s AND NOT archived').format(sql.Identifier(store.schema,'registration_flows')),(flow,)).fetchone())
 
@@ -97,7 +99,7 @@ def handle(h):
 
 # Presentation assets contain no event records. Event assets still require an
 # enabled flow and exact event/asset association in Store.asset.
-PRESENTATION={'/register','/sessions','/extras','/review','/payment','/confirmation',
+PRESENTATION={'/payment-demo.js','/payment-demo.css','/apple-wallet-official.svg','/google-wallet-official.svg','/register','/sessions','/extras','/review','/payment','/confirmation',
  '/attendee-branding.js','/attendee-journey.js','/field-validation.js','/badge-preview.js',
  '/subcategories.js','/linkedin-import.js','/background-membership.js','/address.js',
  '/footer.js','/email.js','/welcome-fonts.js','/welcome-common.js','/live-preview.js',
@@ -105,7 +107,11 @@ PRESENTATION={'/register','/sessions','/extras','/review','/payment','/confirmat
  '/extras-site.js','/checkout-site.js','/confirmation.css','/confirmation-common.js',
  '/regfire-logo-3d-transparent.png','/linkedin-in-official.png'}
 def public_presentation(h):
-    if h.command!='GET' or not os.environ.get('REGFIRE_STAGING_FLOW_IDS'):return False
+    if h.command!='GET':return False
+    if not os.environ.get('REGFIRE_STAGING_FLOW_IDS'):
+        if os.environ.get('REGFIRE_ENV','local')=='production' and os.environ.get('REGFIRE_PUBLICATION_ENABLED')!='1':return False
+        with h.server.store.connect() as c:
+            if not c.execute(sql.SQL('SELECT 1 FROM {} p JOIN {} f ON f.id=p.flow_id WHERE p.published AND NOT f.archived LIMIT 1').format(sql.Identifier(h.server.store.schema,'registration_publications'),sql.Identifier(h.server.store.schema,'registration_flows'))).fetchone():return False
     path=urlsplit(h.path).path
     if path in PRESENTATION:return True
     asset=re.fullmatch('/api/events/('+UUID+')/assets/'+UUID,path)

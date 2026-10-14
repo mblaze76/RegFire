@@ -46,7 +46,7 @@ def handle(h):
   if not isinstance(data,dict):raise AccessError('Invalid request.',400)
   throttle(('receipt',h.client_address[0]))
   store=h.server.store;o=authorized(store,data.get('order'),identity(h),data.get('key'))
-  doc=document(store,o['flow_id'],o);doc['settings']['show_wallet']=False;root=Path(getattr(h.server,'upload_root',Path(__file__).parent/'uploads'))
+  doc=document(store,o['flow_id'],o);doc['dashboard_url']=DeploymentConfig.load(h.server.server_port).origin+'/registrant-login?event='+doc['event_id'];root=Path(getattr(h.server,'upload_root',Path(__file__).parent/'uploads'))
   if data.get('format')=='pdf':
    from confirmation_pdf import render
    send_bytes(h,render(doc,store,root),'application/pdf','RegFire-confirmation.pdf');return True

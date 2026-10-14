@@ -294,3 +294,5 @@ label:has(#welcome-font-search),label:has(#welcome-about-font),#welcome-font-cou
 
 /* Client-owned membership integrations remain distinct from shared provider administration. */
 .membership-integration-card{padding:16px;margin:16px 0;border:1px solid #bfd6fa;border-radius:12px;background:#f2f7ff;color:#17243a}.membership-integration-card p{margin:0 0 10px}.membership-integration-link{display:inline-flex;align-items:center;min-height:44px;padding:8px 14px;border-radius:8px;background:#1559bd;color:#fff!important;font-weight:700;text-decoration:none;white-space:normal}.membership-integration-link:hover{background:#104796}.membership-integration-link:focus-visible{outline:3px solid #17243a;outline-offset:3px}.membership-integration-card .field-note{margin-top:10px;margin-bottom:0;color:#354963}
+
+.public-attendee .live-toolbar,.public-attendee #live-fullscreen-message{display:none!important}

@@ -242,8 +242,15 @@ class PostgresTest(unittest.TestCase):
     def test_image_upload_replace_remove_fade_and_restart(self):
         event=self.request('/api/events',draft(),'POST');path='/api/events/'+event['id']+'/registration-page'
         logo=self.upload(event['id'],'logo');background=self.upload(event['id'],'background')
-        data=self.request(path);data['appearance']=dict(logo_asset_id=logo['id'],background_asset_id=background['id'],background_fade=65)
-        saved=self.request(path,data,'PUT');self.stop();self.start();self.assertEqual(self.request(path),saved)
+        welcome_path='/api/events/'+event['id']+'/welcome-page'
+        welcome=self.request(welcome_path)
+        self.request(welcome_path,welcome|{'background_asset_id':background['id'],'background_mode':'image','background_fade':65},'PUT')
+        # Event-wide branding wins over a stale per-page appearance value.
+        data=self.request(path);data['appearance']=dict(logo_asset_id=logo['id'],background_asset_id=None,background_fade=20)
+        saved=self.request(path,data,'PUT')
+        self.assertEqual(saved['appearance']['background_fade'],65)
+        self.assertEqual(saved['appearance']['background_asset_id'],background['id'])
+        self.stop();self.start();self.assertEqual(self.request(path),saved)
         with build_opener(ProxyHandler({})).open(Request(self.url+logo['url'],headers=self.auth_headers())) as response:
             self.assertEqual(response.headers['Content-Type'],'image/png');self.assertTrue(response.read().startswith(b'\x89PNG'))
         replacement=self.upload(event['id'],'logo','blue');self.assertNotEqual(logo['id'],replacement['id'])

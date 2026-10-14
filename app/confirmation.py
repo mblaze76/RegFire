@@ -108,7 +108,7 @@ def send_bytes(h,content,mime,filename=None):
  h.end_headers();h.wfile.write(content)
 def handle(h):
  path=urlsplit(h.path).path
- files={'/google-wallet-official.svg':'image/svg+xml','/google-wallet-official.png':'image/png','/confirmation-preview.js':'text/javascript','/confirmation-common.js':'text/javascript','/confirmation-builder.js':'text/javascript','/confirmation.css':'text/css','/confirmation-preview':'text/html'}
+ files={'/apple-wallet-official.svg':'image/svg+xml','/apple-wallet-official.png':'image/png','/google-wallet-official.svg':'image/svg+xml','/google-wallet-official.png':'image/png','/confirmation-preview.js':'text/javascript','/confirmation-common.js':'text/javascript','/confirmation-builder.js':'text/javascript','/confirmation.css':'text/css','/confirmation-preview':'text/html'}
  if path in files and h.command=='GET':
   name='confirmation-preview.html' if path=='/confirmation-preview' else path[1:];send_bytes(h,(Path(__file__).parent/'static'/name).read_bytes(),files[path]);return True
  m=re.fullmatch(r'/api/events/([a-f0-9-]{36})/confirmation(?:/(preview|email-preview|sample.pdf))?',path);o=re.fullmatch(r'/api/checkout/([a-f0-9-]{36})/confirmation(?:/(receipt.pdf|apple.pkpass|google))?',path)
@@ -150,6 +150,8 @@ def handle(h):
    if o[2]=='google':
     if not doc['wallet']['google']:raise ValueError('Google Wallet is unavailable for this confirmation.')
     h.respond(200,dict(url=doc['wallet']['google']));return True
+  from deployment_config import DeploymentConfig
+  doc['dashboard_url']=DeploymentConfig.load(h.server.server_port).origin+'/registrant-login?event='+doc['event_id']
   if m and m[2]=='email-preview':
    import base64
    from confirmation_email import prepare

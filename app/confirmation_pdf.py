@@ -18,7 +18,7 @@ def display(value):
  return str(value) if value is not None else ''
 def money(v,c):return c+' '+(f'{v:,.0f}' if c=='JPY' else f'{v/100:,.2f}')
 def render(doc,store,upload_root):
- styles=getSampleStyleSheet();styles.add(ParagraphStyle(name='RFBody',fontName='Helvetica',fontSize=9,leading=11,textColor=INK,spaceAfter=3,wordWrap='CJK'));styles.add(ParagraphStyle(name='RFSmall',parent=styles['RFBody'],fontSize=7,leading=9,textColor=GRAY));styles.add(ParagraphStyle(name='RFTitle',parent=styles['RFBody'],fontName='Helvetica-Bold',fontSize=19,leading=22,spaceAfter=6));styles.add(ParagraphStyle(name='RFSection',parent=styles['RFBody'],fontName='Helvetica-Bold',fontSize=12,leading=14,spaceBefore=6,spaceAfter=4))
+ styles=getSampleStyleSheet();styles.add(ParagraphStyle(name='RFIdentifier',fontName='Helvetica-Bold',fontSize=8,leading=11,textColor=INK,alignment=1,spaceAfter=7,wordWrap='CJK'));styles.add(ParagraphStyle(name='RFButton',fontName='Helvetica-Bold',fontSize=10,leading=14,textColor=colors.white,alignment=1));styles.add(ParagraphStyle(name='RFBody',fontName='Helvetica',fontSize=9,leading=11,textColor=INK,spaceAfter=3,wordWrap='CJK'));styles.add(ParagraphStyle(name='RFSmall',parent=styles['RFBody'],fontSize=7,leading=9,textColor=GRAY));styles.add(ParagraphStyle(name='RFTitle',parent=styles['RFBody'],fontName='Helvetica-Bold',fontSize=19,leading=22,spaceAfter=6));styles.add(ParagraphStyle(name='RFSection',parent=styles['RFBody'],fontName='Helvetica-Bold',fontSize=12,leading=14,spaceBefore=6,spaceAfter=4))
  def p(text,style='RFBody'):return Paragraph(escape(display(text)).replace('\n','<br/>'),styles[style])
  def asset(ident,width=96,height=54):
   row=store.asset(doc['flow_id'],ident) if ident else None
@@ -35,17 +35,15 @@ def render(doc,store,upload_root):
  story += [notice,p(event['name'],'RFSection'),p(' | '.join(str(event.get(k,'')) for k in ('start','end','timezone') if event.get(k))),p(' | '.join(str(event.get(k,'')) for k in ('venue','location') if event.get(k)))]
  def qr():
   widget=QrCodeWidget(doc['qr_payload'],barLevel='M',barBorder=4);x,y,w,h=widget.getBounds();drawing=Drawing(96,96,transform=[96/w,0,0,96/h,0,0]);drawing.add(widget)
-  rows=[p('SAMPLE CONFIRMATION' if doc['sample'] else 'CONFIRMATION','RFSmall'),p(doc['confirmation_id'],'RFSmall'),drawing,p('Event: '+doc['event_id'],'RFSmall')]
+  drawing.hAlign='CENTER'
+  rows=[drawing,p(doc['confirmation_id'],'RFIdentifier')]
   if settings['show_wallet']:
-   for kind,label in [('apple','Add to Apple Wallet'),('google','Add to Google Wallet')]:
-    link=doc.get('wallet',{}).get(kind)
-    if kind=='google' and (doc['sample'] or link):
-     badge=ROOT/'static/google-wallet-official.png'
-     with PILImage.open(badge) as im:bw,bh=im.size
-     rows.append(Image(str(badge),width=140,height=140*bh/bw,hAlign='LEFT'))
-     if link:rows.append(Paragraph('<link href="'+escape(link,{'"':'&quot;'})+'">Save to Google Wallet</link>',styles['RFSmall']))
-    else:rows.append(Paragraph('<link href="'+escape(link,{'"':'&quot;'})+'">'+label+'</link>' if link else label+' - unavailable',styles['RFSmall']))
-   rows.append(p('PREVIEW ONLY - NOT CONNECTED' if doc['sample'] else doc.get('wallet',{}).get('message',''),'RFSmall'))
+   badges=[]
+   for kind in ('apple','google'):
+    badge=ROOT/('static/'+kind+'-wallet-official.png')
+    with PILImage.open(badge) as im:bw,bh=im.size
+    badges.append(Image(str(badge),width=78,height=78*bh/bw,hAlign='CENTER'))
+   pair=Table([badges],colWidths=[85,85]);pair.setStyle(TableStyle([('VALIGN',(0,0),(-1,-1),'MIDDLE'),('ALIGN',(0,0),(-1,-1),'CENTER')]));rows.append(pair)
   return rows
  if settings['qr_position']=='top':story.append(KeepTogether(qr()))
  for block in settings['layout']:
@@ -55,7 +53,7 @@ def render(doc,store,upload_root):
    # Place QR beside a bounded header, letting long attendee detail lists flow onto later pages.
    if settings['qr_position'] in ('left','right'):
     cut=8 if sum(len(display(r['value'])) for r in q['details'][:6])<700 else 2;head=rows[:cut];tail=rows[cut:];cells=[head,qr()] if settings['qr_position']=='right' else [qr(),head];widths=[350,190] if settings['qr_position']=='right' else [190,350]
-    t=Table([cells],colWidths=widths);t.setStyle(TableStyle([('VALIGN',(0,0),(-1,-1),'TOP'),('LEFTPADDING',(0,0),(-1,-1),0),('RIGHTPADDING',(0,0),(-1,-1),12),('BACKGROUND',(1 if settings['qr_position']=='right' else 0,0),(1 if settings['qr_position']=='right' else 0,0),colors.HexColor('#f4f4f7'))]));story+=[t]+tail
+    t=Table([cells],colWidths=widths);t.setStyle(TableStyle([('VALIGN',(0,0),(-1,-1),'TOP'),('LEFTPADDING',(0,0),(-1,-1),0),('RIGHTPADDING',(0,0),(-1,-1),12),('ALIGN',(1 if settings['qr_position']=='right' else 0,0),(1 if settings['qr_position']=='right' else 0,0),'CENTER')]));story+=[t]+tail
    else:story+=rows
   elif block=='receipt':
    story.append(p('Receipt preview' if doc['sample'] else 'Receipt','RFSection'))
@@ -69,8 +67,8 @@ def render(doc,store,upload_root):
    for s in q['sessions']:story.append(KeepTogether([p(s['title']),p(' | '.join(str(s.get(k,'')) for k in ('start','end','location') if s.get(k)),'RFSmall')]))
   elif block=='extras' and settings['show_extras']:
    items=[l for l in q['lines'] if l.get('kind')=='extra']
-   if items:story.append(p('Your extra options','RFSection'))
-   for item in items:story.append(p(str(item['quantity'])+' × '+item['name']))
+   if items:story.append(p('Your additional options','RFSection'))
+   for item in items:story.append(p(str(item['quantity'])+' × '+item['name']+' — '+money(item['line_total_minor'],currency)))
   elif block=='sponsors' and settings['show_sponsors']:
    logos=settings['sponsors']
    if logos:
@@ -78,6 +76,14 @@ def render(doc,store,upload_root):
     for start in range(0,len(logos),3):
      cells=[[asset(s['asset_id'],145,42)] for s in logos[start:start+3]];cells += ['']*(3-len(cells));t=Table([cells],colWidths=[180]*3);t.setStyle(TableStyle([('VALIGN',(0,0),(-1,-1),'MIDDLE'),('ALIGN',(0,0),(-1,-1),'CENTER')]));story.append(t)
  if settings['qr_position']=='bottom':story.append(KeepTogether(qr()))
+ story.append(p('Need to review your registration? Sign in to your attendee dashboard. You can correct contact details or start another registration there. Contact the organizer for session, purchase or payment changes.'))
+ url=doc.get('dashboard_url','')
+ if url:
+  from urllib.parse import urlsplit
+  u=urlsplit(url)
+  if u.scheme not in ('https','http') or u.username or u.password or u.path!='/registrant-login':raise ValueError('Use the attendee dashboard URL.')
+  button=Table([[Paragraph('<link href="'+escape(url,{'"':'&quot;'})+'">Sign in to your dashboard</link>',styles['RFButton'])]],colWidths=[190],hAlign='LEFT');button.setStyle(TableStyle([('BACKGROUND',(0,0),(-1,-1),ORANGE),('TOPPADDING',(0,0),(-1,-1),9),('BOTTOMPADDING',(0,0),(-1,-1),9)]));story.append(button)
+ if settings['show_wallet']:story.append(p('Wallet badges are previews only. Passes are not available yet.','RFSmall'))
  def footer(canvas,pdf):
   canvas.setFillColor(ORANGE);canvas.rect(0,784,612,8,fill=1,stroke=0);canvas.setFont('Helvetica',8);canvas.setFillColor(GRAY);canvas.drawString(36,22,'RegFire | Registration. Reignited.');canvas.drawRightString(576,22,('SAMPLE / ' if doc['sample'] else '')+str(pdf.page))
  out=io.BytesIO();pdf=SimpleDocTemplate(out,pagesize=(612,792),leftMargin=36,rightMargin=36,topMargin=24,bottomMargin=36,title='RegFire registration confirmation');pdf.build(story,onFirstPage=footer,onLaterPages=footer);return out.getvalue()

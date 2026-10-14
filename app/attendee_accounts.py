@@ -8,7 +8,7 @@ from psycopg import sql
 import psycopg
 from access import AccessError,email,password_hash,password_ok
 
-PUBLIC={'/api/attendee/login','/api/attendee/me','/api/attendee/logout','/api/attendee/registrations'}
+PUBLIC={'/api/attendee/edit','/api/attendee/login','/api/attendee/me','/api/attendee/logout','/api/attendee/registrations'}
 _lock=threading.Lock();_attempts={}
 def table(s,n):return sql.Identifier(s.schema,n)
 def digest(v):return hashlib.sha256(v.encode()).hexdigest()
@@ -107,6 +107,11 @@ def handle(h):
   if path=='/api/attendee/logout' and h.command=='POST':
    with store.connect() as c:c.execute(sql.SQL('DELETE FROM {} WHERE token_hash=%s').format(table(store,'attendee_sessions')),(digest(raw_cookie(h)),))
    respond(h,200,{'ok':True},'');return True
+  if path=='/api/attendee/edit':
+   from attendee_edit import operation
+   ident=data.get('id') if h.command=='POST' else parse_qs(urlsplit(h.path).query).get('id',[''])[0]
+   if not re.fullmatch(r'[a-f0-9-]{36}',ident or ''):raise ValueError('Invalid registration.')
+   respond(h,200,operation(store,who['id'],ident,data if h.command=='POST' else None));return True
   if path=='/api/attendee/registrations' and h.command=='GET':
    event=parse_qs(urlsplit(h.path).query).get('event',[''])[0]
    with store.connect() as c:
@@ -118,6 +123,6 @@ def handle(h):
    respond(h,200,{'registrations':result});return True
   raise ValueError('Unsupported account operation.')
  except AccessError as e:respond(h,e.status,{'error':str(e)})
- except (ValueError,TypeError,KeyError):respond(h,400,{'error':'Check the email, password match and minimum 12-character password. Existing accounts require their current password.'})
+ except (ValueError,TypeError,KeyError) as e:respond(h,400,{'error':str(e) if path=='/api/attendee/edit' else 'Check the email, password match and minimum 12-character password. Existing accounts require their current password.'})
  except psycopg.Error:respond(h,503,{'error':'Attendee account storage is unavailable. Please retry.'})
  return True
