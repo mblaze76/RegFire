@@ -7,5 +7,7 @@ path=root/'postgres.json';path.write_text(json.dumps(config));os.chmod(path,0o60
 for name in ('REGFIRE_COMMUNICATIONS_LIVE','REGFIRE_CONFIRMATION_EMAIL_LIVE'):os.environ.pop(name,None)
 os.environ['REGFIRE_STAGING']='1'
 if os.getuid()==0:
+ # Fargate mounts the writable temp volume root-owned; set standard sticky permissions.
+ os.chmod("/tmp",0o1777)
  os.chown(root,10001,10001);os.chown(path,10001,10001);os.setgroups([]);os.setgid(10001);os.setuid(10001)
 os.execvp('gunicorn',['gunicorn','--config','deploy/gunicorn.conf.py','production_wsgi:application'])
