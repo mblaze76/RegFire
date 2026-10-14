@@ -22,3 +22,29 @@
  window.addEventListener('hashchange',()=>{const id=new URLSearchParams(location.hash.slice(1)).get('event');if(/^[a-f0-9-]{36}$/.test(id||''))channel(id);});
  window.addEventListener('pagehide',()=>{for(const id of channels.keys())send(id,{kind:'paused',message:'Organizer closed or reloading. Showing the last received draft; reopen the same organizer tab to reconnect.'});});
 })();
+
+/* One preview header and full-view interaction for every setup preview.
+   Expand the existing pane in place: moving an iframe would reload its draft. */
+(()=>{'use strict';
+ const specs=[
+  ['#welcome-preview','.preview-panel','Welcome preview','#welcome-open-site'],
+  ['#preview-form','.preview-column','Attendee preview','#builder-view .open-live-preview'],
+  ['#demo-embedded-preview','.preview-column','Demographics preview','#demographics-view .open-live-preview'],
+  ['#sessions-preview','.sessions-preview-panel','Sessions preview','#sessions-open'],
+  ['#extras-preview','.extras-preview-panel','Additional options preview','#extras-open'],
+  ['#confirmation-preview','.confirmation-preview-column','Confirmation preview','#confirmation-open'],
+  ['.payment-preview-panel','.payment-preview-panel','Payment preview',null]
+ ];
+ let active=null;
+ const el=(tag,text)=>{const n=document.createElement(tag);if(text)n.textContent=text;return n;};
+ function close(){if(!active)return;const a=active;active=null;a.pane.classList.remove('setup-preview-expanded');a.button.textContent='Expand preview';a.button.setAttribute('aria-expanded','false');for(const [n,value]of a.inert)n.inert=value;document.body.style.overflow=a.overflow;for(const [k,v]of Object.entries(a.attrs))v===null?a.pane.removeAttribute(k):a.pane.setAttribute(k,v);for(const cleanup of a.frames)cleanup();a.button.focus();}
+ function expand(pane,button){if(active?.pane===pane){close();return;}close();const attrs={role:pane.getAttribute('role'),'aria-modal':pane.getAttribute('aria-modal'),'aria-label':pane.getAttribute('aria-label')};active={pane,button,attrs,inert:[],frames:[],overflow:document.body.style.overflow};pane.classList.add('setup-preview-expanded');pane.setAttribute('role','dialog');pane.setAttribute('aria-modal','true');pane.setAttribute('aria-label',pane.dataset.previewTitle+' full view');button.textContent='Return to setup';button.setAttribute('aria-expanded','true');document.body.style.overflow='hidden';let n=pane;while(n.parentElement&&n.parentElement!==document.documentElement){for(const sibling of n.parentElement.children)if(sibling!==n){active.inert.push([sibling,sibling.inert]);sibling.inert=true;}n=n.parentElement;}for(const frame of pane.querySelectorAll('iframe')){let doc;const fn=e=>{if(e.key==='Escape'){e.preventDefault();close();}};const bind=()=>{try{doc?.removeEventListener('keydown',fn,true);doc=frame.contentDocument;doc?.addEventListener('keydown',fn,true);}catch{}};frame.addEventListener('load',bind);bind();active.frames.push(()=>{frame.removeEventListener('load',bind);try{doc?.removeEventListener('keydown',fn,true);}catch{}});}button.focus();}
+ function mount(pane,title,link){if(pane.dataset.previewPane)return;pane.dataset.previewPane='1';pane.dataset.previewTitle=title;pane.classList.add('setup-preview-pane');const bar=el('div'),heading=el('h3',title),actions=el('div'),button=el('button','Expand preview');bar.className='setup-preview-header';actions.className='setup-preview-actions';button.type='button';button.className='secondary setup-preview-expand';button.setAttribute('aria-expanded','false');button.onclick=()=>expand(pane,button);
+  const previous=pane.querySelector(':scope > .preview-heading,:scope > .sessions-preview-heading,:scope > .confirmation-preview-bar');
+  if(link){link.textContent='Open in new window ↗';link.classList.add('setup-preview-window');actions.append(link);}
+  if(previous)previous.remove();else pane.querySelector(':scope > h3')?.remove();actions.append(button);bar.append(heading,actions);pane.prepend(bar);
+ }
+ function refresh(){for(const [target,ancestor,title,link]of specs){const node=document.querySelector(target);if(node)mount(node.closest(ancestor),title,link?document.querySelector(link):null);}const review=document.getElementById('review-setup-view'),link=document.getElementById('review-setup-preview');if(review&&link&&!review.querySelector('.review-preview-panel')){const editor=review.querySelector('section'),layout=el('div'),pane=el('aside'),frame=el('iframe');layout.className='setup-preview-layout';pane.className='review-preview-panel';frame.title='Verify your details preview';frame.className='setup-review-frame';editor.before(layout);layout.append(editor,pane);pane.append(frame);mount(pane,'Verify your details preview',link);const update=()=>{const src=link.getAttribute('href');if(src&&frame.getAttribute('src')!==src)frame.src=src;};new MutationObserver(update).observe(link,{attributes:true,attributeFilter:['href']});update();}}
+ document.addEventListener('keydown',e=>{if(!active)return;if(e.key==='Escape'){e.preventDefault();close();return;}if(e.key==='Tab'){const nodes=[...active.pane.querySelectorAll('button,a[href],input,select,textarea,iframe,[tabindex]')].filter(n=>!n.disabled&&n.tabIndex>=0&&n.getClientRects().length);const first=nodes[0],last=nodes.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus();}}});
+ window.addEventListener('hashchange',close);new MutationObserver(()=>{if(active&&!active.pane.isConnected)close();refresh();}).observe(document.querySelector('main')||document.body,{childList:true,subtree:true});window.RegFirePreviewPane={refresh,close};refresh();
+})();
