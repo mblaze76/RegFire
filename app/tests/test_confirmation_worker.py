@@ -36,7 +36,7 @@ class ConfirmationWorkerTests(unittest.TestCase):
   o=self.order();s=self.settings()
   with self.store.connect() as c:c.execute(sql.SQL("UPDATE {} SET body=jsonb_set(body,'{{group_parent_id}}',to_jsonb(%s::text)) WHERE id=%s").format(sql.Identifier(self.schema,'registration_orders')),(str(uuid.uuid4()),o['id']))
   with patch.dict(os.environ,REGFIRE_STAGING='0',REGFIRE_CONFIRMATION_EMAIL_LIVE='1',REGFIRE_COMMUNICATIONS_LIVE='1'),patch('confirmation_delivery.adapter_for') as p:
-   p.return_value.submit.return_value={'status':'submitted','provider_id':'fake'};worker.run_once(self.store,s);args=p.return_value.submit.call_args;self.assertIn(o['id'],args.args[2]);self.assertNotIn('/confirmation#',args.args[2]);self.assertNotIn('/confirmation#',args.kwargs['html'])
+   p.return_value.submit.return_value={'status':'submitted','provider_id':'fake'};worker.run_once(self.store,s);args=p.return_value.submit.call_args;self.assertIn(o['id'],args.args[2]);self.assertIn('/attendee-confirmation#order='+o['id']+'&key=',args.args[2]);self.assertIn('expires in seven days',args.args[2]);self.assertNotIn('Sign in to the account',args.args[2])
  def test_disabled_does_not_load_settings(self):
   with patch.dict(os.environ,REGFIRE_CONFIRMATION_EMAIL_LIVE='0'),patch('communications.settings_for') as s:self.assertIsNone(worker.start(self.server));s.assert_not_called()
  def test_group_completion_queues_individual_recipients_and_ids(self):

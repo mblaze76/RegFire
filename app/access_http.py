@@ -26,6 +26,8 @@ def recovery(h):
  return h.server.recovery
 def guard(h):
  path=urlsplit(h.path).path
+ from confirmation_access import handle as receipt_handle
+ if receipt_handle(h):return False
  from public_attendee import handle as public_handle
  if public_handle(h):return False
  if re.fullmatch(r'/api/payments/webhook/[a-f0-9-]{36}',path):

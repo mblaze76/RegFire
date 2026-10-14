@@ -38,13 +38,14 @@ def dispatch(store,settings,order_id,client=None,*,upload_root=None):
   from confirmation import document
   from confirmation_email import prepare
   cfg=settings.read()
-  link=None if order.get('group_parent_id',order['id'])!=order['id'] else cfg['public_url']+'/confirmation#event='+order['flow_id']+'&order='+order['id']
+  from confirmation_access import email_link
+  link=email_link(c,store,order,cfg['public_url'])
   presentation=prepare(document(store,order['flow_id'],order),store,upload_root or Path(__file__).parent/'uploads',link)
   c.execute(sql.SQL("UPDATE {} SET status='submitting',updated=now() WHERE order_id=%s").format(table),(order_id,))
  # Commit the claim before contacting the provider. A crash/timeout remains uncertain, never auto-retried.
  quote=order['quote'];scale=1 if quote['currency']=='JPY' else 100;amount=quote['grand_total_minor']/scale if order['status']=='paid' else 0
- link=None if order.get('group_parent_id',order['id'])!=order['id'] else cfg['public_url']+'/confirmation#event='+order['flow_id']+'&order='+order['id']
- body='Your registration for '+quote['event_name']+' is confirmed.\n\nConfirmation: '+order['id']+'\n'+('Amount paid: '+quote['currency']+' '+format(amount,'.2f') if order['status']=='paid' else 'Free registration. No payment required.')+('\n\nView your confirmation, download your receipt and access available wallet passes:\n'+link+'\n\nSign in to the account used for registration.\n' if link else '\n\nYour confirmation is included in this email. Contact the person who registered your group for changes or online access.\n')
+ # Reuse the exact link prepared and committed with the submission claim.
+ body='Your registration for '+quote['event_name']+' is confirmed.\n\nConfirmation: '+order['id']+'\n'+('Amount paid: '+quote['currency']+' '+format(amount,'.2f') if order['status']=='paid' else 'Free registration. No payment required.')+('\n\nView your confirmation, download your receipt:\n'+link+('\n\nThis private receipt link expires in seven days. Do not forward it.\n' if '&key=' in link else '\n\nSign in to the account used for registration.\n') if link else '\n\nYour confirmation is included in this email. Contact the person who registered your group for changes or online access.\n')
  try:
   result=adapter_for('email',cfg['email'],client).submit(recipient,'Your registration confirmation - '+quote['event_name'],body,**presentation)
   if result.get('status')!='submitted':raise DeliveryError('Provider acceptance is unknown.')
