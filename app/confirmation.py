@@ -85,8 +85,7 @@ def document(store,flow,order=None,page=None):
  with store.connect() as c:
   event=c.execute(sql.SQL('SELECT body FROM {} WHERE id=%s').format(store.table()),(flow,)).fetchone()[0]
   branding=c.execute(sql.SQL('SELECT body FROM {} WHERE event_id=%s').format(sql.Identifier(store.schema,'registration_pages')),(flow,)).fetchone()
- from event_theme import apply as apply_event_theme
- appearance=apply_event_theme(store,event | {'id':flow},branding[0] if branding else {})['appearance']
+ appearance=(branding[0] if branding else {}).get('appearance',{})
  sample=order is None
  if sample:
   quote=dict(currency='USD',regtype='Attendee one-day pass',details=[dict(label='Name',value='Jordan Sample'),dict(label='Company',value='Sample Event Company'),dict(label='Email',value='jordan.sample@example.com')],sessions=[dict(title='Opening keynote: Registration. Reignited.',start='9:00 AM',end='10:00 AM',location='Main Hall'),dict(title='Building a better onsite experience',start='1:00 PM',end='2:00 PM',location='Room 201')],lines=[dict(name='Attendee one-day pass',quantity=1,unit_price_minor=29500,line_total_minor=29500,kind='registration'),dict(name='Conference tote',quantity=1,unit_price_minor=2500,line_total_minor=2500,kind='extra'),dict(name='Networking reception',quantity=1,unit_price_minor=4500,line_total_minor=4500,kind='extra')],subtotal_minor=36500,discount_minor=0,tax_minor=0,grand_total_minor=36500)

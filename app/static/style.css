@@ -290,7 +290,7 @@ label:has(#welcome-font-search),label:has(#welcome-about-font),#welcome-font-cou
 .regfire-powered-by{display:flex;align-items:center;justify-content:center;gap:8px;width:max-content;max-width:calc(100% - 32px);margin:18px auto;padding:6px 14px;border:1px solid #ffffff60;border-radius:999px;background:#f8f9fbef;color:#454852;font:500 12px/1.4 system-ui,sans-serif;letter-spacing:.02em}.regfire-powered-by img{display:block;width:34px;height:34px;object-fit:contain}.regfire-powered-by span{white-space:nowrap}
 
 /* One event font controls attendee content, including dynamic nested controls. */
-.event-font-root,.event-font-root *{font-family:var(--event-font,inherit)!important}
+.event-font-root:not(.confirmation-sheet),.event-font-root :not(.confirmation-sheet):not(.confirmation-sheet *){font-family:var(--event-font,inherit)!important}
 
 /* Client-owned membership integrations remain distinct from shared provider administration. */
 .membership-integration-card{padding:16px;margin:16px 0;border:1px solid #bfd6fa;border-radius:12px;background:#f2f7ff;color:#17243a}.membership-integration-card p{margin:0 0 10px}.membership-integration-link{display:inline-flex;align-items:center;min-height:44px;padding:8px 14px;border-radius:8px;background:#1559bd;color:#fff!important;font-weight:700;text-decoration:none;white-space:normal}.membership-integration-link:hover{background:#104796}.membership-integration-link:focus-visible{outline:3px solid #17243a;outline-offset:3px}.membership-integration-card .field-note{margin-top:10px;margin-bottom:0;color:#354963}

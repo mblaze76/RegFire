@@ -31,14 +31,6 @@ class ConfirmationStorage(unittest.TestCase):
   with self.assertRaises(HTTPError):self.request(base,page,'PUT')
   self.stop();self.start();self.assertEqual(self.request(base)['heading'],'See you there');self.assertEqual(self.request('/api/events/'+other+'/confirmation')['heading'],confirmation.DEFAULT['heading'])
   with self.assertRaises(HTTPError):self.request(base,saved|dict(sponsors=[dict(asset_id=str(uuid.uuid4()),name='Foreign')]),'PUT')
- def test_confirmation_inherits_current_event_font_without_flow_save(self):
-  flow,_,_=self.setup_order()
-  path='/api/events/'+flow+'/welcome-page'
-  welcome=self.request(path)
-  self.request(path,welcome|dict(title_font='georgia'),'PUT')
-  doc=confirmation.document(self.store,flow)
-  self.assertEqual(doc['appearance']['intro_font'],'georgia')
-  self.assertEqual(doc['appearance']['background_owner_id'],flow)
  def test_verified_order_pdf_and_actual_ids(self):
   flow,_,data=self.setup_order(0);order=self.request('/api/events/'+flow+'/checkout/save',data,'POST');path='/api/checkout/'+order['id']+'/confirmation'
   with self.assertRaises(HTTPError):self.request(path)
