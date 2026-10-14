@@ -22,6 +22,9 @@ class PhotoHTTPTests(unittest.TestCase):
   self.setUpAccess();self.tmp=tempfile.TemporaryDirectory();self.env=patch.dict(os.environ,{'REGFIRE_GOOGLE_VISION_API_KEY':''});self.env.start();self.keypatch=patch('photo_screening.KEY_FILE',Path(self.tmp.name)/'google-key');self.keypatch.start()
   self.server.photo_transport=lambda _:GOOD
   self.events=[self.store.save(str(uuid.uuid4()),validate(draft()|{'name':name,'photo_upload':POLICY}),datetime.now(timezone.utc).isoformat(),False) for name in ('Photo event','Other event')]
+  import photo_profiles
+  profile=photo_profiles.save(self.store,{'name':'Synthetic connection','secret_action':'replace','secret':'synthetic-key-000000'})
+  for event in self.events:photo_profiles.assign(self.store,{'event_id':event['id'],'profile_id':profile['id']})
   b=io.BytesIO();Image.new('RGB',(240,320),'orange').save(b,'PNG');self.image=b.getvalue()
  def tearDown(self):
   self.keypatch.stop();self.env.stop();self.tmp.cleanup();self.tearDownAccess()
@@ -63,7 +66,7 @@ class PhotoHTTPTests(unittest.TestCase):
   with self.store.connect() as c:c.execute(sql.SQL("UPDATE {} SET expires=now()-interval '1 second' WHERE id=%s").format(table(self.store)),(data['id'],))
   self.assertEqual(self.photo(token)[0],404)
   data,token=self.new()
-  with self.store.connect() as c:c.execute(sql.SQL('UPDATE {} SET attempts=10 WHERE id=%s').format(table(self.store)),(data['id'],))
+  with self.store.connect() as c:c.execute(sql.SQL('UPDATE {} SET attempts=10,attempt_day=%s WHERE id=%s').format(table(self.store)),(datetime.now(timezone.utc).date(),data['id']))
   self.assertEqual(self.photo(token,'upload')[0],429)
  def test_validate_bytes_csrf_owner_and_event_permissions(self):
   data,token=self.new()

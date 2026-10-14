@@ -124,8 +124,13 @@ class Handler(BaseHTTPRequestHandler):
             except (ValueError,FileNotFoundError):return self.respond(404,{'error':'Image not found.'})
             except (psycopg.Error,OSError):return self.respond(503,{'error':'Image unavailable.'})
         if path == '/api/photo-screening-status':
-            from photo_screening import public_status
-            return self.respond(200, public_status())
+            from photo_profiles import status
+            from access_http import access
+            event_id=parse_qs(urlsplit(self.path).query).get('event',[''])[0]
+            try:
+                access(self).require_event(self.identity,event_id)
+                return self.respond(200,status(self.server.store,event_id))
+            except __import__('access').AccessError as exc:return self.respond(exc.status,{'error':str(exc)})
         if path == '/api/address-config':
             from address_lookup import config
             return self.respond(200,config())

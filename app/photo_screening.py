@@ -53,8 +53,8 @@ def public_status():
     except ScreeningUnavailable as exc:
         return dict(provider='google_vision', configured=False, credential='', status='error', live_verified=False, message=str(exc))
 
-def request(content):
-    key = credential()
+def request(content, key=None):
+    key = credential() if key is None else key
     if not key:
         raise ScreeningUnavailable('Photo screening is not configured. Please contact the event organizer.')
     body = json.dumps({'requests': [{'image': {'content': base64.b64encode(content).decode('ascii')}, 'features': [{'type': 'SAFE_SEARCH_DETECTION'}, {'type': 'FACE_DETECTION', 'maxResults': 10}]}]})

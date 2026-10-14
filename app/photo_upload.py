@@ -17,6 +17,7 @@ from PIL import Image
 from access import AccessError
 from assets import normalize_image
 import photo_screening as screening
+import photo_profiles as profiles
 
 ROOT = Path(__file__).resolve().parent
 MAX_PHOTO = 5 * 1024 * 1024
@@ -92,7 +93,7 @@ def link_status(store, token):
         row=conn.execute(sql.SQL('SELECT id,event_id,expires,revoked,approved_at FROM {} WHERE token_hash=%s').format(table(store)),(digest(token),)).fetchone()
         active(row)
         event, settings=policy(conn,store,str(row[1]))
-    provider=screening.public_status()
+    provider=profiles.status(store,str(row[1]))
     return dict(event_name=event['name'], enabled=settings['enabled'], configured=provider['configured'], approved=bool(row[4]), message=provider['message'], subject_id=str(row[0]))
 
 def upload(store, token, content, transport=None):
@@ -110,14 +111,16 @@ def upload(store, token, content, transport=None):
             raise AccessError('A photo is already being checked. Please wait a moment.',409)
         if row[5]==now.date() and row[4]>=10:
             raise AccessError('The daily photo attempt limit was reached. Please try again tomorrow.',429)
-        conn.execute(sql.SQL("UPDATE {} SET attempts=CASE WHEN attempt_day=CURRENT_DATE THEN attempts+1 ELSE 1 END,attempt_day=CURRENT_DATE,lease=%s,lease_until=now()+interval '2 minutes' WHERE id=%s").format(table(store)),(lease,row[0]))
+        conn.execute(sql.SQL("UPDATE {} SET attempts=CASE WHEN attempt_day=(now() AT TIME ZONE 'UTC')::date THEN attempts+1 ELSE 1 END,attempt_day=(now() AT TIME ZONE 'UTC')::date,lease=%s,lease_until=now()+interval '2 minutes' WHERE id=%s").format(table(store)),(lease,row[0]))
     try:
+        key,connection=profiles.resolve(store,str(row[1]))
         image=normalize(content)
-        result=screening.screen(image,settings,transport)
+        result=screening.screen(image,settings,transport or (lambda image:screening.request(image,key)))
         with store.connect() as conn:
             # Event lock serializes approval against disabling or changing screening policy.
             _, current=policy(conn,store,str(row[1]),True)
-            if current!=settings or not current['enabled']:
+            _,current_connection=profiles.resolve(store,str(row[1]),conn)
+            if current_connection!=connection or current!=settings or not current['enabled']:
                 raise AccessError('The event’s photo policy changed. Please reload and try again.',409)
             saved=conn.execute(sql.SQL('UPDATE {} SET photo=%s,screening=%s,approved_at=now(),lease=NULL,lease_until=NULL WHERE id=%s AND token_hash=%s AND lease=%s AND NOT revoked AND expires>now() RETURNING id').format(table(store)),(image,Jsonb(result),row[0],token_hash,lease)).fetchone()
             if not saved:
@@ -157,10 +160,19 @@ def binary(h,content,mime='image/jpeg'):
 def handle(h):
     path=urlsplit(h.path).path
     match=re.fullmatch(r'/api/events/([a-f0-9-]{36})/attendee-photos(?:/([a-f0-9-]{36}))?',path)
-    files={'/photo-upload':('photo-upload.html','text/html; charset=utf-8'),'/photo-upload.js':('photo-upload.js','text/javascript'),'/photo-upload.css':('photo-upload.css','text/css'),'/photo-settings.js':('photo-settings.js','text/javascript')}
-    if not match and path not in (*files,'/api/photo-upload','/api/photo-screening-config','/api/photo-screening-test'):return False
+    files={'/photo-admin':('photo-admin.html','text/html; charset=utf-8'),'/photo-admin.js':('photo-admin.js','text/javascript'),'/photo-upload':('photo-upload.html','text/html; charset=utf-8'),'/photo-upload.js':('photo-upload.js','text/javascript'),'/photo-upload.css':('photo-upload.css','text/css'),'/photo-settings.js':('photo-settings.js','text/javascript')}
+    if not match and path not in (*files,'/api/photo-upload','/api/photo-screening-config','/api/photo-screening-test','/api/photo-profiles'):return False
     try:
         store=h.server.store
+        if path in ('/photo-admin','/photo-admin.js','/api/photo-profiles') or match:
+            from communications import require_owner
+            from access_http import access
+            require_owner(access(h),h.identity)
+        if path=='/api/photo-profiles':
+            if h.command=='GET':return h.respond(200,profiles.listing(store)) or True
+            if h.command=='POST':
+                data=json_body(h)
+                return h.respond(200,profiles.assign(store,data) if data.get('action')=='assign' else profiles.save(store,data)) or True
         if path in files and h.command=='GET':
             name,mime=files[path];binary(h,(ROOT/'static'/name).read_bytes(),mime);return True
         if path=='/api/photo-screening-config':
@@ -180,7 +192,7 @@ def handle(h):
                 if now-getattr(h.server,'photo_last_test',-60)<60:raise AccessError('Wait a minute before running another Google connection test.',429)
                 h.server.photo_last_test=now
             test=io.BytesIO();Image.new('RGB',(160,160),'gray').save(test,'JPEG')
-            payload=screening.request(test.getvalue())
+            payload=screening.request(test.getvalue(),profiles.test_key(store,data['profile_id'],data.get('revision'))) if data.get('profile_id') else screening.request(test.getvalue())
             # A gray square has no face. A complete rejection still proves the API responded.
             try:screening.screen(test.getvalue(),dict(enabled=True),lambda _:payload)
             except screening.PhotoRejected:pass
