@@ -416,8 +416,12 @@ def main():
     server = ThreadingHTTPServer(('127.0.0.1', args.port), Handler); server.store = store
     from access import Access
     server.access=Access(store);prepare_owner(server.access, deployment)
+    from confirmation_worker import start as start_confirmation_worker
+    confirmation_stop = start_confirmation_worker(server)
     print(f'Regfire is running at http://127.0.0.1:{args.port}', flush=True)
     try: server.serve_forever()
     except KeyboardInterrupt: pass
-    finally: server.server_close()
+    finally:
+        if confirmation_stop: confirmation_stop.set()
+        server.server_close()
 if __name__ == '__main__': main()

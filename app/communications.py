@@ -41,6 +41,10 @@ def handle(h):
    result=settings.save(data)
    with a.store.connect() as c:a.audit(c,h.identity['id'],'communications_settings_updated','providers')
   else:raise AccessError('Choose a supported settings action.')
+  from confirmation_delivery import readiness
+  from psycopg import sql
+  result['confirmation_issues']=readiness(settings)
+  with a.store.connect() as c:result['confirmation_queue']=[dict(status=r[0],count=r[1]) for r in c.execute(sql.SQL('SELECT status,count(*) FROM {} GROUP BY status').format(sql.Identifier(a.store.schema,'confirmation_delivery'))).fetchall()]
   h.respond(200,result)
  except AccessError as e:h.respond(e.status,{'error':str(e)})
  except (ValueError,UnicodeDecodeError):h.respond(400,{'error':'Invalid communications settings request.'})

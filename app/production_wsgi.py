@@ -92,5 +92,8 @@ def application(environ,start_response):
                 config=DeploymentConfig.load(8080)
                 if not config.secure_cookies:raise RuntimeError('WSGI runtime requires explicit production configuration.')
                 store=Store();prepare_store(store,config);access=Access(store);prepare_owner(access,config)
-                _application=Application(SimpleNamespace(server_port=8080,store=store,access=access),config)
+                server=SimpleNamespace(server_port=8080,store=store,access=access)
+                from confirmation_worker import start as start_confirmation_worker
+                server.confirmation_stop=start_confirmation_worker(server)
+                _application=Application(server,config)
     return _application(environ,start_response)
