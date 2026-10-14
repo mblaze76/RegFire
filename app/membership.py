@@ -156,14 +156,15 @@ def https_json(url,payload,token=''):
     except (OSError,ValueError,http.client.HTTPException):raise Unavailable('Membership service unavailable or returned invalid data.')
     finally:conn.close()
 
-def api_lookup(config,keys,transport=https_json):
+def api_lookup(config,keys,transport=https_json,*,token=None):
     a=config['api']
     if a['endpoint']=='fixture://demo':
         fixtures=[dict(member_id='DEMO-ACTIVE',email='active@example.test',active=True,expires='2099-12-31'),dict(member_id='DEMO-INACTIVE',email='inactive@example.test',active=False,expires=''),dict(member_id='DEMO-EXPIRED',email='expired@example.test',active=True,expires='2000-01-01')]
         if keys['member_id']=='DEMO-UNAVAILABLE':raise Unavailable('Synthetic service-unavailable fixture.')
         return next((r for r in fixtures if matches(r,keys)),None)
-    env=a['credential_env'];token=os.environ.get(env,'') if env else ''
-    if env and not token:raise Unavailable('The configured server credential is not set.')
+    # Never resolve a client-selected environment variable. Legacy connections fail closed.
+    if token is None and a.get('credential_env'):raise Unavailable('Re-enter this connection credential in Membership setup.')
+    token=token or ''
     if len(token)>8192 or any(ord(c)<32 for c in token):raise Unavailable('The server credential is invalid.')
     response=transport(a['endpoint'],keys,token)
     try:

@@ -46,7 +46,7 @@ class BackgroundMembershipTests(unittest.TestCase):
   self.fixture();self.assertFalse(self.check({'email':'missing@example.test'},config={**self.config,'enabled':False})['can_continue'])
   self.config['enabled']=False;self.request(self.base+'/membership',self.config,'PUT');self.assertEqual(self.check({})['status'],'not_required')
  def test_integrations_and_membership_settings_do_not_clobber_each_other(self):
-  self.fixture();old=copy.deepcopy(self.config['api']);new={**old,'credential_env':'REGFIRE_MEMBERSHIP_SYNTHETIC'}
+  self.fixture();old=copy.deepcopy(self.config['api']);new={**old,'mapping':{**old['mapping'],'email':'identity.email'}}
   result=self.request(self.base+'/membership/integration',{'api':new,'expected_api':old},'POST');self.assertEqual(result['config']['title'],'Legacy title retained');self.assertTrue(result['config']['enabled'])
   policy={k:v for k,v in self.config.items() if k!='api'};policy['policy']='pending';self.request(self.base+'/membership',policy,'PUT');self.assertEqual(self.request(self.base+'/membership')['config']['api'],new)
   with self.assertRaises(HTTPError):self.request(self.base+'/membership/integration',{'api':old,'expected_api':old},'POST')
@@ -112,4 +112,27 @@ class BackgroundMembershipTests(unittest.TestCase):
    with self.assertRaises(HTTPError) as error:self.request(path,data,method)
    self.assertEqual(error.exception.code,404)
 
-if __name__=='__main__':unittest.main()
+ def test_credentials_are_flow_bound_and_never_returned(self):
+  self.fixture();old=copy.deepcopy(self.config['api']);new={**old,'endpoint':'https://members.example.com/lookup'}
+  self.request(self.base+'/membership/integration',{'api':new,'expected_api':old,'secret_action':'replace','secret':'SYNTHETIC_PRIVATE_TOKEN'},'POST')
+  state=self.request(self.base+'/membership');self.assertTrue(state['credential_stored']);self.assertNotIn('SYNTHETIC_PRIVATE_TOKEN',str(state))
+  with self.assertRaises(HTTPError):self.request(self.base+'/membership/integration',{'api':{**new,'endpoint':'https://other.example.com'},'expected_api':new},'POST')
+  with self.assertRaises(HTTPError):self.request(self.base+'/membership/integration',{'api':{**new,'credential_env':'REGFIRE_MEMBERSHIP_OTHER_TENANT'},'expected_api':new},'POST')
+  from unittest.mock import patch
+  with patch('membership.https_json') as transport:
+   result=self.request(self.base+'/membership/test',{'config':{**self.config,'api':{**new,'endpoint':'https://other.example.com'}},'member_id':'fake'},'POST')
+   self.assertFalse(result['connected']);transport.assert_not_called()
+  other=self.request('/api/events',events.draft(),'POST')
+  self.assertFalse(self.request('/api/events/'+other['id']+'/membership')['credential_stored'])
+
+ def test_assigned_client_can_save_only_owned_membership(self):
+  event=self.fixture();owner=self.access.session(self.raw_session)
+  other=self.request('/api/events',events.draft(),'POST')
+  uid=self.access.save_user(owner,{'email':'own-member@example.test','products':['event-builder'],'event_ids':[event['id']]})
+  code=self.access.enrollment(owner,uid);self.access.activate('own-member@example.test',code,self.password)
+  self.raw_session=self.access.login('own-member@example.test',self.password);self.csrf=self.access.session(self.raw_session)['csrf']
+  config=self.request(self.base+'/membership')['config'];new={**config['api'],'endpoint':'https://members.example.com/lookup'}
+  result=self.request(self.base+'/membership/integration',{'api':new,'expected_api':config['api'],'secret_action':'replace','secret':'CLIENT_SYNTHETIC'},'POST')
+  self.assertEqual(result['config']['api']['endpoint'],new['endpoint']);self.assertNotIn('CLIENT_SYNTHETIC',str(result))
+  for path in ['/api/events/'+other['id']+'/membership','/api/admin/users']:
+   with self.assertRaises(HTTPError):self.request(path)

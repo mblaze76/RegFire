@@ -251,6 +251,7 @@ class Store:
         data=data or {};now=datetime.now(timezone.utc).isoformat()
         settings_table=psycopg.sql.Identifier(self.schema,'membership_settings')
         imports_table=psycopg.sql.Identifier(self.schema,'membership_imports')
+        credentials_table=psycopg.sql.Identifier(self.schema,'membership_credentials')
         from contextlib import nullcontext
         with (nullcontext(connection) if connection is not None else self.connect()) as conn:
             ev=conn.execute(psycopg.sql.SQL('SELECT body FROM {} WHERE id=%s FOR UPDATE').format(self.table()),(event_id,)).fetchone()
@@ -261,7 +262,8 @@ class Store:
             config=saved[0] if saved else starter()
             imported=conn.execute(psycopg.sql.SQL('SELECT records,digest,updated FROM {} WHERE event_id=%s').format(imports_table),(event_id,)).fetchone()
             info=dict(count=len(imported[0]) if imported else 0,revision=imported[1] if imported else '',updated=imported[2].isoformat() if imported else None)
-            if action=='get':return dict(config=config,import_info=info,timezone=ev[0]['timezone'])
+            credential=conn.execute(psycopg.sql.SQL('SELECT endpoint,token FROM {} WHERE event_id=%s').format(credentials_table),(event_id,)).fetchone()
+            if action=='get':return dict(config=config,credential_stored=bool(credential),legacy_credential=bool(config['api'].get('credential_env')),import_info=info,timezone=ev[0]['timezone'])
             if action in ('save','integration'):
                 if action=='integration':
                     # Integration edits must never overwrite concurrent membership policy changes.
@@ -270,7 +272,24 @@ class Store:
                 else:
                     # Organizer membership setup omits integration settings managed elsewhere.
                     candidate={**data,'api':data.get('api',config['api'])}
-                config=validate(candidate,regtypes)
+                validated=validate(candidate,regtypes)
+                if validated['api']['credential_env'] and validated['api']['credential_env']!=config['api'].get('credential_env'):
+                    raise ValueError('Enter your own connection token; server credential names cannot be selected.')
+                secret_action=data.get('secret_action','keep')
+                if secret_action not in ('keep','replace','clear'):raise ValueError('Choose a valid credential action.')
+                if secret_action!='keep' and action!='integration':raise ValueError('Use membership integration setup to change credentials.')
+                if secret_action=='replace':
+                    secret=data.get('secret','')
+                    if not isinstance(secret,str) or not 1<=len(secret)<=8192 or any(ord(c)<33 or ord(c)>126 for c in secret):raise ValueError('Enter a valid private bearer token.')
+                    if not validated['api']['endpoint'].startswith('https://'):raise ValueError('Save an HTTPS endpoint for this credential.')
+                    conn.execute(psycopg.sql.SQL('INSERT INTO {} (event_id,endpoint,token) VALUES(%s,%s,%s) ON CONFLICT(event_id) DO UPDATE SET endpoint=excluded.endpoint,token=excluded.token').format(credentials_table),(event_id,validated['api']['endpoint'],secret))
+                    validated['api']['credential_env']=''
+                elif secret_action=='clear':
+                    conn.execute(psycopg.sql.SQL('DELETE FROM {} WHERE event_id=%s').format(credentials_table),(event_id,))
+                    validated['api']['credential_env']=''
+                elif credential and validated['api']['endpoint']!=credential[0]:
+                    raise ValueError('Changing the endpoint requires replacing or clearing its credential.')
+                config=validated
                 conn.execute(psycopg.sql.SQL('INSERT INTO {} (event_id,body,updated) VALUES(%s,%s,%s) ON CONFLICT(event_id) DO UPDATE SET body=excluded.body,updated=excluded.updated').format(settings_table),(event_id,Jsonb(config),now))
                 return dict(config=config,import_info=info,timezone=ev[0]['timezone'])
             if action in ('import-preview','import'):
@@ -314,7 +333,9 @@ class Store:
             unavailable=False;record=None
             if config['source']=='api' or action=='test':
                 if not config['api']['endpoint']:raise ValueError('Add an API endpoint first.')
-                try:record=api_lookup(config,keys)
+                try:
+                    if credential and config['api']['endpoint']!=credential[0]:raise Unavailable('Save the endpoint with its own credential before testing.')
+                    record=api_lookup(config,keys,token=credential[1] if credential else None)
                 except Unavailable:unavailable=True
             else:
                 if not imported:unavailable=True
