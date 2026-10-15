@@ -4,7 +4,7 @@ menu.addEventListener('click', () => {const open = menu.getAttribute('aria-expan
 navigation.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{navigation.classList.remove('open');menu.setAttribute('aria-expanded','false');menu.setAttribute('aria-label','Open navigation');}));
 document.addEventListener('keydown', e=>{if(e.key==='Escape' && navigation.classList.contains('open')){navigation.classList.remove('open');menu.setAttribute('aria-expanded','false');menu.setAttribute('aria-label','Open navigation');menu.focus();}});
 
-document.querySelector('.client-login')?.addEventListener('click',()=>document.querySelector('#client-access').showModal());
+
 
 const heroVideo=document.querySelector('#hero-teaser');
 const soundButton=document.querySelector('#hero-sound');
