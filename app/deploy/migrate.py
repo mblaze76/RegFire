@@ -15,6 +15,7 @@ with s.connect() as c:
  c.execute('GRANT USAGE ON SCHEMA regfire TO regfire_runtime')
  c.execute('GRANT SELECT,INSERT,UPDATE,DELETE ON ALL TABLES IN SCHEMA regfire TO regfire_runtime')
  c.execute('GRANT USAGE,SELECT ON ALL SEQUENCES IN SCHEMA regfire TO regfire_runtime')
+ c.execute('REVOKE INSERT,UPDATE,DELETE ON regfire.access_owner_recovery_approvals FROM regfire_runtime')
  c.execute('ALTER DEFAULT PRIVILEGES IN SCHEMA regfire GRANT SELECT,INSERT,UPDATE,DELETE ON TABLES TO regfire_runtime')
  c.execute('ALTER DEFAULT PRIVILEGES IN SCHEMA regfire GRANT USAGE,SELECT ON SEQUENCES TO regfire_runtime')
 a=Access(s)

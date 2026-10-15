@@ -125,3 +125,17 @@ class SMTPConfigurationTests(unittest.TestCase):
    message=smtp.send_message.call_args.args[0];self.assertEqual(message['To'],'test@example.test');self.assertIn('30 minutes',message.get_content())
 
 if __name__=='__main__':unittest.main()
+
+class OwnerRecoveryTests(RecoveryTests):
+ def test_owner_requires_ops_approval_and_single_use_expiry(self):
+  self.service();token=secrets.token_urlsafe(32);uid=self.owner['id']
+  with self.store.connect() as c:
+   c.execute(self.a.q("INSERT INTO {}(token_hash,user_id,expires) VALUES(%s,%s,now()+interval '15 minutes')",'password_resets'),(digest(token),uid))
+  with self.assertRaises(AccessError):self.r.complete(token,secrets.token_urlsafe(24),'owner-test')
+  with self.store.connect() as c:
+   c.execute(self.a.q('INSERT INTO {}(token_hash) VALUES(%s)','owner_recovery_approvals'),(digest(token),))
+  new=secrets.token_urlsafe(24);self.r.complete(token,new,'owner-test')
+  with self.assertRaises(AccessError):self.r.complete(token,new,'owner-test')
+  with self.store.connect() as c:
+   self.assertEqual(c.execute(self.a.q('SELECT count(*) FROM {}','owner_recovery_approvals')).fetchone()[0],0)
+   self.assertEqual(c.execute(self.a.q('SELECT role FROM {} WHERE id=%s','users'),(uid,)).fetchone()[0],'owner')

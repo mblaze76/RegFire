@@ -116,7 +116,7 @@ class PasswordRecovery:
   encoded=password_hash(password)
   with self.a.store.connect() as c:
    # Lock the user first, then re-read the token after any concurrent redemption.
-   row=c.execute(self.a.q("SELECT u.id FROM {} u JOIN {} r ON r.user_id=u.id WHERE r.token_hash=%s AND u.status='active' AND u.role!='owner' FOR UPDATE OF u",'users','password_resets'),(digest(token),)).fetchone()
+   row=c.execute(self.a.q("SELECT u.id FROM {} u JOIN {} r ON r.user_id=u.id WHERE r.token_hash=%s AND u.status='active' AND (u.role!='owner' OR EXISTS(SELECT 1 FROM {} approval WHERE approval.token_hash=r.token_hash)) FOR UPDATE OF u",'users','password_resets','owner_recovery_approvals'),(digest(token),)).fetchone()
    if not row:raise AccessError(invalid)
    valid=c.execute(self.a.q('SELECT 1 FROM {} WHERE token_hash=%s AND expires>now() FOR UPDATE','password_resets'),(digest(token),)).fetchone()
    if not valid:raise AccessError(invalid)
