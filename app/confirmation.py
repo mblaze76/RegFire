@@ -90,17 +90,19 @@ def document(store,flow,order=None,page=None):
  sample=order is None
  if sample:
   quote=dict(currency='USD',regtype='Attendee one-day pass',details=[dict(label='Name',value='Jordan Sample'),dict(label='Company',value='Sample Event Company'),dict(label='Email',value='jordan.sample@example.com')],sessions=[dict(title='Opening keynote: Registration. Reignited.',start='9:00 AM',end='10:00 AM',location='Main Hall'),dict(title='Building a better onsite experience',start='1:00 PM',end='2:00 PM',location='Room 201')],lines=[dict(name='Attendee one-day pass',quantity=1,unit_price_minor=29500,line_total_minor=29500,kind='registration'),dict(name='Conference tote',quantity=1,unit_price_minor=2500,line_total_minor=2500,kind='extra'),dict(name='Networking reception',quantity=1,unit_price_minor=4500,line_total_minor=4500,kind='extra')],subtotal_minor=36500,discount_minor=0,tax_minor=0,grand_total_minor=36500)
-  ident='SAMPLE-RF-2026-00482';status='sample';paid=0
+  ident='SAMPLE-RF-2026-00482';status='sample';paid=0;public_number='12345678'
  else:
   if order['flow_id']!=flow:raise ValueError('Order does not belong to this flow.')
   if order['status'] not in ('paid','confirmed_free'):raise ValueError('Confirmation is available after verified payment or free registration completion.')
   quote=copy.deepcopy(order['quote']);ident=order['id'];status=order['status'];paid=quote['grand_total_minor'] if status=='paid' else 0
+  from confirmation_numbers import number
+  public_number=number(store,ident)
  event_id=event.get('parent_event_id',flow);payload=qr_payload(event_id,ident)
  for session in quote['sessions']:
   for key in ('start','end'):session[key]=date_label(session.get(key,''),event.get('timezone','UTC'))
  event=copy.deepcopy(event)
  for key in ('start','end'):event[key]=date_label(event.get(key,''),event.get('timezone','UTC'))
- return dict(settings=page,event={k:event.get(k,'') for k in ('name','start','end','timezone','venue','location')},event_id=event_id,flow_id=flow,confirmation_id=ident,sample=sample,status=status,sandbox=bool(order and order.get('mode')=='sandbox'),paid_minor=paid,quote=quote,qr_payload=payload,qr_svg=qr_svg(payload),appearance=appearance,wallet=dict(apple=None,google=None,message='Wallet passes are not configured.'))
+ return dict(settings=page,event={k:event.get(k,'') for k in ('name','start','end','timezone','venue','location')},event_id=event_id,flow_id=flow,confirmation_id=ident,confirmation_number=public_number,sample=sample,status=status,sandbox=bool(order and order.get('mode')=='sandbox'),paid_minor=paid,quote=quote,qr_payload=payload,qr_svg=qr_svg(payload),appearance=appearance,wallet=dict(apple=None,google=None,message='Wallet passes are not configured.'))
 
 def send_bytes(h,content,mime,filename=None):
  h.send_response(200);h.send_header('Content-Type',mime);h.send_header('Content-Length',str(len(content)));h.send_header('Cache-Control','no-store');h.send_header('X-Content-Type-Options','nosniff')
@@ -108,6 +110,18 @@ def send_bytes(h,content,mime,filename=None):
  h.end_headers();h.wfile.write(content)
 def handle(h):
  path=urlsplit(h.path).path
+ lookup_match=re.fullmatch(r'/api/events/([a-f0-9-]{36})/confirmation/lookup/([a-f0-9-]+)',path)
+ if lookup_match:
+  if h.command!='GET':h.respond(405,dict(error='Use GET.'));return True
+  try:
+   # access_http has already required organizer identity, product and event grants.
+   from confirmation_numbers import lookup
+   order=lookup(h.server.store,lookup_match[1],lookup_match[2])
+   if not order:h.respond(404,dict(error='Registration not found.'));return True
+   h.respond(200,document(h.server.store,lookup_match[1],order));return True
+  except (ValueError,TypeError):h.respond(400,dict(error='Invalid confirmation reference.'))
+  except psycopg.Error:h.respond(503,dict(error='Confirmation lookup temporarily unavailable.'))
+  return True
  files={'/apple-wallet-official.svg':'image/svg+xml','/apple-wallet-official.png':'image/png','/google-wallet-official.svg':'image/svg+xml','/google-wallet-official.png':'image/png','/confirmation-preview.js':'text/javascript','/confirmation-common.js':'text/javascript','/confirmation-builder.js':'text/javascript','/confirmation.css':'text/css','/confirmation-preview':'text/html'}
  if path in files and h.command=='GET':
   name='confirmation-preview.html' if path=='/confirmation-preview' else path[1:];send_bytes(h,(Path(__file__).parent/'static'/name).read_bytes(),files[path]);return True

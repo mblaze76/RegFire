@@ -53,7 +53,7 @@ def handle(h):
   from confirmation_email import prepare
   view=prepare(doc,store,root);html=view['html']
   for image in view['inline_images']:html=html.replace('cid:'+image['content_id'],'data:image/png;base64,'+base64.b64encode(image['data']).decode())
-  respond(h,200,{'html':html,'confirmation_id':o['id']})
+  respond(h,200,{'html':html,'confirmation_id':o['id'],'confirmation_number':doc['confirmation_number']})
  except AccessError as e:respond(h,e.status,{'error':str(e)})
  except (ValueError,TypeError,KeyError):respond(h,400,{'error':'Confirmation could not be read.'})
  except (OSError,psycopg.Error):respond(h,503,{'error':'Confirmation temporarily unavailable.'})

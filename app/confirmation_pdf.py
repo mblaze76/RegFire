@@ -36,7 +36,7 @@ def render(doc,store,upload_root):
  def qr():
   widget=QrCodeWidget(doc['qr_payload'],barLevel='M',barBorder=4);x,y,w,h=widget.getBounds();drawing=Drawing(96,96,transform=[96/w,0,0,96/h,0,0]);drawing.add(widget)
   drawing.hAlign='CENTER'
-  rows=[drawing,p(doc['confirmation_id'],'RFIdentifier')]
+  rows=[drawing,p(doc.get('confirmation_number',doc['confirmation_id']),'RFIdentifier')]
   if settings['show_wallet']:
    badges=[]
    for kind in ('apple','google'):

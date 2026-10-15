@@ -115,11 +115,11 @@ def handle(h):
   if path=='/api/attendee/registrations' and h.command=='GET':
    event=parse_qs(urlsplit(h.path).query).get('event',[''])[0]
    with store.connect() as c:
-    rows=c.execute(sql.SQL("SELECT o.body FROM {} o JOIN {} a ON a.order_id=o.id WHERE a.account_id=%s AND o.status IN ('paid','confirmed_free') ORDER BY o.updated DESC").format(table(store,'registration_orders'),table(store,'attendee_order_access')),(who['id'],)).fetchall()
+    rows=c.execute(sql.SQL("SELECT o.body,o.confirmation_number FROM {} o JOIN {} a ON a.order_id=o.id WHERE a.account_id=%s AND o.status IN ('paid','confirmed_free') ORDER BY o.updated DESC").format(table(store,'registration_orders'),table(store,'attendee_order_access')),(who['id'],)).fetchall()
    result=[]
-   for (o,) in rows:
+   for (o,confirmation_number) in rows:
     if event and o['parent_event_id']!=event and o['flow_id']!=event:continue
-    result.append({k:o[k] for k in ('id','flow_id','parent_event_id','status','quote')})
+    result.append({**{k:o[k] for k in ('id','flow_id','parent_event_id','status','quote')},'confirmation_number':str(confirmation_number)})
    respond(h,200,{'registrations':result});return True
   raise ValueError('Unsupported account operation.')
  except AccessError as e:respond(h,e.status,{'error':str(e)})

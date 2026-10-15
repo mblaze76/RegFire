@@ -17,7 +17,7 @@ def render(doc, images=None, confirmation_url=None):
  def para(value,small=False):return '<p style="margin:4px 0;'+('font-size:12px;color:#62636e;' if small else '')+'">'+text(value).replace('\n','<br>')+'</p>'
  def heading(value):return '<h2 style="font-size:19px;font-weight:500;margin:14px 0 6px">'+text(value)+'</h2>'
  s=doc['settings'];q=doc['quote'];e=doc['event'];currency=q['currency']
- qr='<div style="padding:8px 0;text-align:center;max-width:240px;margin:0 auto">'+'<div style="width:156px;margin:0 auto">'+image('qr','QR containing event and confirmation IDs',156)+'</div>'+'<p style="margin:6px 0 0;font-size:12px;line-height:1.4;overflow-wrap:anywhere"><strong>'+text(doc['confirmation_id'])+'</strong></p></div>'
+ qr='<div style="padding:8px 0;text-align:center;max-width:240px;margin:0 auto">'+'<div style="width:156px;margin:0 auto">'+image('qr','QR containing event and confirmation IDs',156)+'</div>'+'<p style="margin:6px 0 0;font-size:12px;line-height:1.4;overflow-wrap:anywhere"><strong>'+text(doc.get('confirmation_number',doc['confirmation_id']))+'</strong></p></div>'
  if s['show_wallet']:
   qr+='<table role="presentation" style="width:100%;max-width:240px;margin:0 auto" aria-label="Wallet badges; passes are not available"><tr>'
   for kind,label in [('apple','Add to Apple Wallet'),('google','Add to Google Wallet')]:
