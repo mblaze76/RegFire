@@ -99,7 +99,8 @@ def quote_order(store,c,flow,data,config,exclude=None,extra_held=()):
   if p['allotment'] is not None and used>=p['allotment']:raise ValueError('This promo code has reached its allotment.')
   base=rate['price_minor'];scale=1 if page['currency']=='JPY' else 100
   discount=base if p['type']=='free' else min(base,int((Decimal(str(p['amount']))*(Decimal(base)/100 if p['type']=='percent' else scale)).quantize(Decimal(1),rounding=ROUND_HALF_UP)))
- assignment=config['assignments'].get(event.get('parent_event_id',flow),{});tax_bps=assignment.get('tax_bps');taxable=sum(x['line_total_minor'] for x in extra['lines'] if x['taxable']);tax_pending=bool(taxable and tax_bps is None);tax=0 if tax_pending else (taxable*(tax_bps or 0)+5000)//10000
+ assignment=config['assignments'].get(event.get('parent_event_id',flow),{});preference_row=c.execute(sql.SQL('SELECT body FROM {} WHERE flow_id=%s').format(table(store,'payment_preferences')),(flow,)).fetchone();preferences=preference_row[0] if preference_row else {}
+ tax_config=preferences.get('tax');tax_bps=(tax_config['rate_bps'] if tax_config else None) if 'tax' in preferences else assignment.get('tax_bps');taxable=sum(x['line_total_minor'] for x in extra['lines'] if x['taxable']);tax_pending=bool(taxable and tax_bps is None);tax=0 if tax_pending else (taxable*(tax_bps or 0)+5000)//10000
  subtotal=sum(l['line_total_minor'] for l in lines);names=[];current=kind
  for ident in path:current=next(x for x in current['subcategories'] if x['id']==ident);names.append(current['name'])
  quote=dict(currency=page['currency'],lines=lines,subtotal_minor=subtotal,discount_minor=discount,tax_minor=None if tax_pending else tax,grand_total_minor=None if tax_pending else subtotal-discount+tax,tax_pending=tax_pending,regtype=kind['name'],subcategories=names,details=details,answers=answers,sessions=sessions,event_name=event['name'])

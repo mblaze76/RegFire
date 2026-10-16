@@ -11,6 +11,8 @@ def apply(store, event, page):
     result = copy.deepcopy(page)
     appearance = result.setdefault('appearance', {})
     appearance.update(intro_font=welcome.get('title_font', welcome.get('about_font','default')), background_mode=welcome.get('background_mode', 'image' if welcome.get('background_asset_id') else 'color'), background_color=welcome.get('background_color','#ffffff'), background_asset_id=welcome.get('background_asset_id'), background_fade=welcome.get('background_fade',80), background_owner_id=owner)
+    appearance['event_logo_asset_id'] = welcome.get('logo_asset_id')
+    appearance['event_logo_owner_id'] = owner
     if isinstance(appearance.get('footer'),dict):
         appearance['footer']['font'] = appearance['intro_font']
     result['theme_owner_id'] = owner

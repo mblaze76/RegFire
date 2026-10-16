@@ -231,6 +231,14 @@ class Store:
     def asset(self,event_id,asset_id):
         with self.connect() as conn:
             row=conn.execute(psycopg.sql.SQL('SELECT filename,mime FROM {} WHERE event_id=%s AND id=%s').format(psycopg.sql.Identifier(self.schema,'registration_assets')),(event_id,asset_id)).fetchone()
+            if row is None:
+                # A flow may serve only its owning event's currently selected show logo.
+                event=conn.execute(psycopg.sql.SQL('SELECT body FROM {} WHERE id=%s').format(self.table()),(event_id,)).fetchone()
+                owner=event[0].get('parent_event_id') if event else None
+                if owner:
+                    theme=conn.execute(psycopg.sql.SQL('SELECT body FROM {} WHERE event_id=%s').format(psycopg.sql.Identifier(self.schema,'welcome_pages')),(owner,)).fetchone()
+                    if theme and theme[0].get('logo_asset_id')==asset_id:
+                        row=conn.execute(psycopg.sql.SQL("SELECT filename,mime FROM {} WHERE event_id=%s AND id=%s AND kind='logo'").format(psycopg.sql.Identifier(self.schema,'registration_assets')),(owner,asset_id)).fetchone()
             return row
 
     def demographics_page(self,event_id):
