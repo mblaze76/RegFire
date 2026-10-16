@@ -10,11 +10,13 @@
  $('welcome-preview-sponsors').replaceChildren(...page.sponsor_asset_ids.map((asset,i)=>image(asset,page.sponsor_urls?.[i],'Sponsor '+(i+1)+' logo')));
  window.WelcomeDisplay.body($('welcome-preview-about'),page);
  window.WelcomeDisplay.buttons($('welcome-preview-flows'),page,flows);
+ if(route.get('mode')==='registration'){for(const link of $('welcome-preview-flows').querySelectorAll('a')){const target=new URL(link.href,location.href);target.pathname='/register';target.hash+='&mode=registration';link.href=target.href;}}
  }
  try{
  if(!/^[a-f0-9-]{36}$/.test(id||''))throw Error('Open this welcome page from an event.');
- if(/^[a-f0-9-]{36}$/.test(editor||'')&&window.BroadcastChannel){const channel=new BroadcastChannel('regfire-welcome:'+editor);channel.onmessage=e=>{const model=e.data;if(model?.event_id!==id||!model.page||typeof model.page.about!=='string'||!Array.isArray(model.page.sponsor_asset_ids)||!Array.isArray(model.flows))return;liveModel=model;render(model);$('welcome-error').textContent='Live preview · includes unsaved welcome edits.';};channel.postMessage({request:id});window.addEventListener('pagehide',()=>channel.close());}
+ if(route.get('mode')!=='registration'&&/^[a-f0-9-]{36}$/.test(editor||'')&&window.BroadcastChannel){const channel=new BroadcastChannel('regfire-welcome:'+editor);channel.onmessage=e=>{const model=e.data;if(model?.event_id!==id||!model.page||typeof model.page.about!=='string'||!Array.isArray(model.page.sponsor_asset_ids)||!Array.isArray(model.flows))return;liveModel=model;render(model);$('welcome-error').textContent='Live preview · includes unsaved welcome edits.';};channel.postMessage({request:id});window.addEventListener('pagehide',()=>channel.close());}
  const get=async path=>{const r=await fetch(path),d=await r.json();if(!r.ok)throw Error(d.error||'Could not load event.');return d;};
+ if(route.get('mode')==='registration'){const entry=await get('/api/events/'+id+'/event-welcome');render(entry);$('return-login').href='/registrant-login?event='+encodeURIComponent(entry.event_id);document.querySelector('.live-toolbar strong').textContent='Event registration';document.querySelector('.live-toolbar span').textContent='Choose your registration flow';return;}
  const [page,flows,events]=await Promise.all([get('/api/events/'+id+'/welcome-page'),get('/api/events/'+id+'/flows'),get('/api/events')]);
  render(liveModel||{page,flows,event_name:events.find(e=>e.id===id)?.name||''});
  }catch(e){$('welcome-error').textContent=e.message;}

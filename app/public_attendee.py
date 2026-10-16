@@ -7,7 +7,7 @@ from access import AccessError,email
 from deployment_config import DeploymentConfig
 
 UUID=r'[a-f0-9-]{36}'
-READ={'flow-preview','registration-page','demographics','sessions','extra-options','event-footer'}
+READ={'event-welcome','flow-preview','registration-page','demographics','sessions','extra-options','event-footer'}
 POST={'pricing-preview','demographics-preview','membership/check-fields','attendee-account','checkout/quote','checkout/group-quote','checkout/save','checkout/group-save','partial-draft','resume-draft'}
 
 def enabled(store,flow):
@@ -104,6 +104,9 @@ def _handle(h):
             h.respond(200,value);return True
         # The identity is only accepted within this exact flow by checkout.
         h.identity=dict(id=who['id'] if who else str(uuid.UUID(int=0)),role='public-attendee',public_flow=flow)
+        if action=='event-welcome':
+            from event_entry import model
+            h.respond(200,model(store,flow,public=True));return True
         if action=='flow-preview':
             with store.connect() as c:row=c.execute(sql.SQL('SELECT body FROM {} WHERE id=%s').format(store.table()),(flow,)).fetchone()
             from publication_snapshot import current
@@ -129,7 +132,7 @@ def _handle(h):
 
 # Presentation assets contain no event records. Event assets still require an
 # enabled flow and exact event/asset association in Store.asset.
-PRESENTATION={'/payment-demo.js','/payment-demo.css','/apple-wallet-official.svg','/google-wallet-official.svg','/register','/sessions','/extras','/review','/payment','/confirmation',
+PRESENTATION={'/welcome','/welcome-site.js','/welcome-heading.js','/payment-demo.js','/payment-demo.css','/apple-wallet-official.svg','/google-wallet-official.svg','/register','/sessions','/extras','/review','/payment','/confirmation',
  '/attendee-branding.js','/attendee-journey.js','/field-validation.js','/badge-preview.js',
  '/subcategories.js','/linkedin-import.js','/background-membership.js','/address.js',
  '/footer.js','/email.js','/welcome-fonts.js','/welcome-common.js','/live-preview.js',

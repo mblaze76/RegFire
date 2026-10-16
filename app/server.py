@@ -105,6 +105,13 @@ class Handler(BaseHTTPRequestHandler):
                 return self.respond(200,{'event_id':event_id}) if row else self.respond(404,{'error':'Event not found.'})
             except ValueError:return self.respond(400,{'error':'Invalid event reference.'})
             except psycopg.Error:return self.respond(503,{'error':'Could not verify this event.'})
+        entry_match=re.fullmatch(r'/api/events/([a-f0-9-]{36})/event-welcome',path)
+        if entry_match:
+            try:
+                from event_entry import model
+                return self.respond(200,model(self.server.store,entry_match[1]))
+            except ValueError:return self.respond(404,{'error':'Registration not found.'})
+            except psycopg.Error:return self.respond(503,{'error':'Welcome is unavailable. Please retry.'})
         model_match=re.fullmatch(r'/api/events/([a-f0-9-]{36})/flow-preview',path)
         if model_match:
             try:

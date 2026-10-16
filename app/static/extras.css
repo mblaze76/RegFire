@@ -24,3 +24,22 @@
 
 /* Tighten option setup without hiding inventory, price or tax controls. */
 .extras-item-editor{padding:16px;margin:12px 0;border-color:#d5c8bd;background:linear-gradient(135deg,#fff,#faf7f4)}.extras-item-editor h4{margin-bottom:12px}.extras-form-grid{gap:10px 14px}.extras-image-tools{display:grid;grid-template-columns:minmax(90px,140px) minmax(0,1fr);gap:10px 16px;padding:12px;margin:12px 0}.extras-image-tools .extras-option-image{grid-row:span 3;height:110px;margin:0;background:#f5f3f0}.extras-image-tools .field-note{grid-column:1/-1;margin:0}.extras-image-tools label{margin:0}.extras-image-tools button{justify-self:start}.extras-site .extras-card,.extras-preview-panel .extras-card{padding:16px}.extras-site .extras-option-image,.extras-preview-panel .extras-option-image{height:110px;margin-bottom:10px}.extras-card :is(h3,p){margin:8px 0}.extras-card h3{font-size:20px}.extras-card label{margin-top:10px!important;margin-bottom:10px}.extras-card button{max-width:100%}@media(max-width:500px){.extras-image-tools{grid-template-columns:1fr}.extras-image-tools .extras-option-image{grid-row:auto;max-width:160px}.extras-form-grid{gap:10px}}
+
+/* Keep short choices compact instead of stretching them across the card. */
+.extras-site .extras-cards,.extras-preview-panel .extras-cards{grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));max-width:744px;gap:12px;justify-content:start}
+.extras-card .extras-choice-controls{display:flex;flex-wrap:wrap;align-items:flex-end;gap:8px 12px;margin-top:12px}
+.extras-card .extras-choice-controls label{margin:0!important;min-width:0}
+.extras-card .extras-variant-control{flex:1 1 160px;max-width:220px}
+.extras-card .extras-quantity-control{flex:0 0 88px;max-width:100%}
+.extras-card .extras-choice-controls select{display:block;width:100%;box-sizing:border-box;min-height:44px;margin-top:6px;padding:8px 10px;font-size:16px}
+.extras-card .field-note{font-size:13px;margin:8px 0!important}
+.extras-card>button{min-height:44px;width:auto;padding:10px 16px;margin-top:4px}
+.extras-editor #extras-currency{max-width:120px}
+.extras-editor .extras-form-grid select{max-width:240px}
+.extras-editor section{padding:16px;margin-bottom:14px}
+.extras-item-editor{padding:12px;margin:10px 0}
+.extras-variants{margin:12px 0;padding:10px 0}
+.extras-variant-row{grid-template-columns:minmax(0,1fr) minmax(90px,130px);gap:8px;margin-bottom:10px}
+.extras-cart{padding:14px;margin:14px 0}.extras-summary{padding:14px;margin:14px 0}
+@media(max-width:420px){.extras-variant-row{grid-template-columns:minmax(0,1fr) 90px}.extras-card .extras-variant-control{flex-basis:160px}.extras-card .extras-quantity-control{flex-basis:80px}}
+.extras-browser{max-width:960px;margin-inline:auto}.extras-card>button{border:1px solid #969ba5;border-radius:8px;font-weight:600}.extras-card>strong{display:block;font-size:18px;margin:8px 0}.extras-card .extras-choice-controls select:focus-visible{outline:3px solid #ecad59;outline-offset:3px}
