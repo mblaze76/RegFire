@@ -12,6 +12,9 @@ def normalize(footer):
 
 
 def operation(store,event_id,data=None):
+    from publication_snapshot import footer_value
+    published=footer_value(store,event_id) if data is None else None
+    if published is not None:return published
     table=sql.Identifier(store.schema,'event_footers')
     with store.connect() as conn:
         found=conn.execute(sql.SQL('SELECT body FROM {} WHERE id=%s').format(store.table()),(event_id,)).fetchone()

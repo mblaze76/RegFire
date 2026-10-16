@@ -15,7 +15,7 @@ class RuntimeStartupTests(unittest.TestCase):
         prepare_store(store,Mock(secure_cookies=True))
         store.initialize.assert_not_called()
         calls=store.connect.return_value.__enter__.return_value.execute.call_args_list
-        self.assertEqual(len(calls),3)
+        self.assertEqual(len(calls),6)
         for call in calls:
             self.assertTrue(call.args[0].as_string().startswith('SELECT 1 FROM "synthetic_staging".'))
 

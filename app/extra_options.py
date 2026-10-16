@@ -72,6 +72,9 @@ def quote(page,selections):
     return dict(currency=page['currency'],lines=lines,item_subtotal_minor=sum(l['line_total_minor'] for l in lines),tax_pending=any(l['taxable'] for l in lines),reserved=False)
 
 def operation(store,event_id,action='get',data=None):
+    from publication_snapshot import page as published_page
+    published=published_page(store,event_id,'extra_options') if action=='get' else None
+    if published is not None:return published
     data={} if data is None else data
     if not isinstance(data,dict):raise ValueError('Send extra options settings.')
     table=sql.Identifier(store.schema,'extra_options')

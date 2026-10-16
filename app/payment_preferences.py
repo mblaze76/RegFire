@@ -28,6 +28,9 @@ def validate(data):
  return out
 
 def operation(store,flow,data=None):
+ from publication_snapshot import current
+ snapshot=current(store,flow)
+ if snapshot and data is None:return copy.deepcopy(DEFAULT)|copy.deepcopy(snapshot['payment_preferences'])
  with store.connect() as c:
   found=c.execute(sql.SQL('SELECT id FROM {} WHERE id=%s AND NOT archived FOR UPDATE').format(sql.Identifier(store.schema,'registration_flows')),(flow,)).fetchone()
   if not found:raise ValueError('Registration flow not found.')

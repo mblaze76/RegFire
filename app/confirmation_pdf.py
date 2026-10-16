@@ -28,8 +28,18 @@ def render(doc,store,upload_root):
   with PILImage.open(path) as im:w,h=im.size
   scale=min(width/w,height/h);return Image(str(path),width=w*scale,height=h*scale,hAlign='CENTER')
  settings=doc['settings'];q=doc['quote'];currency=q['currency'];event=doc['event'];story=[]
+ def sponsors():
+  if not settings['show_sponsors']:return []
+  rows=[]
+  logos=settings['sponsors']
+  if logos:
+   rows.append(p('Our sponsors','RFSection'))
+   for start in range(0,len(logos),3):
+    cells=[[asset(s['asset_id'],145,42)] for s in logos[start:start+3]];cells += ['']*(3-len(cells));t=Table([cells],colWidths=[180]*3);t.setStyle(TableStyle([('VALIGN',(0,0),(-1,-1),'MIDDLE'),('ALIGN',(0,0),(-1,-1),'CENTER')]));rows.append(t)
+  return rows
  logo=asset(doc.get('appearance',{}).get('logo_asset_id'),72,54)
  header=Table([[logo,[p('REGISTRATION CONFIRMATION','RFSmall'),p(settings['heading'],'RFTitle'),p('Registration. Reignited.','RFSmall')]]],colWidths=[105,435]);header.setStyle(TableStyle([('VALIGN',(0,0),(-1,-1),'MIDDLE'),('LEFTPADDING',(0,0),(-1,-1),0)]));story+=[header,Spacer(1,3)]
+ if settings['layout'][0]=='sponsors':story+=sponsors()
  status='SAMPLE - Fictional attendee and transaction. Not valid for entry.' if doc['sample'] else 'SANDBOX TEST - No live payment.' if doc['sandbox'] else 'Payment confirmed' if doc['status']=='paid' else 'Free registration confirmed - No payment required.'
  notice=Table([[p(status)]],colWidths=[540]);notice.setStyle(TableStyle([('BACKGROUND',(0,0),(-1,-1),colors.HexColor('#fff2e9')),('TOPPADDING',(0,0),(-1,-1),5),('BOTTOMPADDING',(0,0),(-1,-1),5)]))
  story += [notice,p(event['name'],'RFSection'),p(' | '.join(str(event.get(k,'')) for k in ('start','end','timezone') if event.get(k))),p(' | '.join(str(event.get(k,'')) for k in ('venue','location') if event.get(k)))]
@@ -69,12 +79,7 @@ def render(doc,store,upload_root):
    items=[l for l in q['lines'] if l.get('kind')=='extra']
    if items:story.append(p('Your additional options','RFSection'))
    for item in items:story.append(p(str(item['quantity'])+' × '+item['name']+' — '+money(item['line_total_minor'],currency)))
-  elif block=='sponsors' and settings['show_sponsors']:
-   logos=settings['sponsors']
-   if logos:
-    story.append(p('Our sponsors','RFSection'))
-    for start in range(0,len(logos),3):
-     cells=[[asset(s['asset_id'],145,42)] for s in logos[start:start+3]];cells += ['']*(3-len(cells));t=Table([cells],colWidths=[180]*3);t.setStyle(TableStyle([('VALIGN',(0,0),(-1,-1),'MIDDLE'),('ALIGN',(0,0),(-1,-1),'CENTER')]));story.append(t)
+  elif block=='sponsors' and settings['layout'][0]!='sponsors':story+=sponsors()
  if settings['qr_position']=='bottom':story.append(KeepTogether(qr()))
  story.append(p('Need to review your registration? Sign in to your attendee dashboard. You can correct contact details or start another registration there. Contact the organizer for session, purchase or payment changes.'))
  url=doc.get('dashboard_url','')

@@ -6,7 +6,10 @@ from pathlib import Path
 from urllib.parse import urlsplit,parse_qs
 from psycopg import sql
 import psycopg
-from access import AccessError,email,password_hash,password_ok
+from access import AccessError,email,password_hash as organizer_password_hash,password_ok as organizer_password_ok
+
+def password_hash(password,salt=None):return organizer_password_hash(password,salt,minimum=7)
+def password_ok(password,encoded):return organizer_password_ok(password,encoded,minimum=7)
 
 PUBLIC={'/api/attendee/edit','/api/attendee/login','/api/attendee/me','/api/attendee/logout','/api/attendee/registrations'}
 _lock=threading.Lock();_attempts={}
@@ -58,9 +61,13 @@ def bind(c,store,order,token):
 
  from registration import starter
  page=c.execute(sql.SQL('SELECT body FROM {} WHERE event_id=%s').format(table(store,'registration_pages')),(order['flow_id'],)).fetchone()
- fields=page[0]['fields'] if page else starter({'id':order['flow_id'],'name':''})['fields']
- addresses=[v for f in fields if f['type']=='email' for v in [order['data']['contacts'].get(f['id'],'').strip().lower()] if v]
- if r[0] not in addresses:raise ValueError('The account email must match your attendee email. Return to details.')
+ from publication_snapshot import current
+ snap=current(store,order['flow_id'])
+ fields=snap['registration_pages']['fields'] if snap else page[0]['fields'] if page else starter({'id':order['flow_id'],'name':''})['fields']
+ email_fields=[f for f in fields if f['type']=='email' and (f.get('visible_to') is None or order['data']['regtype_id'] in f['visible_to'])]
+ primary=next((f for f in email_fields if f['id']=='email'),email_fields[0] if email_fields else None)
+ address=order['data']['contacts'].get(primary['id'],'').strip().casefold() if primary else ''
+ if r[0]!=address:raise ValueError('The account email must match your attendee email. Return to details.')
  c.execute(sql.SQL('UPDATE {} SET order_id=%s,expires=now()+interval \'2 days\' WHERE token_hash=%s').format(table(store,'attendee_enrollments')),(order['id'],digest(token)))
 
 def complete(c,store,order):

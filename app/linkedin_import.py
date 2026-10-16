@@ -145,7 +145,7 @@ def popup(h, message, payload=None, origin=None, cookie=None):
                         ('Content-Security-Policy', "default-src 'none'; script-src 'nonce-" + nonce + "'; frame-ancestors 'none'; base-uri 'none'")]:
         h.send_header(name, value)
     if cookie:
-        h.send_header('Set-Cookie', cookie + '=; HttpOnly; SameSite=Lax; Path=/api/linkedin; Max-Age=0')
+        h.send_header('Set-Cookie', cookie + '=;'+(' Secure;' if __import__('deployment_config').DeploymentConfig.load(h.server.server_port).secure_cookies else '')+' HttpOnly; SameSite=Lax; Path=/api/linkedin; Max-Age=0')
     h.end_headers()
     h.wfile.write(content)
 
@@ -157,7 +157,9 @@ def handle(h):
     if h.command != 'GET':
         h.respond(405, {'error': 'Method not allowed.'})
         return True
-    origin = 'http://' + h.headers['Host']  # Host already constrained by the local server.
+    from deployment_config import DeploymentConfig
+    deployment = DeploymentConfig.load(h.server.server_port)
+    origin = deployment.origin if deployment.secure_cookies else 'http://' + h.headers['Host']
     config = configuration(origin)
     if path == '/api/linkedin/status':
         h.respond(200, {'available': bool(config)})
@@ -182,7 +184,7 @@ def handle(h):
             h.send_header('Location', url)
             h.send_header('Cache-Control', 'no-store')
             h.send_header('Referrer-Policy', 'no-referrer')
-            h.send_header('Set-Cookie', cookie_name(state) + '=' + binding + '; HttpOnly; SameSite=Lax; Path=/api/linkedin; Max-Age=' + str(TTL))
+            h.send_header('Set-Cookie', cookie_name(state) + '=' + binding + ('; Secure' if deployment.secure_cookies else '') + '; HttpOnly; SameSite=Lax; Path=/api/linkedin; Max-Age=' + str(TTL))
             h.end_headers()
         except (ValueError, AccessError) as error:
             popup(h, str(error))

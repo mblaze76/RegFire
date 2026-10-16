@@ -263,3 +263,5 @@ window.saveSetupNext=async()=>{
   showView(next,from==='setup');
  }finally{window.setupAdvancing=false;}
 };
+
+document.addEventListener("click",e=>{if(e.target.id==="partial-registrations-link"){const p=new URLSearchParams(location.hash.slice(1));e.target.href="/partial-registrations#event="+encodeURIComponent(p.get("flow")||p.get("event")||"");}});

@@ -8,7 +8,7 @@ from psycopg import sql
 from psycopg.types.json import Jsonb
 import psycopg
 from access import AccessError
-BLOCKS=['message','attendee','receipt','sessions','extras','sponsors']
+BLOCKS=['sponsors','message','attendee','receipt','sessions','extras']
 DEFAULT=dict(heading='Your event, all in one place.',message='Thank you for registering. We look forward to seeing you.',layout=BLOCKS,qr_position='right',show_sessions=True,show_extras=True,show_sponsors=True,show_wallet=True,sponsors=[])
 def validate(data):
  if not isinstance(data,dict):raise ValueError('Send confirmation settings.')
@@ -39,6 +39,9 @@ def validate(data):
  return out
 
 def operation(store,flow,data=None):
+ from publication_snapshot import page as published_page
+ published=published_page(store,flow,'confirmation_pages') if data is None else None
+ if published is not None:return published
  table=sql.Identifier(store.schema,'confirmation_pages')
  with store.connect() as c:
   event=c.execute(sql.SQL('SELECT body FROM {} WHERE id=%s FOR UPDATE').format(store.table()),(flow,)).fetchone()
@@ -80,11 +83,19 @@ def date_label(value,zone):
  except (ValueError,TypeError):return value
 
 def document(store,flow,order=None,page=None):
+ from publication_snapshot import current,load,using
+ if order is not None and current(store,flow) is None:
+  snapshot=load(store,flow,include_unpublished=True)
+  if snapshot:
+   with using(store,flow,snapshot):return document(store,flow,order,page)
  page=page or operation(store,flow)
  if not page:raise ValueError('Flow not found.')
  with store.connect() as c:
   event=c.execute(sql.SQL('SELECT body FROM {} WHERE id=%s').format(store.table()),(flow,)).fetchone()[0]
   branding=c.execute(sql.SQL('SELECT body FROM {} WHERE event_id=%s').format(sql.Identifier(store.schema,'registration_pages')),(flow,)).fetchone()
+ from publication_snapshot import current
+ snap=current(store,flow)
+ if snap:event=snap['event'];branding=(snap['registration_pages'],)
  from event_theme import apply as apply_event_theme
  appearance=apply_event_theme(store,event | {'id':flow},branding[0] if branding else {})['appearance']
  sample=order is None

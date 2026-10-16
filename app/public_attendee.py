@@ -3,12 +3,12 @@ import io,json,os,re,secrets,uuid,hmac
 from urllib.parse import urlsplit,parse_qs
 from psycopg import sql
 import psycopg
-from access import AccessError,email,password_hash,password_ok
+from access import AccessError,email
 from deployment_config import DeploymentConfig
 
 UUID=r'[a-f0-9-]{36}'
 READ={'flow-preview','registration-page','demographics','sessions','extra-options','event-footer'}
-POST={'pricing-preview','demographics-preview','membership/check-fields','attendee-account','checkout/quote','checkout/group-quote','checkout/save','checkout/group-save'}
+POST={'pricing-preview','demographics-preview','membership/check-fields','attendee-account','checkout/quote','checkout/group-quote','checkout/save','checkout/group-save','partial-draft','resume-draft'}
 
 def enabled(store,flow):
     allowed=os.environ.get('REGFIRE_STAGING_FLOW_IDS','').split(',')
@@ -24,17 +24,40 @@ def account(h,flow,data):
     address=email(data.get('email'));password=data.get('password')
     if not isinstance(password,str) or not hmac.compare_digest(password,data.get('confirm_password','')):
         raise AccessError('Passwords must match.')
-    encoded=password_hash(password)
+    encoded=aa.password_hash(password)
     with h.server.store.connect() as c:
         c.execute(sql.SQL('INSERT INTO {}(id,email,password_hash) VALUES(%s,%s,%s) ON CONFLICT(email) DO NOTHING').format(aa.table(h.server.store,'attendee_accounts')),(str(uuid.uuid4()),address,encoded))
         row=c.execute(sql.SQL('SELECT id,password_hash FROM {} WHERE email=%s').format(aa.table(h.server.store,'attendee_accounts')),(address,)).fetchone()
-        if not password_ok(password,row[1]):raise AccessError('Use the password for this attendee email.',401)
+        if not aa.password_ok(password,row[1]):raise AccessError('Use the password for this attendee email.',401)
         token=secrets.token_urlsafe(32);csrf=secrets.token_urlsafe(24)
         c.execute(sql.SQL('INSERT INTO {}(token_hash,account_id,csrf) VALUES(%s,%s,%s)').format(aa.table(h.server.store,'attendee_sessions')),(aa.digest(token),row[0],csrf))
     enrollment=aa.prepare(h.server.store,str(row[0]),flow,dict(email=address,password=password,confirm_password=password,preview=False))
     aa.respond(h,200,dict(enrollment_token=enrollment,message='Your attendee account is ready. Continue your registration.'),token)
 
 def handle(h):
+    try:return contextual_handle(h)
+    except (ValueError,TypeError):h.respond(404,{'error':'Registration not found.'});return True
+    except psycopg.Error:h.respond(503,{'error':'Registration storage is unavailable.'});return True
+
+def contextual_handle(h):
+    # Context is scoped to this request/thread, never to the shared HTTP server.
+    match=re.fullmatch('/api/public/events/('+UUID+')/(.+)',urlsplit(h.path).path)
+    flow=match[1] if match else None
+    order=re.fullmatch('/api/public/checkout/('+UUID+')/(.+)',urlsplit(h.path).path)
+    if order:
+        uuid.UUID(order[1])
+        with h.server.store.connect() as c:
+            row=c.execute(sql.SQL('SELECT flow_id FROM {} WHERE id=%s').format(sql.Identifier(h.server.store.schema,'registration_orders')),(order[1],)).fetchone()
+        if row:flow=str(row[0])
+    if flow:
+        try:uuid.UUID(flow)
+        except ValueError:h.respond(404,{'error':'Registration not found.'});return True
+        from publication_snapshot import load,using
+        snapshot=load(h.server.store,flow)
+        with using(h.server.store,flow,snapshot):return _handle(h)
+    return _handle(h)
+
+def _handle(h):
     path=urlsplit(h.path).path
     if path=='/api/linkedin/status' and h.command=='GET' and os.environ.get('REGFIRE_STAGING_FLOW_IDS'):
         h.respond(200,{'available':False});return True
@@ -71,14 +94,21 @@ def handle(h):
             data=json.loads(h.rfile.read(size))
             if not isinstance(data,dict):raise AccessError('Send an object.')
             if action=='attendee-account':account(h,flow,data);return True
-        protected=bool(order or action in ('checkout/save','checkout/group-save'))
+        protected=bool(order or action in ('checkout/save','checkout/group-save','partial-draft','resume-draft'))
         if protected:
             if not who:raise AccessError('Create or sign in to your attendee account using the registration form.',401)
             if h.command=='POST' and not hmac.compare_digest(h.headers.get('X-Attendee-CSRF',''),who['csrf']):raise AccessError('Refresh registration before continuing.',403)
+        if action in ('partial-draft','resume-draft'):
+            from partial_registration import save,resume
+            value=save(store,flow,who['id'],data) if action=='partial-draft' else resume(store,flow,who['id'],data.get('token'))
+            h.respond(200,value);return True
         # The identity is only accepted within this exact flow by checkout.
         h.identity=dict(id=who['id'] if who else str(uuid.UUID(int=0)),role='public-attendee',public_flow=flow)
         if action=='flow-preview':
             with store.connect() as c:row=c.execute(sql.SQL('SELECT body FROM {} WHERE id=%s').format(store.table()),(flow,)).fetchone()
+            from publication_snapshot import current
+            snap=current(store,flow)
+            if snap:row=(snap['event'],)
             fields=('id','name','start','end','timezone','venue','location','address','format')
             h.respond(200,dict(event={k:row[0][k] for k in fields if k in row[0]},registration=store.registration_page(flow),demographics=store.demographics_page(flow),at='',regtype=None));return True
         if action in ('pricing-preview','demographics-preview'):
@@ -115,4 +145,14 @@ def public_presentation(h):
     path=urlsplit(h.path).path
     if path in PRESENTATION:return True
     asset=re.fullmatch('/api/events/('+UUID+')/assets/'+UUID,path)
-    return bool(asset and enabled(h.server.store,asset[1]))
+    if asset and not h.identity and enabled(h.server.store,asset[1]):
+        from publication_snapshot import public_asset,load
+        if load(h.server.store,asset[1]):
+            h.public_asset=public_asset(h.server.store,asset[1],path.rsplit('/',1)[1])
+            return bool(h.public_asset)
+        return asset[1] in os.environ.get('REGFIRE_STAGING_FLOW_IDS','').split(',')
+    if asset and not h.identity:
+        from publication_snapshot import public_asset
+        h.public_asset=public_asset(h.server.store,asset[1],path.rsplit('/',1)[1])
+        return bool(h.public_asset)
+    return False

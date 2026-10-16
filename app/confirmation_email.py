@@ -23,8 +23,15 @@ def render(doc, images=None, confirmation_url=None):
   for kind,label in [('apple','Add to Apple Wallet'),('google','Add to Google Wallet')]:
    qr+='<td style="width:50%;padding:4px;vertical-align:middle">'+image(kind+'-wallet',label+' — unavailable',110)+'</td>'
   qr+='</tr></table>'
+ def sponsor_html():
+  if not s['show_sponsors'] or not s['sponsors']:return ''
+  result=heading('Our sponsors')+'<table role="presentation" width="100%">'
+  for start in range(0,len(s['sponsors']),3):
+   result+='<tr>'+''.join('<td width="33%" style="padding:8px">'+(image('sponsor:'+l['asset_id'],l['name'],150) or para(l['name']))+'</td>' for l in s['sponsors'][start:start+3])+'</tr>'
+  return result+'</table>'
  notice='SAMPLE - Fictional attendee and transaction. Not valid for entry.' if doc['sample'] else 'SANDBOX TEST - No live payment.' if doc['sandbox'] else 'Payment confirmed' if doc['status']=='paid' else 'Free registration confirmed - No payment required.'
  body='<table role="presentation" width="100%"><tr><td class="stack" width="105" style="vertical-align:middle">'+image('logo','Event logo',85)+'</td><td class="stack">'+para('REGISTRATION CONFIRMATION',True)+'<h1 style="font-size:28px;font-weight:500;margin:8px 0">'+text(s['heading'])+'</h1>'+para('Registration. Reignited.',True)+'</td></tr></table>'
+ if s['layout'][0]=='sponsors':body+=sponsor_html()
  body+='<div style="background:#fff2e9;padding:8px;margin-top:16px">'+text(notice)+'</div>'+heading(e['name'])+para(' | '.join(str(e.get(k,'')) for k in ('start','end','timezone') if e.get(k)))+para(' | '.join(str(e.get(k,'')) for k in ('venue','location') if e.get(k)))
  if s['qr_position']=='top':body+=qr
  for block in s['layout']:
@@ -49,11 +56,7 @@ def render(doc, images=None, confirmation_url=None):
   elif block=='extras' and s['show_extras']:
    lines=[l for l in q['lines'] if l['kind']=='extra']
    if lines:body+=heading('Your additional options')+''.join(para(str(l['quantity'])+' × '+l['name']+' — '+money(l['line_total_minor'],currency)) for l in lines)
-  elif block=='sponsors' and s['show_sponsors'] and s['sponsors']:
-   body+=heading('Our sponsors')+'<table role="presentation" width="100%">'
-   for start in range(0,len(s['sponsors']),3):
-    body+='<tr>'+''.join('<td width="33%" style="padding:8px">'+(image('sponsor:'+l['asset_id'],l['name'],150) or para(l['name']))+'</td>' for l in s['sponsors'][start:start+3])+'</tr>'
-   body+='</table>'
+  elif block=='sponsors' and s['layout'][0]!='sponsors':body+=sponsor_html()
  if s['qr_position']=='bottom':body+=qr
  if confirmation_url:
   u=urlsplit(confirmation_url)

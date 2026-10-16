@@ -37,6 +37,9 @@ class Store:
             for path in sorted((ROOT / 'migrations').glob('*.sql')):
                 conn.execute(psycopg.sql.SQL(path.read_text()).format(schema=psycopg.sql.Identifier(self.schema)))
 
+        from publication_snapshot import backfill
+        backfill(self)
+
     def list(self):
         with self.connect() as conn:
             return [r[0] for r in conn.execute(psycopg.sql.SQL("SELECT body FROM {} WHERE NOT (body ? 'parent_event_id') ORDER BY updated DESC, id").format(self.table()))]
@@ -148,6 +151,9 @@ class Store:
             return existing
 
     def registration_page(self, event_id):
+        from publication_snapshot import registration
+        published=registration(self,event_id)
+        if published is not None:return published
         from event_footer import operation
         shared = operation(self, event_id)
         from registration import starter
@@ -207,7 +213,9 @@ class Store:
         with self.connect() as conn:
             event=conn.execute(psycopg.sql.SQL('SELECT body FROM {} WHERE id=%s').format(self.table()), (event_id,)).fetchone()
             if not event: return None
-            return pricing_preview(data,event[0]['timezone'],at)
+            from publication_snapshot import current
+            snap=current(self,event_id)
+            return pricing_preview(data,(snap['event'] if snap else event[0])['timezone'],at)
 
     def save_asset(self, event_id, kind, content, upload_root=None):
         import uuid
@@ -229,6 +237,9 @@ class Store:
             raise
 
     def asset(self,event_id,asset_id):
+        from publication_snapshot import current
+        snap=current(self,event_id)
+        if snap is not None:return snap['assets'].get(asset_id)
         with self.connect() as conn:
             row=conn.execute(psycopg.sql.SQL('SELECT filename,mime FROM {} WHERE event_id=%s AND id=%s').format(psycopg.sql.Identifier(self.schema,'registration_assets')),(event_id,asset_id)).fetchone()
             if row is None:
@@ -242,6 +253,9 @@ class Store:
             return row
 
     def demographics_page(self,event_id):
+        from publication_snapshot import value
+        published=value(self,event_id,'demographics_pages')
+        if published is not None:return published
         from demographics import starter
         with self.connect() as conn:
             if not conn.execute(psycopg.sql.SQL('SELECT id FROM {} WHERE id=%s').format(self.table()),(event_id,)).fetchone():return None
@@ -280,9 +294,12 @@ class Store:
             ev=conn.execute(psycopg.sql.SQL('SELECT body FROM {} WHERE id=%s FOR UPDATE').format(self.table()),(event_id,)).fetchone()
             if not ev:return None
             reg=conn.execute(psycopg.sql.SQL('SELECT body FROM {} WHERE event_id=%s').format(self.page_table()),(event_id,)).fetchone()
-            regtypes=(reg[0] if reg else registration_starter(ev[0]))['regtypes']
+            from publication_snapshot import current
+            snap=current(self,event_id)
+            regtypes=(snap['registration_pages'] if snap else reg[0] if reg else registration_starter(ev[0]))['regtypes']
             saved=conn.execute(psycopg.sql.SQL('SELECT body FROM {} WHERE event_id=%s').format(settings_table),(event_id,)).fetchone()
             config=saved[0] if saved else starter()
+            if snap and action=='check-fields':config={**snap['membership_settings'],'api':config['api']}
             imported=conn.execute(psycopg.sql.SQL('SELECT records,digest,updated FROM {} WHERE event_id=%s').format(imports_table),(event_id,)).fetchone()
             info=dict(count=len(imported[0]) if imported else 0,revision=imported[1] if imported else '',updated=imported[2].isoformat() if imported else None)
             credential=conn.execute(psycopg.sql.SQL('SELECT endpoint,token FROM {} WHERE event_id=%s').format(credentials_table),(event_id,)).fetchone()

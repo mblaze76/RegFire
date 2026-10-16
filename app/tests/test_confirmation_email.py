@@ -51,3 +51,13 @@ class CompletePresentation(unittest.TestCase):
   self.assertNotIn('Event: event',html);self.assertNotIn('SAMPLE CONFIRMATION',html)
   self.assertIn('https://registration.example/registrant-login?event=event',html)
   dashboard=html.split('Sign in to your dashboard')[0].rsplit('<a ',1)[-1];self.assertNotIn('private-token',dashboard)
+
+class SponsorPosition(unittest.TestCase):
+ def test_default_under_header_and_custom_order(self):
+  doc=fixture();doc['settings']['sponsors']=[dict(asset_id='test',name='Synthetic Sponsor')];doc['settings']['qr_position']='top'
+  html=confirmation_email.render(doc,{'qr':'qr','sponsor:test':'sponsor'})
+  self.assertLess(html.index('Our sponsors'),html.index('SAMPLE -'))
+  self.assertLess(html.index('Our sponsors'),html.index('cid:qr'))
+  doc['settings']['layout']=['message','attendee','receipt','sessions','extras','sponsors']
+  html=confirmation_email.render(doc,{'qr':'qr','sponsor:test':'sponsor'})
+  self.assertGreater(html.index('Our sponsors'),html.index('cid:qr'))

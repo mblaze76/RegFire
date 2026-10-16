@@ -8,7 +8,9 @@ def enqueue(c,store,order):
  if order['status'] not in ('paid','confirmed_free') or order.get('mode')=='sandbox':return
  # Resolve the actual configured email field, not a label or a user-provided recipient override.
  row=c.execute(sql.SQL('SELECT body FROM {} WHERE event_id=%s').format(sql.Identifier(store.schema,'registration_pages')),(order['flow_id'],)).fetchone()
- fields=(row[0] if row else {}).get('fields',[]);contacts=order['data']['contacts'];recipient=next((contacts.get(f['id'],'') for f in fields if f['type']=='email' and contacts.get(f['id'])),None)
+ from publication_snapshot import current
+ snap=current(store,order['flow_id'])
+ fields=(snap['registration_pages'] if snap else row[0] if row else {}).get('fields',[]);contacts=order['data']['contacts'];recipient=next((contacts.get(f['id'],'') for f in fields if f['type']=='email' and contacts.get(f['id'])),None)
  state='queued' if recipient and re.fullmatch(r'[^\s@]+@[^\s@]+\.[^\s@]+',recipient) else 'blocked'
  c.execute(sql.SQL('INSERT INTO {}(order_id,recipient,status) VALUES(%s,%s,%s) ON CONFLICT(order_id) DO NOTHING').format(sql.Identifier(store.schema,'confirmation_delivery')),(order['id'],recipient or '',state))
 

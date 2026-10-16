@@ -136,6 +136,9 @@ def import_preview(data,event,currency):
 
 
 def operation(store,event_id,action='get',data=None):
+    from publication_snapshot import page as published_page
+    published=published_page(store,event_id,'event_sessions') if action=='get' else None
+    if published is not None:return published
     data=data or {}
     if not isinstance(data,dict): raise ValueError('Send a sessions object.')
     table=sql.Identifier(store.schema,'event_sessions')

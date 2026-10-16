@@ -14,6 +14,9 @@ ACTIVE=('starting','payment_pending','paid','confirmed_free')
 def table(store,name):return sql.Identifier(store.schema,name)
 def settings(server):return PaymentSettings(getattr(server,'payment_settings_path',None))
 def body(c,store,name,flow,default):
+ from publication_snapshot import current
+ snap=current(store,flow)
+ if snap and name in snap:return copy.deepcopy(snap[name])
  row=c.execute(sql.SQL('SELECT body FROM {} WHERE event_id=%s').format(table(store,name)),(flow,)).fetchone();return row[0] if row else default
 
 def quote_order(store,c,flow,data,config,exclude=None,extra_held=()):
@@ -27,6 +30,9 @@ def quote_order(store,c,flow,data,config,exclude=None,extra_held=()):
  c.execute(sql.SQL('SELECT id FROM {} WHERE id=%s FOR UPDATE').format(store.table()),(event.get('parent_event_id',flow),)).fetchone()
  event=c.execute(sql.SQL('SELECT body FROM {} WHERE id=%s FOR UPDATE').format(store.table()),(flow,)).fetchone()[0]
  if not c.execute(sql.SQL('SELECT 1 FROM {} WHERE id=%s AND NOT archived').format(table(store,'registration_flows')),(flow,)).fetchone():raise ValueError('This flow is unavailable.')
+ from publication_snapshot import current
+ snap=current(store,flow)
+ if snap:event=snap['event']
  page=validate_page(body(c,store,'registration_pages',flow,starter(event)),event['timezone']);regtype=data.get('regtype_id');kind=next((r for r in page['regtypes'] if r['id']==regtype),None)
  if not kind:raise ValueError('Choose your registration type.')
  path=data.get('subcategory_path',[]);required,complete=selected_membership(kind,path)
@@ -100,6 +106,7 @@ def quote_order(store,c,flow,data,config,exclude=None,extra_held=()):
   base=rate['price_minor'];scale=1 if page['currency']=='JPY' else 100
   discount=base if p['type']=='free' else min(base,int((Decimal(str(p['amount']))*(Decimal(base)/100 if p['type']=='percent' else scale)).quantize(Decimal(1),rounding=ROUND_HALF_UP)))
  assignment=config['assignments'].get(event.get('parent_event_id',flow),{});preference_row=c.execute(sql.SQL('SELECT body FROM {} WHERE flow_id=%s').format(table(store,'payment_preferences')),(flow,)).fetchone();preferences=preference_row[0] if preference_row else {}
+ if snap:preferences=snap['payment_preferences']
  tax_config=preferences.get('tax');tax_bps=(tax_config['rate_bps'] if tax_config else None) if 'tax' in preferences else assignment.get('tax_bps');taxable=sum(x['line_total_minor'] for x in extra['lines'] if x['taxable']);tax_pending=bool(taxable and tax_bps is None);tax=0 if tax_pending else (taxable*(tax_bps or 0)+5000)//10000
  subtotal=sum(l['line_total_minor'] for l in lines);names=[];current=kind
  for ident in path:current=next(x for x in current['subcategories'] if x['id']==ident);names.append(current['name'])

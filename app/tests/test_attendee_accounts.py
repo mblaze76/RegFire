@@ -43,3 +43,12 @@ class AttendeeAccounts(CheckoutStorage):
   for i in range(12):throttle(('synthetic',1))
   from access import AccessError
   with self.assertRaises(AccessError):throttle(('synthetic',1))
+
+class AttendeePasswordPolicy(unittest.TestCase):
+ def test_seven_character_attendee_minimum_keeps_organizer_policy(self):
+  import attendee_accounts as aa
+  from access import password_hash,AccessError
+  with self.assertRaises(AccessError):aa.password_hash('abc123')
+  encoded=aa.password_hash('abc1234');self.assertTrue(aa.password_ok('abc1234',encoded));self.assertFalse(aa.password_ok('abc1235',encoded))
+  with self.assertRaises(AccessError):password_hash('abc1234')
+  legacy=password_hash('Existing-password-123');self.assertTrue(aa.password_ok('Existing-password-123',legacy))

@@ -10,13 +10,13 @@ def email(value):
  if not isinstance(value,str) or len(value)>254 or not re.fullmatch(r'[^\s@]+@[^\s@]+\.[^\s@]+',value.strip()):raise AccessError('Enter a valid email address.')
  return value.strip().casefold()
 def digest(value):return hashlib.sha256(value.encode()).hexdigest()
-def password_hash(password,salt=None):
- if not isinstance(password,str) or not 12<=len(password)<=256:raise AccessError('Use a password of 12–256 characters.')
+def password_hash(password,salt=None,*,minimum=12):
+ if not isinstance(password,str) or not minimum<=len(password)<=256:raise AccessError(f'Use a password of {minimum}–256 characters.')
  salt=salt or secrets.token_hex(16)
  hashed=hashlib.scrypt(password.encode(),salt=bytes.fromhex(salt),n=2**15,r=8,p=3,maxmem=64*1024*1024).hex()
  return 'scrypt$'+salt+'$'+hashed
-def password_ok(password,encoded):
- try:return hmac.compare_digest(password_hash(password,encoded.split('$')[1]),encoded)
+def password_ok(password,encoded,*,minimum=12):
+ try:return hmac.compare_digest(password_hash(password,encoded.split('$')[1],minimum=minimum),encoded)
  except (ValueError,IndexError,TypeError,AccessError):return False
 
 class Access:

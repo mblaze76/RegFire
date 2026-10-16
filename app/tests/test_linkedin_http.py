@@ -63,3 +63,17 @@ class LinkedInHTTPTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+class LinkedInProduction(unittest.TestCase):
+ def test_https_origin_and_secure_state_cookie_without_provider_call(self):
+  from types import SimpleNamespace
+  from unittest.mock import Mock
+  import linkedin_import as li
+  h=Mock();h.path='/api/linkedin/start?flow='+str(uuid.uuid4())+'&request='+str(uuid.uuid4());h.command='GET';h.headers={'Host':'staging.example.test'};h.server=SimpleNamespace(server_port=8080,store=Mock());h.identity={'id':'synthetic'}
+  env={'REGFIRE_ENV':'production','REGFIRE_PUBLIC_ORIGIN':'https://staging.example.test','REGFIRE_LINKEDIN_CLIENT_ID':'synthetic-client','REGFIRE_LINKEDIN_CLIENT_SECRET':'synthetic-secret','REGFIRE_LINKEDIN_REDIRECT_URI':'https://staging.example.test/api/linkedin/callback'}
+  # Existing event authorization is mocked; no external OAuth call is made.
+  with patch.dict('os.environ',env),patch('access_http.access') as access:
+   access.return_value.require_event.return_value=None
+   li.handle(h)
+  headers=dict(c.args for c in h.send_header.call_args_list)
+  self.assertIn('Secure',headers['Set-Cookie']);self.assertIn('https%3A%2F%2Fstaging.example.test',headers['Location']);self.assertNotIn('synthetic-secret',str(headers))

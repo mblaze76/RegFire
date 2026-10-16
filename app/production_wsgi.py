@@ -95,5 +95,7 @@ def application(environ,start_response):
                 server=SimpleNamespace(server_port=8080,store=store,access=access)
                 from confirmation_worker import start as start_confirmation_worker
                 server.confirmation_stop=start_confirmation_worker(server)
+                from partial_cleanup import start as start_partial_cleanup
+                server.partial_stop=start_partial_cleanup(store)
                 _application=Application(server,config)
     return _application(environ,start_response)
