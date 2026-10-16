@@ -1,20 +1,22 @@
-/* Attendee-owned LinkedIn consent; fills blank fields only, never logs in to RegFire. */
+/* Attendee-owned LinkedIn consent; attendee sign-in when enabled, blank-field import in organizer preview. */
 (()=>{
  const fields={'first-name':'given_name','last-name':'family_name',email:'email'};
  function attach({button,status,target,getFlow}){
   let available=false,popup=null,request=null,flow=null,expiry=null,closed=null;
   button.disabled=true;
+  if(window.RegFireJourney?.live&&window.RegFireJourney.read().colleague){status.textContent='LinkedIn sign-in is available for the primary attendee. Enter your colleague’s details below.';return;}
   status.textContent='Checking LinkedIn availability…';
-  fetch('/api/linkedin/status').then(async response=>{
+  const signin=!!window.RegFireJourney?.live;if(signin)button.setAttribute('aria-label','Sign in with LinkedIn');
+  fetch('/api/linkedin/status'+(signin?'?purpose=signin':'')).then(async response=>{
    const data=await response.json();available=response.ok&&data.available===true;button.disabled=!available;
-   status.textContent=available?'Import your name and available email with your permission. Existing entries stay unchanged.':'LinkedIn is not connected yet. You can enter your details below.';
+   status.textContent=available&&signin?'Sign in with LinkedIn. To link an existing attendee account, first sign in with its password.':available?'Import your name and available email with your permission. Existing entries stay unchanged.':'LinkedIn is not connected yet. You can enter your details below.';
   }).catch(()=>{status.textContent='LinkedIn is unavailable. You can enter your details below.';});
   function finish(){clearTimeout(expiry);clearInterval(closed);request=null;button.disabled=!available;}
   button.onclick=()=>{
    if(!available)return;
    flow=getFlow();if(!flow)return;
    request=crypto.randomUUID();
-   popup=window.open('/api/linkedin/start?flow='+encodeURIComponent(flow)+'&request='+encodeURIComponent(request),'regfire-linkedin-'+request,'popup,width=620,height=760');
+   popup=window.open('/api/linkedin/start?flow='+encodeURIComponent(flow)+'&request='+encodeURIComponent(request)+(signin?'&purpose=signin':''),'regfire-linkedin-'+request,'popup,width=620,height=760');
    if(!popup){status.textContent='Allow the LinkedIn popup, or enter your details below.';finish();return;}
    button.disabled=true;status.textContent='Complete LinkedIn consent in the new window. Your entries will stay here.';
    expiry=setTimeout(()=>{status.textContent='LinkedIn import expired. Try again or enter your details below.';finish();},600000);
@@ -34,6 +36,7 @@
     }
     status.textContent=count?'Filled '+count+' empty fields. Review your details before continuing.':'No empty matching fields were available. Your entries are unchanged.';
    }else status.textContent=data.message||'LinkedIn import was not completed. Your entries are unchanged.';
+   if(data.enrollment?.enrollment_token&&typeof data.enrollment.email==='string')window.dispatchEvent(new CustomEvent('regfire-linkedin-enrolled',{detail:data.enrollment}));
    finish();
   });
  }

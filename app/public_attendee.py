@@ -30,7 +30,7 @@ def account(h,flow,data):
         row=c.execute(sql.SQL('SELECT id,password_hash FROM {} WHERE email=%s').format(aa.table(h.server.store,'attendee_accounts')),(address,)).fetchone()
         if not aa.password_ok(password,row[1]):raise AccessError('Use the password for this attendee email.',401)
         token=secrets.token_urlsafe(32);csrf=secrets.token_urlsafe(24)
-        c.execute(sql.SQL('INSERT INTO {}(token_hash,account_id,csrf) VALUES(%s,%s,%s)').format(aa.table(h.server.store,'attendee_sessions')),(aa.digest(token),row[0],csrf))
+        c.execute(sql.SQL('INSERT INTO {}(token_hash,account_id,csrf,authenticated_at) VALUES(%s,%s,%s,now())').format(aa.table(h.server.store,'attendee_sessions')),(aa.digest(token),row[0],csrf))
     enrollment=aa.prepare(h.server.store,str(row[0]),flow,dict(email=address,password=password,confirm_password=password,preview=False))
     aa.respond(h,200,dict(enrollment_token=enrollment,message='Your attendee account is ready. Continue your registration.'),token)
 
@@ -59,7 +59,7 @@ def contextual_handle(h):
 
 def _handle(h):
     path=urlsplit(h.path).path
-    if path=='/api/linkedin/status' and h.command=='GET' and os.environ.get('REGFIRE_STAGING_FLOW_IDS'):
+    if path=='/api/linkedin/status' and h.command=='GET' and os.environ.get('REGFIRE_STAGING_FLOW_IDS') and 'purpose=signin' not in h.path:
         h.respond(200,{'available':False});return True
     if path=='/api/address-config' and h.command=='GET' and os.environ.get('REGFIRE_STAGING_FLOW_IDS'):
         h.respond(200,{'configured':False,'provider':None,'fixture':False,'message':'Enter the address manually in staging.'});return True

@@ -6,7 +6,7 @@ from psycopg import sql
 from deployment_config import DeploymentConfig
 
 def state(store,flow,data=None):
- from publication_snapshot import capture,digest,clean,LABELS
+ from publication_snapshot import capture,digest,clean,LABELS,change_details
  from psycopg.types.json import Jsonb
  with store.connect() as c:
   c.execute('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ')
@@ -16,6 +16,7 @@ def state(store,flow,data=None):
   row=c.execute(sql.SQL('SELECT published,revision,snapshot,published_at FROM {} WHERE flow_id=%s FOR UPDATE').format(table),(flow,)).fetchone()
   published,revision,old,at=row if row else (False,0,None,None)
   draft=capture(c,store,flow);review=digest(draft)
+  details=change_details(old,draft)
   changes=[label for key,label in LABELS.items() if old is None or clean(old.get(key))!=clean(draft.get(key))]
   if old and clean(old.get('parent'))!=clean(draft.get('parent')) and 'Event details' not in changes:changes.insert(0,'Event details')
   if data is not None:
@@ -34,8 +35,8 @@ def state(store,flow,data=None):
     except ValueError:expires=None
     if expires:c.execute(sql.SQL('UPDATE {} SET expires=%s,token_expires=LEAST(token_expires,%s) WHERE flow_id=%s').format(sql.Identifier(store.schema,'partial_registrations')),(expires,expires,flow))
     else:c.execute(sql.SQL('DELETE FROM {} WHERE flow_id=%s').format(sql.Identifier(store.schema,'partial_registrations')),(flow,))
-    changes=[]
-  return dict(published=published,revision=revision,review_digest=review,changes=changes,has_changes=bool(changes),published_at=at.isoformat() if at else None)
+    changes=[];details=[]
+  return dict(published=published,revision=revision,review_digest=review,changes=changes,change_details=details,has_changes=bool(changes),published_at=at.isoformat() if at else None)
 
 def enabled(store,flow):
  if os.environ.get('REGFIRE_ENV','local')=='production' and os.environ.get('REGFIRE_PUBLICATION_ENABLED')!='1':return False

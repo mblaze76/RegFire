@@ -22,6 +22,10 @@ KEYS={
  'Branding':['title','about','font','background_color','title_color','body_color'],
  'Confirmation':['heading','message'],
 }
+REQUIRED_TABS=set(HEADERS)
+from intake_extensions import HEADERS as EXTRA_HEADERS,SCOPED
+for name in ('Categories','Sessions','Additional options'):HEADERS[name]=HEADERS[name]+['Flow']
+HEADERS.update(EXTRA_HEADERS)
 LIMIT=4*1024*1024
 
 def workbook(raw):
@@ -42,7 +46,7 @@ def workbook(raw):
         result={}
         for sheet in xml('xl/workbook.xml').findall('s:sheets/s:sheet',NS):
             name=sheet.attrib['name']
-            if name=='Start here':continue
+            if name in ('Start here','Coverage','Setting reference'):continue
             if name not in HEADERS or name in result:raise ValueError('Use the original template tabs; unexpected tab: '+name)
             relation=rels[sheet.attrib['{http://schemas.openxmlformats.org/officeDocument/2006/relationships}id']]
             if relation.get('TargetMode')=='External':raise ValueError('External sheets are not supported.')
@@ -76,14 +80,20 @@ def workbook(raw):
                     if col in cells:raise ValueError('Duplicate cell reference.')
                     cells[col]=value.strip()
                 if any(cells.values()):rows.append((number,[cells.get(c,'') for c in range(1,len(HEADERS[name])+1)]))
-            if not rows or rows[0]!=(1,HEADERS[name]):raise ValueError(name+': keep the template header row unchanged.')
+            if not rows:raise ValueError(name+': keep the template header row unchanged.')
+            expected=HEADERS[name]
+            if rows[0]!=(1,expected) and not (name in ('Categories','Sessions','Additional options') and rows[0]==(1,expected[:-1]+[''])):raise ValueError(name+': keep the template header row unchanged.')
             result[name]=rows[1:]
-        if set(result)!=set(HEADERS):raise ValueError('Include all six template data tabs, even when optional tabs are empty.')
+        if not REQUIRED_TABS.issubset(result):raise ValueError('Include the original six data tabs, even when optional tabs are empty.')
+        for name in HEADERS:result.setdefault(name,[])
         return result
     except (zipfile.BadZipFile,KeyError,IndexError,ET.ParseError,TypeError,OverflowError) as exc:
         raise ValueError('This file is not a supported XLSX workbook. Export the template from Google Sheets as Microsoft Excel (.xlsx).') from exc
 
-def normalize(tabs):
+def normalize(tabs,_single=False):
+    if not _single:
+        from intake_extensions import flows
+        return flows(tabs,normalize)
     from server import validate as event_validate
     from registration import starter,validate_page,CURRENCIES
     from sessions import validate as session_validate
@@ -165,12 +175,23 @@ def apply(store,user_id,token):
         event=data['event']|{'id':eid,'status':'draft','created':now,'updated':now}
         c.execute(sql.SQL('INSERT INTO {}(id,body,updated) VALUES(%s,%s,%s)').format(store.table()),(eid,Jsonb(event),now))
         c.execute(sql.SQL('INSERT INTO {}(user_id,event_id) VALUES(%s,%s)').format(table(store,'access_event_grants')),(user_id,eid))
-        c.execute(sql.SQL("INSERT INTO {}(id,event_id,name,kind,position) VALUES(%s,%s,'Attendee','attendee',0)").format(table(store,'registration_flows')),(eid,eid))
-        for key,name in [('registration','registration_pages'),('welcome','welcome_pages'),('sessions','event_sessions'),('extras','extra_options'),('confirmation','confirmation_pages')]:
-            body=data[key]|{'event_id':eid,'status':'draft','updated':now}
-            if key in ('registration','welcome'):
-                c.execute(sql.SQL('INSERT INTO {}(event_id,body,updated) VALUES(%s,%s,%s)').format(table(store,name)),(eid,Jsonb(body),now))
-            else:c.execute(sql.SQL('INSERT INTO {}(event_id,body,revision) VALUES(%s,%s,1)').format(table(store,name)),(eid,Jsonb(body)))
+        definitions=data.get('flows') or [dict(name='Attendee',kind='attendee',configuration=data)]
+        flow_ids={}
+        for position,spec in enumerate(definitions):
+            fid=eid if position==0 else str(uuid.uuid4());config=spec['configuration'];flow_ids[spec['name'].casefold()]=fid
+            if position:
+                child=event|{'id':fid,'parent_event_id':eid}
+                c.execute(sql.SQL('INSERT INTO {}(id,body,updated) VALUES(%s,%s,%s)').format(store.table()),(fid,Jsonb(child),now))
+            c.execute(sql.SQL('INSERT INTO {}(id,event_id,name,kind,position) VALUES(%s,%s,%s,%s,%s)').format(table(store,'registration_flows')),(fid,eid,spec['name'],spec['kind'],position))
+            for key,name in [('registration','registration_pages'),('demographics','demographics_pages'),('membership','membership_settings'),('sessions','event_sessions'),('extras','extra_options'),('confirmation','confirmation_pages')]:
+                body=config[key]|{'event_id':fid,'status':'draft','updated':now}
+                if key in ('registration','demographics','membership'):
+                    c.execute(sql.SQL('INSERT INTO {}(event_id,body,updated) VALUES(%s,%s,%s)').format(table(store,name)),(fid,Jsonb(body),now))
+                else:c.execute(sql.SQL('INSERT INTO {}(event_id,body,revision) VALUES(%s,%s,1)').format(table(store,name)),(fid,Jsonb(body)))
+            c.execute(sql.SQL('INSERT INTO {}(flow_id,body,revision) VALUES(%s,%s,1)').format(table(store,'payment_preferences')),(fid,Jsonb(config['payment'])))
+        c.execute(sql.SQL('INSERT INTO {}(event_id,body,revision) VALUES(%s,%s,1)').format(table(store,'event_footers')),(eid,Jsonb(dict(footer=data['footer'],conflict=False,legacy=[]))))
+        if data.get('welcome_buttons'):data['welcome']['buttons']=[dict(id=str(uuid.uuid4()),label=b['label'],flow_id=flow_ids[b['flow_name']]) for b in data['welcome_buttons']]
+        c.execute(sql.SQL('INSERT INTO {}(event_id,body,updated) VALUES(%s,%s,%s)').format(table(store,'welcome_pages')),(eid,Jsonb(data['welcome']|{'event_id':eid,'status':'draft','updated':now}),now))
         c.execute(sql.SQL('UPDATE {} SET event_id=%s WHERE id=%s').format(table(store,'client_intake_previews')),(eid,token))
     return {'event_id':eid,'already_applied':False}
 

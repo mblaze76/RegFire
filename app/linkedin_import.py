@@ -93,7 +93,7 @@ def validate_token(token, client_id, nonce):
     return claims
 
 
-def profile_from_code(code, transaction, config):
+def profile_from_code(code, transaction, config, identity=False):
     if not isinstance(code, str) or not 1 <= len(code) <= 4096:
         raise ValueError('Missing LinkedIn authorization.')
     tokens = fetch_json(TOKEN, dict(grant_type='authorization_code', code=code,
@@ -112,6 +112,7 @@ def profile_from_code(code, transaction, config):
         if isinstance(value, str) and 0 < len(value.strip()) <= 254:
             if key != 'email' or re.fullmatch(r'[^\s@]+@[^\s@]+\.[^\s@]+', value.strip()):
                 profile[key] = value.strip()
+    if identity:profile.update(subject=claims['sub'],email_verified=info.get('email_verified') is True)
     return profile
 
 
@@ -129,14 +130,14 @@ def cookie_name(state):
     return 'regfire_linkedin_' + state[:20]
 
 
-def popup(h, message, payload=None, origin=None, cookie=None):
+def popup(h, message, payload=None, origin=None, cookie=None, attendee_session=None):
     nonce = secrets.token_urlsafe(20)
     safe = lambda value: json.dumps(value).replace('<', '\\u003c').replace('>', '\\u003e').replace('&', '\\u0026')
     script = 'document.getElementById("message").textContent=' + safe(message) + ';'
     if payload and origin:
         script += 'if(window.opener){window.opener.postMessage(' + safe(payload) + ',' + safe(origin) + ');window.close();}'
-    content = ('<!doctype html><meta charset="utf-8"><title>LinkedIn profile import</title>'
-               '<h1>LinkedIn profile import</h1><p id="message"></p><p>You may close this window.</p>'
+    content = ('<!doctype html><meta charset="utf-8"><title>LinkedIn</title>'
+               '<h1>LinkedIn</h1><p id="message"></p><p>You may close this window.</p>'
                '<script nonce="' + nonce + '">' + script + '</script>').encode()
     h.send_response(200)
     for name, value in [('Content-Type', 'text/html; charset=utf-8'), ('Content-Length', str(len(content))),
@@ -146,6 +147,10 @@ def popup(h, message, payload=None, origin=None, cookie=None):
         h.send_header(name, value)
     if cookie:
         h.send_header('Set-Cookie', cookie + '=;'+(' Secure;' if __import__('deployment_config').DeploymentConfig.load(h.server.server_port).secure_cookies else '')+' HttpOnly; SameSite=Lax; Path=/api/linkedin; Max-Age=0')
+    if attendee_session:
+        import attendee_accounts as aa
+        secure=__import__('deployment_config').DeploymentConfig.load(h.server.server_port).secure_cookies
+        h.send_header('Set-Cookie',aa.cookie(h)+'='+attendee_session+('; Secure' if secure else '')+'; HttpOnly; SameSite=Strict; Path=/; Max-Age=28800')
     h.end_headers()
     h.wfile.write(content)
 
@@ -161,13 +166,15 @@ def handle(h):
     deployment = DeploymentConfig.load(h.server.server_port)
     origin = deployment.origin if deployment.secure_cookies else 'http://' + h.headers['Host']
     config = configuration(origin)
+    signin=parse_qs(urlsplit(h.path).query).get('purpose',[''])[0]=='signin'
+    signin_enabled=os.environ.get('REGFIRE_LINKEDIN_SIGNIN_ENABLED')=='1'
     if path == '/api/linkedin/status':
-        h.respond(200, {'available': bool(config)})
+        h.respond(200, {'available': bool(config) and (not signin or signin_enabled)})
         return True
     query = parse_qs(urlsplit(h.path).query)
     one = lambda key: query.get(key, [''])[0] if len(query.get(key, [])) <= 1 else ''
     if path == '/api/linkedin/start':
-        if not config:
+        if not config or signin and not signin_enabled:
             popup(h, 'LinkedIn is not connected for this event. Please fill in your details manually.')
             return True
         from access_http import access
@@ -176,8 +183,16 @@ def handle(h):
             flow, request_id = one('flow'), one('request')
             if not re.fullmatch(r'[a-f0-9-]{36}', flow) or not re.fullmatch(r'[a-f0-9-]{36}', request_id):
                 raise ValueError('Open LinkedIn from the registration form.')
-            access(h).require_event(h.identity, flow)
+            if signin:
+                import attendee_accounts as aa
+                from publication import enabled
+                aa.throttle(('linkedin-signin',h.client_address[0]))
+                if not enabled(h.server.store,flow):raise ValueError('Registration is unavailable.')
+            else:access(h).require_event(h.identity, flow)
             state, binding, nonce = transactions(h.server).start(flow, request_id, origin, config['CLIENT_ID'])
+            if signin:
+                from linkedin_signin import link_proof
+                transactions(h.server).items[state].update(signin=True,link_proof=link_proof(h))
             url = AUTHORIZE + '?' + urlencode(dict(response_type='code', client_id=config['CLIENT_ID'],
                           redirect_uri=config['REDIRECT_URI'], scope='openid profile email', state=state, nonce=nonce))
             h.send_response(303)
@@ -189,7 +204,7 @@ def handle(h):
         except (ValueError, AccessError) as error:
             popup(h, str(error))
         return True
-    transaction = None
+    transaction = None;attendee_session=None;enrollment=None
     state = one('state')
     cookie = cookie_name(state) if re.fullmatch(r'[A-Za-z0-9_-]{43}', state) else None
     try:
@@ -202,11 +217,22 @@ def handle(h):
         if one('error'):
             message, profile = 'LinkedIn import was canceled. Your entries are unchanged.', None
         else:
-            profile = profile_from_code(one('code'), transaction, config)
-            message = 'Your LinkedIn details are ready for the registration form.'
+            if transaction.get('signin'):
+                if not signin_enabled:raise ValueError('LinkedIn sign-in is disabled.')
+                from linkedin_signin import complete
+                verified=profile_from_code(one('code'),transaction,config,identity=True)
+                enrollment=complete(h.server.store,transaction['flow'],verified,transaction.get('link_proof'))
+                attendee_session=enrollment.pop('session');profile={k:v for k,v in verified.items() if k in ('given_name','family_name','email')};profile['email']=enrollment['email']
+                message='Signed in to your attendee account. Review your details before continuing.'
+            else:
+                profile = profile_from_code(one('code'), transaction, config)
+                message = 'Your LinkedIn details are ready for the registration form.'
+    except ValueError as exc:
+        message,profile=(str(exc) if str(exc).startswith('Sign in to your existing attendee account') else 'LinkedIn sign-in could not be completed. Your entries are unchanged; please try again or enter them manually.'),None
     except Exception:
         message, profile = 'LinkedIn import could not be completed. Your entries are unchanged; please try again or enter them manually.', None
     payload = dict(type='regfire-linkedin-profile', request=transaction['request_id'], flow=transaction['flow'],
                    profile=profile, message=message) if transaction else None
-    popup(h, message, payload, transaction['origin'] if transaction else None, cookie)
+    if payload and enrollment:payload['enrollment']=enrollment
+    popup(h, message, payload, transaction['origin'] if transaction else None, cookie,attendee_session)
     return True

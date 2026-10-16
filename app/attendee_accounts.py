@@ -105,7 +105,7 @@ def handle(h):
     if not r or not valid:raise AccessError('Email or password is incorrect.',401)
     token=secrets.token_urlsafe(32);csrf=secrets.token_urlsafe(24)
     c.execute(sql.SQL('DELETE FROM {} WHERE expires<now()').format(table(store,'attendee_sessions')))
-    c.execute(sql.SQL('INSERT INTO {}(token_hash,account_id,csrf) VALUES(%s,%s,%s)').format(table(store,'attendee_sessions')),(digest(token),r[0],csrf))
+    c.execute(sql.SQL('INSERT INTO {}(token_hash,account_id,csrf,authenticated_at) VALUES(%s,%s,%s,now())').format(table(store,'attendee_sessions')),(digest(token),r[0],csrf))
    respond(h,200,{'ok':True},token);return True
   who=identity(h)
   if path=='/api/attendee/me' and h.command=='GET':respond(h,200,{'user':who});return True

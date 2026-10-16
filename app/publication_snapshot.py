@@ -20,6 +20,31 @@ def clean(value):
  if isinstance(value,list):return [clean(v) for v in value]
  return value
 def digest(value):return hashlib.sha256(json.dumps(clean(value),sort_keys=True,separators=(',',':')).encode()).hexdigest()
+
+def change_details(before,after):
+ """Concrete configuration differences; omit operational IDs and secret fields."""
+ rows=[]
+ hidden={'id','event_id','parent_event_id','updated','created','revision','assets','api','credentials','password','secret','token','api_key','client_secret'}
+ def safe(v):
+  if isinstance(v,dict):return {k:safe(x) for k,x in v.items() if k not in hidden and not any(s in k.lower() for s in ('password','secret','token','credential'))}
+  if isinstance(v,list):return [safe(x) for x in v]
+  return v
+ def label(k):return {'price_minor':'Price (minor currency units)','regtypes':'Registration types','use_default':'Use default price','visible_to':'Visible registration types','asset_id':'Artwork reference'}.get(k,k.replace('_',' ').capitalize())
+ def walk(a,b,path):
+  if a==b:return
+  if isinstance(a,dict) and isinstance(b,dict):
+   for k in sorted(set(a)|set(b)):
+    if k in hidden or any(s in k.lower() for s in ('password','secret','token','credential')):continue
+    walk(a.get(k),b.get(k),path+[label(k)])
+  elif isinstance(a,list) and isinstance(b,list) and all(isinstance(x,dict) and x.get('id') for x in a+b):
+   aa={x['id']:x for x in a};bb={x['id']:x for x in b}
+   for key in list(aa)+[k for k in bb if k not in aa]:
+    item=bb.get(key) or aa[key];name=item.get('name') or item.get('title') or item.get('label') or 'Entry'
+    walk(aa.get(key),bb.get(key),path+[name])
+   if set(aa)==set(bb) and list(aa)!=list(bb):rows.append(dict(path=' / '.join(path),action='Reordered',before=[x.get('name') or x.get('title') or x.get('label') or 'Entry' for x in a],after=[x.get('name') or x.get('title') or x.get('label') or 'Entry' for x in b]))
+  else:rows.append(dict(path=' / '.join(path),action='Added' if a is None else 'Removed' if b is None else 'Changed',before=safe(a),after=safe(b)))
+ for key,title in {**LABELS,'parent':'Parent event details'}.items():walk((before or {}).get(key),after.get(key),[title])
+ return rows
 def capture(c,store,flow):
  def body(table,key,value):
   r=c.execute(sql.SQL('SELECT body FROM {} WHERE {}=%s').format(sql.Identifier(store.schema,table),sql.Identifier(key)),(value,)).fetchone()
